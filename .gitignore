@@ -1,0 +1,41 @@
+# Devenv & Nix
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+.direnv
+
+# Pre-commit
+.pre-commit-config.yaml
+
+# Build & binaries
+/bin/
+/tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# PocketBase data & SQLite databases
+/pb_data/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+
+# Environment files & secrets
+.env
+.env.*
+!.env.example
+
+# IDE & OS files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+# Documentation & analysis drafts
+PROJECT_STARTER_ANALYSIS.md
+STARTER_KIT_ROADMAP.md
+SITECRAFT_ARCHITECTURE_PLAN.md

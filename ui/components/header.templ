@@ -1,0 +1,100 @@
+package components
+
+import (
+	"lawyer/internal/models"
+)
+
+templ Header(content models.SiteContent) {
+	<!-- Header -->
+	<header class="bg-legal-burgundy text-white sticky top-0 z-40 shadow-lg border-b border-legal-burgundydark">
+		<div class="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center">
+			<div class="flex items-center space-x-3">
+				<div class="w-10 h-10 rounded-full bg-legal-burgundydark border border-legal-gold/40 flex items-center justify-center text-legal-gold shadow-inner">
+					<svg class="w-6 h-6 a11y-keep-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+					</svg>
+				</div>
+				<div>
+					<div class="text-white font-serif-title font-bold text-lg tracking-wide leading-tight">{ content.HeroTitle }</div>
+					<div class="text-xs text-legal-gold font-medium">{ content.NotaryName }</div>
+				</div>
+			</div>
+
+			<nav class="hidden md:flex items-center space-x-5 text-sm font-medium">
+				<a href="#about" class="hover:text-legal-gold transition">О нотариусе</a>
+				<a href="#schedule" class="hover:text-legal-gold transition">Режим</a>
+				<a href="#services" class="hover:text-legal-gold transition">Услуги</a>
+				<a href="#booking" class="hover:text-legal-gold transition">Запись</a>
+				<a href="#map" class="hover:text-legal-gold transition">Карта</a>
+
+				<!-- Кнопка 'Версия для слабовидящих' -->
+				<button
+					type="button"
+					@click="toggleA11y()"
+					class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-legal-gold hover:text-legal-gold transition bg-white/5"
+					title="Версия для слабовидящих"
+				>
+					<span>👓</span>
+					<span x-text="a11y.active ? 'Настройки для слабовидящих' : 'Для слабовидящих'"></span>
+				</button>
+
+				<!-- Переключатель тем (Стандарт / Тёмная / Для дальтоников) -->
+				<div x-show="!a11y.active" class="flex items-center bg-black/25 p-1 rounded-lg border border-white/10 text-xs">
+					<button
+						type="button"
+						@click="setTheme('default')"
+						:class="currentTheme === 'default' ? 'bg-legal-gold text-legal-burgundydark font-bold shadow-sm' : 'text-stone-300 hover:text-white'"
+						class="px-2 py-1 rounded transition flex items-center gap-1"
+						title="Классическая тема"
+					>
+						☀️
+					</button>
+					<button
+						type="button"
+						@click="setTheme('dark')"
+						:class="currentTheme === 'dark' ? 'bg-legal-gold text-legal-burgundydark font-bold shadow-sm' : 'text-stone-300 hover:text-white'"
+						class="px-2 py-1 rounded transition flex items-center gap-1"
+						title="Тёмная тема"
+					>
+						🌙
+					</button>
+					<button
+						type="button"
+						@click="setTheme('colorblind')"
+						:class="currentTheme === 'colorblind' ? 'bg-blue-600 text-white font-bold shadow-sm' : 'text-stone-300 hover:text-white'"
+						class="px-2 py-1 rounded transition flex items-center gap-1"
+						title="Режим для людей с нарушением цветовосприятия"
+					>
+						👁️
+					</button>
+				</div>
+
+				<a href="/_/" target="_blank" class="text-legal-gold border border-legal-gold/50 px-2.5 py-1 rounded text-xs hover:bg-legal-gold hover:text-legal-burgundydark transition font-semibold">Админка</a>
+			</nav>
+
+			<div class="md:hidden flex items-center gap-2">
+				<!-- Кнопка для слабовидящих на мобильных -->
+				<button
+					type="button"
+					@click="toggleA11y()"
+					class="px-2 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white"
+					title="Версия для слабовидящих"
+				>
+					<span>👓</span>
+				</button>
+
+				<!-- Компактный переключатель темы для мобильных -->
+				<button
+					x-show="!a11y.active"
+					type="button"
+					@click="setTheme(currentTheme === 'default' ? 'dark' : (currentTheme === 'dark' ? 'colorblind' : 'default'))"
+					class="px-2.5 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white"
+					:title="'Текущая тема: ' + currentTheme"
+				>
+					<span x-text="currentTheme === 'default' ? '☀️' : (currentTheme === 'dark' ? '🌙' : '👁️')"></span>
+				</button>
+				<a href="#booking" class="bg-legal-gold text-legal-burgundydark text-xs font-semibold px-3 py-1.5 rounded">Запись</a>
+			</div>
+		</div>
+	</header>
+}

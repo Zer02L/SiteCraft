@@ -1,0 +1,24 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "templ generate && tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css && go build -o ./tmp/main main.go"
+  entrypoint = "./tmp/main"
+  args_bin = ["serve", "--http=0.0.0.0:8080", "--dir=./pb_data"]
+  delay = 1000
+  exclude_dir = ["assets", "tmp", "vendor", "pb_data", ".devenv"]
+  include_ext = ["go", "templ", "html", "css"]
+  exclude_regex = ["_test.go", "_templ.go"]
+  stop_on_error = true
+
+[color]
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+
+[log]
+  time = false
+
+[misc]
+  clean_on_exit = true

@@ -1,0 +1,354 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Базовые стили для переключения тем */
+body {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* HTMX индикатор загрузки */
+.htmx-indicator {
+  display: none;
+}
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+  display: inline-block;
+}
+
+/* =========================================
+   1. ТЁМНАЯ ТЕМА (DARK THEME)
+   ========================================= */
+html[data-theme="dark"] body {
+  background-color: #0d1117 !important;
+  color: #e6edf3 !important;
+}
+
+html[data-theme="dark"] header {
+  background-color: #161b22 !important;
+  border-color: #30363d !important;
+}
+
+html[data-theme="dark"] section {
+  border-color: #30363d !important;
+}
+
+html[data-theme="dark"] .bg-white {
+  background-color: #161b22 !important;
+  color: #e6edf3 !important;
+  border-color: #30363d !important;
+}
+
+html[data-theme="dark"] .bg-stone-50,
+html[data-theme="dark"] .bg-stone-100 {
+  background-color: #0d1117 !important;
+  border-color: #30363d !important;
+}
+
+html[data-theme="dark"] .text-stone-900,
+html[data-theme="dark"] .text-stone-800,
+html[data-theme="dark"] .text-stone-700 {
+  color: #f0f6fc !important;
+}
+
+html[data-theme="dark"] .text-stone-600,
+html[data-theme="dark"] .text-stone-500 {
+  color: #8b949e !important;
+}
+
+html[data-theme="dark"] .border-stone-200,
+html[data-theme="dark"] .border-stone-100 {
+  border-color: #30363d !important;
+}
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  background-color: #0d1117 !important;
+  color: #f0f6fc !important;
+  border-color: #30363d !important;
+}
+
+/* Сетка слотов в тёмной теме */
+html[data-theme="dark"] .bg-emerald-50\/80 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border-color: rgba(52, 211, 153, 0.3) !important;
+}
+
+html[data-theme="dark"] .bg-stone-100.cursor-not-allowed {
+  background-color: #21262d !important;
+  color: #6e7681 !important;
+  border-color: #30363d !important;
+}
+
+/* ====================================================
+   2. ТЕМА ДЛЯ ДАЛЬТОНИКОВ / ВЫСОКИЙ КОНТРАСТ (COLORBLIND)
+   Ориентирована на людей с дейтеранопией/протанопией/монохроматизмом:
+   - Зеленый заменяется на высококонтрастный ярко-синий (доступно/свободно)
+   - Бордовый/красный заменяется на глубокий индиго/угольный
+   - Занятые слоты имеют четкую штриховку и иконку ✕
+   - Увеличенный контраст шрифтов и границ
+   ==================================================== */
+html[data-theme="colorblind"] body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html[data-theme="colorblind"] header {
+  background-color: #0f172a !important;
+  border-bottom: 3px solid #2563eb !important;
+}
+
+html[data-theme="colorblind"] .bg-gradient-to-b {
+  background: linear-gradient(to bottom, #0f172a, #1e293b, #0f172a) !important;
+  border-bottom: 4px solid #2563eb !important;
+}
+
+html[data-theme="colorblind"] .text-legal-gold {
+  color: #38bdf8 !important;
+}
+
+html[data-theme="colorblind"] .bg-legal-gold {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="colorblind"] .bg-legal-gold:hover {
+  background-color: #1d4ed8 !important;
+}
+
+html[data-theme="colorblind"] .bg-legal-burgundy {
+  background-color: #1e293b !important;
+}
+
+html[data-theme="colorblind"] .text-legal-burgundy {
+  color: #1d4ed8 !important;
+}
+
+html[data-theme="colorblind"] .border-stone-200,
+html[data-theme="colorblind"] .border-stone-300 {
+  border-color: #94a3b8 !important;
+  border-width: 1.5px !important;
+}
+
+/* Свободные слоты для дальтоников: четкий ультрамарин/синий с белым текстом */
+html[data-theme="colorblind"] .bg-emerald-50\/80 {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border: 2px solid #2563eb !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="colorblind"] .bg-emerald-600 {
+  background-color: #1d4ed8 !important;
+  border: 2px solid #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Занятые слоты для дальтоников: зачеркнутые с явным серым фоном и границей */
+html[data-theme="colorblind"] .bg-stone-100.cursor-not-allowed {
+  background-color: #e2e8f0 !important;
+  color: #475569 !important;
+  border: 2px dashed #64748b !important;
+  font-weight: 600 !important;
+  text-decoration: line-through !important;
+}
+
+html[data-theme="colorblind"] .bg-emerald-500 {
+  background-color: #2563eb !important;
+}
+
+html[data-theme="colorblind"] .bg-stone-300 {
+  background-color: #64748b !important;
+}
+
+/* ====================================================
+   3. РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ (ACCESSIBILITY / ГОСТ)
+   - Контрастные цветовые схемы:
+     * Черным по белому (black-on-white)
+     * Белым по черному (white-on-black)
+     * Темно-синим по голубому (blue-on-cyan)
+   - Регулировка размера шрифта (normal / large / xlarge)
+   - Регулировка межбуквенного интервала (normal / wide)
+   - Отключение изображений при необходимости
+   - Четкие рамки у всех интерактивных элементов
+   ==================================================== */
+
+/* Размеры шрифта */
+html.a11y-mode[data-a11y-font="normal"] {
+  font-size: 18px;
+}
+html.a11y-mode[data-a11y-font="large"] {
+  font-size: 21px;
+}
+html.a11y-mode[data-a11y-font="xlarge"] {
+  font-size: 25px;
+}
+
+/* Межбуквенный интервал */
+html.a11y-mode[data-a11y-spacing="wide"] * {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.2em !important;
+}
+
+/* Отключение изображений */
+html.a11y-mode[data-a11y-images="off"] img,
+html.a11y-mode[data-a11y-images="off"] iframe,
+html.a11y-mode[data-a11y-images="off"] svg:not(.a11y-keep-icon) {
+  display: none !important;
+}
+
+/* Общие правила для режима слабовидящих */
+html.a11y-mode body {
+  font-family: Arial, Helvetica, sans-serif !important;
+  line-height: 1.6 !important;
+}
+
+html.a11y-mode a {
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+
+html.a11y-mode button, 
+html.a11y-mode input, 
+html.a11y-mode textarea, 
+html.a11y-mode select {
+  font-family: Arial, Helvetica, sans-serif !important;
+  border-width: 2px !important;
+}
+
+html.a11y-mode .rounded-full,
+html.a11y-mode .rounded-xl,
+html.a11y-mode .rounded-2xl {
+  border-radius: 4px !important;
+}
+
+/* Схема 1: Чёрным по белому (black-on-white) */
+html.a11y-mode[data-a11y-theme="black-on-white"] body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+html.a11y-mode[data-a11y-theme="black-on-white"] header,
+html.a11y-mode[data-a11y-theme="black-on-white"] footer,
+html.a11y-mode[data-a11y-theme="black-on-white"] section,
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-white,
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-stone-50,
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-stone-100,
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-legal-burgundy,
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-legal-burgundydark {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+html.a11y-mode[data-a11y-theme="black-on-white"] * {
+  color: #000000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html.a11y-mode[data-a11y-theme="black-on-white"] .border-stone-100,
+html.a11y-mode[data-a11y-theme="black-on-white"] .border-stone-200,
+html.a11y-mode[data-a11y-theme="black-on-white"] .border-stone-300,
+html.a11y-mode[data-a11y-theme="black-on-white"] .border-legal-burgundydark,
+html.a11y-mode[data-a11y-theme="black-on-white"] .border-legal-gold {
+  border-color: #000000 !important;
+}
+html.a11y-mode[data-a11y-theme="black-on-white"] .bg-legal-gold,
+html.a11y-mode[data-a11y-theme="black-on-white"] button[type="submit"] {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+html.a11y-mode[data-a11y-theme="black-on-white"] button[type="submit"] * {
+  color: #ffffff !important;
+}
+
+/* Схема 2: Белым по чёрному (white-on-black) */
+html.a11y-mode[data-a11y-theme="white-on-black"] body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+html.a11y-mode[data-a11y-theme="white-on-black"] header,
+html.a11y-mode[data-a11y-theme="white-on-black"] footer,
+html.a11y-mode[data-a11y-theme="white-on-black"] section,
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-white,
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-stone-50,
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-stone-100,
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-legal-burgundy,
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-legal-burgundydark {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+html.a11y-mode[data-a11y-theme="white-on-black"] * {
+  color: #ffffff !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html.a11y-mode[data-a11y-theme="white-on-black"] .border-stone-100,
+html.a11y-mode[data-a11y-theme="white-on-black"] .border-stone-200,
+html.a11y-mode[data-a11y-theme="white-on-black"] .border-stone-300,
+html.a11y-mode[data-a11y-theme="white-on-black"] .border-legal-burgundydark,
+html.a11y-mode[data-a11y-theme="white-on-black"] .border-legal-gold {
+  border-color: #ffffff !important;
+}
+html.a11y-mode[data-a11y-theme="white-on-black"] .bg-legal-gold,
+html.a11y-mode[data-a11y-theme="white-on-black"] button[type="submit"] {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
+}
+html.a11y-mode[data-a11y-theme="white-on-black"] button[type="submit"] * {
+  color: #000000 !important;
+}
+
+/* Схема 3: Тёмно-синим по голубому (blue-on-cyan) */
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] body {
+  background-color: #c6e2ff !important;
+  color: #063462 !important;
+}
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] header,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] footer,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] section,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-white,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-stone-50,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-stone-100,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-legal-burgundy,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-legal-burgundydark {
+  background-color: #c6e2ff !important;
+  color: #063462 !important;
+  border-color: #063462 !important;
+}
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] * {
+  color: #063462 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .border-stone-100,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .border-stone-200,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .border-stone-300,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .border-legal-burgundydark,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .border-legal-gold {
+  border-color: #063462 !important;
+}
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] .bg-legal-gold,
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] button[type="submit"] {
+  background-color: #063462 !important;
+  color: #c6e2ff !important;
+  border: 2px solid #063462 !important;
+}
+html.a11y-mode[data-a11y-theme="blue-on-cyan"] button[type="submit"] * {
+  color: #c6e2ff !important;
+}
+
+/* Сетка слотов в режиме для слабовидящих */
+html.a11y-mode .bg-emerald-50\/80 {
+  background-color: transparent !important;
+  border: 2px solid currentColor !important;
+  font-weight: bold !important;
+}
+html.a11y-mode .bg-stone-100.cursor-not-allowed {
+  border: 2px dashed currentColor !important;
+  opacity: 0.6 !important;
+  text-decoration: line-through !important;
+}

@@ -1,0 +1,119 @@
+package layouts
+
+templ Base(title string, description string) {
+	<!DOCTYPE html>
+	<html lang="ru" class="scroll-smooth">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ title }</title>
+			<meta name="description" content={ description }/>
+			<!-- Open Graph / SEO -->
+			<meta property="og:title" content={ title }/>
+			<meta property="og:description" content={ description }/>
+			<meta property="og:type" content="website"/>
+			<!-- Google Fonts: Merriweather + Inter -->
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+			<!-- HTMX -->
+			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<script>
+				document.addEventListener('htmx:beforeOnLoad', function (evt) {
+					if (evt.detail.xhr.status === 422 || evt.detail.xhr.status === 400 || evt.detail.xhr.status === 409) {
+						evt.detail.shouldSwap = true;
+						evt.detail.isError = false;
+					}
+				});
+			</script>
+			<!-- Alpine.js -->
+			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			<!-- Styles -->
+			<link rel="stylesheet" href="/assets/styles.css"/>
+			<style>
+				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
+			</style>
+			<!-- Accessibility initial script -->
+			<script>
+				(function() {
+					const savedTheme = localStorage.getItem('theme') || 'default';
+					document.documentElement.setAttribute('data-theme', savedTheme);
+					
+					const a11yActive = localStorage.getItem('a11y_active') === 'true';
+					if (a11yActive) {
+						document.documentElement.classList.add('a11y-mode');
+						const a11yFont = localStorage.getItem('a11y_font') || 'normal';
+						const a11ySpacing = localStorage.getItem('a11y_spacing') || 'normal';
+						const a11yTheme = localStorage.getItem('a11y_theme') || 'black-on-white';
+						const a11yImages = localStorage.getItem('a11y_images') || 'on';
+						
+						document.documentElement.setAttribute('data-a11y-font', a11yFont);
+						document.documentElement.setAttribute('data-a11y-spacing', a11ySpacing);
+						document.documentElement.setAttribute('data-a11y-theme', a11yTheme);
+						document.documentElement.setAttribute('data-a11y-images', a11yImages);
+					}
+				})();
+			</script>
+		</head>
+		<body 
+			x-data="{
+				currentTheme: localStorage.getItem('theme') || 'default',
+				a11y: {
+					active: localStorage.getItem('a11y_active') === 'true',
+					fontSize: localStorage.getItem('a11y_font') || 'normal',
+					spacing: localStorage.getItem('a11y_spacing') || 'normal',
+					colorScheme: localStorage.getItem('a11y_theme') || 'black-on-white',
+					images: localStorage.getItem('a11y_images') || 'on'
+				},
+				setTheme(theme) {
+					this.currentTheme = theme;
+					localStorage.setItem('theme', theme);
+					document.documentElement.setAttribute('data-theme', theme);
+				},
+				toggleA11y() {
+					this.a11y.active = !this.a11y.active;
+					localStorage.setItem('a11y_active', this.a11y.active);
+					this.applyA11y();
+				},
+				setA11yFont(size) {
+					this.a11y.fontSize = size;
+					localStorage.setItem('a11y_font', size);
+					document.documentElement.setAttribute('data-a11y-font', size);
+				},
+				setA11ySpacing(spacing) {
+					this.a11y.spacing = spacing;
+					localStorage.setItem('a11y_spacing', spacing);
+					document.documentElement.setAttribute('data-a11y-spacing', spacing);
+				},
+				setA11yTheme(scheme) {
+					this.a11y.colorScheme = scheme;
+					localStorage.setItem('a11y_theme', scheme);
+					document.documentElement.setAttribute('data-a11y-theme', scheme);
+				},
+				toggleA11yImages() {
+					this.a11y.images = this.a11y.images === 'on' ? 'off' : 'on';
+					localStorage.setItem('a11y_images', this.a11y.images);
+					document.documentElement.setAttribute('data-a11y-images', this.a11y.images);
+				},
+				applyA11y() {
+					if (this.a11y.active) {
+						document.documentElement.classList.add('a11y-mode');
+						document.documentElement.setAttribute('data-a11y-font', this.a11y.fontSize);
+						document.documentElement.setAttribute('data-a11y-spacing', this.a11y.spacing);
+						document.documentElement.setAttribute('data-a11y-theme', this.a11y.colorScheme);
+						document.documentElement.setAttribute('data-a11y-images', this.a11y.images);
+					} else {
+						document.documentElement.classList.remove('a11y-mode');
+						document.documentElement.removeAttribute('data-a11y-font');
+						document.documentElement.removeAttribute('data-a11y-spacing');
+						document.documentElement.removeAttribute('data-a11y-theme');
+						document.documentElement.removeAttribute('data-a11y-images');
+					}
+				}
+			}"
+			class="bg-[#FAF7F2] text-stone-800 antialiased flex flex-col min-h-screen"
+		>
+			{ children... }
+		</body>
+	</html>
+}

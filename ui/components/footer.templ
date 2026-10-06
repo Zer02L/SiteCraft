@@ -1,0 +1,33 @@
+package components
+
+import (
+	"lawyer/internal/models"
+)
+
+templ Footer(content models.SiteContent) {
+	<!-- Footer -->
+	<footer class="bg-legal-burgundydark text-stone-300 py-12 mt-auto text-sm border-t-2 border-legal-gold">
+		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+			<div>
+				<div class="text-white font-serif-title font-bold text-lg mb-2">{ content.HeroTitle }</div>
+				<p class="text-xs text-stone-400">{ content.NotaryName }</p>
+				<p class="text-xs text-stone-400 mt-2">Осуществление нотариальных действий от имени Российской Федерации.</p>
+			</div>
+			<div>
+				<div class="text-white font-semibold text-sm mb-3">Контакты для связи</div>
+				if content.Phone1 != "" {
+					<p class="text-xs text-stone-300">Моб: <a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-legal-gold">{ content.Phone1 }</a></p>
+				}
+				if content.Phone2 != "" {
+					<p class="text-xs text-stone-300 mt-1">Гор: <a href={ templ.URL("tel:" + content.Phone2) } class="hover:text-legal-gold">{ content.Phone2 }</a></p>
+				}
+			</div>
+			<div>
+				<div class="text-white font-semibold text-sm mb-3">Режим работы</div>
+				<p class="text-xs text-stone-300">{ content.WorkHours }</p>
+				<p class="text-xs text-stone-400">Перерыв: { content.LunchBreak }</p>
+				<p class="text-xs text-stone-500 mt-2">© 2026 Нотариальная контора. Все права защищены.</p>
+			</div>
+		</div>
+	</footer>
+}

@@ -1,0 +1,20 @@
+package pages
+
+import (
+	"lawyer/internal/models"
+	"lawyer/ui/components"
+	"lawyer/ui/layouts"
+)
+
+templ Home(content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string) {
+	@layouts.Base(content.NotaryTitle + " — Нотариальная контора", content.HeroSubtitle) {
+		@components.A11yBar()
+		@components.Header(content)
+		@components.Hero(content)
+		@components.ScheduleBar(content)
+		@components.Services(services)
+		@components.Booking(content, bookedSlots)
+		@components.MapSection(content)
+		@components.Footer(content)
+	}
+}
