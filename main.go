@@ -11,6 +11,7 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/internal/handlers"
 	"sitecraft/internal/models"
+	"sitecraft/internal/modules"
 	"sitecraft/internal/notifications"
 	"sitecraft/ui/components"
 	"sitecraft/ui/pages"
@@ -58,9 +59,10 @@ func main() {
 			content := data.GetSiteContent(app)
 			services := data.GetServices(app)
 			bookedSlots := data.GetBookedSlots(app)
+			blocks := data.GetPageBlocks(app)
 
 			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-			return pages.Home(settings, content, services, bookedSlots).Render(e.Request.Context(), e.Response)
+			return pages.Home(settings, content, services, bookedSlots, blocks).Render(e.Request.Context(), e.Response)
 		})
 
 		// API: Ленивая подгрузка карты через HTMX (Zero-JS Lazy Map)
@@ -68,6 +70,54 @@ func main() {
 			content := data.GetSiteContent(app)
 			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
 			return components.MapFrame(content.MapIframe, "Интерактивная карта — "+content.HeroTitle).Render(e.Request.Context(), e.Response)
+		})
+
+		// API: Модальное окно онлайн-оплаты
+		se.Router.GET("/api/payment/modal", func(e *core.RequestEvent) error {
+			settings := data.GetSiteSettings(app)
+			serviceID := e.Request.URL.Query().Get("service_id")
+			var selectedService models.ServiceItem
+			services := data.GetServices(app)
+			for _, s := range services {
+				if s.ID == serviceID {
+					selectedService = s
+					break
+				}
+			}
+			if selectedService.ID == "" && len(services) > 0 {
+				selectedService = services[0]
+			}
+			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+			return components.PaymentModal(settings, selectedService).Render(e.Request.Context(), e.Response)
+		})
+
+		// API: Инициация онлайн-оплаты (ЮKassa / Mock)
+		se.Router.POST("/api/payment/create", func(e *core.RequestEvent) error {
+			settings := data.GetSiteSettings(app)
+			description := e.Request.FormValue("description")
+			email := e.Request.FormValue("email")
+			phone := e.Request.FormValue("phone")
+			amount := 1000.0
+			_, _ = fmt.Sscanf(e.Request.FormValue("amount"), "%f", &amount)
+			if amount <= 0 {
+				amount = 1000.0
+			}
+
+			provider := modules.NewPaymentProvider(settings)
+			res, err := provider.CreatePayment(models.PaymentRequest{
+				Amount:      amount,
+				Currency:    "RUB",
+				Description: description,
+				ReturnURL:   "/payment/success",
+				Email:       email,
+				Phone:       phone,
+			})
+			if err != nil {
+				return e.HTML(http.StatusInternalServerError, fmt.Sprintf(`<div class="p-3 bg-rose-50 text-rose-700 text-xs rounded-lg">Ошибка создания платежа: %s</div>`, html.EscapeString(err.Error())))
+			}
+
+			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+			return components.PaymentSuccessMessage(res).Render(e.Request.Context(), e.Response)
 		})
 
 		// API: Получение занятых слотов (JSON)

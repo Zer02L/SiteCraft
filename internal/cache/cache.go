@@ -11,9 +11,11 @@ type Store struct {
 	settings     models.SiteSettings
 	content      models.SiteContent
 	services     []models.ServiceItem
+	blocks       []models.PageBlock
 	settingsSet  bool
 	contentSet   bool
 	servicesSet  bool
+	blocksSet    bool
 }
 
 var defaultStore = &Store{}
@@ -85,10 +87,36 @@ func (s *Store) InvalidateServices() {
 	s.servicesSet = false
 }
 
+func (s *Store) GetBlocks() ([]models.PageBlock, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if !s.blocksSet {
+		return nil, false
+	}
+	out := make([]models.PageBlock, len(s.blocks))
+	copy(out, s.blocks)
+	return out, true
+}
+
+func (s *Store) SetBlocks(blocks []models.PageBlock) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.blocks = make([]models.PageBlock, len(blocks))
+	copy(s.blocks, blocks)
+	s.blocksSet = true
+}
+
+func (s *Store) InvalidateBlocks() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.blocksSet = false
+}
+
 func (s *Store) InvalidateAll() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.settingsSet = false
 	s.contentSet = false
 	s.servicesSet = false
+	s.blocksSet = false
 }

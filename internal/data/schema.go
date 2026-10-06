@@ -7,16 +7,22 @@ import (
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
 
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
 )
 
-// InitSchema ensures site_settings, site_content, services, and leads collections exist with default data.
+var htmlSanitizer = bluemonday.UGCPolicy()
+
+// InitSchema ensures site_settings, site_content, page_blocks, services, and leads collections exist.
 func InitSchema(app core.App) error {
 	if err := initSiteSettingsCollection(app); err != nil {
 		return err
 	}
 	if err := initSiteContentCollection(app); err != nil {
+		return err
+	}
+	if err := initPageBlocksCollection(app); err != nil {
 		return err
 	}
 	if err := initServicesCollection(app); err != nil {
@@ -31,15 +37,16 @@ func InitSchema(app core.App) error {
 
 // RegisterCacheHooks sets up event listeners to invalidate in-memory cache upon admin updates
 func RegisterCacheHooks(app core.App) {
-	app.OnRecordAfterCreateSuccess("site_settings", "site_content", "services").BindFunc(func(e *core.RecordEvent) error {
+	collections := []string{"site_settings", "site_content", "services", "page_blocks"}
+	app.OnRecordAfterCreateSuccess(collections...).BindFunc(func(e *core.RecordEvent) error {
 		invalidateByCollection(e.Record.Collection().Name)
 		return e.Next()
 	})
-	app.OnRecordAfterUpdateSuccess("site_settings", "site_content", "services").BindFunc(func(e *core.RecordEvent) error {
+	app.OnRecordAfterUpdateSuccess(collections...).BindFunc(func(e *core.RecordEvent) error {
 		invalidateByCollection(e.Record.Collection().Name)
 		return e.Next()
 	})
-	app.OnRecordAfterDeleteSuccess("site_settings", "site_content", "services").BindFunc(func(e *core.RecordEvent) error {
+	app.OnRecordAfterDeleteSuccess(collections...).BindFunc(func(e *core.RecordEvent) error {
 		invalidateByCollection(e.Record.Collection().Name)
 		return e.Next()
 	})
@@ -57,13 +64,16 @@ func invalidateByCollection(colName string) {
 	case "services":
 		c.InvalidateServices()
 		log.Println("[Cache] services invalidated")
+	case "page_blocks":
+		c.InvalidateBlocks()
+		log.Println("[Cache] page_blocks invalidated")
 	}
 }
 
 func initSiteSettingsCollection(app core.App) error {
-	_, err := app.FindCollectionByNameOrId("site_settings")
+	col, err := app.FindCollectionByNameOrId("site_settings")
 	if err != nil {
-		col := core.NewBaseCollection("site_settings")
+		col = core.NewBaseCollection("site_settings")
 		col.Fields.Add(
 			&core.TextField{Name: "site_name", Required: true},
 			&core.TextField{Name: "tagline"},
@@ -79,12 +89,29 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.TextField{Name: "yandex_metrika_id"},
 			&core.TextField{Name: "map_mode"},     // iframe, lazy, static
 			&core.TextField{Name: "booking_mode"}, // slots, simple
+			&core.BoolField{Name: "enable_payment"},
+			&core.TextField{Name: "payment_shop_id"},
+			&core.TextField{Name: "payment_secret"},
+			&core.BoolField{Name: "payment_sandbox"},
 		)
 
 		if err := app.Save(col); err != nil {
 			return err
 		}
 		log.Println("[Migration] Коллекция site_settings успешно создана")
+	} else {
+		// Ensure payment fields exist
+		changed := false
+		if col.Fields.GetByName("enable_payment") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_payment"})
+			col.Fields.Add(&core.TextField{Name: "payment_shop_id"})
+			col.Fields.Add(&core.TextField{Name: "payment_secret"})
+			col.Fields.Add(&core.BoolField{Name: "payment_sandbox"})
+			changed = true
+		}
+		if changed {
+			_ = app.Save(col)
+		}
 	}
 
 	count, _ := app.CountRecords("site_settings")
@@ -102,6 +129,8 @@ func initSiteSettingsCollection(app core.App) error {
 		record.Set("enable_turnstile", false)
 		record.Set("map_mode", "lazy")
 		record.Set("booking_mode", "slots")
+		record.Set("enable_payment", false)
+		record.Set("payment_sandbox", true)
 
 		if err := app.Save(record); err != nil {
 			log.Printf("[Migration Error] Ошибка создания записи site_settings: %v", err)
@@ -141,14 +170,6 @@ func initSiteContentCollection(app core.App) error {
 			return err
 		}
 		log.Println("[Migration] Коллекция site_content успешно создана")
-	} else {
-		// Ensure owner_name and owner_title fields exist (or notary_name if legacy)
-		hasOwnerName := col.Fields.GetByName("owner_name") != nil
-		if !hasOwnerName {
-			col.Fields.Add(&core.TextField{Name: "owner_name"})
-			col.Fields.Add(&core.TextField{Name: "owner_title"})
-			_ = app.Save(col)
-		}
 	}
 
 	count, _ := app.CountRecords("site_content")
@@ -185,6 +206,59 @@ func initSiteContentCollection(app core.App) error {
 		}
 	}
 
+	return nil
+}
+
+func initPageBlocksCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("page_blocks")
+	if err != nil {
+		col = core.NewBaseCollection("page_blocks")
+		col.Fields.Add(
+			&core.TextField{Name: "type", Required: true}, // hero, schedule, services, booking, map, rich_text, html
+			&core.TextField{Name: "title"},
+			&core.TextField{Name: "content"},
+			&core.NumberField{Name: "order", OnlyInt: true},
+			&core.BoolField{Name: "active"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция page_blocks успешно создана")
+	}
+
+	count, _ := app.CountRecords("page_blocks")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("page_blocks")
+		if err != nil {
+			return err
+		}
+
+		// Дефолтные секции для модульного конструктора
+		defaultBlocks := []struct {
+			Type    string
+			Title   string
+			Content string
+			Order   int
+		}{
+			{Type: "hero", Title: "Главный экран", Order: 1},
+			{Type: "schedule", Title: "График работы и контакты", Order: 2},
+			{Type: "services", Title: "Услуги и цены", Order: 3},
+			{Type: "booking", Title: "Онлайн-запись / Лидген", Order: 4},
+			{Type: "map", Title: "Интерактивная карта", Order: 5},
+		}
+
+		for _, b := range defaultBlocks {
+			rec := core.NewRecord(col)
+			rec.Set("type", b.Type)
+			rec.Set("title", b.Title)
+			rec.Set("content", b.Content)
+			rec.Set("order", b.Order)
+			rec.Set("active", true)
+			_ = app.Save(rec)
+		}
+		log.Println("[Migration] Базовые блоки страницы созданы в page_blocks")
+	}
 	return nil
 }
 
@@ -237,24 +311,6 @@ func initServicesCollection(app core.App) error {
 				Price:       "по тарифу НК РФ",
 				Order:       3,
 			},
-			{
-				Title:       "Нотариальные согласия и отказы",
-				Description: "Согласия супругов на сделки, выезд несовершеннолетних за границу, отказ от преимущественного права покупки.",
-				Price:       "от 1 800 ₽",
-				Order:       4,
-			},
-			{
-				Title:       "Свидетельствование верности копий",
-				Description: "Заверение копий учредительных документов, паспортов, дипломов, подлинности подписи переводчиков.",
-				Price:       "от 100 ₽ / стр",
-				Order:       5,
-			},
-			{
-				Title:       "Обеспечение доказательств",
-				Description: "Нотариальный протокол осмотра интернет-страниц, мессенджеров, переписки для суда.",
-				Price:       "по регламенту ФНП",
-				Order:       6,
-			},
 		}
 
 		for _, s := range defaultServices {
@@ -264,11 +320,9 @@ func initServicesCollection(app core.App) error {
 			rec.Set("price", s.Price)
 			rec.Set("order", s.Order)
 			rec.Set("active", true)
-			if err := app.Save(rec); err != nil {
-				log.Printf("[Migration Error] Ошибка добавления услуги %s: %v", s.Title, err)
-			}
+			_ = app.Save(rec)
 		}
-		log.Println("[Migration] Базовые услуги нотариуса успешно добавлены в services")
+		log.Println("[Migration] Базовые услуги успешно добавлены в services")
 	}
 
 	return nil
@@ -293,24 +347,6 @@ func initLeadsCollection(app core.App) error {
 			return err
 		}
 		log.Println("[Migration] Коллекция leads для онлайн-заявок успешно создана")
-	} else {
-		// Ensure payload and email/source fields exist
-		changed := false
-		if col.Fields.GetByName("payload") == nil {
-			col.Fields.Add(&core.JSONField{Name: "payload"})
-			changed = true
-		}
-		if col.Fields.GetByName("email") == nil {
-			col.Fields.Add(&core.TextField{Name: "email"})
-			changed = true
-		}
-		if col.Fields.GetByName("source") == nil {
-			col.Fields.Add(&core.TextField{Name: "source"})
-			changed = true
-		}
-		if changed {
-			_ = app.Save(col)
-		}
 	}
 	return nil
 }
@@ -323,13 +359,15 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 	}
 
 	settings := models.SiteSettings{
-		SiteName:     "Нотариальная контора",
-		Tagline:      "Официальные нотариальные действия",
-		Theme:        "legal",
-		EnableA11y:   true,
-		EnableAlpine: false,
-		MapMode:      "lazy",
-		BookingMode:  "slots",
+		SiteName:       "Нотариальная контора",
+		Tagline:        "Официальные нотариальные действия",
+		Theme:          "legal",
+		EnableA11y:     true,
+		EnableAlpine:   false,
+		MapMode:        "lazy",
+		BookingMode:    "slots",
+		EnablePayment:  false,
+		PaymentSandbox: true,
 	}
 
 	rec, err := app.FindFirstRecordByFilter("site_settings", "")
@@ -359,6 +397,10 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		if val := rec.GetString("booking_mode"); val != "" {
 			settings.BookingMode = val
 		}
+		settings.EnablePayment = rec.GetBool("enable_payment")
+		settings.PaymentShopID = rec.GetString("payment_shop_id")
+		settings.PaymentSecret = rec.GetString("payment_secret")
+		settings.PaymentSandbox = rec.GetBool("payment_sandbox")
 	}
 
 	c.SetSettings(settings)
@@ -403,7 +445,6 @@ func GetSiteContent(app core.App) models.SiteContent {
 		if val := rec.GetString("hero_subtitle"); val != "" {
 			content.HeroSubtitle = val
 		}
-		// Support both owner_name and legacy notary_name
 		if val := rec.GetString("owner_name"); val != "" {
 			content.OwnerName = val
 			content.NotaryName = val
@@ -449,6 +490,38 @@ func GetSiteContent(app core.App) models.SiteContent {
 
 	c.SetContent(content)
 	return content
+}
+
+// GetPageBlocks retrieves active page blocks sorted by order
+func GetPageBlocks(app core.App) []models.PageBlock {
+	c := cache.GetStore()
+	if cached, ok := c.GetBlocks(); ok {
+		return cached
+	}
+
+	records, err := app.FindRecordsByFilter("page_blocks", "active = true", "order", 0, 0)
+	if err != nil || len(records) == 0 {
+		return nil
+	}
+
+	var blocks []models.PageBlock
+	for _, r := range records {
+		rawContent := r.GetString("content")
+		// Санитизируем произвольный HTML/контент от XSS через bluemonday
+		sanitizedContent := htmlSanitizer.Sanitize(rawContent)
+
+		blocks = append(blocks, models.PageBlock{
+			ID:      r.Id,
+			Type:    r.GetString("type"),
+			Title:   r.GetString("title"),
+			Content: sanitizedContent,
+			Order:   r.GetInt("order"),
+			Active:  r.GetBool("active"),
+		})
+	}
+
+	c.SetBlocks(blocks)
+	return blocks
 }
 
 // GetServices retrieves active services sorted by order from cache or PocketBase

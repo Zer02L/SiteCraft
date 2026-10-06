@@ -1,0 +1,19 @@
+package components
+
+import (
+	"sitecraft/internal/models"
+)
+
+templ DynamicBlock(block models.PageBlock) {
+	<!-- Произвольный блок контента (RichText / Raw HTML) с защитой bluemonday -->
+	<section class="py-12 px-4 max-w-6xl mx-auto">
+		if block.Title != "" {
+			<div class="text-center mb-8">
+				<h2 class="font-serif-title text-3xl font-bold text-stone-900">{ block.Title }</h2>
+			</div>
+		}
+		<div class="prose max-w-none text-stone-700 leading-relaxed bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm">
+			@templ.Raw(block.Content)
+		</div>
+	</section>
+}

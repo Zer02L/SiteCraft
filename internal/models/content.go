@@ -17,6 +17,12 @@ type SiteSettings struct {
 	YandexMetrikaID    string `json:"yandex_metrika_id"`
 	MapMode            string `json:"map_mode"`     // lazy, static, iframe
 	BookingMode        string `json:"booking_mode"` // simple, slots
+
+	// Модули интеграций (E-commerce / Оплата)
+	EnablePayment  bool   `json:"enable_payment"`
+	PaymentShopID  string `json:"payment_shop_id"`
+	PaymentSecret  string `json:"payment_secret"`
+	PaymentSandbox bool   `json:"payment_sandbox"`
 }
 
 // SiteContent holds content blocks displayed on the website
@@ -41,6 +47,16 @@ type SiteContent struct {
 	HeroPhoto    string `json:"hero_photo"` // URL to image (either PB file or fallback)
 }
 
+// PageBlock represents a dynamic section on the page (Block Reordering / Custom Content)
+type PageBlock struct {
+	ID      string `json:"id"`
+	Type    string `json:"type"` // hero, schedule, services, booking, map, rich_text, html
+	Title   string `json:"title"`
+	Content string `json:"content"` // Raw HTML or sanitized rich text
+	Order   int    `json:"order"`
+	Active  bool   `json:"active"`
+}
+
 // ServiceItem represents a service or pricing item
 type ServiceItem struct {
 	ID          string `json:"id"`
@@ -62,4 +78,22 @@ type Lead struct {
 	BookingDate string                 `json:"booking_date"`
 	BookingTime string                 `json:"booking_time"`
 	Payload     map[string]interface{} `json:"payload"`
+}
+
+// PaymentRequest contains information to initiate an online payment
+type PaymentRequest struct {
+	Amount      float64 `json:"amount"`
+	Currency    string  `json:"currency"`
+	Description string  `json:"description"`
+	ReturnURL   string  `json:"return_url"`
+	Email       string  `json:"email"`
+	Phone       string  `json:"phone"`
+}
+
+// PaymentResponse is returned after payment registration
+type PaymentResponse struct {
+	PaymentID   string `json:"payment_id"`
+	Status      string `json:"status"`
+	PaymentURL  string `json:"payment_url"`
+	IsMock      bool   `json:"is_mock"`
 }
