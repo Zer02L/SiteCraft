@@ -9,10 +9,10 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"lawyer/internal/models"
+	"sitecraft/internal/models"
 )
 
-func MapSection(content models.SiteContent) templ.Component {
+func MapSection(content models.SiteContent, settings models.SiteSettings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -33,7 +33,7 @@ func MapSection(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Interactive Yandex Map Section --><section id=\"map\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-8\"><div class=\"inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-200 uppercase tracking-wider mb-2\">Местоположение</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Нотариальная контора на карте</h2><p class=\"text-stone-500 mt-2 text-sm max-w-xl mx-auto\">Удобный подъезд и транспортная доступность. Перед визитом рекомендуем согласовать время.</p></div><div class=\"bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12\"><!-- Адрес и контакты рядом с картой --><div class=\"lg:col-span-4 p-6 sm:p-8 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-200 flex flex-col justify-between\"><div class=\"space-y-6\"><div><span class=\"text-xs font-semibold uppercase tracking-wider text-legal-burgundy\">Адрес нотариуса</span><p class=\"mt-1.5 text-base font-bold text-stone-900 leading-snug\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Interactive Location Map Section --><section id=\"map\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-8\"><div class=\"inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-200 uppercase tracking-wider mb-2\">Локация</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Как нас найти</h2><p class=\"text-stone-500 mt-2 text-sm max-w-xl mx-auto\">Удобный подъезд и парковка. Перед визитом рекомендуем предварительно записаться.</p></div><div class=\"bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12\"><!-- Адрес и контакты рядом с картой --><div class=\"lg:col-span-4 p-6 sm:p-8 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-200 flex flex-col justify-between\"><div class=\"space-y-6\"><div><span class=\"text-xs font-semibold uppercase tracking-wider text-primary\">Фактический адрес</span><p class=\"mt-1.5 text-base font-bold text-stone-900 leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -77,14 +77,14 @@ func MapSection(content models.SiteContent) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"block text-base font-bold text-legal-burgundy hover:underline\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"block text-base font-bold text-primary hover:underline\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 32, Col: 141}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 32, Col: 134}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -166,33 +166,103 @@ func MapSection(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div></div><div class=\"mt-8 pt-4 border-t border-stone-200\"><a href=\"#booking\" class=\"w-full inline-block text-center bg-legal-gold hover:bg-legal-goldhover text-legal-burgundydark font-bold py-2.5 px-4 rounded-lg text-xs transition\">Забронировать время в календаре</a></div></div><!-- Интерактивная карта Яндекс --><div class=\"lg:col-span-8 min-h-[420px] relative bg-stone-100\"><div class=\"w-full h-full min-h-[420px] flex items-center justify-center\"><iframe src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div></div><div class=\"mt-8 pt-4 border-t border-stone-200\"><a href=\"#booking\" class=\"w-full inline-block text-center bg-accent hover:bg-accent-hover text-primary-dark font-bold py-2.5 px-4 rounded-lg text-xs transition\">Забронировать время онлайн</a></div></div><!-- Карта с поддержкой Lazy-loading через HTMX (Zero-JS / 100 PageSpeed) --><div class=\"lg:col-span-8 min-h-[420px] relative bg-stone-100 flex items-center justify-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.ResolveAttributeValue(content.MapIframe)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 58, Col: 29}
+		if settings.MapMode == "lazy" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div hx-get=\"/api/map-frame\" hx-trigger=\"revealed\" hx-swap=\"outerHTML\" class=\"w-full h-full min-h-[420px] flex flex-col items-center justify-center text-stone-500 gap-2 p-6\"><div class=\"animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full\"></div><span class=\"text-xs font-medium\">Загрузка интерактивной карты...</span></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<iframe src=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.ResolveAttributeValue(content.MapIframe)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 68, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen=\"true\" class=\"w-full h-full min-h-[420px] border-0\" title=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var12 string
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.ResolveAttributeValue("Интерактивная карта — " + content.HeroTitle + " " + content.OwnerName)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 74, Col: 104}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\"></iframe>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen=\"true\" class=\"w-full h-full min-h-[420px] border-0\" title=\"")
+		return nil
+	})
+}
+
+func MapFrame(iframeURL string, title string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var13 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var13 == nil {
+			templ_7745c5c3_Var13 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<iframe src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.ResolveAttributeValue("Интерактивная карта — " + content.HeroTitle + " " + content.NotaryName)
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.ResolveAttributeValue(iframeURL)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 64, Col: 105}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 84, Col: 17}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"></iframe></div></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" width=\"100%\" height=\"100%\" frameborder=\"0\" allowfullscreen=\"true\" class=\"w-full h-full min-h-[420px] border-0\" title=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.ResolveAttributeValue(title)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/map.templ`, Line: 90, Col: 15}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\"></iframe>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

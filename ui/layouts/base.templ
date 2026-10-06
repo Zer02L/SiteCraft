@@ -1,8 +1,12 @@
 package layouts
 
-templ Base(title string, description string) {
+import (
+	"sitecraft/internal/models"
+)
+
+templ Base(title string, description string, settings models.SiteSettings) {
 	<!DOCTYPE html>
-	<html lang="ru" class="scroll-smooth">
+	<html lang="ru" class="scroll-smooth" data-theme={ settings.Theme }>
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +20,8 @@ templ Base(title string, description string) {
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
-			<!-- HTMX -->
+			
+			<!-- HTMX (Zero-JS foundation for AJAX requests) -->
 			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
 			<script>
 				document.addEventListener('htmx:beforeOnLoad', function (evt) {
@@ -26,93 +31,128 @@ templ Base(title string, description string) {
 					}
 				});
 			</script>
-			<!-- Alpine.js -->
-			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-			<!-- Styles -->
+
+			<!-- Опциональный Alpine.js (подключается только если enable_alpine == true) -->
+			if settings.EnableAlpine {
+				<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+			}
+
+			<!-- Cloudflare Turnstile (если включен) -->
+			if settings.EnableTurnstile && settings.TurnstileSiteKey != "" {
+				<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+			}
+
+			<!-- Яндекс Метрика (если указан ID) -->
+			if settings.YandexMetrikaID != "" {
+				<script type="text/javascript">
+					(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+					m[i].l=1*new Date();
+					for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+					k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+					(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+					ym({ settings.YandexMetrikaID }, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });
+				</script>
+			}
+
+			<!-- Скомпилированные стили Tailwind с семантическими токенами -->
 			<link rel="stylesheet" href="/assets/styles.css"/>
 			<style>
 				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
 			</style>
-			<!-- Accessibility initial script -->
+
+			<!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) -->
 			<script>
 				(function() {
-					const savedTheme = localStorage.getItem('theme') || 'default';
-					document.documentElement.setAttribute('data-theme', savedTheme);
+					const root = document.documentElement;
 					
-					const a11yActive = localStorage.getItem('a11y_active') === 'true';
-					if (a11yActive) {
-						document.documentElement.classList.add('a11y-mode');
-						const a11yFont = localStorage.getItem('a11y_font') || 'normal';
-						const a11ySpacing = localStorage.getItem('a11y_spacing') || 'normal';
-						const a11yTheme = localStorage.getItem('a11y_theme') || 'black-on-white';
-						const a11yImages = localStorage.getItem('a11y_images') || 'on';
-						
-						document.documentElement.setAttribute('data-a11y-font', a11yFont);
-						document.documentElement.setAttribute('data-a11y-spacing', a11ySpacing);
-						document.documentElement.setAttribute('data-a11y-theme', a11yTheme);
-						document.documentElement.setAttribute('data-a11y-images', a11yImages);
-					}
+					// Тема сайта (сохраняется в localStorage)
+					const savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'legal';
+					root.setAttribute('data-theme', savedTheme);
+
+					// API Доступности (a11y)
+					window.A11Y = {
+						active: localStorage.getItem('a11y_active') === 'true',
+						fontSize: localStorage.getItem('a11y_font') || 'normal',
+						spacing: localStorage.getItem('a11y_spacing') || 'normal',
+						theme: localStorage.getItem('a11y_theme') || 'black-on-white',
+						images: localStorage.getItem('a11y_images') || 'on',
+
+						apply: function() {
+							const toolbar = document.getElementById('a11y-toolbar');
+							if (this.active) {
+								root.classList.add('a11y-mode');
+								root.setAttribute('data-a11y-font', this.fontSize);
+								root.setAttribute('data-a11y-spacing', this.spacing);
+								root.setAttribute('data-a11y-theme', this.theme);
+								root.setAttribute('data-a11y-images', this.images);
+								if (toolbar) toolbar.classList.remove('hidden');
+							} else {
+								root.classList.remove('a11y-mode');
+								root.removeAttribute('data-a11y-font');
+								root.removeAttribute('data-a11y-spacing');
+								root.removeAttribute('data-a11y-theme');
+								root.removeAttribute('data-a11y-images');
+								if (toolbar) toolbar.classList.add('hidden');
+							}
+							this.updateUI();
+						},
+
+						toggle: function() {
+							this.active = !this.active;
+							localStorage.setItem('a11y_active', this.active);
+							this.apply();
+						},
+
+						setFont: function(size) {
+							this.fontSize = size;
+							localStorage.setItem('a11y_font', size);
+							root.setAttribute('data-a11y-font', size);
+							this.updateUI();
+						},
+
+						setColorScheme: function(scheme) {
+							this.theme = scheme;
+							localStorage.setItem('a11y_theme', scheme);
+							root.setAttribute('data-a11y-theme', scheme);
+							this.updateUI();
+						},
+
+						toggleSpacing: function() {
+							this.spacing = (this.spacing === 'normal') ? 'wide' : 'normal';
+							localStorage.setItem('a11y_spacing', this.spacing);
+							root.setAttribute('data-a11y-spacing', this.spacing);
+							this.updateUI();
+						},
+
+						toggleImages: function() {
+							this.images = (this.images === 'on') ? 'off' : 'on';
+							localStorage.setItem('a11y_images', this.images);
+							root.setAttribute('data-a11y-images', this.images);
+							this.updateUI();
+						},
+
+						updateUI: function() {
+							const sBtn = document.getElementById('a11y-spacing-btn');
+							if (sBtn) sBtn.textContent = this.spacing === 'wide' ? 'Интервал: Широкий' : 'Интервал: Обычный';
+							const iBtn = document.getElementById('a11y-images-btn');
+							if (iBtn) iBtn.textContent = this.images === 'off' ? 'Изображения: Выкл' : 'Изображения: Вкл';
+						}
+					};
+
+					// Переключение тем сайта
+					window.setSiteTheme = function(themeName) {
+						root.setAttribute('data-theme', themeName);
+						localStorage.setItem('sitecraft_theme', themeName);
+					};
+
+					// Первичная синхронизация после загрузки DOM
+					document.addEventListener('DOMContentLoaded', function() {
+						window.A11Y.apply();
+					});
 				})();
 			</script>
 		</head>
-		<body 
-			x-data="{
-				currentTheme: localStorage.getItem('theme') || 'default',
-				a11y: {
-					active: localStorage.getItem('a11y_active') === 'true',
-					fontSize: localStorage.getItem('a11y_font') || 'normal',
-					spacing: localStorage.getItem('a11y_spacing') || 'normal',
-					colorScheme: localStorage.getItem('a11y_theme') || 'black-on-white',
-					images: localStorage.getItem('a11y_images') || 'on'
-				},
-				setTheme(theme) {
-					this.currentTheme = theme;
-					localStorage.setItem('theme', theme);
-					document.documentElement.setAttribute('data-theme', theme);
-				},
-				toggleA11y() {
-					this.a11y.active = !this.a11y.active;
-					localStorage.setItem('a11y_active', this.a11y.active);
-					this.applyA11y();
-				},
-				setA11yFont(size) {
-					this.a11y.fontSize = size;
-					localStorage.setItem('a11y_font', size);
-					document.documentElement.setAttribute('data-a11y-font', size);
-				},
-				setA11ySpacing(spacing) {
-					this.a11y.spacing = spacing;
-					localStorage.setItem('a11y_spacing', spacing);
-					document.documentElement.setAttribute('data-a11y-spacing', spacing);
-				},
-				setA11yTheme(scheme) {
-					this.a11y.colorScheme = scheme;
-					localStorage.setItem('a11y_theme', scheme);
-					document.documentElement.setAttribute('data-a11y-theme', scheme);
-				},
-				toggleA11yImages() {
-					this.a11y.images = this.a11y.images === 'on' ? 'off' : 'on';
-					localStorage.setItem('a11y_images', this.a11y.images);
-					document.documentElement.setAttribute('data-a11y-images', this.a11y.images);
-				},
-				applyA11y() {
-					if (this.a11y.active) {
-						document.documentElement.classList.add('a11y-mode');
-						document.documentElement.setAttribute('data-a11y-font', this.a11y.fontSize);
-						document.documentElement.setAttribute('data-a11y-spacing', this.a11y.spacing);
-						document.documentElement.setAttribute('data-a11y-theme', this.a11y.colorScheme);
-						document.documentElement.setAttribute('data-a11y-images', this.a11y.images);
-					} else {
-						document.documentElement.classList.remove('a11y-mode');
-						document.documentElement.removeAttribute('data-a11y-font');
-						document.documentElement.removeAttribute('data-a11y-spacing');
-						document.documentElement.removeAttribute('data-a11y-theme');
-						document.documentElement.removeAttribute('data-a11y-images');
-					}
-				}
-			}"
-			class="bg-[#FAF7F2] text-stone-800 antialiased flex flex-col min-h-screen"
-		>
+		<body class="bg-surface text-stone-800 antialiased flex flex-col min-h-screen">
 			{ children... }
 		</body>
 	</html>

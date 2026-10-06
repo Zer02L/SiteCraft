@@ -1,4 +1,4 @@
-module lawyer
+module sitecraft
 
 go 1.27
 

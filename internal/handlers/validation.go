@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// LeadFormInput represents input fields submitted from the booking form.
+// LeadFormInput represents input fields submitted from the booking / lead form.
 type LeadFormInput struct {
 	Name        string
 	Phone       string
@@ -15,27 +15,37 @@ type LeadFormInput struct {
 	ActionType  string
 	Comment     string
 	Consent     string
+	Honeypot    string // company_website_url (must remain empty for humans)
+	Mode        string // "simple" or "slots"
 }
 
 var nonDigitRegex = regexp.MustCompile(`\D`)
 var timeSlotRegex = regexp.MustCompile(`^\d{2}:\d{2}$`)
 
-// ValidateLeadForm validates the input values from the appointment booking form.
+// ValidateLeadForm validates the input values from the appointment booking / contact form.
 func ValidateLeadForm(input LeadFormInput) []string {
 	var errs []string
 
+	// 1. Anti-spam Honeypot check
+	if strings.TrimSpace(input.Honeypot) != "" {
+		errs = append(errs, "Спам-фильтр заблокировал отправку формы")
+		return errs
+	}
+
+	// 2. Name validation
 	name := strings.TrimSpace(input.Name)
 	if name == "" {
-		errs = append(errs, "Укажите ФИО заявителя")
+		errs = append(errs, "Укажите ваше имя")
 	} else {
 		runeName := []rune(name)
 		if len(runeName) < 2 {
-			errs = append(errs, "ФИО должно содержать минимум 2 символа")
+			errs = append(errs, "Имя должно содержать минимум 2 символа")
 		} else if len(runeName) > 100 {
-			errs = append(errs, "ФИО не должно превышать 100 символов")
+			errs = append(errs, "Имя не должно превышать 100 символов")
 		}
 	}
 
+	// 3. Phone validation
 	phone := strings.TrimSpace(input.Phone)
 	digitsOnly := nonDigitRegex.ReplaceAllString(phone, "")
 	if phone == "" {
@@ -44,29 +54,34 @@ func ValidateLeadForm(input LeadFormInput) []string {
 		errs = append(errs, "Некорректный номер телефона (требуется от 10 цифр)")
 	}
 
-	bookingDate := strings.TrimSpace(input.BookingDate)
-	if bookingDate == "" {
-		errs = append(errs, "Выберите дату приёма в календаре")
-	} else {
-		if _, err := time.Parse("2006-01-02", bookingDate); err != nil {
-			errs = append(errs, "Некорректный формат даты приёма")
+	// 4. Booking Date & Time (if mode is "slots" or provided)
+	if input.Mode == "slots" || input.BookingDate != "" || input.BookingTime != "" {
+		bookingDate := strings.TrimSpace(input.BookingDate)
+		if bookingDate == "" {
+			errs = append(errs, "Выберите дату приёма в календаре")
+		} else {
+			if _, err := time.Parse("2006-01-02", bookingDate); err != nil {
+				errs = append(errs, "Некорректный формат даты приёма")
+			}
+		}
+
+		bookingTime := strings.TrimSpace(input.BookingTime)
+		if bookingTime == "" {
+			errs = append(errs, "Выберите свободное время приёма из доступных слотов")
+		} else {
+			if !timeSlotRegex.MatchString(bookingTime) {
+				errs = append(errs, "Некорректный формат времени приёма")
+			}
 		}
 	}
 
-	bookingTime := strings.TrimSpace(input.BookingTime)
-	if bookingTime == "" {
-		errs = append(errs, "Выберите свободное время приёма из доступных слотов")
-	} else {
-		if !timeSlotRegex.MatchString(bookingTime) {
-			errs = append(errs, "Некорректный формат времени приёма")
-		}
-	}
-
+	// 5. Consent 152-ФЗ
 	consent := strings.TrimSpace(input.Consent)
 	if consent != "on" && consent != "true" && consent != "1" {
 		errs = append(errs, "Необходимо согласие на обработку персональных данных (152-ФЗ)")
 	}
 
+	// 6. Comment length check
 	comment := strings.TrimSpace(input.Comment)
 	if len([]rune(comment)) > 1000 {
 		errs = append(errs, "Длина комментария не должна превышать 1000 символов")

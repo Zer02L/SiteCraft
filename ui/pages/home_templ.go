@@ -9,12 +9,12 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"lawyer/internal/models"
-	"lawyer/ui/components"
-	"lawyer/ui/layouts"
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
 )
 
-func Home(content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string) templ.Component {
+func Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -47,11 +47,17 @@ func Home(content models.SiteContent, services []models.ServiceItem, bookedSlots
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = components.A11yBar().Render(ctx, templ_7745c5c3_Buffer)
+			if settings.EnableA11y {
+				templ_7745c5c3_Err = components.A11yBar().Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Header(content).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.Header(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -67,11 +73,11 @@ func Home(content models.SiteContent, services []models.ServiceItem, bookedSlots
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Booking(content, bookedSlots).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.Booking(content, bookedSlots, settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.MapSection(content).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.MapSection(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -81,7 +87,7 @@ func Home(content models.SiteContent, services []models.ServiceItem, bookedSlots
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layouts.Base(content.NotaryTitle+" — Нотариальная контора", content.HeroSubtitle).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

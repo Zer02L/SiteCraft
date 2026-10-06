@@ -1,11 +1,10 @@
 package components
 
 templ A11yBar() {
-	<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019) -->
+	<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) -->
 	<div
-		x-show="a11y.active"
-		x-cloak
-		class="bg-stone-100 text-stone-900 border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium"
+		id="a11y-toolbar"
+		class="hidden bg-stone-100 text-stone-900 border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium"
 	>
 		<div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
 			<!-- Размер шрифта -->
@@ -13,25 +12,25 @@ templ A11yBar() {
 				<span class="text-xs uppercase font-bold mr-1">Шрифт:</span>
 				<button
 					type="button"
-					@click="setA11yFont('normal')"
-					:class="a11y.fontSize === 'normal' ? 'bg-stone-900 text-white font-bold' : 'bg-white hover:bg-stone-200'"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded"
+					onclick="window.A11Y.setFont('normal')"
+					data-a11y-btn-font="normal"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-white hover:bg-stone-200 transition"
 				>
 					А (Стандарт)
 				</button>
 				<button
 					type="button"
-					@click="setA11yFont('large')"
-					:class="a11y.fontSize === 'large' ? 'bg-stone-900 text-white font-bold' : 'bg-white hover:bg-stone-200'"
-					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded"
+					onclick="window.A11Y.setFont('large')"
+					data-a11y-btn-font="large"
+					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-white hover:bg-stone-200 transition"
 				>
 					А (Крупный)
 				</button>
 				<button
 					type="button"
-					@click="setA11yFont('xlarge')"
-					:class="a11y.fontSize === 'xlarge' ? 'bg-stone-900 text-white font-bold' : 'bg-white hover:bg-stone-200'"
-					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded"
+					onclick="window.A11Y.setFont('xlarge')"
+					data-a11y-btn-font="xlarge"
+					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-white hover:bg-stone-200 transition"
 				>
 					А+ (Макс)
 				</button>
@@ -42,27 +41,27 @@ templ A11yBar() {
 				<span class="text-xs uppercase font-bold mr-1">Цвет:</span>
 				<button
 					type="button"
-					@click="setA11yTheme('black-on-white')"
-					:class="a11y.colorScheme === 'black-on-white' ? 'ring-2 ring-stone-900 font-bold' : ''"
-					class="px-2.5 py-1 bg-white text-black border-2 border-black text-xs rounded"
+					onclick="window.A11Y.setColorScheme('black-on-white')"
+					data-a11y-btn-theme="black-on-white"
+					class="px-2.5 py-1 bg-white text-black border-2 border-black text-xs rounded transition"
 					title="Чёрным по белому"
 				>
 					Ц (Ч/Б)
 				</button>
 				<button
 					type="button"
-					@click="setA11yTheme('white-on-black')"
-					:class="a11y.colorScheme === 'white-on-black' ? 'ring-2 ring-yellow-400 font-bold' : ''"
-					class="px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded"
+					onclick="window.A11Y.setColorScheme('white-on-black')"
+					data-a11y-btn-theme="white-on-black"
+					class="px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition"
 					title="Белым по чёрному"
 				>
 					Ц (Инверсия)
 				</button>
 				<button
 					type="button"
-					@click="setA11yTheme('blue-on-cyan')"
-					:class="a11y.colorScheme === 'blue-on-cyan' ? 'ring-2 ring-blue-900 font-bold' : ''"
-					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded"
+					onclick="window.A11Y.setColorScheme('blue-on-cyan')"
+					data-a11y-btn-theme="blue-on-cyan"
+					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition"
 					title="Синим по голубому"
 				>
 					Ц (Синий)
@@ -73,19 +72,19 @@ templ A11yBar() {
 			<div class="flex items-center gap-1 sm:gap-2">
 				<button
 					type="button"
-					@click="setA11ySpacing(a11y.spacing === 'normal' ? 'wide' : 'normal')"
-					:class="a11y.spacing === 'wide' ? 'bg-stone-900 text-white font-bold' : 'bg-white hover:bg-stone-200'"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded"
+					id="a11y-spacing-btn"
+					onclick="window.A11Y.toggleSpacing()"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-white hover:bg-stone-200 transition"
 				>
-					<span x-text="a11y.spacing === 'wide' ? 'Интервал: Широкий' : 'Интервал: Обычный'"></span>
+					Интервал: Обычный
 				</button>
 				<button
 					type="button"
-					@click="toggleA11yImages()"
-					:class="a11y.images === 'off' ? 'bg-red-800 text-white font-bold' : 'bg-white hover:bg-stone-200'"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded"
+					id="a11y-images-btn"
+					onclick="window.A11Y.toggleImages()"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-white hover:bg-stone-200 transition"
 				>
-					<span x-text="a11y.images === 'off' ? 'Изображения: Выкл' : 'Изображения: Вкл'"></span>
+					Изображения: Вкл
 				</button>
 			</div>
 
@@ -93,8 +92,8 @@ templ A11yBar() {
 			<div>
 				<button
 					type="button"
-					@click="toggleA11y()"
-					class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded border border-red-800 transition"
+					onclick="window.A11Y.toggle()"
+					class="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded border border-rose-800 transition cursor-pointer"
 				>
 					✕ Обычная версия
 				</button>

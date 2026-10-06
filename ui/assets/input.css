@@ -2,6 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   0. SEMANTIC THEME TOKENS (CSS VARIABLES)
+   RGB triplets format for Tailwind opacity support
+   ========================================= */
+
+:root,
+html[data-theme="default"],
+html[data-theme="legal"] {
+  --color-primary: 122 28 36;          /* #7A1C24 burgundy */
+  --color-primary-dark: 82 18 23;      /* #521217 */
+  --color-primary-light: 152 40 50;    /* #982832 */
+  --color-accent: 212 175 55;          /* #D4AF37 gold */
+  --color-accent-hover: 184 151 46;    /* #B8972E */
+  --color-accent-light: 253 248 232;   /* #FDF8E8 */
+  --color-surface: 250 247 242;        /* #FAF7F2 light */
+  --color-surface-muted: 245 241 234;  /* stone-100 */
+  --color-content: 28 25 23;           /* stone-900 */
+  --color-content-muted: 113 101 101;  /* muted */
+}
+
+/* МЕДИЦИНА / КЛИНИКА (MEDICAL) */
+html[data-theme="medical"] {
+  --color-primary: 13 148 136;         /* teal-600 */
+  --color-primary-dark: 15 118 110;    /* teal-700 */
+  --color-primary-light: 20 184 166;   /* teal-500 */
+  --color-accent: 14 165 233;          /* sky-500 */
+  --color-accent-hover: 2 132 199;     /* sky-600 */
+  --color-accent-light: 240 253 250;   /* teal-50 */
+  --color-surface: 248 250 252;        /* slate-50 */
+  --color-surface-muted: 241 245 249;  /* slate-100 */
+  --color-content: 15 23 42;           /* slate-900 */
+  --color-content-muted: 100 116 139;  /* slate-500 */
+}
+
+/* АВТОСЕРВИС / СТО / ДЕТЕЙЛИНГ (AUTO) */
+html[data-theme="auto"] {
+  --color-primary: 225 29 72;          /* rose-600 */
+  --color-primary-dark: 159 18 57;     /* rose-800 */
+  --color-primary-light: 244 63 94;    /* rose-500 */
+  --color-accent: 245 158 11;          /* amber-500 */
+  --color-accent-hover: 217 119 6;     /* amber-600 */
+  --color-accent-light: 254 243 199;   /* amber-100 */
+  --color-surface: 248 250 252;        /* slate-50 */
+  --color-surface-muted: 226 232 240;  /* slate-200 */
+  --color-content: 30 41 59;           /* slate-800 */
+  --color-content-muted: 71 85 105;    /* slate-600 */
+}
+
+/* IT / ТЕХНОЛОГИИ / КОРПОРАТИВ (TECH) */
+html[data-theme="tech"] {
+  --color-primary: 37 99 235;          /* blue-600 */
+  --color-primary-dark: 29 78 216;     /* blue-700 */
+  --color-primary-light: 59 130 246;   /* blue-500 */
+  --color-accent: 99 102 241;          /* indigo-500 */
+  --color-accent-hover: 79 70 229;     /* indigo-600 */
+  --color-accent-light: 238 242 255;   /* indigo-50 */
+  --color-surface: 249 250 251;        /* gray-50 */
+  --color-surface-muted: 243 244 246;  /* gray-100 */
+  --color-content: 17 24 39;           /* gray-900 */
+  --color-content-muted: 107 114 128;  /* gray-500 */
+}
+
+/* ТЁМНАЯ ТЕМА (DARK) */
+html[data-theme="dark"] {
+  --color-primary: 22 27 34;           /* github dark header */
+  --color-primary-dark: 13 17 23;      /* github dark bg */
+  --color-primary-light: 48 54 61;     /* github dark border */
+  --color-accent: 212 175 55;          /* gold or cyan */
+  --color-accent-hover: 184 151 46;
+  --color-accent-light: 33 38 45;
+  --color-surface: 13 17 23;           /* #0d1117 */
+  --color-surface-muted: 22 27 34;     /* #161b22 */
+  --color-content: 230 237 243;        /* #e6edf3 */
+  --color-content-muted: 139 148 158;  /* #8b949e */
+}
+
 /* Базовые стили для переключения тем */
 body {
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -17,7 +93,7 @@ body {
 }
 
 /* =========================================
-   1. ТЁМНАЯ ТЕМА (DARK THEME)
+   1. ТЁМНАЯ ТЕМА (DARK THEME OVERRIDES)
    ========================================= */
 html[data-theme="dark"] body {
   background-color: #0d1117 !important;
@@ -84,11 +160,6 @@ html[data-theme="dark"] .bg-stone-100.cursor-not-allowed {
 
 /* ====================================================
    2. ТЕМА ДЛЯ ДАЛЬТОНИКОВ / ВЫСОКИЙ КОНТРАСТ (COLORBLIND)
-   Ориентирована на людей с дейтеранопией/протанопией/монохроматизмом:
-   - Зеленый заменяется на высококонтрастный ярко-синий (доступно/свободно)
-   - Бордовый/красный заменяется на глубокий индиго/угольный
-   - Занятые слоты имеют четкую штриховку и иконку ✕
-   - Увеличенный контраст шрифтов и границ
    ==================================================== */
 html[data-theme="colorblind"] body {
   background-color: #f8fafc !important;
@@ -132,7 +203,6 @@ html[data-theme="colorblind"] .border-stone-300 {
   border-width: 1.5px !important;
 }
 
-/* Свободные слоты для дальтоников: четкий ультрамарин/синий с белым текстом */
 html[data-theme="colorblind"] .bg-emerald-50\/80 {
   background-color: #eff6ff !important;
   color: #1d4ed8 !important;
@@ -146,7 +216,6 @@ html[data-theme="colorblind"] .bg-emerald-600 {
   color: #ffffff !important;
 }
 
-/* Занятые слоты для дальтоников: зачеркнутые с явным серым фоном и границей */
 html[data-theme="colorblind"] .bg-stone-100.cursor-not-allowed {
   background-color: #e2e8f0 !important;
   color: #475569 !important;
@@ -155,27 +224,10 @@ html[data-theme="colorblind"] .bg-stone-100.cursor-not-allowed {
   text-decoration: line-through !important;
 }
 
-html[data-theme="colorblind"] .bg-emerald-500 {
-  background-color: #2563eb !important;
-}
-
-html[data-theme="colorblind"] .bg-stone-300 {
-  background-color: #64748b !important;
-}
-
 /* ====================================================
    3. РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ (ACCESSIBILITY / ГОСТ)
-   - Контрастные цветовые схемы:
-     * Черным по белому (black-on-white)
-     * Белым по черному (white-on-black)
-     * Темно-синим по голубому (blue-on-cyan)
-   - Регулировка размера шрифта (normal / large / xlarge)
-   - Регулировка межбуквенного интервала (normal / wide)
-   - Отключение изображений при необходимости
-   - Четкие рамки у всех интерактивных элементов
    ==================================================== */
 
-/* Размеры шрифта */
 html.a11y-mode[data-a11y-font="normal"] {
   font-size: 18px;
 }
@@ -186,20 +238,17 @@ html.a11y-mode[data-a11y-font="xlarge"] {
   font-size: 25px;
 }
 
-/* Межбуквенный интервал */
 html.a11y-mode[data-a11y-spacing="wide"] * {
   letter-spacing: 0.12em !important;
   word-spacing: 0.2em !important;
 }
 
-/* Отключение изображений */
 html.a11y-mode[data-a11y-images="off"] img,
 html.a11y-mode[data-a11y-images="off"] iframe,
 html.a11y-mode[data-a11y-images="off"] svg:not(.a11y-keep-icon) {
   display: none !important;
 }
 
-/* Общие правила для режима слабовидящих */
 html.a11y-mode body {
   font-family: Arial, Helvetica, sans-serif !important;
   line-height: 1.6 !important;

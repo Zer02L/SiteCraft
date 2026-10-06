@@ -9,10 +9,10 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"lawyer/internal/models"
+	"sitecraft/internal/models"
 )
 
-func Header(content models.SiteContent) templ.Component {
+func Header(content models.SiteContent, settings models.SiteSettings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -33,7 +33,7 @@ func Header(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Header --><header class=\"bg-legal-burgundy text-white sticky top-0 z-40 shadow-lg border-b border-legal-burgundydark\"><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-legal-burgundydark border border-legal-gold/40 flex items-center justify-center text-legal-gold shadow-inner\"><svg class=\"w-6 h-6 a11y-keep-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.8\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><div><div class=\"text-white font-serif-title font-bold text-lg tracking-wide leading-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Header --><header class=\"bg-primary text-white sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\"><svg class=\"w-6 h-6 a11y-keep-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.8\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><div><div class=\"text-white font-serif-title font-bold text-lg tracking-wide leading-tight\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -46,20 +46,40 @@ func Header(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div class=\"text-xs text-legal-gold font-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div class=\"text-xs text-accent font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.NotaryName)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 19, Col: 74}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 19, Col: 69}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></div><nav class=\"hidden md:flex items-center space-x-5 text-sm font-medium\"><a href=\"#about\" class=\"hover:text-legal-gold transition\">О нотариусе</a> <a href=\"#schedule\" class=\"hover:text-legal-gold transition\">Режим</a> <a href=\"#services\" class=\"hover:text-legal-gold transition\">Услуги</a> <a href=\"#booking\" class=\"hover:text-legal-gold transition\">Запись</a> <a href=\"#map\" class=\"hover:text-legal-gold transition\">Карта</a><!-- Кнопка 'Версия для слабовидящих' --><button type=\"button\" @click=\"toggleA11y()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-legal-gold hover:text-legal-gold transition bg-white/5\" title=\"Версия для слабовидящих\"><span>👓</span> <span x-text=\"a11y.active ? 'Настройки для слабовидящих' : 'Для слабовидящих'\"></span></button><!-- Переключатель тем (Стандарт / Тёмная / Для дальтоников) --><div x-show=\"!a11y.active\" class=\"flex items-center bg-black/25 p-1 rounded-lg border border-white/10 text-xs\"><button type=\"button\" @click=\"setTheme('default')\" :class=\"currentTheme === 'default' ? 'bg-legal-gold text-legal-burgundydark font-bold shadow-sm' : 'text-stone-300 hover:text-white'\" class=\"px-2 py-1 rounded transition flex items-center gap-1\" title=\"Классическая тема\">☀️</button> <button type=\"button\" @click=\"setTheme('dark')\" :class=\"currentTheme === 'dark' ? 'bg-legal-gold text-legal-burgundydark font-bold shadow-sm' : 'text-stone-300 hover:text-white'\" class=\"px-2 py-1 rounded transition flex items-center gap-1\" title=\"Тёмная тема\">🌙</button> <button type=\"button\" @click=\"setTheme('colorblind')\" :class=\"currentTheme === 'colorblind' ? 'bg-blue-600 text-white font-bold shadow-sm' : 'text-stone-300 hover:text-white'\" class=\"px-2 py-1 rounded transition flex items-center gap-1\" title=\"Режим для людей с нарушением цветовосприятия\">👁️</button></div><a href=\"/_/\" target=\"_blank\" class=\"text-legal-gold border border-legal-gold/50 px-2.5 py-1 rounded text-xs hover:bg-legal-gold hover:text-legal-burgundydark transition font-semibold\">Админка</a></nav><div class=\"md:hidden flex items-center gap-2\"><!-- Кнопка для слабовидящих на мобильных --><button type=\"button\" @click=\"toggleA11y()\" class=\"px-2 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white\" title=\"Версия для слабовидящих\"><span>👓</span></button><!-- Компактный переключатель темы для мобильных --><button x-show=\"!a11y.active\" type=\"button\" @click=\"setTheme(currentTheme === 'default' ? 'dark' : (currentTheme === 'dark' ? 'colorblind' : 'default'))\" class=\"px-2.5 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white\" :title=\"'Текущая тема: ' + currentTheme\"><span x-text=\"currentTheme === 'default' ? '☀️' : (currentTheme === 'dark' ? '🌙' : '👁️')\"></span></button> <a href=\"#booking\" class=\"bg-legal-gold text-legal-burgundydark text-xs font-semibold px-3 py-1.5 rounded\">Запись</a></div></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></div><nav class=\"hidden md:flex items-center space-x-5 text-sm font-medium\"><a href=\"#about\" class=\"hover:text-accent transition\">О нас</a> <a href=\"#schedule\" class=\"hover:text-accent transition\">Режим</a> <a href=\"#services\" class=\"hover:text-accent transition\">Услуги</a> <a href=\"#booking\" class=\"hover:text-accent transition\">Запись</a> <a href=\"#map\" class=\"hover:text-accent transition\">Контакты</a><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.EnableA11y {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-white/5 cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span> <span>Для слабовидящих</span></button>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Переключатель тем оформления (Vanilla JS) --><div class=\"flex items-center bg-black/25 p-1 rounded-lg border border-white/10 text-xs\"><button type=\"button\" onclick=\"window.setSiteTheme('legal')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Бордовая / Юридическая тема\">🏛️</button> <button type=\"button\" onclick=\"window.setSiteTheme('medical')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Медицинская / Бирюзовая тема\">🏥</button> <button type=\"button\" onclick=\"window.setSiteTheme('auto')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Авто / Драйв тема\">🚗</button> <button type=\"button\" onclick=\"window.setSiteTheme('tech')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"IT / Корпоративная тема\">💻</button> <button type=\"button\" onclick=\"window.setSiteTheme('dark')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Тёмная тема\">🌙</button></div><a href=\"/_/\" target=\"_blank\" class=\"text-accent border border-accent/50 px-2.5 py-1 rounded text-xs hover:bg-accent hover:text-primary-dark transition font-semibold\">Админка</a></nav><div class=\"md:hidden flex items-center gap-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.EnableA11y {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-2 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span></button> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<a href=\"#booking\" class=\"bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded\">Запись</a></div></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

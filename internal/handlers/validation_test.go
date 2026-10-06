@@ -14,12 +14,37 @@ func TestValidateLeadForm(t *testing.T) {
 		ActionType:  "доверенность",
 		Comment:     "Пакет документов подготовлен",
 		Consent:     "on",
+		Honeypot:    "",
+		Mode:        "slots",
 	}
 
 	t.Run("Valid input passes without errors", func(t *testing.T) {
 		errs := ValidateLeadForm(validInput)
 		if len(errs) != 0 {
 			t.Errorf("expected 0 errors, got: %v", errs)
+		}
+	})
+
+	t.Run("Honeypot catches spam bots", func(t *testing.T) {
+		input := validInput
+		input.Honeypot = "https://spam-bot.ru"
+		errs := ValidateLeadForm(input)
+		if len(errs) != 1 || !strings.Contains(errs[0], "Спам-фильтр") {
+			t.Errorf("expected honeypot error, got: %v", errs)
+		}
+	})
+
+	t.Run("Simple mode does not require date/time", func(t *testing.T) {
+		input := LeadFormInput{
+			Name:     "Петров Петр",
+			Phone:    "+7 (999) 555-44-33",
+			Consent:  "on",
+			Honeypot: "",
+			Mode:     "simple",
+		}
+		errs := ValidateLeadForm(input)
+		if len(errs) != 0 {
+			t.Errorf("expected 0 errors in simple mode, got: %v", errs)
 		}
 	})
 
@@ -50,7 +75,7 @@ func TestValidateLeadForm(t *testing.T) {
 		}
 	})
 
-	t.Run("Missing date or time returns error", func(t *testing.T) {
+	t.Run("Missing date or time in slots mode returns error", func(t *testing.T) {
 		input := validInput
 		input.BookingDate = ""
 		input.BookingTime = ""

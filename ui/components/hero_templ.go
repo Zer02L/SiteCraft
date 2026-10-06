@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"lawyer/internal/models"
+	"sitecraft/internal/models"
 )
 
 func Hero(content models.SiteContent) templ.Component {
@@ -33,7 +33,7 @@ func Hero(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hero Section --><section class=\"relative bg-gradient-to-b from-legal-burgundydark via-legal-burgundy to-legal-burgundydark text-white py-16 md:py-20 px-4 overflow-hidden border-b-4 border-legal-gold\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center\"><div class=\"lg:col-span-7 space-y-5 text-center lg:text-left\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-legal-gold text-xs font-semibold uppercase tracking-wider rounded-full border border-legal-gold/30\"><span class=\"w-2 h-2 rounded-full bg-emerald-400 animate-pulse\"></span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hero Section --><section class=\"relative bg-gradient-to-b from-primary-dark via-primary to-primary-dark text-white py-16 md:py-20 px-4 overflow-hidden border-b-4 border-accent\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center\"><div class=\"lg:col-span-7 space-y-5 text-center lg:text-left\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-accent text-xs font-semibold uppercase tracking-wider rounded-full border border-accent/30\"><span class=\"w-2 h-2 rounded-full bg-emerald-400 animate-pulse\"></span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -59,14 +59,14 @@ func Hero(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<br><span class=\"text-legal-gold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<br><span class=\"text-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(content.NotaryName)
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 19, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 19, Col: 50}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -85,7 +85,7 @@ func Hero(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p><!-- Контакты и быстрые кнопки --><div class=\"pt-2 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start\"><a href=\"#booking\" class=\"bg-legal-gold hover:bg-legal-goldhover text-legal-burgundydark font-bold px-6 py-3 rounded-lg shadow-lg transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> Записаться онлайн</a> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p><!-- Контакты и быстрые кнопки --><div class=\"pt-2 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start\"><a href=\"#booking\" class=\"bg-accent hover:bg-accent-hover text-primary-dark font-bold px-6 py-3 rounded-lg shadow-lg transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> Записаться онлайн</a> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -103,7 +103,7 @@ func Hero(content models.SiteContent) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3 rounded-lg border border-white/20 transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5 text-legal-gold\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z\"></path></svg> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3 rounded-lg border border-white/20 transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5 text-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z\"></path></svg> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -121,7 +121,7 @@ func Hero(content models.SiteContent) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div><!-- Фото / Вывеска конторы --><div id=\"about\" class=\"lg:col-span-5 flex justify-center\"><div class=\"relative group max-w-xs sm:max-w-sm\"><div class=\"absolute -inset-1.5 bg-legal-gold/40 rounded-2xl blur-sm group-hover:bg-legal-gold/60 transition duration-300\"></div><div class=\"relative bg-legal-burgundydark p-3 rounded-2xl border-2 border-legal-gold shadow-2xl overflow-hidden\"><img src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div><!-- Фото / Вывеска --><div id=\"about\" class=\"lg:col-span-5 flex justify-center\"><div class=\"relative group max-w-xs sm:max-w-sm\"><div class=\"absolute -inset-1.5 bg-accent/40 rounded-2xl blur-sm group-hover:bg-accent/60 transition duration-300\"></div><div class=\"relative bg-primary-dark p-3 rounded-2xl border-2 border-accent shadow-2xl overflow-hidden\"><img src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -139,22 +139,22 @@ func Hero(content models.SiteContent) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(content.HeroTitle + ": " + content.NotaryName)
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(content.HeroTitle + ": " + content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 48, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 48, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"w-full h-auto rounded-xl object-cover shadow-inner hover:scale-[1.02] transition duration-300\"><div class=\"mt-3 px-2 py-1 text-center\"><div class=\"text-xs uppercase tracking-widest text-legal-gold font-semibold\">Официальная вывеска</div><div class=\"text-[11px] text-stone-300 mt-0.5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"w-full h-auto rounded-xl object-cover shadow-inner hover:scale-[1.02] transition duration-300\"><div class=\"mt-3 px-2 py-1 text-center\"><div class=\"text-xs uppercase tracking-widest text-accent font-semibold\">Официальная вывеска</div><div class=\"text-[11px] text-stone-300 mt-0.5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(content.NotaryTitle)
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 53, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/hero.templ`, Line: 53, Col: 74}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {

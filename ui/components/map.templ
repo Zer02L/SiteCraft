@@ -1,16 +1,16 @@
 package components
 
 import (
-	"lawyer/internal/models"
+	"sitecraft/internal/models"
 )
 
-templ MapSection(content models.SiteContent) {
-	<!-- Interactive Yandex Map Section -->
+templ MapSection(content models.SiteContent, settings models.SiteSettings) {
+	<!-- Interactive Location Map Section -->
 	<section id="map" class="py-16 px-4 max-w-6xl mx-auto">
 		<div class="text-center mb-8">
-			<div class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-200 uppercase tracking-wider mb-2">Местоположение</div>
-			<h2 class="font-serif-title text-3xl font-bold text-stone-900">Нотариальная контора на карте</h2>
-			<p class="text-stone-500 mt-2 text-sm max-w-xl mx-auto">Удобный подъезд и транспортная доступность. Перед визитом рекомендуем согласовать время.</p>
+			<div class="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-200 uppercase tracking-wider mb-2">Локация</div>
+			<h2 class="font-serif-title text-3xl font-bold text-stone-900">Как нас найти</h2>
+			<p class="text-stone-500 mt-2 text-sm max-w-xl mx-auto">Удобный подъезд и парковка. Перед визитом рекомендуем предварительно записаться.</p>
 		</div>
 
 		<div class="bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
@@ -18,7 +18,7 @@ templ MapSection(content models.SiteContent) {
 			<div class="lg:col-span-4 p-6 sm:p-8 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-200 flex flex-col justify-between">
 				<div class="space-y-6">
 					<div>
-						<span class="text-xs font-semibold uppercase tracking-wider text-legal-burgundy">Адрес нотариуса</span>
+						<span class="text-xs font-semibold uppercase tracking-wider text-primary">Фактический адрес</span>
 						<p class="mt-1.5 text-base font-bold text-stone-900 leading-snug">
 							{ content.Address }
 						</p>
@@ -29,7 +29,7 @@ templ MapSection(content models.SiteContent) {
 						<span class="text-xs font-semibold uppercase tracking-wider text-stone-500">Прямые телефоны:</span>
 						<div class="mt-2 space-y-1">
 							if content.Phone1 != "" {
-								<a href={ templ.URL("tel:" + content.Phone1) } class="block text-base font-bold text-legal-burgundy hover:underline">{ content.Phone1 }</a>
+								<a href={ templ.URL("tel:" + content.Phone1) } class="block text-base font-bold text-primary hover:underline">{ content.Phone1 }</a>
 							}
 							if content.Phone2 != "" {
 								<a href={ templ.URL("tel:" + content.Phone2) } class="block text-sm font-semibold text-stone-800 hover:underline">{ content.Phone2 }</a>
@@ -45,15 +45,25 @@ templ MapSection(content models.SiteContent) {
 				</div>
 
 				<div class="mt-8 pt-4 border-t border-stone-200">
-					<a href="#booking" class="w-full inline-block text-center bg-legal-gold hover:bg-legal-goldhover text-legal-burgundydark font-bold py-2.5 px-4 rounded-lg text-xs transition">
-						Забронировать время в календаре
+					<a href="#booking" class="w-full inline-block text-center bg-accent hover:bg-accent-hover text-primary-dark font-bold py-2.5 px-4 rounded-lg text-xs transition">
+						Забронировать время онлайн
 					</a>
 				</div>
 			</div>
 
-			<!-- Интерактивная карта Яндекс -->
-			<div class="lg:col-span-8 min-h-[420px] relative bg-stone-100">
-				<div class="w-full h-full min-h-[420px] flex items-center justify-center">
+			<!-- Карта с поддержкой Lazy-loading через HTMX (Zero-JS / 100 PageSpeed) -->
+			<div class="lg:col-span-8 min-h-[420px] relative bg-stone-100 flex items-center justify-center">
+				if settings.MapMode == "lazy" {
+					<div
+						hx-get="/api/map-frame"
+						hx-trigger="revealed"
+						hx-swap="outerHTML"
+						class="w-full h-full min-h-[420px] flex flex-col items-center justify-center text-stone-500 gap-2 p-6"
+					>
+						<div class="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div>
+						<span class="text-xs font-medium">Загрузка интерактивной карты...</span>
+					</div>
+				} else {
 					<iframe
 						src={ content.MapIframe }
 						width="100%"
@@ -61,10 +71,22 @@ templ MapSection(content models.SiteContent) {
 						frameborder="0"
 						allowfullscreen="true"
 						class="w-full h-full min-h-[420px] border-0"
-						title={ "Интерактивная карта — " + content.HeroTitle + " " + content.NotaryName }
+						title={ "Интерактивная карта — " + content.HeroTitle + " " + content.OwnerName }
 					></iframe>
-				</div>
+				}
 			</div>
 		</div>
 	</section>
+}
+
+templ MapFrame(iframeURL string, title string) {
+	<iframe
+		src={ iframeURL }
+		width="100%"
+		height="100%"
+		frameborder="0"
+		allowfullscreen="true"
+		class="w-full h-full min-h-[420px] border-0"
+		title={ title }
+	></iframe>
 }

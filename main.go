@@ -8,9 +8,12 @@ import (
 	"os"
 	"strings"
 
-	"lawyer/internal/data"
-	"lawyer/internal/handlers"
-	"lawyer/ui/pages"
+	"sitecraft/internal/data"
+	"sitecraft/internal/handlers"
+	"sitecraft/internal/models"
+	"sitecraft/internal/notifications"
+	"sitecraft/ui/components"
+	"sitecraft/ui/pages"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase"
@@ -21,13 +24,25 @@ import (
 func main() {
 	app := pocketbase.New()
 
-	// Инициализация структуры коллекций и начальных данных
+	var presetFlag string
+	app.RootCmd.Flags().StringVar(&presetFlag, "preset", "", "Path to preset JSON file or preset name (legal, medical, auto, beauty)")
+
+	// Инициализация структуры коллекций, сидов и инвалидации кэша
 	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
 		if err := e.Next(); err != nil {
 			return err
 		}
 		if err := data.InitSchema(e.App); err != nil {
 			log.Printf("[Bootstrap Warning] Не удалось инициализировать схему БД: %v\n", err)
+		}
+		if presetFlag != "" {
+			presetPath := presetFlag
+			if !strings.HasSuffix(presetPath, ".json") {
+				presetPath = "presets/" + presetPath + ".json"
+			}
+			if err := data.ApplyPreset(e.App, presetPath); err != nil {
+				log.Printf("[Preset Warning] Не удалось применить пресет: %v\n", err)
+			}
 		}
 		return nil
 	})
@@ -37,24 +52,34 @@ func main() {
 		// Раздача скомпилированных стилей и ассетов
 		se.Router.GET("/assets/{path...}", apis.Static(os.DirFS("./ui/assets"), false))
 
-		// Главная страница (SSR с помощью Templ)
+		// Главная страница (SSR с помощью Templ + In-Memory Cache)
 		se.Router.GET("/", func(e *core.RequestEvent) error {
+			settings := data.GetSiteSettings(app)
 			content := data.GetSiteContent(app)
 			services := data.GetServices(app)
 			bookedSlots := data.GetBookedSlots(app)
 
 			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-			return pages.Home(content, services, bookedSlots).Render(e.Request.Context(), e.Response)
+			return pages.Home(settings, content, services, bookedSlots).Render(e.Request.Context(), e.Response)
 		})
 
-		// API для получения занятых слотов (JSON)
+		// API: Ленивая подгрузка карты через HTMX (Zero-JS Lazy Map)
+		se.Router.GET("/api/map-frame", func(e *core.RequestEvent) error {
+			content := data.GetSiteContent(app)
+			e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+			return components.MapFrame(content.MapIframe, "Интерактивная карта — "+content.HeroTitle).Render(e.Request.Context(), e.Response)
+		})
+
+		// API: Получение занятых слотов (JSON)
 		se.Router.GET("/api/slots", func(e *core.RequestEvent) error {
 			bookedSlots := data.GetBookedSlots(app)
 			return e.JSON(http.StatusOK, bookedSlots)
 		})
 
-		// Приём заявок с формы с полной валидацией (HTMX endpoint)
+		// Приём заявок с формы с защитой honeypot и уведомлениями (HTMX endpoint)
 		se.Router.POST("/api/leads", func(e *core.RequestEvent) error {
+			settings := data.GetSiteSettings(app)
+
 			name := strings.TrimSpace(e.Request.FormValue("name"))
 			phone := strings.TrimSpace(e.Request.FormValue("phone"))
 			bookingDate := strings.TrimSpace(e.Request.FormValue("booking_date"))
@@ -62,6 +87,7 @@ func main() {
 			actionType := strings.TrimSpace(e.Request.FormValue("action_type"))
 			comment := strings.TrimSpace(e.Request.FormValue("comment"))
 			consent := e.Request.FormValue("consent")
+			honeypot := e.Request.FormValue("company_website_url")
 
 			input := handlers.LeadFormInput{
 				Name:        name,
@@ -71,6 +97,8 @@ func main() {
 				ActionType:  actionType,
 				Comment:     comment,
 				Consent:     consent,
+				Honeypot:    honeypot,
+				Mode:        settings.BookingMode,
 			}
 
 			validationErrors := handlers.ValidateLeadForm(input)
@@ -99,37 +127,59 @@ func main() {
 				return e.HTML(http.StatusUnprocessableEntity, errorHTML)
 			}
 
-			// Проверка на повторное бронирование (если слот уже занят кем-то другим)
-			existingRecords, _ := app.FindRecordsByFilter(
-				"leads",
-				"booking_date = {:date} && booking_time = {:time} && status != 'отменена'",
-				"",
-				1,
-				0,
-				dbx.Params{"date": bookingDate, "time": bookingTime},
-			)
-			if len(existingRecords) > 0 {
-				return e.HTML(http.StatusConflict, `
-					<div class="p-4 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-sm shadow-sm">
-						<div class="font-bold flex items-center gap-2 mb-1 text-amber-800">
-							<svg class="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-							Выбранное время уже занято
+			// Проверка на повторное бронирование слота (только если указаны дата и время)
+			if bookingDate != "" && bookingTime != "" {
+				existingRecords, _ := app.FindRecordsByFilter(
+					"leads",
+					"booking_date = {:date} && booking_time = {:time} && status != 'отменена'",
+					"",
+					1,
+					0,
+					dbx.Params{"date": bookingDate, "time": bookingTime},
+				)
+				if len(existingRecords) > 0 {
+					return e.HTML(http.StatusConflict, `
+						<div class="p-4 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-sm shadow-sm">
+							<div class="font-bold flex items-center gap-2 mb-1 text-amber-800">
+								<svg class="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+								Выбранное время уже занято
+							</div>
+							<p class="text-xs text-amber-700">К сожалению, этот слот только что забронировали. Пожалуйста, выберите другое свободное время.</p>
 						</div>
-						<p class="text-xs text-amber-700">К сожалению, этот слот только что забронировали. Пожалуйста, выберите другое свободное время в сетке.</p>
-					</div>
-				`)
+					`)
+				}
+			}
+
+			// Подготовка JSON payload для гибких полей
+			payloadMap := map[string]interface{}{}
+			if actionType != "" {
+				payloadMap["action_type"] = actionType
+			}
+			if comment != "" {
+				payloadMap["comment"] = comment
 			}
 
 			// Сохраняем в коллекцию leads в PocketBase
+			leadModel := models.Lead{
+				Name:        name,
+				Phone:       phone,
+				Status:      "новая",
+				Source:      "website",
+				BookingDate: bookingDate,
+				BookingTime: bookingTime,
+				Payload:     payloadMap,
+			}
+
 			if leadsCol, err := app.FindCollectionByNameOrId("leads"); err == nil {
 				leadRecord := core.NewRecord(leadsCol)
 				leadRecord.Set("name", name)
 				leadRecord.Set("phone", phone)
 				leadRecord.Set("booking_date", bookingDate)
 				leadRecord.Set("booking_time", bookingTime)
-				leadRecord.Set("action_type", actionType)
-				leadRecord.Set("comment", comment)
 				leadRecord.Set("status", "новая")
+				leadRecord.Set("source", "website")
+				leadRecord.Set("payload", payloadMap)
+
 				if err := app.Save(leadRecord); err != nil {
 					log.Printf("[Leads Error] Не удалось сохранить заявку в базу: %v\n", err)
 					return e.HTML(http.StatusInternalServerError, `
@@ -139,21 +189,34 @@ func main() {
 						</div>
 					`)
 				}
+				leadModel.ID = leadRecord.Id
 			}
 
-			log.Printf("Новая запись: ФИО=%s, Тел=%s, Дата=%s %s, Действие=%s, Коммент=%s\n",
-				name, phone, bookingDate, bookingTime, actionType, comment)
+			// Отправка уведомлений (Telegram Bot, CRM Webhook)
+			notifications.SendLeadNotification(settings, leadModel)
 
-			// Возвращаем аккуратное HTML-сообщение об успехе для HTMX
+			log.Printf("Новая заявка: ФИО=%s, Тел=%s, Дата=%s %s, Инфо=%+v\n",
+				name, phone, bookingDate, bookingTime, payloadMap)
+
+			// Возвращаем сообщение об успехе
+			var successMsg string
+			if bookingDate != "" && bookingTime != "" {
+				successMsg = fmt.Sprintf(`Мы зарезервировали для вас <strong>%s в %s</strong>. Наш специалист свяжется с вами по номеру <strong>%s</strong> для подтверждения.`,
+					html.EscapeString(bookingDate), html.EscapeString(bookingTime), html.EscapeString(phone))
+			} else {
+				successMsg = fmt.Sprintf(`Спасибо за обращение! Наш менеджер свяжется с вами по номеру <strong>%s</strong> в ближайшее рабочее время.`,
+					html.EscapeString(phone))
+			}
+
 			successHTML := fmt.Sprintf(`
 				<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-800 text-sm shadow-sm transition-all duration-200">
 					<div class="font-bold flex items-center gap-2">
 						<svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-						Запись успешно подтверждена!
+						Заявка успешно принята!
 					</div>
-					<p class="mt-2 text-xs text-emerald-700">Мы зарезервировали для вас <strong>%s в %s</strong>. Наш специалист свяжется с вами по номеру <strong>%s</strong> для предварительной консультации и сверки пакета документов.</p>
+					<p class="mt-2 text-xs text-emerald-700">%s</p>
 				</div>
-			`, html.EscapeString(bookingDate), html.EscapeString(bookingTime), html.EscapeString(phone))
+			`, successMsg)
 			return e.HTML(http.StatusOK, successHTML)
 		})
 

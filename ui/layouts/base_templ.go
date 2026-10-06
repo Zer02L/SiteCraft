@@ -8,7 +8,11 @@ package layouts
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Base(title string, description string) templ.Component {
+import (
+	"sitecraft/internal/models"
+)
+
+func Base(title string, description string, settings models.SiteSettings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,59 +33,102 @@ func Base(title string, description string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"ru\" class=\"scroll-smooth\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"ru\" class=\"scroll-smooth\" data-theme=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(title)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.ResolveAttributeValue(settings.Theme)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 9, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 9, Col: 66}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</title><meta name=\"description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(description)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 10, Col: 49}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 13, Col: 17}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><!-- Open Graph / SEO --><meta property=\"og:title\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</title><meta name=\"description\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.ResolveAttributeValue(title)
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.ResolveAttributeValue(description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 12, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 14, Col: 49}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"><meta property=\"og:description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\"><!-- Open Graph / SEO --><meta property=\"og:title\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(description)
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 13, Col: 56}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 16, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><meta property=\"og:type\" content=\"website\"><!-- Google Fonts: Merriweather + Inter --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap\" rel=\"stylesheet\"><!-- HTMX --><script src=\"https://unpkg.com/htmx.org@1.9.12\"></script><script>\n\t\t\t\tdocument.addEventListener('htmx:beforeOnLoad', function (evt) {\n\t\t\t\t\tif (evt.detail.xhr.status === 422 || evt.detail.xhr.status === 400 || evt.detail.xhr.status === 409) {\n\t\t\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\t\t\tevt.detail.isError = false;\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t</script><!-- Alpine.js --><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Styles --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Accessibility initial script --><script>\n\t\t\t\t(function() {\n\t\t\t\t\tconst savedTheme = localStorage.getItem('theme') || 'default';\n\t\t\t\t\tdocument.documentElement.setAttribute('data-theme', savedTheme);\n\t\t\t\t\t\n\t\t\t\t\tconst a11yActive = localStorage.getItem('a11y_active') === 'true';\n\t\t\t\t\tif (a11yActive) {\n\t\t\t\t\t\tdocument.documentElement.classList.add('a11y-mode');\n\t\t\t\t\t\tconst a11yFont = localStorage.getItem('a11y_font') || 'normal';\n\t\t\t\t\t\tconst a11ySpacing = localStorage.getItem('a11y_spacing') || 'normal';\n\t\t\t\t\t\tconst a11yTheme = localStorage.getItem('a11y_theme') || 'black-on-white';\n\t\t\t\t\t\tconst a11yImages = localStorage.getItem('a11y_images') || 'on';\n\t\t\t\t\t\t\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-font', a11yFont);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-spacing', a11ySpacing);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-theme', a11yTheme);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-images', a11yImages);\n\t\t\t\t\t}\n\t\t\t\t})();\n\t\t\t</script></head><body x-data=\"{\n\t\t\t\tcurrentTheme: localStorage.getItem('theme') || 'default',\n\t\t\t\ta11y: {\n\t\t\t\t\tactive: localStorage.getItem('a11y_active') === 'true',\n\t\t\t\t\tfontSize: localStorage.getItem('a11y_font') || 'normal',\n\t\t\t\t\tspacing: localStorage.getItem('a11y_spacing') || 'normal',\n\t\t\t\t\tcolorScheme: localStorage.getItem('a11y_theme') || 'black-on-white',\n\t\t\t\t\timages: localStorage.getItem('a11y_images') || 'on'\n\t\t\t\t},\n\t\t\t\tsetTheme(theme) {\n\t\t\t\t\tthis.currentTheme = theme;\n\t\t\t\t\tlocalStorage.setItem('theme', theme);\n\t\t\t\t\tdocument.documentElement.setAttribute('data-theme', theme);\n\t\t\t\t},\n\t\t\t\ttoggleA11y() {\n\t\t\t\t\tthis.a11y.active = !this.a11y.active;\n\t\t\t\t\tlocalStorage.setItem('a11y_active', this.a11y.active);\n\t\t\t\t\tthis.applyA11y();\n\t\t\t\t},\n\t\t\t\tsetA11yFont(size) {\n\t\t\t\t\tthis.a11y.fontSize = size;\n\t\t\t\t\tlocalStorage.setItem('a11y_font', size);\n\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-font', size);\n\t\t\t\t},\n\t\t\t\tsetA11ySpacing(spacing) {\n\t\t\t\t\tthis.a11y.spacing = spacing;\n\t\t\t\t\tlocalStorage.setItem('a11y_spacing', spacing);\n\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-spacing', spacing);\n\t\t\t\t},\n\t\t\t\tsetA11yTheme(scheme) {\n\t\t\t\t\tthis.a11y.colorScheme = scheme;\n\t\t\t\t\tlocalStorage.setItem('a11y_theme', scheme);\n\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-theme', scheme);\n\t\t\t\t},\n\t\t\t\ttoggleA11yImages() {\n\t\t\t\t\tthis.a11y.images = this.a11y.images === 'on' ? 'off' : 'on';\n\t\t\t\t\tlocalStorage.setItem('a11y_images', this.a11y.images);\n\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-images', this.a11y.images);\n\t\t\t\t},\n\t\t\t\tapplyA11y() {\n\t\t\t\t\tif (this.a11y.active) {\n\t\t\t\t\t\tdocument.documentElement.classList.add('a11y-mode');\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-font', this.a11y.fontSize);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-spacing', this.a11y.spacing);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-theme', this.a11y.colorScheme);\n\t\t\t\t\t\tdocument.documentElement.setAttribute('data-a11y-images', this.a11y.images);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tdocument.documentElement.classList.remove('a11y-mode');\n\t\t\t\t\t\tdocument.documentElement.removeAttribute('data-a11y-font');\n\t\t\t\t\t\tdocument.documentElement.removeAttribute('data-a11y-spacing');\n\t\t\t\t\t\tdocument.documentElement.removeAttribute('data-a11y-theme');\n\t\t\t\t\t\tdocument.documentElement.removeAttribute('data-a11y-images');\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\" class=\"bg-[#FAF7F2] text-stone-800 antialiased flex flex-col min-h-screen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><meta property=\"og:description\" content=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(description)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 17, Col: 56}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\"><meta property=\"og:type\" content=\"website\"><!-- Google Fonts: Merriweather + Inter --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap\" rel=\"stylesheet\"><!-- HTMX (Zero-JS foundation for AJAX requests) --><script src=\"https://unpkg.com/htmx.org@1.9.12\"></script><script>\n\t\t\t\tdocument.addEventListener('htmx:beforeOnLoad', function (evt) {\n\t\t\t\t\tif (evt.detail.xhr.status === 422 || evt.detail.xhr.status === 400 || evt.detail.xhr.status === 409) {\n\t\t\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\t\t\tevt.detail.isError = false;\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t</script><!-- Опциональный Alpine.js (подключается только если enable_alpine == true) -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.EnableAlpine {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Cloudflare Turnstile (если включен) -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.EnableTurnstile && settings.TurnstileSiteKey != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<script src=\"https://challenges.cloudflare.com/turnstile/v0/api.js\" async defer></script>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<!-- Яндекс Метрика (если указан ID) -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.YandexMetrikaID != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<script type=\"text/javascript\">\n\t\t\t\t\t(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};\n\t\t\t\t\tm[i].l=1*new Date();\n\t\t\t\t\tfor (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}\n\t\t\t\t\tk=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})\n\t\t\t\t\t(window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\");\n\t\t\t\t\tym({ settings.YandexMetrikaID }, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });\n\t\t\t\t</script>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<!-- Скомпилированные стили Tailwind с семантическими токенами --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) --><script>\n\t\t\t\t(function() {\n\t\t\t\t\tconst root = document.documentElement;\n\t\t\t\t\t\n\t\t\t\t\t// Тема сайта (сохраняется в localStorage)\n\t\t\t\t\tconst savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'legal';\n\t\t\t\t\troot.setAttribute('data-theme', savedTheme);\n\n\t\t\t\t\t// API Доступности (a11y)\n\t\t\t\t\twindow.A11Y = {\n\t\t\t\t\t\tactive: localStorage.getItem('a11y_active') === 'true',\n\t\t\t\t\t\tfontSize: localStorage.getItem('a11y_font') || 'normal',\n\t\t\t\t\t\tspacing: localStorage.getItem('a11y_spacing') || 'normal',\n\t\t\t\t\t\ttheme: localStorage.getItem('a11y_theme') || 'black-on-white',\n\t\t\t\t\t\timages: localStorage.getItem('a11y_images') || 'on',\n\n\t\t\t\t\t\tapply: function() {\n\t\t\t\t\t\t\tconst toolbar = document.getElementById('a11y-toolbar');\n\t\t\t\t\t\t\tif (this.active) {\n\t\t\t\t\t\t\t\troot.classList.add('a11y-mode');\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', this.fontSize);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', this.theme);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.remove('hidden');\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\troot.classList.remove('a11y-mode');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-font');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-spacing');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-theme');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-images');\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.add('hidden');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggle: function() {\n\t\t\t\t\t\t\tthis.active = !this.active;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_active', this.active);\n\t\t\t\t\t\t\tthis.apply();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetFont: function(size) {\n\t\t\t\t\t\t\tthis.fontSize = size;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_font', size);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', size);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetColorScheme: function(scheme) {\n\t\t\t\t\t\t\tthis.theme = scheme;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_theme', scheme);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', scheme);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleSpacing: function() {\n\t\t\t\t\t\t\tthis.spacing = (this.spacing === 'normal') ? 'wide' : 'normal';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_spacing', this.spacing);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleImages: function() {\n\t\t\t\t\t\t\tthis.images = (this.images === 'on') ? 'off' : 'on';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_images', this.images);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tupdateUI: function() {\n\t\t\t\t\t\t\tconst sBtn = document.getElementById('a11y-spacing-btn');\n\t\t\t\t\t\t\tif (sBtn) sBtn.textContent = this.spacing === 'wide' ? 'Интервал: Широкий' : 'Интервал: Обычный';\n\t\t\t\t\t\t\tconst iBtn = document.getElementById('a11y-images-btn');\n\t\t\t\t\t\t\tif (iBtn) iBtn.textContent = this.images === 'off' ? 'Изображения: Выкл' : 'Изображения: Вкл';\n\t\t\t\t\t\t}\n\t\t\t\t\t};\n\n\t\t\t\t\t// Переключение тем сайта\n\t\t\t\t\twindow.setSiteTheme = function(themeName) {\n\t\t\t\t\t\troot.setAttribute('data-theme', themeName);\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_theme', themeName);\n\t\t\t\t\t};\n\n\t\t\t\t\t// Первичная синхронизация после загрузки DOM\n\t\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t\twindow.A11Y.apply();\n\t\t\t\t\t});\n\t\t\t\t})();\n\t\t\t</script></head><body class=\"bg-surface text-stone-800 antialiased flex flex-col min-h-screen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -89,7 +136,7 @@ func Base(title string, description string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

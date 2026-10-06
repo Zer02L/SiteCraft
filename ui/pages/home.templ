@@ -1,20 +1,22 @@
 package pages
 
 import (
-	"lawyer/internal/models"
-	"lawyer/ui/components"
-	"lawyer/ui/layouts"
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
 )
 
-templ Home(content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string) {
-	@layouts.Base(content.NotaryTitle + " — Нотариальная контора", content.HeroSubtitle) {
-		@components.A11yBar()
-		@components.Header(content)
+templ Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string) {
+	@layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
 		@components.Hero(content)
 		@components.ScheduleBar(content)
 		@components.Services(services)
-		@components.Booking(content, bookedSlots)
-		@components.MapSection(content)
+		@components.Booking(content, bookedSlots, settings)
+		@components.MapSection(content, settings)
 		@components.Footer(content)
 	}
 }

@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"lawyer/internal/models"
+	"sitecraft/internal/models"
 )
 
 func Services(services []models.ServiceItem) templ.Component {
@@ -33,12 +33,12 @@ func Services(services []models.ServiceItem) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Services Section --><section id=\"services\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\"><div class=\"inline-block px-3 py-1 bg-amber-50 text-amber-800 text-xs font-semibold rounded-full border border-amber-200 uppercase tracking-wider mb-2\">Компетенции</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Нотариальные действия и услуги</h2><p class=\"text-stone-500 mt-2 max-w-xl mx-auto text-sm\">Оформление документов в строгом соответствии с Основами законодательства РФ о нотариате</p></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Services Section --><section id=\"services\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\"><div class=\"inline-block px-3 py-1 bg-amber-50 text-amber-800 text-xs font-semibold rounded-full border border-amber-200 uppercase tracking-wider mb-2\">Направления</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Услуги и стоимость</h2><p class=\"text-stone-500 mt-2 max-w-xl mx-auto text-sm\">Профессиональный подход, прозрачные цены и фиксированные сроки выполнения работ</p></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, s := range services {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-white p-6 rounded-xl border border-stone-200/90 shadow-sm hover:shadow-md hover:border-legal-gold/50 transition flex flex-col justify-between\"><div><div class=\"w-8 h-8 rounded-lg bg-stone-100 text-legal-burgundy flex items-center justify-center font-serif-title font-bold text-sm mb-3\">§</div><h3 class=\"text-lg font-bold text-stone-900 mb-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"bg-white p-6 rounded-xl border border-stone-200/90 shadow-sm hover:shadow-md hover:border-accent/50 transition flex flex-col justify-between\"><div><div class=\"w-8 h-8 rounded-lg bg-stone-100 text-primary flex items-center justify-center font-serif-title font-bold text-sm mb-3\">✦</div><h3 class=\"text-lg font-bold text-stone-900 mb-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -64,14 +64,14 @@ func Services(services []models.ServiceItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</p></div><div class=\"pt-4 border-t border-stone-100 flex items-center justify-between\"><span class=\"text-xs text-stone-400\">Тариф:</span> <span class=\"font-bold text-legal-burgundy text-sm\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</p></div><div class=\"pt-4 border-t border-stone-100 flex items-center justify-between\"><span class=\"text-xs text-stone-400\">Стоимость:</span> <span class=\"font-bold text-primary text-sm\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(s.Price)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/services.templ`, Line: 26, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/services.templ`, Line: 26, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
