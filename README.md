@@ -1,10 +1,11 @@
 # ⚡ SiteCraft Engine & Starter Kit
 
-**SiteCraft** — универсальный модульный движок и стартовый набор для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов малого и среднего бизнеса (SMB) на стеке **Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS**.
+**SiteCraft** — универсальный модульный движок и стартовый набор для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов малого и среднего бизнеса (SMB) на стеке **Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS v4**.
 
 ![PageSpeed](https://img.shields.io/badge/PageSpeed-100%2F100-success?style=flat-square)
 ![Binary Size](https://img.shields.io/badge/Single%20Binary-~25MB-blue?style=flat-square)
 ![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--35MB-orange?style=flat-square)
+![Tailwind v4](https://img.shields.io/badge/Tailwind%20CSS-v4.3%20(Oxide)-38bdf8?style=flat-square)
 ![Interactive UI](https://img.shields.io/badge/UI-HTMX%20%2B%20Alpine.js-purple?style=flat-square)
 ![Multi-Tenant](https://img.shields.io/badge/Multi--Tenant-Fleet%20of%20Binaries-emerald?style=flat-square)
 
@@ -163,14 +164,12 @@ flowchart LR
 
 Движок поддерживает гибкую многоуровневую систему оформления:
 
-### 1. Семантические токены Modern CSS Color Level 4 (`ui/assets/css/tokens.css`)
-Стили используют стандарт **CSS Color Level 4** (`color-mix(in srgb, ...)`):
-* **Единый человекочитаемый формат (HEX / HSL / OKLCH):** токены объявляются в чистом виде (`#1e293b`, `hsl(...)` или `oklch(...)`) без громоздких «сырых» чисел.
-* **Автоматический расчёт производных оттенков в браузере:** вторичные цвета формируются через нативный `color-mix()`:
-  * `var(--color-primary-dark)`: затемнение на 25–30% через `color-mix(in srgb, var(--color-primary), black 30%)`.
-  * `var(--color-primary-light)`: осветление на 25% через `color-mix(in srgb, var(--color-primary), white 25%)`.
-  * `var(--color-surface-muted)`: тонированный пастельный фон через `color-mix(in srgb, var(--color-primary) 3%, white)`.
-* **100% совместимость с Tailwind CSS alpha-каналами:** в `tailwind.config.js` настроена динамическая альфа-интерполяция `color-mix(in srgb, var(--color-*) calc(100% * <alpha-value>), transparent)`, поддерживающая любые модификаторы (`bg-primary/50`, `hover:bg-accent/15`, `border-surface/20`).
+### 1. Архитектура Tailwind CSS v4 (Oxide) & CSS Color Level 4
+Проект работает на движке **Tailwind CSS v4 (Rust Oxide)** с чистой CSS-first конфигурацией без JavaScript-файлов настроек:
+* **Конфигурация через `@theme` ([input.css](ui/assets/input.css)):** Все дизайн-токены регистрируются нативно через директиву `@theme`. Внешний `tailwind.config.js` полностью устранен.
+* **Автоматическое сканирование `@source`:** Пути к шаблонам Templ (`@source "../**/*.templ"`) подключены напрямую в CSS.
+* **Семантические токены ([tokens.css](ui/assets/css/tokens.css)):** Цвета объявлены в стандарте **CSS Color Level 4** с нативным браузерным расчетом вторичных оттенков через `color-mix()`.
+* **Сверхбыстрая сборка (~70 мс):** Компиляция стилей происходит в 10 раз быстрее по сравнению с Tailwind v3.
 
 ### 2. Сезонные темы, Вычисляемая Гармония и режим День / Ночь
 В шапку сайта ([header.templ](ui/components/header.templ)) встроен интерактивный переключатель (Alpine.js) с сохранением состояния в `localStorage`:

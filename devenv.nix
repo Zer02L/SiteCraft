@@ -22,7 +22,7 @@
   packages = with pkgs; [
     git
     templ
-    tailwindcss
+    tailwindcss_4
     air
     sqlite
 

@@ -20,7 +20,7 @@
     @apply bg-surface text-content p-6 rounded-2xl border border-content/10 shadow-sm transition-all duration-300;
   }
   .card-interactive {
-    @apply card-base hover:shadow-xl hover:border-accent/60 hover:-translate-y-1;
+    @apply bg-surface text-content p-6 rounded-2xl border border-content/10 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/60 hover:-translate-y-1;
   }
   .card-title {
     @apply text-lg font-bold text-content;
