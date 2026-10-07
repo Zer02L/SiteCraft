@@ -1,0 +1,73 @@
+/* ====================================================
+   РЕЖИМ ДЛЯ СЛАБОВИДЯЩИХ (ACCESSIBILITY / ГОСТ)
+   Базовые параметры типографики, геометрии и поведения
+   Цветовые схемы управляются токенами в tokens.css
+   ==================================================== */
+
+/* Размеры шрифтов */
+html.a11y-mode[data-a11y-font="normal"] {
+  font-size: 18px;
+}
+html.a11y-mode[data-a11y-font="large"] {
+  font-size: 21px;
+}
+html.a11y-mode[data-a11y-font="xlarge"] {
+  font-size: 25px;
+}
+
+/* Межстрочный и межбуквенный интервал */
+html.a11y-mode[data-a11y-spacing="wide"] * {
+  letter-spacing: 0.12em !important;
+  word-spacing: 0.2em !important;
+}
+
+/* Отключение медиа-контента */
+html.a11y-mode[data-a11y-images="off"] img,
+html.a11y-mode[data-a11y-images="off"] iframe,
+html.a11y-mode[data-a11y-images="off"] svg:not(.a11y-keep-icon) {
+  display: none !important;
+}
+
+/* Базовая типографика по ГОСТ */
+html.a11y-mode body {
+  font-family: Arial, Helvetica, sans-serif !important;
+  line-height: 1.6 !important;
+}
+
+html.a11y-mode a {
+  text-decoration: underline !important;
+  font-weight: 600 !important;
+}
+
+html.a11y-mode button, 
+html.a11y-mode input, 
+html.a11y-mode textarea, 
+html.a11y-mode select {
+  font-family: Arial, Helvetica, sans-serif !important;
+  border-width: 2px !important;
+}
+
+html.a11y-mode .rounded-full,
+html.a11y-mode .rounded-xl,
+html.a11y-mode .rounded-2xl {
+  border-radius: 4px !important;
+}
+
+/* Обнуление теней для максимальной контрастности */
+html.a11y-mode * {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Сетка слотов записи в режиме для слабовидящих */
+html.a11y-mode .bg-emerald-50\/80 {
+  background-color: transparent !important;
+  border: 2px solid currentColor !important;
+  font-weight: bold !important;
+}
+
+html.a11y-mode .bg-stone-100.cursor-not-allowed {
+  border: 2px dashed currentColor !important;
+  opacity: 0.6 !important;
+  text-decoration: line-through !important;
+}

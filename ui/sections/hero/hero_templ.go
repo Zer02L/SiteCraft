@@ -33,7 +33,7 @@ func Hero(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hero Section --><section class=\"relative bg-gradient-to-b from-primary-dark via-primary to-primary-dark text-white py-16 md:py-20 px-4 overflow-hidden border-b-4 border-accent\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center\"><div class=\"lg:col-span-7 space-y-5 text-center lg:text-left\" data-reveal=\"left\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-accent text-xs font-semibold uppercase tracking-wider rounded-full border border-accent/30\"><span class=\"w-2 h-2 rounded-full bg-emerald-400 animate-pulse\"></span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hero Section --><section class=\"relative bg-gradient-to-b from-primary-dark via-primary to-primary-dark text-white py-16 md:py-20 px-4 overflow-hidden border-b-4 border-accent\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center\"><div class=\"lg:col-span-7 space-y-5 text-center lg:text-left\" data-reveal=\"left\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-surface/10 text-accent text-xs font-semibold uppercase tracking-wider rounded-full border border-accent/30\"><span class=\"w-2 h-2 rounded-full bg-emerald-400 animate-pulse\"></span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -103,7 +103,7 @@ func Hero(content models.SiteContent) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-3 rounded-lg border border-white/20 hover:-translate-y-0.5 transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5 text-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z\"></path></svg> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"bg-surface/10 hover:bg-surface/20 text-white font-medium px-5 py-3 rounded-lg border border-white/20 hover:-translate-y-0.5 transition flex items-center justify-center gap-2\"><svg class=\"w-5 h-5 text-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z\"></path></svg> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

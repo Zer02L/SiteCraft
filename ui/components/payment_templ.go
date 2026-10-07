@@ -34,12 +34,12 @@ func PaymentModal(settings models.SiteSettings, service models.ServiceItem, fixe
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Модуль онлайн-оплаты заказа / предоплаты услуги --><div id=\"payment-modal\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4\"><div class=\"bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 border border-stone-200 relative animate-fade-in\"><button type=\"button\" onclick=\"document.getElementById('payment-modal').remove()\" class=\"absolute top-4 right-4 text-stone-400 hover:text-stone-700 text-xl font-bold cursor-pointer\">✕</button><div class=\"text-center mb-6\"><div class=\"w-12 h-12 rounded-full bg-primary/10 text-primary mx-auto flex items-center justify-center text-xl font-bold mb-3\">💳</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Модуль онлайн-оплаты заказа / предоплаты услуги --><div id=\"payment-modal\" class=\"fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4\"><div class=\"card-base max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-fade-in border-content/20\"><button type=\"button\" onclick=\"document.getElementById('payment-modal').remove()\" class=\"absolute top-4 right-4 text-content-muted hover:text-content text-xl font-bold cursor-pointer\">✕</button><div class=\"text-center mb-6\"><div class=\"w-12 h-12 rounded-full bg-accent/15 text-accent mx-auto flex items-center justify-center text-xl font-bold mb-3\">💳</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if orderCode != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<span class=\"px-2.5 py-0.5 bg-stone-900 text-accent text-xs font-bold rounded-lg uppercase tracking-wider\">Квитанция № ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<span class=\"px-2.5 py-0.5 bg-accent/20 text-accent text-xs font-bold rounded-lg uppercase tracking-wider\">Квитанция № ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -52,24 +52,24 @@ func PaymentModal(settings models.SiteSettings, service models.ServiceItem, fixe
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span><h3 class=\"font-serif-title text-xl font-bold text-stone-900 mt-2\">Оплата выполненных работ</h3>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span><h3 class=\"font-serif-title text-xl font-bold text-content mt-2\">Оплата выполненных работ</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h3 class=\"font-serif-title text-xl font-bold text-stone-900\">Оплата услуги</h3>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<h3 class=\"font-serif-title text-xl font-bold text-content\">Оплата услуги</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<p class=\"text-xs text-stone-500 mt-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<p class=\"text-xs text-content-muted mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(service.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/payment.templ`, Line: 33, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/payment.templ`, Line: 33, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -132,30 +132,30 @@ func PaymentModal(settings models.SiteSettings, service models.ServiceItem, fixe
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"><div class=\"p-4 bg-stone-50 rounded-xl border border-stone-200\"><div class=\"flex items-center justify-between\"><span class=\"text-xs font-semibold text-stone-600\">Сумма к оплате:</span> <span class=\"text-2xl font-extrabold text-stone-900\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"><div class=\"p-4 bg-surface-muted rounded-xl border border-content/10\"><div class=\"flex items-center justify-between\"><span class=\"text-xs font-semibold text-content-muted\">Сумма к оплате:</span> <span class=\"text-2xl font-extrabold text-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", fixedAmount))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/payment.templ`, Line: 52, Col: 94}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/payment.templ`, Line: 52, Col: 92}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " ₽</span></div><p class=\"text-[11px] text-stone-400 mt-1 flex items-center gap-1\"><span>🔒</span> Сумма зафиксирована в заказ-наряде и не подлежит изменению.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " ₽</span></div><p class=\"text-[11px] text-content-muted mt-1 flex items-center gap-1\"><span>🔒</span> Сумма зафиксирована в заказ-наряде и не подлежит изменению.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<!-- Обычная оплата услуги с вводом суммы --> <div><label class=\"block text-xs font-semibold text-stone-700 mb-1\">Сумма к оплате (₽)</label> <input type=\"number\" name=\"amount\" value=\"1000\" min=\"100\" required class=\"w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm font-bold text-stone-900 focus:ring-2 focus:ring-accent focus:outline-none\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<!-- Обычная оплата услуги с вводом суммы --> <div><label class=\"form-label\">Сумма к оплате (₽)</label> <input type=\"number\" name=\"amount\" value=\"1000\" min=\"100\" required class=\"form-input font-bold\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<!-- Honeypot anti-spam protection (скрытое поле) --><input type=\"text\" name=\"company_website_url\" class=\"hidden\" tabindex=\"-1\" autocomplete=\"off\"><div><label class=\"block text-xs font-semibold text-stone-700 mb-1\">Ваш Email для чека (54-ФЗ) *</label> <input type=\"email\" name=\"email\" required placeholder=\"client@mail.ru\" class=\"w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-accent focus:outline-none\"></div><div><label class=\"block text-xs font-semibold text-stone-700 mb-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<!-- Honeypot anti-spam protection (скрытое поле) --><input type=\"text\" name=\"company_website_url\" class=\"hidden\" tabindex=\"-1\" autocomplete=\"off\"><div><label class=\"form-label\">Ваш Email для чека (54-ФЗ) *</label> <input type=\"email\" name=\"email\" required placeholder=\"client@mail.ru\" class=\"form-input\"></div><div><label class=\"form-label\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -180,17 +180,17 @@ func PaymentModal(settings models.SiteSettings, service models.ServiceItem, fixe
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " class=\"w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:ring-2 focus:ring-accent focus:outline-none\"></div><!-- Согласие 152-ФЗ и оферта --><div class=\"flex items-start gap-2 pt-1\"><input type=\"checkbox\" id=\"payment-consent\" name=\"consent\" value=\"on\" checked required class=\"mt-1 h-4 w-4 rounded border-stone-300 text-primary focus:ring-accent cursor-pointer\"> <label for=\"payment-consent\" class=\"text-[11px] text-stone-500 leading-snug cursor-pointer select-none\">Согласен с <a href=\"/policy\" target=\"_blank\" class=\"underline hover:text-stone-800\">политикой конфиденциальности</a> (152-ФЗ) и условиями публичной оферты</label></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " class=\"form-input\"></div><!-- Согласие 152-ФЗ и оферта --><div class=\"flex items-start gap-2 pt-1\"><input type=\"checkbox\" id=\"payment-consent\" name=\"consent\" value=\"on\" checked required class=\"mt-1 h-4 w-4 rounded border-content/30 text-accent focus:ring-accent cursor-pointer\"> <label for=\"payment-consent\" class=\"text-[11px] text-content-muted leading-snug cursor-pointer select-none\">Согласен с <a href=\"/policy\" target=\"_blank\" class=\"underline hover:text-content\">политикой конфиденциальности</a> (152-ФЗ) и условиями публичной оферты</label></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.PaymentSandbox {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-[11px] text-amber-800 flex items-center gap-1.5\"><span>⚠️ Включен тестовый режим (реальное списание средств отключено).</span></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-2.5 bg-accent/15 rounded-lg border border-accent/30 text-[11px] text-accent flex items-center gap-1.5\"><span>⚠️ Включен тестовый режим (реальное списание средств отключено).</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<button type=\"submit\" class=\"w-full text-white font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark cursor-pointer active:scale-[0.99]\"><span class=\"htmx-indicator animate-spin inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full\"></span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<button type=\"submit\" class=\"w-full text-surface bg-accent hover:bg-accent-hover font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]\"><span class=\"htmx-indicator animate-spin inline-block w-4 h-4 border-2 border-surface border-t-transparent rounded-full\"></span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

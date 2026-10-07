@@ -1,0 +1,47 @@
+/* =========================================
+   REUSABLE DESIGN-SYSTEM COMPONENTS
+   Synchronized styling tokens for all sections
+   ========================================= */
+
+@layer components {
+  /* Заголовки и бейджи секций */
+  .section-badge {
+    @apply inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded-full border border-accent/20 uppercase tracking-wider mb-2;
+  }
+  .section-title {
+    @apply font-serif-title text-3xl font-bold text-content tracking-tight;
+  }
+  .section-subtitle {
+    @apply text-content-muted mt-2 max-w-xl mx-auto text-sm leading-relaxed;
+  }
+
+  /* Базовые карточки контента */
+  .card-base {
+    @apply bg-surface text-content p-6 rounded-2xl border border-content/10 shadow-sm transition-all duration-300;
+  }
+  .card-interactive {
+    @apply card-base hover:shadow-xl hover:border-accent/60 hover:-translate-y-1;
+  }
+  .card-title {
+    @apply text-lg font-bold text-content;
+  }
+  .card-desc {
+    @apply text-content-muted text-sm leading-relaxed;
+  }
+
+  /* Формы и поля ввода */
+  .form-input {
+    @apply w-full px-3.5 py-2.5 bg-surface text-content border border-content/20 rounded-lg text-sm transition focus:ring-2 focus:ring-accent focus:border-accent focus:outline-none;
+  }
+  .form-label {
+    @apply block text-xs font-semibold text-content/80 mb-1;
+  }
+
+  /* Кнопки */
+  .btn-accent {
+    @apply px-4 py-2 bg-accent hover:bg-accent-hover text-surface font-semibold rounded-lg shadow-sm transition-colors cursor-pointer text-sm;
+  }
+  .btn-primary-ghost {
+    @apply px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer text-xs;
+  }
+}

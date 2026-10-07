@@ -10,8 +10,8 @@ templ Footer(content models.SiteContent) {
 		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
 			<div>
 				<div class="text-white font-serif-title font-bold text-lg mb-2">{ content.HeroTitle }</div>
-				<p class="text-xs text-stone-400">{ content.OwnerName }</p>
-				<p class="text-xs text-stone-400 mt-2">{ content.HeroSubtitle }</p>
+				<p class="text-xs text-content-muted">{ content.OwnerName }</p>
+				<p class="text-xs text-content-muted mt-2">{ content.HeroSubtitle }</p>
 			</div>
 			<div>
 				<div class="text-white font-semibold text-sm mb-3">Контакты для связи</div>
@@ -25,8 +25,8 @@ templ Footer(content models.SiteContent) {
 			<div>
 				<div class="text-white font-semibold text-sm mb-3">Режим работы</div>
 				<p class="text-xs text-stone-300">{ content.WorkHours }</p>
-				<p class="text-xs text-stone-400">Перерыв: { content.LunchBreak }</p>
-				<p class="text-xs text-stone-500 mt-2">© 2026 { content.HeroTitle }. Все права защищены.</p>
+				<p class="text-xs text-content-muted">Перерыв: { content.LunchBreak }</p>
+				<p class="text-xs text-content-muted mt-2">© 2026 { content.HeroTitle }. Все права защищены.</p>
 			</div>
 		</div>
 	</footer>

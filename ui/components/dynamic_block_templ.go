@@ -38,14 +38,14 @@ func DynamicBlock(block models.PageBlock) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if block.Title != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"text-center mb-8\"><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"text-center mb-8\"><h2 class=\"section-title\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(block.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/dynamic_block.templ`, Line: 12, Col: 80}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/dynamic_block.templ`, Line: 12, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -56,7 +56,7 @@ func DynamicBlock(block models.PageBlock) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"prose max-w-none text-stone-700 leading-relaxed bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"prose max-w-none text-content/90 leading-relaxed card-base sm:p-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

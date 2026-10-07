@@ -17,10 +17,10 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 		<main class="flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8">
 			<div class="max-w-5xl mx-auto">
 				<!-- Хлебные крошки -->
-				<nav class="flex items-center text-xs text-stone-500 mb-6 space-x-2">
+				<nav class="flex items-center text-xs text-content-muted mb-6 space-x-2">
 					<a href="/" class="hover:text-primary transition font-medium">Главная</a>
 					<span>/</span>
-					<span class="text-stone-800 font-semibold">Блог и публикации</span>
+					<span class="text-content font-semibold">Блог и публикации</span>
 				</nav>
 
 				<!-- Заголовок страницы -->
@@ -28,10 +28,10 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 					<span class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-3 uppercase tracking-wider">
 						Экспертные материалы
 					</span>
-					<h1 class="text-3xl sm:text-4xl font-serif-title font-bold text-stone-900 leading-tight">
+					<h1 class="text-3xl sm:text-4xl font-serif-title font-bold text-content leading-tight">
 						База знаний и статьи
 					</h1>
-					<p class="mt-3 text-stone-600 text-sm sm:text-base">
+					<p class="mt-3 text-content-muted text-sm sm:text-base">
 						Актуальная правовая информация, практические рекомендации и разбор частых вопросов от специалистов.
 					</p>
 
@@ -47,9 +47,9 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 							hx-target="#blog-posts-container"
 							hx-select="#blog-posts-container"
 							hx-push-url="true"
-							class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition"
+							class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition"
 						/>
-						<svg class="w-5 h-5 text-stone-400 absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<svg class="w-5 h-5 text-content-muted absolute left-3 top-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
 						</svg>
 					</div>
@@ -64,14 +64,14 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 							}
 						</div>
 					} else {
-						<div class="bg-white rounded-2xl p-12 text-center border border-stone-200 shadow-sm max-w-lg mx-auto">
-							<div class="w-12 h-12 mx-auto bg-stone-100 rounded-full flex items-center justify-center text-stone-400 mb-4">
+						<div class="bg-surface rounded-2xl p-12 text-center border border-content/10 shadow-sm max-w-lg mx-auto">
+							<div class="w-12 h-12 mx-auto bg-surface-muted rounded-full flex items-center justify-center text-content-muted mb-4">
 								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
 								</svg>
 							</div>
-							<h3 class="text-base font-bold text-stone-800">Статей не найдено</h3>
-							<p class="text-xs text-stone-500 mt-1">Попробуйте изменить поисковый запрос или сбросить фильтр.</p>
+							<h3 class="text-base font-bold text-content">Статей не найдено</h3>
+							<p class="text-xs text-content-muted mt-1">Попробуйте изменить поисковый запрос или сбросить фильтр.</p>
 							if searchQuery != "" {
 								<a href="/blog" class="inline-block mt-4 text-xs font-semibold text-primary hover:underline">Показать все статьи</a>
 							}
@@ -86,15 +86,15 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 }
 
 templ BlogCard(a models.ArticleItem) {
-	<article class="bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-md transition flex flex-col group">
+	<article class="bg-surface rounded-2xl overflow-hidden border border-content/10 shadow-sm hover:shadow-md transition flex flex-col group">
 		if a.CoverImage != "" {
-			<a href={ templ.URL("/blog/" + a.Slug) } class="block aspect-video w-full overflow-hidden bg-stone-100">
+			<a href={ templ.URL("/blog/" + a.Slug) } class="block aspect-video w-full overflow-hidden bg-surface-muted">
 				<img src={ a.CoverImage } alt={ a.Title } class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy"/>
 			</a>
 		}
 		<div class="p-6 flex-grow flex flex-col">
 			<!-- Мета-информация -->
-			<div class="flex items-center justify-between text-xs text-stone-500 mb-3">
+			<div class="flex items-center justify-between text-xs text-content-muted mb-3">
 				<span class="flex items-center gap-1.5">
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -116,7 +116,7 @@ templ BlogCard(a models.ArticleItem) {
 			if len(a.Tags) > 0 {
 				<div class="flex flex-wrap gap-1.5 mb-2.5">
 					for _, tag := range a.Tags {
-						<span class="px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[11px] font-medium">
+						<span class="px-2 py-0.5 bg-surface-muted text-content-muted rounded text-[11px] font-medium">
 							#{ tag }
 						</span>
 					}
@@ -124,21 +124,21 @@ templ BlogCard(a models.ArticleItem) {
 			}
 
 			<!-- Заголовок -->
-			<h2 class="text-lg font-serif-title font-bold text-stone-900 group-hover:text-primary transition leading-snug">
+			<h2 class="text-lg font-serif-title font-bold text-content group-hover:text-primary transition leading-snug">
 				<a href={ templ.URL("/blog/" + a.Slug) }>
 					{ a.Title }
 				</a>
 			</h2>
 
 			<!-- Анонс -->
-			<p class="mt-2.5 text-stone-600 text-xs sm:text-sm line-clamp-3 leading-relaxed flex-grow">
+			<p class="mt-2.5 text-content-muted text-xs sm:text-sm line-clamp-3 leading-relaxed flex-grow">
 				{ a.Excerpt }
 			</p>
 
 			<!-- Подвал карточки -->
-			<div class="mt-5 pt-4 border-t border-stone-100 flex items-center justify-between text-xs">
+			<div class="mt-5 pt-4 border-t border-content/10 flex items-center justify-between text-xs">
 				if a.AuthorName != "" {
-					<span class="text-stone-500 font-medium">Автор: { a.AuthorName }</span>
+					<span class="text-content-muted font-medium">Автор: { a.AuthorName }</span>
 				} else {
 					<span></span>
 				}

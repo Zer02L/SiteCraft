@@ -161,7 +161,7 @@ func initSiteSettingsCollection(app core.App) error {
 		record := core.NewRecord(col)
 		record.Set("site_name", "Нотариальная контора")
 		record.Set("tagline", "Официальные нотариальные действия в соответствии с законодательством РФ")
-		record.Set("theme", "legal")
+		record.Set("theme", "main")
 		record.Set("enable_a11y", true)
 		record.Set("enable_alpine", false) // Zero-JS по умолчанию!
 		record.Set("enable_turnstile", false)
@@ -410,7 +410,7 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 	settings := models.SiteSettings{
 		SiteName:       "Нотариальная контора",
 		Tagline:        "Официальные нотариальные действия",
-		Theme:          "legal",
+		Theme:          "main",
 		EnableA11y:     true,
 		EnableAlpine:   false,
 		MapMode:        "lazy",

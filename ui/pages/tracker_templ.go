@@ -62,7 +62,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-3xl mx-auto\"><!-- Заголовок страницы --><div class=\"text-center mb-8\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2\"><span>⚡ Онлайн-сервис</span> <span>•</span> <span>B2B Трекер заказов</span></div><h1 class=\"text-2xl sm:text-3xl font-serif-title font-bold text-stone-900\">Статус готовности заказа</h1><p class=\"text-xs sm:text-sm text-stone-600 mt-1\">Введите номер квитанции или заказ-наряда для проверки статуса работ</p><!-- Форма ввода номера заказа --><form action=\"/track\" method=\"GET\" class=\"mt-6 flex max-w-md mx-auto gap-2\"><input type=\"text\" name=\"code\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-3xl mx-auto\"><!-- Заголовок страницы --><div class=\"text-center mb-8\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2\"><span>⚡ Онлайн-сервис</span> <span>•</span> <span>B2B Трекер заказов</span></div><h1 class=\"text-2xl sm:text-3xl font-serif-title font-bold text-content\">Статус готовности заказа</h1><p class=\"text-xs sm:text-sm text-content-muted mt-1\">Введите номер квитанции или заказ-наряда для проверки статуса работ</p><!-- Форма ввода номера заказа --><form action=\"/track\" method=\"GET\" class=\"mt-6 flex max-w-md mx-auto gap-2\"><input type=\"text\" name=\"code\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -75,7 +75,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" required placeholder=\"Например: SRV-4182\" class=\"flex-grow px-4 py-3 rounded-xl border border-stone-300 bg-white text-stone-900 text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm\"> <button type=\"submit\" class=\"px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow cursor-pointer whitespace-nowrap\">Найти заказ</button></form></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" required placeholder=\"Например: SRV-4182\" class=\"flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm\"> <button type=\"submit\" class=\"px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow cursor-pointer whitespace-nowrap\">Найти заказ</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -99,7 +99,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" hx-trigger=\"every 15s\" hx-swap=\"outerHTML\" class=\"bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-xl\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" hx-trigger=\"every 15s\" hx-swap=\"outerHTML\" class=\"bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -112,7 +112,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 					return templ_7745c5c3_Err
 				}
 			} else if !notFound {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Демо-подсказка при первом открытии --> <div class=\"bg-white/70 rounded-2xl p-6 border border-stone-200 text-center max-w-md mx-auto text-xs text-stone-500\"><span class=\"font-bold text-stone-700\">Демонстрационные квитанции для проверки:</span><div class=\"flex justify-center gap-3 mt-2\"><a href=\"/track?code=SRV-4182\" class=\"px-3 py-1.5 bg-stone-100 rounded-lg text-primary font-bold hover:underline\">SRV-4182 (Авто)</a> <a href=\"/track?code=FIX-9021\" class=\"px-3 py-1.5 bg-stone-100 rounded-lg text-primary font-bold hover:underline\">FIX-9021 (iPhone)</a></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Демо-подсказка при первом открытии --> <div class=\"bg-surface/70 rounded-2xl p-6 border border-content/10 text-center max-w-md mx-auto text-xs text-content-muted\"><span class=\"font-bold text-content/80\">Демонстрационные квитанции для проверки:</span><div class=\"flex justify-center gap-3 mt-2\"><a href=\"/track?code=SRV-4182\" class=\"px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline\">SRV-4182 (Авто)</a> <a href=\"/track?code=FIX-9021\" class=\"px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline\">FIX-9021 (iPhone)</a></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -156,7 +156,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div><!-- Шапка квитанции --><div class=\"flex flex-wrap items-center justify-between pb-6 border-b border-stone-100 gap-4\"><div><div class=\"flex items-center gap-2\"><span class=\"px-3 py-1 bg-stone-900 text-accent font-bold text-sm tracking-wider rounded-lg uppercase\">№ ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div><!-- Шапка квитанции --><div class=\"flex flex-wrap items-center justify-between pb-6 border-b border-content/10 gap-4\"><div><div class=\"flex items-center gap-2\"><span class=\"px-3 py-1 bg-stone-900 text-accent font-bold text-sm tracking-wider rounded-lg uppercase\">№ ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -189,12 +189,12 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<span class=\"px-2.5 py-1 bg-stone-100 text-stone-700 font-bold text-xs rounded-lg\">Принят</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<span class=\"px-2.5 py-1 bg-surface-muted text-content/80 font-bold text-xs rounded-lg\">Принят</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><h2 class=\"text-xl sm:text-2xl font-serif-title font-bold text-stone-900 mt-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><h2 class=\"text-xl sm:text-2xl font-serif-title font-bold text-content mt-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -212,14 +212,14 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 			return templ_7745c5c3_Err
 		}
 		if order.ClientName != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<p class=\"text-xs text-stone-500 mt-0.5\">Владелец: ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<p class=\"text-xs text-content-muted mt-0.5\">Владелец: ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(order.ClientName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 120, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 120, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -230,7 +230,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- Финансовый блок --><div class=\"text-right\"><div class=\"text-xs text-stone-500\">Стоимость работ:</div><div class=\"text-2xl font-extrabold text-stone-900\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- Финансовый блок --><div class=\"text-right\"><div class=\"text-xs text-content-muted\">Стоимость работ:</div><div class=\"text-2xl font-extrabold text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -258,7 +258,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Интерактивный прогресс-бар этапов --><div class=\"py-8\"><div class=\"relative\"><!-- Соединяющая линия --><div class=\"hidden sm:block absolute top-5 left-8 right-8 h-1 bg-stone-200 -z-0\"></div><div class=\"grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10\"><!-- Этап 1: Принят --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\"><div class=\"w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow\">✓</div><div><div class=\"font-bold text-xs text-stone-800\">1. Принят</div><div class=\"text-[10px] text-stone-500\">Осмотр и оформление</div></div></div><!-- Этап 2: Диагностика --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Интерактивный прогресс-бар этапов --><div class=\"py-8\"><div class=\"relative\"><!-- Соединяющая линия --><div class=\"hidden sm:block absolute top-5 left-8 right-8 h-1 bg-stone-200 -z-0\"></div><div class=\"grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10\"><!-- Этап 1: Принят --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\"><div class=\"w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow\">✓</div><div><div class=\"font-bold text-xs text-content\">1. Принят</div><div class=\"text-[10px] text-content-muted\">Осмотр и оформление</div></div></div><!-- Этап 2: Диагностика --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -268,12 +268,12 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm\">2</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">2</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div><div class=\"font-bold text-xs text-stone-800\">2. Диагностика</div><div class=\"text-[10px] text-stone-500\">Дефектовка узлов</div></div></div><!-- Этап 3: В работе --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div><div class=\"font-bold text-xs text-content\">2. Диагностика</div><div class=\"text-[10px] text-content-muted\">Дефектовка узлов</div></div></div><!-- Этап 3: В работе --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -288,12 +288,12 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm\">3</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">3</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div><div class=\"font-bold text-xs text-stone-800\">3. В работе</div><div class=\"text-[10px] text-stone-500\">Выполнение работ</div></div></div><!-- Этап 4: Готов --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div><div class=\"font-bold text-xs text-content\">3. В работе</div><div class=\"text-[10px] text-content-muted\">Выполнение работ</div></div></div><!-- Этап 4: Готов --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -303,17 +303,17 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm\">4</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">4</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div><div class=\"font-bold text-xs text-stone-800\">4. Готов к выдаче</div><div class=\"text-[10px] text-stone-500\">Передача клиенту</div></div></div></div></div></div><!-- Детализация истории этапов от мастера -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div><div class=\"font-bold text-xs text-content\">4. Готов к выдаче</div><div class=\"text-[10px] text-content-muted\">Передача клиенту</div></div></div></div></div></div><!-- Детализация истории этапов от мастера -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(order.StagesHistory) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div class=\"bg-surface rounded-2xl p-5 border border-stone-200 mb-6\"><h3 class=\"text-xs font-bold text-stone-500 uppercase tracking-wider mb-3\">Хронология обслуживания</h3><div class=\"space-y-3\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<div class=\"bg-surface rounded-2xl p-5 border border-content/10 mb-6\"><h3 class=\"text-xs font-bold text-content-muted uppercase tracking-wider mb-3\">Хронология обслуживания</h3><div class=\"space-y-3\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -333,14 +333,14 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div><div class=\"flex-grow\"><div class=\"flex justify-between items-center\"><span class=\"font-bold text-stone-800\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div><div class=\"flex-grow\"><div class=\"flex justify-between items-center\"><span class=\"font-bold text-content\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(h.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 234, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 234, Col: 55}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -351,14 +351,14 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 					return templ_7745c5c3_Err
 				}
 				if h.Timestamp != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<span class=\"text-[11px] text-stone-400\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<span class=\"text-[11px] text-content-muted\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var11 string
 					templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(h.Timestamp)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 236, Col: 64}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 236, Col: 68}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 					if templ_7745c5c3_Err != nil {
@@ -374,14 +374,14 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 					return templ_7745c5c3_Err
 				}
 				if h.Comment != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p class=\"text-stone-600 mt-0.5\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<p class=\"text-content-muted mt-0.5\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var12 string
 					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(h.Comment)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 240, Col: 53}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 240, Col: 57}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {

@@ -16,7 +16,7 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 						{ payload.Badge }
 					</div>
 				}
-				<h2 class="font-serif-title text-3xl font-bold text-stone-900">
+				<h2 class="font-serif-title text-3xl font-bold text-content">
 					if payload.Title != "" {
 						{ payload.Title }
 					} else {
@@ -24,13 +24,13 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 					}
 				</h2>
 				if payload.Subtitle != "" {
-					<p class="text-stone-500 mt-2 max-w-xl mx-auto text-sm">{ payload.Subtitle }</p>
+					<p class="text-content-muted mt-2 max-w-xl mx-auto text-sm">{ payload.Subtitle }</p>
 				}
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 				for idx, item := range payload.Items {
-					<div data-reveal data-reveal-delay={ fmt.Sprintf("%d", (idx%4+1)*100) } class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay={ fmt.Sprintf("%d", (idx%4+1)*100) } class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">
 							if item.Icon != "" {
 								{ item.Icon }
@@ -38,8 +38,8 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 								✦
 							}
 						</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">{ item.Title }</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">{ item.Description }</p>
+						<h3 class="font-bold text-content text-base mb-2">{ item.Title }</h3>
+						<p class="text-content-muted text-xs leading-relaxed">{ item.Description }</p>
 					</div>
 				}
 			</div>
@@ -47,77 +47,77 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 			<!-- Режим 2: Встроенный fallback по темам -->
 			<div class="text-center mb-12" data-reveal>
 				<div class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20 uppercase tracking-wider mb-2">Наши стандарты</div>
-				<h2 class="font-serif-title text-3xl font-bold text-stone-900">Почему выбирают нас</h2>
-				<p class="text-stone-500 mt-2 max-w-xl mx-auto text-sm">Гарантируем высокое качество, пунктуальность и индивидуальный подход к каждой задаче</p>
+				<h2 class="font-serif-title text-3xl font-bold text-content">Почему выбирают нас</h2>
+				<p class="text-content-muted mt-2 max-w-xl mx-auto text-sm">Гарантируем высокое качество, пунктуальность и индивидуальный подход к каждой задаче</p>
 			</div>
 
 			if theme == "medical" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🩺</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Врачи высшей категории</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p>
+						<h3 class="font-bold text-content text-base mb-2">Врачи высшей категории</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🔬</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Собственная лаборатория</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p>
+						<h3 class="font-bold text-content text-base mb-2">Собственная лаборатория</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">⚡</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Без очередей</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Точный приём по электронным талонам и предварительной записи минута в минуту.</p>
+						<h3 class="font-bold text-content text-base mb-2">Без очередей</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Точный приём по электронным талонам и предварительной записи минута в минуту.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="400" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🛡️</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Лицензия Минздрава</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p>
+						<h3 class="font-bold text-content text-base mb-2">Лицензия Минздрава</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p>
 					</div>
 				</div>
 			} else if theme == "auto" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🔧</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Дилерское оборудование</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p>
+						<h3 class="font-bold text-content text-base mb-2">Дилерское оборудование</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">📄</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Гарантия 12 месяцев</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Письменная гарантия на все выполненные работы и установленные запчасти.</p>
+						<h3 class="font-bold text-content text-base mb-2">Гарантия 12 месяцев</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Письменная гарантия на все выполненные работы и установленные запчасти.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">📦</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Склад запчастей</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Более 5 000 оригинальных и проверенных аналоговых деталей всегда в наличии.</p>
+						<h3 class="font-bold text-content text-base mb-2">Склад запчастей</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Более 5 000 оригинальных и проверенных аналоговых деталей всегда в наличии.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="400" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">☕</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Комфортная зона ожидания</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Wi-Fi, кофе, мониторы с видеотрансляцией из ремонтной зоны прямо в зале.</p>
+						<h3 class="font-bold text-content text-base mb-2">Комфортная зона ожидания</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Wi-Fi, кофе, мониторы с видеотрансляцией из ремонтной зоны прямо в зале.</p>
 					</div>
 				</div>
 			} else if theme == "beauty" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">✨</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Премиум-косметика</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Официальные составы L'Oreal Professionnel, Davines и Lebel прямо от дистрибьютора.</p>
+						<h3 class="font-bold text-content text-base mb-2">Премиум-косметика</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Официальные составы L'Oreal Professionnel, Davines и Lebel прямо от дистрибьютора.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">✂️</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Топ-стилисты и колористы</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Дипломированные мастера с международным опытом и постоянным повышением квалификации.</p>
+						<h3 class="font-bold text-content text-base mb-2">Топ-стилисты и колористы</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Дипломированные мастера с международным опытом и постоянным повышением квалификации.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🛡️</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">100% стерильность СанПиН</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Сухожаровой шкаф ГП-20, одноразовые наборы и индивидуальные крафт-пакеты при вас.</p>
+						<h3 class="font-bold text-content text-base mb-2">100% стерильность СанПиН</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Сухожаровой шкаф ГП-20, одноразовые наборы и индивидуальные крафт-пакеты при вас.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="400" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🥂</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Атмосфера релакса</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Тихая музыка, натуральный кофе, шампанское и бережный персонализированный сервис.</p>
+						<h3 class="font-bold text-content text-base mb-2">Атмосфера релакса</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Тихая музыка, натуральный кофе, шампанское и бережный персонализированный сервис.</p>
 					</div>
 				</div>
 			} else if theme == "cyber" {
@@ -145,25 +145,25 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 				</div>
 			} else {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">⚖️</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Строго по закону</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Совершение всех юридических процедур в точном соответствии с законодательством РФ.</p>
+						<h3 class="font-bold text-content text-base mb-2">Строго по закону</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Совершение всех юридических процедур в точном соответствии с законодательством РФ.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🔒</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Тайна совершения действий</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Абсолютная конфиденциальность сведений и защита персональных данных доверителей.</p>
+						<h3 class="font-bold text-content text-base mb-2">Тайна совершения действий</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Абсолютная конфиденциальность сведений и защита персональных данных доверителей.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">⚡</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Электронные реестры</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Мгновенная проверка и регистрация документов в Единой информационной системе.</p>
+						<h3 class="font-bold text-content text-base mb-2">Электронные реестры</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Мгновенная проверка и регистрация документов в Единой информационной системе.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm hover:shadow-lg transition">
+					<div data-reveal data-reveal-delay="400" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition">
 						<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">💼</div>
-						<h3 class="font-bold text-stone-900 text-base mb-2">Комплексный приём</h3>
-						<p class="text-stone-600 text-xs leading-relaxed">Подготовка проектов договоров, запросы в Росреестр и регистрация под ключ.</p>
+						<h3 class="font-bold text-content text-base mb-2">Комплексный приём</h3>
+						<p class="text-content-muted text-xs leading-relaxed">Подготовка проектов договоров, запросы в Росреестр и регистрация под ключ.</p>
 					</div>
 				</div>
 			}

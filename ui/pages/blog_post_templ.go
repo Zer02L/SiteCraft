@@ -62,20 +62,20 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8\"><article class=\"max-w-4xl mx-auto\"><!-- Хлебные крошки --><nav class=\"flex items-center text-xs text-stone-500 mb-6 space-x-2\"><a href=\"/\" class=\"hover:text-primary transition font-medium\">Главная</a> <span>/</span> <a href=\"/blog\" class=\"hover:text-primary transition font-medium\">Блог</a> <span>/</span> <span class=\"text-stone-800 font-semibold truncate max-w-xs sm:max-w-md\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8\"><article class=\"max-w-4xl mx-auto\"><!-- Хлебные крошки --><nav class=\"flex items-center text-xs text-content-muted mb-6 space-x-2\"><a href=\"/\" class=\"hover:text-primary transition font-medium\">Главная</a> <span>/</span> <a href=\"/blog\" class=\"hover:text-primary transition font-medium\">Блог</a> <span>/</span> <span class=\"text-content font-semibold truncate max-w-xs sm:max-w-md\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(article.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 25, Col: 93}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 25, Col: 91}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></nav><!-- Заголовок статьи --><header class=\"mb-8\"><div class=\"flex flex-wrap items-center gap-3 text-xs text-stone-500 mb-3\"><span class=\"flex items-center gap-1.5 font-medium\"><svg class=\"w-4 h-4 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></nav><!-- Заголовок статьи --><header class=\"mb-8\"><div class=\"flex flex-wrap items-center gap-3 text-xs text-content-muted mb-3\"><span class=\"flex items-center gap-1.5 font-medium\"><svg class=\"w-4 h-4 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -93,14 +93,14 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 				return templ_7745c5c3_Err
 			}
 			if article.AuthorName != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span>•</span> <span class=\"font-medium text-stone-700\">Автор: ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span>•</span> <span class=\"font-medium text-content/80\">Автор: ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(article.AuthorName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 39, Col: 80}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 39, Col: 81}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -111,7 +111,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<span>•</span> <span class=\"flex items-center gap-1\"><svg class=\"w-4 h-4 text-stone-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<span>•</span> <span class=\"flex items-center gap-1\"><svg class=\"w-4 h-4 text-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -124,7 +124,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><h1 class=\"text-2xl sm:text-4xl font-serif-title font-bold text-stone-900 leading-tight\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><h1 class=\"text-2xl sm:text-4xl font-serif-title font-bold text-content leading-tight\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -147,7 +147,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 					return templ_7745c5c3_Err
 				}
 				for _, tag := range article.Tags {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<span class=\"px-2.5 py-1 bg-stone-100 text-stone-700 rounded-lg text-xs font-medium\">#")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<span class=\"px-2.5 py-1 bg-surface-muted text-content/80 rounded-lg text-xs font-medium\">#")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -175,7 +175,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 				return templ_7745c5c3_Err
 			}
 			if article.CoverImage != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-stone-100\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-surface-muted\"><img src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -206,7 +206,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!-- Содержимое статьи --><div class=\"bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-sm\"><div class=\"article-content max-w-none text-stone-800 text-base leading-relaxed space-y-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!-- Содержимое статьи --><div class=\"bg-surface rounded-2xl p-6 sm:p-10 border border-content/10 shadow-sm\"><div class=\"article-content max-w-none text-content text-base leading-relaxed space-y-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -214,12 +214,12 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div><!-- Баннер консультации / записи внутри статьи (CTA) --><div class=\"mt-12 p-6 sm:p-8 bg-surface rounded-xl border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6\"><div class=\"text-left\"><h3 class=\"text-lg font-bold text-stone-900 font-serif-title\">Нужна помощь или консультация?</h3><p class=\"text-xs sm:text-sm text-stone-600 mt-1 max-w-md\">Запишитесь на прием онлайн без очередей в удобное для вас время.</p></div><a href=\"/#booking\" class=\"px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow whitespace-nowrap cursor-pointer\">Записаться на прием</a></div></div><!-- Похожие статьи -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div><!-- Баннер консультации / записи внутри статьи (CTA) --><div class=\"mt-12 p-6 sm:p-8 bg-surface rounded-xl border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6\"><div class=\"text-left\"><h3 class=\"text-lg font-bold text-content font-serif-title\">Нужна помощь или консультация?</h3><p class=\"text-xs sm:text-sm text-content-muted mt-1 max-w-md\">Запишитесь на прием онлайн без очередей в удобное для вас время.</p></div><a href=\"/#booking\" class=\"px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow whitespace-nowrap cursor-pointer\">Записаться на прием</a></div></div><!-- Похожие статьи -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if len(relatedArticles) > 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"mt-12\"><h3 class=\"text-xl font-bold font-serif-title text-stone-900 mb-6\">Читайте также</h3><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"mt-12\"><h3 class=\"text-xl font-bold font-serif-title text-content mb-6\">Читайте также</h3><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

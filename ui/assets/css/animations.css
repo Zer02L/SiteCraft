@@ -1,0 +1,74 @@
+/* ==========================================================================
+   МИКРО-АНИМАЦИИ: SCROLL REVEAL & VIEW TRANSITIONS
+   ========================================================================== */
+
+/* Базовое состояние для элементов с data-reveal (скрыто, смещено) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal="left"] {
+  transform: translateX(-20px);
+}
+
+[data-reveal="right"] {
+  transform: translateX(20px);
+}
+
+[data-reveal="scale"] {
+  transform: scale(0.96);
+}
+
+/* Активное состояние при попадании во вьюпорт */
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Каскадная задержка для карточек (Stagger) */
+[data-reveal-delay="100"] { transition-delay: 100ms; }
+[data-reveal-delay="200"] { transition-delay: 200ms; }
+[data-reveal-delay="300"] { transition-delay: 300ms; }
+[data-reveal-delay="400"] { transition-delay: 400ms; }
+
+/* CSS Scroll-Driven: полоса прогресса чтения в шапке */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress-bar {
+    transform-origin: 0% 50%;
+    animation: grow-progress auto linear;
+    animation-timeline: scroll();
+  }
+
+  @keyframes grow-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+/* Нативная поддержка HTMX View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.22s;
+}
+
+/* Полное выключение анимаций для режима слабовидящих или настроек ОС */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .scroll-progress-bar {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+html.a11y-mode [data-reveal],
+html.a11y-mode .scroll-progress-bar {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}

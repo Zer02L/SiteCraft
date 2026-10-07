@@ -26,10 +26,10 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 						<span>•</span>
 						<span>Ниша В</span>
 					</div>
-					<h1 class="text-2xl sm:text-4xl font-serif-title font-bold text-stone-900 leading-tight">
+					<h1 class="text-2xl sm:text-4xl font-serif-title font-bold text-content leading-tight">
 						Эксклюзивные материалы и мастер-классы
 					</h1>
-					<p class="text-stone-600 text-xs sm:text-sm mt-2 max-w-xl mx-auto">
+					<p class="text-content-muted text-xs sm:text-sm mt-2 max-w-xl mx-auto">
 						Практические разборы сложных дел, готовые шаблоны договоров и закрытые видео-уроки от ведущих экспертов.
 					</p>
 				</div>
@@ -39,18 +39,18 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 					<div class="bg-gradient-to-r from-stone-900 to-stone-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 border border-stone-700">
 						<div class="flex items-center justify-between flex-wrap gap-4">
 							<div class="flex items-center gap-3">
-								<div class="w-12 h-12 rounded-full bg-amber-400 text-stone-900 font-bold flex items-center justify-center text-lg shadow">
+								<div class="w-12 h-12 rounded-full bg-amber-400 text-content font-bold flex items-center justify-center text-lg shadow">
 									👑
 								</div>
 								<div>
 									<div class="font-bold text-base sm:text-lg flex items-center gap-2">
 										<span>Добро пожаловать, { user.FirstName }!</span>
-										<span class="px-2 py-0.5 bg-amber-400 text-stone-900 text-[10px] font-extrabold rounded uppercase tracking-wider">VIP активен</span>
+										<span class="px-2 py-0.5 bg-amber-400 text-content text-[10px] font-extrabold rounded uppercase tracking-wider">VIP активен</span>
 									</div>
-									<div class="text-xs text-stone-400">{ "@" + user.Username } • Неограниченный доступ ко всем закрытым материалам</div>
+									<div class="text-xs text-content-muted">{ "@" + user.Username } • Неограниченный доступ ко всем закрытым материалам</div>
 								</div>
 							</div>
-							<div class="text-xs text-stone-300 bg-white/10 px-3 py-1.5 rounded-xl border border-white/10">
+							<div class="text-xs text-stone-300 bg-surface/10 px-3 py-1.5 rounded-xl border border-white/10">
 								Статус: <span class="text-emerald-400 font-bold">Оплачено</span>
 							</div>
 						</div>
@@ -58,16 +58,16 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 
 					<!-- Сетка видео-уроков (Headless плееры) -->
 					<div class="space-y-8">
-						<h2 class="text-xl font-bold font-serif-title text-stone-900">Доступные видео-модули</h2>
+						<h2 class="text-xl font-bold font-serif-title text-content">Доступные видео-модули</h2>
 
 						<!-- Урок 1 -->
-						<div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm">
-							<div class="flex items-center justify-between text-xs text-stone-500 mb-3">
+						<div class="bg-surface rounded-3xl p-6 border border-content/10 shadow-sm">
+							<div class="flex items-center justify-between text-xs text-content-muted mb-3">
 								<span class="font-bold text-primary">Модуль 1 • Видеоразбор</span>
 								<span>Длительность: 28 минут</span>
 							</div>
-							<h3 class="text-lg font-bold text-stone-900 mb-2">Практический аудит чистоты объекта недвижимости</h3>
-							<p class="text-xs sm:text-sm text-stone-600 mb-4">
+							<h3 class="text-lg font-bold text-content mb-2">Практический аудит чистоты объекта недвижимости</h3>
+							<p class="text-xs sm:text-sm text-content-muted mb-4">
 								Пошаговый разбор реального кейса: проверка по архивам, наследственным спорам и банкротным реестрам.
 							</p>
 							<!-- Headless Video Container (Kinescope/VK/Rutube embed) -->
@@ -84,18 +84,18 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 						</div>
 
 						<!-- Урок 2 -->
-						<div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm">
-							<div class="flex items-center justify-between text-xs text-stone-500 mb-3">
+						<div class="bg-surface rounded-3xl p-6 border border-content/10 shadow-sm">
+							<div class="flex items-center justify-between text-xs text-content-muted mb-3">
 								<span class="font-bold text-primary">Модуль 2 • Практикум</span>
 								<span>Длительность: 35 минут</span>
 							</div>
-							<h3 class="text-lg font-bold text-stone-900 mb-2">Составление брачных договоров и соглашений о разделе</h3>
-							<p class="text-xs sm:text-sm text-stone-600 mb-4">
+							<h3 class="text-lg font-bold text-content mb-2">Составление брачных договоров и соглашений о разделе</h3>
+							<p class="text-xs sm:text-sm text-content-muted mb-4">
 								Тонкости формулировок, которые не сможет оспорить ни один суд.
 							</p>
 							<div class="aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner">
-								<div class="w-full h-full flex flex-col items-center justify-center text-stone-400 p-6 text-center">
-									<div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white mb-2">▶</div>
+								<div class="w-full h-full flex flex-col items-center justify-center text-content-muted p-6 text-center">
+									<div class="w-12 h-12 rounded-full bg-surface/10 flex items-center justify-center text-white mb-2">▶</div>
 									<span class="text-xs font-medium">Модуль открывается в соответствии с расписанием</span>
 								</div>
 							</div>
@@ -103,42 +103,42 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 					</div>
 				} else {
 					<!-- ДОСТУП ЗАКРЫТ: Paywall экран -->
-					<div class="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xl max-w-xl mx-auto">
+					<div class="bg-surface rounded-3xl p-6 sm:p-10 border border-content/10 shadow-xl max-w-xl mx-auto">
 						<div class="w-16 h-16 mx-auto rounded-3xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-3xl mb-4 shadow-inner">
 							🔒
 						</div>
-						<h2 class="text-xl sm:text-2xl font-serif-title font-bold text-center text-stone-900 mb-2">
+						<h2 class="text-xl sm:text-2xl font-serif-title font-bold text-center text-content mb-2">
 							Доступ ограничен подпиской
 						</h2>
-						<p class="text-xs sm:text-sm text-stone-600 text-center mb-6">
+						<p class="text-xs sm:text-sm text-content-muted text-center mb-6">
 							Материалы закрытого клуба доступны только для зарегистрированных участников.
 						</p>
 
 						<!-- Преимущества членства -->
-						<div class="space-y-3 mb-8 bg-surface p-4 rounded-2xl border border-stone-100 text-xs sm:text-sm">
-							<div class="flex items-center gap-2.5 text-stone-800">
+						<div class="space-y-3 mb-8 bg-surface p-4 rounded-2xl border border-content/10 text-xs sm:text-sm">
+							<div class="flex items-center gap-2.5 text-content">
 								<span class="text-emerald-500 font-bold">✓</span>
 								<span>Доступ к 15+ часам закрытых видео-разборов</span>
 							</div>
-							<div class="flex items-center gap-2.5 text-stone-800">
+							<div class="flex items-center gap-2.5 text-content">
 								<span class="text-emerald-500 font-bold">✓</span>
 								<span>Библиотека образцов документов с комментариями</span>
 							</div>
-							<div class="flex items-center gap-2.5 text-stone-800">
+							<div class="flex items-center gap-2.5 text-content">
 								<span class="text-emerald-500 font-bold">✓</span>
 								<span>Прямые эфиры и разборы вопросов дважды в месяц</span>
 							</div>
-							<div class="flex items-center gap-2.5 text-stone-800">
+							<div class="flex items-center gap-2.5 text-content">
 								<span class="text-emerald-500 font-bold">✓</span>
 								<span>Мгновенный вход по клику без логинов и паролей</span>
 							</div>
 						</div>
 
 						<!-- Тариф и кнопка оплаты -->
-						<div class="text-center pt-2 border-t border-stone-100">
+						<div class="text-center pt-2 border-t border-content/10">
 							<div class="mb-4">
-								<span class="text-2xl sm:text-3xl font-extrabold text-stone-900">2 900 ₽</span>
-								<span class="text-xs text-stone-500"> / месяц</span>
+								<span class="text-2xl sm:text-3xl font-extrabold text-content">2 900 ₽</span>
+								<span class="text-xs text-content-muted"> / месяц</span>
 							</div>
 
 							<button
@@ -150,7 +150,7 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 								<span>→</span>
 							</button>
 
-							<p class="text-[11px] text-stone-400 mt-3">
+							<p class="text-[11px] text-content-muted mt-3">
 								Безопасная оплата. Доступ активируется автоматически сразу после платежа.
 							</p>
 						</div>

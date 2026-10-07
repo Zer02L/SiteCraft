@@ -40,6 +40,7 @@ module.exports = {
       },
       fontFamily: {
         condensed: ['"Bebas Neue"', '"Barlow Condensed"', 'Impact', 'sans-serif'],
+        'serif-title': ['"Playfair Display"', 'Georgia', 'serif'],
       }
     },
   },

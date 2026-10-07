@@ -36,12 +36,89 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 				<a href="/blog" class="hover:text-accent transition">Блог</a>
 				<a href="/#map" class="hover:text-accent transition">Контакты</a>
 
+				<!-- Переключатель сезонов и день/ночь -->
+				<div
+					x-data="{ 
+						open: false, 
+						season: 'main', 
+						isNight: false,
+						init() {
+							const st = window.getThemeState ? window.getThemeState() : { base: 'main', isNight: false };
+							this.season = st.base;
+							this.isNight = st.isNight;
+							window.addEventListener('themechanged', (e) => {
+								this.season = e.detail.season;
+								this.isNight = e.detail.isNight;
+							});
+						},
+						changeSeason(s) {
+							this.season = s;
+							this.open = false;
+							window.setSiteTheme(s);
+						},
+						toggleNight() {
+							window.toggleNightMode();
+						}
+					}"
+					class="flex items-center space-x-1 relative"
+				>
+					<button
+						type="button"
+						@click="open = !open"
+						class="flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer"
+						title="Выбрать сезонную тему"
+					>
+						<span x-show="season === 'main'">🏛️</span>
+						<span x-show="season === 'spring'">🌱</span>
+						<span x-show="season === 'summer'">☀️</span>
+						<span x-show="season === 'autumn'">🍁</span>
+						<span x-show="season === 'winter'">❄️</span>
+						<span class="capitalize" x-text="season === 'main' ? 'Основная' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима')))"></span>
+						<svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+					</button>
+
+					<!-- Выпадающий список сезонов -->
+					<div
+						x-show="open"
+						x-cloak
+						@click.outside="open = false"
+						class="absolute top-full left-0 mt-1.5 w-36 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs"
+					>
+						<button type="button" @click="changeSeason('main')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
+							<span>🏛️</span> Основная
+						</button>
+						<button type="button" @click="changeSeason('spring')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
+							<span>🌱</span> Весна
+						</button>
+						<button type="button" @click="changeSeason('summer')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
+							<span>☀️</span> Лето
+						</button>
+						<button type="button" @click="changeSeason('autumn')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
+							<span>🍁</span> Осень
+						</button>
+						<button type="button" @click="changeSeason('winter')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
+							<span>❄️</span> Зима
+						</button>
+					</div>
+
+					<!-- Переключатель День / Ночь -->
+					<button
+						type="button"
+						@click="toggleNight()"
+						class="p-1.5 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer"
+						:title="isNight ? 'Переключить на дневной режим' : 'Переключить на ночной режим'"
+					>
+						<span x-show="!isNight" title="Ночной режим">🌙</span>
+						<span x-show="isNight" title="Дневной режим">☀️</span>
+					</button>
+				</div>
+
 				<!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->
 				if settings.EnableA11y {
 					<button
 						type="button"
 						onclick="window.A11Y.toggle()"
-						class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-white/5 cursor-pointer"
+						class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer"
 						title="Версия для слабовидящих"
 					>
 						<span>👓</span>
@@ -69,7 +146,7 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 				<button
 					type="button"
 					@click="mobileMenuOpen = !mobileMenuOpen"
-					class="p-1.5 rounded-lg border border-white/20 bg-white/10 text-white hover:text-accent focus:outline-none cursor-pointer"
+					class="p-1.5 rounded-lg border border-white/20 bg-surface/10 text-white hover:text-accent focus:outline-none cursor-pointer"
 					aria-label="Меню навигации"
 				>
 					<svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,13 +172,13 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 			class="md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-4 space-y-3"
 		>
 			<nav class="flex flex-col space-y-2 text-sm font-medium">
-				<a href="/#about" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">О нас</a>
-				<a href="/#schedule" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Режим работы</a>
-				<a href="/#services" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Услуги и цены</a>
-				<a href="/#booking" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Онлайн-запись</a>
-				<a href="/track" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Статус заказа</a>
-				<a href="/blog" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Блог и публикации</a>
-				<a href="/#map" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition">Контакты и адрес</a>
+				<a href="/#about" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">О нас</a>
+				<a href="/#schedule" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Режим работы</a>
+				<a href="/#services" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Услуги и цены</a>
+				<a href="/#booking" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Онлайн-запись</a>
+				<a href="/track" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Статус заказа</a>
+				<a href="/blog" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Блог и публикации</a>
+				<a href="/#map" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">Контакты и адрес</a>
 				<a href="/_/" target="_blank" class="py-2 px-3 rounded text-accent border border-accent/40 font-semibold text-center mt-2">Панель управления (PocketBase)</a>
 			</nav>
 		</div>

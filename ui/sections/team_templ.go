@@ -33,53 +33,131 @@ func Team(theme string, content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Specialists / Team Members --><section id=\"team\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20 uppercase tracking-wider mb-2\">Наши специалисты</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Команда профессионалов</h2><p class=\"text-stone-500 mt-2 max-w-xl mx-auto text-sm\">Опытные специалисты с профильным образованием и непрерывной практикой</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Specialists / Team Members --><section id=\"team\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"section-badge\">Наши специалисты</div><h2 class=\"section-title\">Команда профессионалов</h2><p class=\"section-subtitle\">Опытные специалисты с профильным образованием и непрерывной практикой</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if theme == "medical" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-teal-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">👨\u200d⚕️</div><h3 class=\"font-bold text-stone-900 text-lg\">Дмитрий Николаевич Орлов</h3><p class=\"text-primary font-semibold text-xs mt-1\">Главный врач, кардиолог</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Кандидат медицинских наук, стаж 18 лет. Эксперт по функциональной диагностике сердца и сосудов.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-teal-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">👩\u200d⚕️</div><h3 class=\"font-bold text-stone-900 text-lg\">Анна Сергеевна Воронова</h3><p class=\"text-primary font-semibold text-xs mt-1\">Врач УЗД экспертного класса</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Врач высшей квалификационной категории, стаж 14 лет. Более 20 000 проведенных протоколов УЗИ.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-teal-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">👨\u200d⚕️</div><h3 class=\"font-bold text-stone-900 text-lg\">Михаил Романович Лебедев</h3><p class=\"text-primary font-semibold text-xs mt-1\">Терапевт, гастроэнтеролог</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Стаж 11 лет. Комплексный превентивный подход к здоровью, разработка персональных программ питания.</p></div></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else if theme == "beauty" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-pink-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">💇\u200d♀️</div><h3 class=\"font-bold text-stone-900 text-lg\">Виктория Самойлова</h3><p class=\"text-primary font-semibold text-xs mt-1\">Арт-директор, топ-колорист</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Диплом Академии Vidal Sassoon. Создатель авторских методик безаммиачного тонирования волос.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-pink-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">💅</div><h3 class=\"font-bold text-stone-900 text-lg\">Алина Морозова</h3><p class=\"text-primary font-semibold text-xs mt-1\">Ведущий мастер нейл-арта</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Победитель чемпионата по аппаратному маникюру. Специалист по аппаратному педикюру Smart.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-pink-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">✨</div><h3 class=\"font-bold text-stone-900 text-lg\">Полина Калинина</h3><p class=\"text-primary font-semibold text-xs mt-1\">Визажист & Стилист по прическам</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Работа на показах Fashion Week. Вечерние и свадебные образы, подчеркивающие индивидуальность.</p></div></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-amber-50 border-2 border-primary flex items-center justify-center text-4xl mb-4 shadow-inner\">⚖️</div><h3 class=\"font-bold text-stone-900 text-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">👨\u200d⚕️</div><h3 class=\"card-title\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs("Дмитрий Николаевич Орлов")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 62, Col: 69}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 20, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</h3><p class=\"text-primary font-semibold text-xs mt-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Главный врач, кардиолог</p><p class=\"card-desc text-xs mt-3\">Кандидат медицинских наук, стаж 18 лет. Эксперт по функциональной диагностике сердца и сосудов.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">👩\u200d⚕️</div><h3 class=\"card-title\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerTitle)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs("Анна Сергеевна Воронова")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 63, Col: 76}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 26, Col: 76}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Назначен на должность нотариуса приказом Управления Минюста РФ. Лицензия на право нотариальной деятельности.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-white p-6 rounded-2xl border border-stone-200/90 shadow-sm text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-stone-50 border-2 border-stone-300 flex items-center justify-center text-4xl mb-4 shadow-inner\">🏛️</div><h3 class=\"font-bold text-stone-900 text-lg\">Помощники и консультанты</h3><p class=\"text-stone-600 font-semibold text-xs mt-1\">Юридический отдел конторы</p><p class=\"text-stone-500 text-xs mt-3 leading-relaxed\">Квалифицированные юристы обеспечивают предварительную правовую экспертизу документов без задержек.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Врач УЗД экспертного класса</p><p class=\"card-desc text-xs mt-3\">Врач высшей квалификационной категории, стаж 14 лет. Более 20 000 проведенных протоколов УЗИ.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">👨\u200d⚕️</div><h3 class=\"card-title\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("Михаил Романович Лебедев")
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 32, Col: 78}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Терапевт, гастроэнтеролог</p><p class=\"card-desc text-xs mt-3\">Стаж 11 лет. Комплексный превентивный подход к здоровью, разработка персональных программ питания.</p></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else if theme == "beauty" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">💇\u200d♀️</div><h3 class=\"card-title\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("Виктория Самойлова")
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 41, Col: 67}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Арт-директор, топ-колорист</p><p class=\"card-desc text-xs mt-3\">Диплом Академии Vidal Sassoon. Создатель авторских методик безаммиачного тонирования волос.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">💅</div><h3 class=\"card-title\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs("Алина Морозова")
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 47, Col: 59}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Ведущий мастер нейл-арта</p><p class=\"card-desc text-xs mt-3\">Победитель чемпионата по аппаратному маникюру. Специалист по аппаратному педикюру Smart.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">✨</div><h3 class=\"card-title\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs("Полина Калинина")
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 53, Col: 61}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">Визажист & Стилист по прическам</p><p class=\"card-desc text-xs mt-3\">Работа на показах Fashion Week. Вечерние и свадебные образы, подчеркивающие индивидуальность.</p></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">⚖️</div><h3 class=\"card-title\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 62, Col: 47}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</h3><p class=\"text-accent font-semibold text-xs mt-1\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var9 string
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerTitle)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/team.templ`, Line: 63, Col: 75}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</p><p class=\"card-desc text-xs mt-3\">Назначен на должность нотариуса приказом Управления Минюста РФ. Лицензия на право нотариальной деятельности.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base text-center\"><div class=\"w-24 h-24 mx-auto rounded-full bg-accent/15 border-2 border-accent flex items-center justify-center text-4xl mb-4 shadow-inner\">🏛️</div><h3 class=\"card-title\">Помощники и консультанты</h3><p class=\"text-accent font-semibold text-xs mt-1\">Юридический отдел конторы</p><p class=\"card-desc text-xs mt-3\">Квалифицированные юристы обеспечивают предварительную правовую экспертизу документов без задержек.</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

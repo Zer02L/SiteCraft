@@ -25,6 +25,11 @@
     tailwindcss
     air
     sqlite
+
+    # Language Servers (LSP)
+    gopls
+    tailwindcss-language-server
+    nil
   ];
 
   # Development scripts
@@ -57,6 +62,7 @@
     echo "  Templ:      $(templ --version 2>/dev/null || echo 'доступен')"
     echo "  Tailwind:   $(tailwindcss --help 2>&1 | head -n 1)"
     echo "  Air:        $(air -v 2>/dev/null || echo 'доступен')"
+    echo "  LSP:        gopls, templ lsp, tailwindcss-language-server, nil"
     echo ""
     echo "  Команды:"
     echo "    devenv up        - запуск всех процессов разработки"

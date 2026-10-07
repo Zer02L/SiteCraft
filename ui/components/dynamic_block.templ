@@ -9,10 +9,10 @@ templ DynamicBlock(block models.PageBlock) {
 	<section class="py-12 px-4 max-w-6xl mx-auto">
 		if block.Title != "" {
 			<div class="text-center mb-8">
-				<h2 class="font-serif-title text-3xl font-bold text-stone-900">{ block.Title }</h2>
+				<h2 class="section-title">{ block.Title }</h2>
 			</div>
 		}
-		<div class="prose max-w-none text-stone-700 leading-relaxed bg-white p-6 sm:p-8 rounded-2xl border border-stone-200 shadow-sm">
+		<div class="prose max-w-none text-content/90 leading-relaxed card-base sm:p-8">
 			@templ.Raw(block.Content)
 		</div>
 	</section>

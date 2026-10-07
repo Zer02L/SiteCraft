@@ -62,7 +62,7 @@ func BlogList(settings models.SiteSettings, content models.SiteContent, articles
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-5xl mx-auto\"><!-- Хлебные крошки --><nav class=\"flex items-center text-xs text-stone-500 mb-6 space-x-2\"><a href=\"/\" class=\"hover:text-primary transition font-medium\">Главная</a> <span>/</span> <span class=\"text-stone-800 font-semibold\">Блог и публикации</span></nav><!-- Заголовок страницы --><div class=\"text-center max-w-2xl mx-auto mb-10\"><span class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-3 uppercase tracking-wider\">Экспертные материалы</span><h1 class=\"text-3xl sm:text-4xl font-serif-title font-bold text-stone-900 leading-tight\">База знаний и статьи</h1><p class=\"mt-3 text-stone-600 text-sm sm:text-base\">Актуальная правовая информация, практические рекомендации и разбор частых вопросов от специалистов.</p><!-- Интерактивный поиск через HTMX --><div class=\"mt-6 relative max-w-md mx-auto\"><input type=\"search\" name=\"q\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main class=\"flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-5xl mx-auto\"><!-- Хлебные крошки --><nav class=\"flex items-center text-xs text-content-muted mb-6 space-x-2\"><a href=\"/\" class=\"hover:text-primary transition font-medium\">Главная</a> <span>/</span> <span class=\"text-content font-semibold\">Блог и публикации</span></nav><!-- Заголовок страницы --><div class=\"text-center max-w-2xl mx-auto mb-10\"><span class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-3 uppercase tracking-wider\">Экспертные материалы</span><h1 class=\"text-3xl sm:text-4xl font-serif-title font-bold text-content leading-tight\">База знаний и статьи</h1><p class=\"mt-3 text-content-muted text-sm sm:text-base\">Актуальная правовая информация, практические рекомендации и разбор частых вопросов от специалистов.</p><!-- Интерактивный поиск через HTMX --><div class=\"mt-6 relative max-w-md mx-auto\"><input type=\"search\" name=\"q\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -75,7 +75,7 @@ func BlogList(settings models.SiteSettings, content models.SiteContent, articles
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" placeholder=\"Поиск по статьям...\" hx-get=\"/blog\" hx-trigger=\"keyup changed delay:300ms, search\" hx-target=\"#blog-posts-container\" hx-select=\"#blog-posts-container\" hx-push-url=\"true\" class=\"w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition\"> <svg class=\"w-5 h-5 text-stone-400 absolute left-3 top-3 pointer-events-none\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"></path></svg></div></div><!-- Сетка статей (фрагмент для HTMX обновления) --><div id=\"blog-posts-container\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" placeholder=\"Поиск по статьям...\" hx-get=\"/blog\" hx-trigger=\"keyup changed delay:300ms, search\" hx-target=\"#blog-posts-container\" hx-select=\"#blog-posts-container\" hx-push-url=\"true\" class=\"w-full pl-10 pr-4 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition\"> <svg class=\"w-5 h-5 text-content-muted absolute left-3 top-3 pointer-events-none\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"></path></svg></div></div><!-- Сетка статей (фрагмент для HTMX обновления) --><div id=\"blog-posts-container\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -95,7 +95,7 @@ func BlogList(settings models.SiteSettings, content models.SiteContent, articles
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"bg-white rounded-2xl p-12 text-center border border-stone-200 shadow-sm max-w-lg mx-auto\"><div class=\"w-12 h-12 mx-auto bg-stone-100 rounded-full flex items-center justify-center text-stone-400 mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><h3 class=\"text-base font-bold text-stone-800\">Статей не найдено</h3><p class=\"text-xs text-stone-500 mt-1\">Попробуйте изменить поисковый запрос или сбросить фильтр.</p>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"bg-surface rounded-2xl p-12 text-center border border-content/10 shadow-sm max-w-lg mx-auto\"><div class=\"w-12 h-12 mx-auto bg-surface-muted rounded-full flex items-center justify-center text-content-muted mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><h3 class=\"text-base font-bold text-content\">Статей не найдено</h3><p class=\"text-xs text-content-muted mt-1\">Попробуйте изменить поисковый запрос или сбросить фильтр.</p>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -149,7 +149,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<article class=\"bg-white rounded-2xl overflow-hidden border border-stone-200 shadow-sm hover:shadow-md transition flex flex-col group\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<article class=\"bg-surface rounded-2xl overflow-hidden border border-content/10 shadow-sm hover:shadow-md transition flex flex-col group\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -167,7 +167,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"block aspect-video w-full overflow-hidden bg-stone-100\"><img src=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"block aspect-video w-full overflow-hidden bg-surface-muted\"><img src=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -198,7 +198,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"p-6 flex-grow flex flex-col\"><!-- Мета-информация --><div class=\"flex items-center justify-between text-xs text-stone-500 mb-3\"><span class=\"flex items-center gap-1.5\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"p-6 flex-grow flex flex-col\"><!-- Мета-информация --><div class=\"flex items-center justify-between text-xs text-content-muted mb-3\"><span class=\"flex items-center gap-1.5\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -244,7 +244,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			for _, tag := range a.Tags {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<span class=\"px-2 py-0.5 bg-stone-100 text-stone-600 rounded text-[11px] font-medium\">#")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<span class=\"px-2 py-0.5 bg-surface-muted text-content-muted rounded text-[11px] font-medium\">#")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -267,7 +267,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Заголовок --><h2 class=\"text-lg font-serif-title font-bold text-stone-900 group-hover:text-primary transition leading-snug\"><a href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Заголовок --><h2 class=\"text-lg font-serif-title font-bold text-content group-hover:text-primary transition leading-snug\"><a href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -293,7 +293,7 @@ func BlogCard(a models.ArticleItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</a></h2><!-- Анонс --><p class=\"mt-2.5 text-stone-600 text-xs sm:text-sm line-clamp-3 leading-relaxed flex-grow\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</a></h2><!-- Анонс --><p class=\"mt-2.5 text-content-muted text-xs sm:text-sm line-clamp-3 leading-relaxed flex-grow\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -306,19 +306,19 @@ func BlogCard(a models.ArticleItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</p><!-- Подвал карточки --><div class=\"mt-5 pt-4 border-t border-stone-100 flex items-center justify-between text-xs\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</p><!-- Подвал карточки --><div class=\"mt-5 pt-4 border-t border-content/10 flex items-center justify-between text-xs\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if a.AuthorName != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<span class=\"text-stone-500 font-medium\">Автор: ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<span class=\"text-content-muted font-medium\">Автор: ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(a.AuthorName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_list.templ`, Line: 141, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_list.templ`, Line: 141, Col: 76}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {

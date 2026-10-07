@@ -34,7 +34,7 @@ func Services(services []models.ServiceItem, settings models.SiteSettings) templ
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Services Section --><section id=\"services\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"inline-block px-3 py-1 bg-amber-50 text-amber-800 text-xs font-semibold rounded-full border border-amber-200 uppercase tracking-wider mb-2\">Направления</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Услуги и стоимость</h2><p class=\"text-stone-500 mt-2 max-w-xl mx-auto text-sm\">Профессиональный подход, прозрачные цены и фиксированные сроки выполнения работ</p></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Services Section --><section id=\"services\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"section-badge\">Направления</div><h2 class=\"section-title\">Услуги и стоимость</h2><p class=\"section-subtitle\">Профессиональный подход, прозрачные цены и фиксированные сроки выполнения работ</p></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,40 +52,40 @@ func Services(services []models.ServiceItem, settings models.SiteSettings) templ
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"bg-white p-6 rounded-xl border border-stone-200/90 shadow-sm hover:shadow-xl hover:border-accent/60 hover:-translate-y-1 transition duration-300 flex flex-col justify-between\"><div><div class=\"w-8 h-8 rounded-lg bg-stone-100 text-primary flex items-center justify-center font-serif-title font-bold text-sm mb-3\">✦</div><h3 class=\"text-lg font-bold text-stone-900 mb-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"card-interactive flex flex-col justify-between\"><div><div class=\"w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center font-serif-title font-bold text-sm mb-3\">✦</div><h3 class=\"card-title mb-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(s.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 26, Col: 65}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 26, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3><p class=\"text-stone-600 text-sm leading-relaxed mb-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h3><p class=\"card-desc mb-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(s.Description)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 27, Col: 76}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 27, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div><div class=\"pt-4 border-t border-stone-100 flex items-center justify-between\"><div><span class=\"text-xs text-stone-400 block\">Стоимость:</span> <span class=\"font-bold text-primary text-sm\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div><div class=\"pt-4 border-t border-content/10 flex items-center justify-between\"><div><span class=\"text-xs text-content-muted block\">Стоимость:</span> <span class=\"font-bold text-accent text-sm\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(s.Price)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 32, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/services.templ`, Line: 32, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -109,7 +109,7 @@ func Services(services []models.ServiceItem, settings models.SiteSettings) templ
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" hx-target=\"#payment-modal-container\" hx-swap=\"innerHTML transition:true\" class=\"text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer\">Оплатить онлайн</button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" hx-target=\"#payment-modal-container\" hx-swap=\"innerHTML transition:true\" class=\"btn-primary-ghost\">Оплатить онлайн</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

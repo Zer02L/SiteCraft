@@ -33,7 +33,7 @@ func MapSection(content models.SiteContent, settings models.SiteSettings) templ.
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Interactive Location Map Section --><section id=\"map\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-8\"><div class=\"inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs font-semibold rounded-full border border-stone-200 uppercase tracking-wider mb-2\">Локация</div><h2 class=\"font-serif-title text-3xl font-bold text-stone-900\">Как нас найти</h2><p class=\"text-stone-500 mt-2 text-sm max-w-xl mx-auto\">Удобный подъезд и парковка. Перед визитом рекомендуем предварительно записаться.</p></div><div class=\"bg-white rounded-2xl shadow-sm border border-stone-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12\"><!-- Адрес и контакты рядом с картой --><div class=\"lg:col-span-4 p-6 sm:p-8 bg-stone-50 border-b lg:border-b-0 lg:border-r border-stone-200 flex flex-col justify-between\"><div class=\"space-y-6\"><div><span class=\"text-xs font-semibold uppercase tracking-wider text-primary\">Фактический адрес</span><p class=\"mt-1.5 text-base font-bold text-stone-900 leading-snug\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Interactive Location Map Section --><section id=\"map\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-8\"><div class=\"inline-block px-3 py-1 bg-surface-muted text-content/80 text-xs font-semibold rounded-full border border-content/10 uppercase tracking-wider mb-2\">Локация</div><h2 class=\"font-serif-title text-3xl font-bold text-content\">Как нас найти</h2><p class=\"text-content-muted mt-2 text-sm max-w-xl mx-auto\">Удобный подъезд и парковка. Перед визитом рекомендуем предварительно записаться.</p></div><div class=\"bg-surface rounded-2xl shadow-sm border border-content/10 overflow-hidden grid grid-cols-1 lg:grid-cols-12\"><!-- Адрес и контакты рядом с картой --><div class=\"lg:col-span-4 p-6 sm:p-8 bg-surface-muted border-b lg:border-b-0 lg:border-r border-content/10 flex flex-col justify-between\"><div class=\"space-y-6\"><div><span class=\"text-xs font-semibold uppercase tracking-wider text-primary\">Фактический адрес</span><p class=\"mt-1.5 text-base font-bold text-content leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -46,20 +46,20 @@ func MapSection(content models.SiteContent, settings models.SiteSettings) templ.
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</p><p class=\"text-xs text-stone-600 mt-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</p><p class=\"text-xs text-content-muted mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.AddressSub)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 25, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 25, Col: 69}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p></div><div class=\"border-t border-stone-200 pt-4\"><span class=\"text-xs font-semibold uppercase tracking-wider text-stone-500\">Прямые телефоны:</span><div class=\"mt-2 space-y-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p></div><div class=\"border-t border-content/10 pt-4\"><span class=\"text-xs font-semibold uppercase tracking-wider text-content-muted\">Прямые телефоны:</span><div class=\"mt-2 space-y-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -109,14 +109,14 @@ func MapSection(content models.SiteContent, settings models.SiteSettings) templ.
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"block text-sm font-semibold text-stone-800 hover:underline\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"block text-sm font-semibold text-content hover:underline\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone2)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 35, Col: 138}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 35, Col: 136}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -127,14 +127,14 @@ func MapSection(content models.SiteContent, settings models.SiteSettings) templ.
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><div class=\"border-t border-stone-200 pt-4\"><span class=\"text-xs font-semibold uppercase tracking-wider text-stone-500\">График:</span><p class=\"text-xs text-stone-700 mt-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><div class=\"border-t border-content/10 pt-4\"><span class=\"text-xs font-semibold uppercase tracking-wider text-content-muted\">График:</span><p class=\"text-xs text-content/80 mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(content.WorkHours)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 42, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 42, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -147,31 +147,31 @@ func MapSection(content models.SiteContent, settings models.SiteSettings) templ.
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(content.LunchBreak)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 42, Col: 97}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 42, Col: 98}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ")</p><p class=\"text-xs text-stone-500\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ")</p><p class=\"text-xs text-content-muted\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(content.DaysOff)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 43, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/map.templ`, Line: 43, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div></div><div class=\"mt-8 pt-4 border-t border-stone-200\"><a href=\"#booking\" class=\"w-full inline-block text-center bg-accent hover:bg-accent-hover text-primary-dark font-bold py-2.5 px-4 rounded-lg text-xs transition\">Забронировать время онлайн</a></div></div><!-- Карта с поддержкой Lazy-loading через HTMX (Zero-JS / 100 PageSpeed) --><div class=\"lg:col-span-8 min-h-[420px] relative bg-stone-100 flex items-center justify-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div></div><div class=\"mt-8 pt-4 border-t border-content/10\"><a href=\"#booking\" class=\"w-full inline-block text-center bg-accent hover:bg-accent-hover text-primary-dark font-bold py-2.5 px-4 rounded-lg text-xs transition\">Забронировать время онлайн</a></div></div><!-- Карта с поддержкой Lazy-loading через HTMX (Zero-JS / 100 PageSpeed) --><div class=\"lg:col-span-8 min-h-[420px] relative bg-surface-muted flex items-center justify-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.MapMode == "lazy" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div hx-get=\"/api/map-frame\" hx-trigger=\"revealed\" hx-swap=\"outerHTML\" class=\"w-full h-full min-h-[420px] flex flex-col items-center justify-center text-stone-500 gap-2 p-6\"><div class=\"animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full\"></div><span class=\"text-xs font-medium\">Загрузка интерактивной карты...</span></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div hx-get=\"/api/map-frame\" hx-trigger=\"revealed\" hx-swap=\"outerHTML\" class=\"w-full h-full min-h-[420px] flex flex-col items-center justify-center text-content-muted gap-2 p-6\"><div class=\"animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full\"></div><span class=\"text-xs font-medium\">Загрузка интерактивной карты...</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

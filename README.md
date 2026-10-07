@@ -159,16 +159,31 @@ flowchart LR
 
 ---
 
-## 🎨 Динамический Theming Engine
+## 🎨 Динамический Theming Engine & Модульная CSS-архитектура
 
-Помимо 7 готовых дизайн-тем оформления (`legal`, `medical`, `auto`, `beauty`, `tech`, `cyber`, `dark`), движок поддерживает произвольную палитру прямо из админки PocketBase (`site_settings`):
+Движок поддерживает гибкую многоуровневую систему оформления:
 
+### 1. Семантические CSS-токены и модульные стили (`ui/assets/css/`)
+Стили декомпозированы на модули для удобной поддержки и расширения:
+* [`tokens.css`](ui/assets/css/tokens.css) — семантические переменные в формате RGB triplets (`--color-primary`, `--color-accent`, `--color-surface`, `--color-content`) с поддержкой Tailwind alpha-value (`bg-primary/90`, `text-content`, `border-content/10`).
+* [`components.css`](ui/assets/css/components.css) — типографика, кнопки, карточки и утилитарные классы.
+* [`a11y.css`](ui/assets/css/a11y.css) — стили режимов доступности (ГОСТ Р 52872-2019): контрастные схемы (черный/белый, белый/черный, синий/голубой), управление размером шрифта, кернингом и скрытием изображений.
+* [`animations.css`](ui/assets/css/animations.css) — ключевые кадры и анимации интерфейса.
+
+### 2. Сезонные темы и режим День / Ночь
+В шапку сайта ([header.templ](ui/components/header.templ)) встроен интерактивный переключатель (Alpine.js) с сохранением состояния в `localStorage`:
+* **Базовые палитры:** Основная (`main`), Весна (`spring`), Лето (`summer`), Осень (`autumn`), Зима (`winter`).
+* **Режим День / Ночь:** Мгновенное переключение между светлой и темной версией любой выбранной темы (`main-day`, `main-night`, `winter-night` и т.д.).
+* **Специальные режимы:** Режим для людей с особенностями цветовосприятия (`colorblind` / high-contrast) и нишевые пресеты (`cyber`, `legal`, `medical`, `auto`).
+
+### 3. Управление палитрой из админки PocketBase (`site_settings`)
+Помимо встроенных CSS-тем, доступна кастомизация на лету без пересборки Tailwind CSS:
 * `primary_color`: базовый цвет бренда (например, `#0d9488` или `13 148 136`)
 * `accent_color`: акцентный цвет кнопок и плашек (например, `#f59e0b` или `245 158 11`)
 * `background_color`: фон страниц сайта
 * `font_family`: семейство шрифта Google Fonts (например, `Inter`, `Roboto`, `Montserrat`)
 
-Стили динамически инжектируются в `:root` шаблона [base.templ](ui/layouts/base.templ) без необходимости перекомпилировать Tailwind CSS!
+Стили динамически инжектируются в `:root` шаблона [base.templ](ui/layouts/base.templ).
 
 ---
 
