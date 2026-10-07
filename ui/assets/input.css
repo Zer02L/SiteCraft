@@ -24,16 +24,6 @@
   --color-content: var(--color-content);
   --color-content-muted: var(--color-content-muted);
 
-  /* Legacy aliases mapped to semantic tokens */
-  --color-legal-burgundy: var(--color-primary);
-  --color-legal-burgundydark: var(--color-primary-dark);
-  --color-legal-burgundylight: var(--color-primary-light);
-  --color-legal-gold: var(--color-accent);
-  --color-legal-goldhover: var(--color-accent-hover);
-  --color-legal-goldlight: var(--color-accent-light);
-  --color-legal-light: var(--color-surface);
-  --color-legal-muted: var(--color-content-muted);
-
   --font-condensed: "Bebas Neue", "Barlow Condensed", Impact, sans-serif;
   --font-serif-title: "Playfair Display", Georgia, serif;
 }
