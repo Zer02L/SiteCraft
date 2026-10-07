@@ -34,6 +34,92 @@
 
 ---
 
+## 🏛 Архитектура проекта
+
+### 1. Архитектура ядра и потока данных (Engine Architecture)
+
+```mermaid
+flowchart TD
+    Client["Пользователь / Браузер / Telegram App"]
+    
+    subgraph ReverseProxy["Обратный прокси (Опционально)"]
+        Caddy["Caddy / Nginx (SSL & Маршрутизация доменов)"]
+    end
+
+    subgraph Binary["Единый автономный бинарник SiteCraft (~25 МБ)"]
+        direction TB
+        
+        Router["Echo HTTP Router & Middleware\n(Honeypot, BlueMonday Sanitize, Static Embed)"]
+        
+        subgraph BusinessHandlers["Бизнес-хэндлеры (internal/handlers)"]
+            H_Web["Web Handler (/ /blog /shop)"]
+            H_Track["B2B Tracker (/track)"]
+            H_TMA["TMA Mini App & VIP Club (/vip)"]
+            H_Lead["Lead Generator & Slots (/booking)"]
+            H_Pay["Yookassa Payment (/payment)"]
+        end
+        
+        subgraph RenderingLayer["Шаблонизация & UI (ui/pages & ui/sections)"]
+            Registry["Block Registry / Factory Pattern\n(Hero, Services, Booking, FAQ, Gallery, etc.)"]
+            Templ["Templ Go Templates (Type-safe HTML)"]
+            ClientLibs["HTMX (AJAX) + Alpine.js (Микро-интеракции)"]
+        end
+
+        subgraph CoreData["Слой данных & Кэш"]
+            Cache["In-Memory Cache (sync.RWMutex)\n< 10ms TTFB"]
+            PB["Embedded PocketBase (Go Framework)"]
+            SQLite[("Встроенная SQLite БД\n(pb_data/data.db)")]
+        end
+
+        SSG["Static SSG Exporter\n(Flat HTML/CSS в ./dist)"]
+    end
+
+    subgraph ExternalServices["Внешние сервисы"]
+        TG["Telegram Bot (Алерты заявок)"]
+        CRM["CRM Webhooks (amoCRM / Битрикс24)"]
+        Yoo["ЮKassa API (Эквайринг)"]
+    end
+
+    Client --> Caddy
+    Caddy --> Router
+    Client -.-> Router
+
+    Router --> BusinessHandlers
+    H_Web & H_Track & H_TMA & H_Lead --> Registry
+    Registry --> Templ
+    Templ --> ClientLibs
+
+    BusinessHandlers --> Cache
+    Cache --> PB
+    PB --> SQLite
+    PB -.->|Инвалидация кэша OnRecordChange| Cache
+
+    H_Lead -.->|Асинхронные уведомления| TG
+    H_Lead -.->|Webhooks| CRM
+    H_Pay -.->|Создание платежей| Yoo
+    
+    PB --> SSG
+```
+
+### 2. Мультисайтовый парк (Fleet of Binaries)
+
+```mermaid
+flowchart LR
+    Admin["Веб-студия / Администратор"] -->|./fleet.sh| FleetCLI["CLI Fleet Orchestrator"]
+    
+    FleetCLI --> SiteA["Site 1: Auto Service\nПорт :8091 (SQLite A)"]
+    FleetCLI --> SiteB["Site 2: Pizza Delivery\nПорт :8092 (SQLite B)"]
+    FleetCLI --> SiteC["Site 3: VIP Law Club\nПорт :8093 (SQLite C)"]
+    FleetCLI --> SiteD["Site N: Dental Clinic\nПорт :8094 (SQLite N)"]
+
+    CaddyProxy["Caddy Reverse Proxy"] -->|auto.site.ru| SiteA
+    CaddyProxy -->|pizza.site.ru| SiteB
+    CaddyProxy -->|law.site.ru| SiteC
+    CaddyProxy -->|clinic.site.ru| SiteD
+```
+
+---
+
 ## 🚀 Управление парком сайтов (Fleet of Binaries)
 
 Для создания и обслуживания десятков клиентских сайтов используйте встроенный CLI-оркестратор [fleet.sh](fleet.sh):
