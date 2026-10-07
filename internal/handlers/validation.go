@@ -23,26 +23,48 @@ var nonDigitRegex = regexp.MustCompile(`\D`)
 var timeSlotRegex = regexp.MustCompile(`^\d{2}:\d{2}$`)
 var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
 
-// ValidateLeadForm validates the input values from the appointment booking / contact form.
+// ValidateLeadForm validates the input values using the default Russian locale.
 func ValidateLeadForm(input LeadFormInput) []string {
+	return ValidateLeadFormLocalized(input, "ru")
+}
+
+// ValidateLeadFormLocalized validates the input values from the appointment booking / contact form in the given locale.
+func ValidateLeadFormLocalized(input LeadFormInput, lang string) []string {
 	var errs []string
+	isEn := strings.HasPrefix(strings.ToLower(lang), "en")
 
 	// 1. Anti-spam Honeypot check
 	if strings.TrimSpace(input.Honeypot) != "" {
-		errs = append(errs, "Спам-фильтр заблокировал отправку формы")
+		if isEn {
+			errs = append(errs, "Spam filter blocked the submission")
+		} else {
+			errs = append(errs, "Спам-фильтр заблокировал отправку формы")
+		}
 		return errs
 	}
 
 	// 2. Name validation
 	name := strings.TrimSpace(input.Name)
 	if name == "" {
-		errs = append(errs, "Укажите ваше имя")
+		if isEn {
+			errs = append(errs, "Please provide your name")
+		} else {
+			errs = append(errs, "Укажите ваше имя")
+		}
 	} else {
 		runeName := []rune(name)
 		if len(runeName) < 2 {
-			errs = append(errs, "Имя должно содержать минимум 2 символа")
+			if isEn {
+				errs = append(errs, "Name must be at least 2 characters")
+			} else {
+				errs = append(errs, "Имя должно содержать минимум 2 символа")
+			}
 		} else if len(runeName) > 100 {
-			errs = append(errs, "Имя не должно превышать 100 символов")
+			if isEn {
+				errs = append(errs, "Name must not exceed 100 characters")
+			} else {
+				errs = append(errs, "Имя не должно превышать 100 символов")
+			}
 		}
 	}
 
@@ -50,42 +72,74 @@ func ValidateLeadForm(input LeadFormInput) []string {
 	phone := strings.TrimSpace(input.Phone)
 	digitsOnly := nonDigitRegex.ReplaceAllString(phone, "")
 	if phone == "" {
-		errs = append(errs, "Укажите контактный номер телефона")
+		if isEn {
+			errs = append(errs, "Please provide a contact phone number")
+		} else {
+			errs = append(errs, "Укажите контактный номер телефона")
+		}
 	} else if len(digitsOnly) < 10 || len(digitsOnly) > 15 {
-		errs = append(errs, "Некорректный номер телефона (требуется от 10 цифр)")
+		if isEn {
+			errs = append(errs, "Invalid phone number (at least 10 digits required)")
+		} else {
+			errs = append(errs, "Некорректный номер телефона (требуется от 10 цифр)")
+		}
 	}
 
 	// 4. Booking Date & Time (if mode is "slots" or provided)
 	if input.Mode == "slots" || input.BookingDate != "" || input.BookingTime != "" {
 		bookingDate := strings.TrimSpace(input.BookingDate)
 		if bookingDate == "" {
-			errs = append(errs, "Выберите дату приёма в календаре")
+			if isEn {
+				errs = append(errs, "Please select an appointment date")
+			} else {
+				errs = append(errs, "Выберите дату приёма в календаре")
+			}
 		} else {
 			if _, err := time.Parse("2006-01-02", bookingDate); err != nil {
-				errs = append(errs, "Некорректный формат даты приёма")
+				if isEn {
+					errs = append(errs, "Invalid appointment date format")
+				} else {
+					errs = append(errs, "Некорректный формат даты приёма")
+				}
 			}
 		}
 
 		bookingTime := strings.TrimSpace(input.BookingTime)
 		if bookingTime == "" {
-			errs = append(errs, "Выберите свободное время приёма из доступных слотов")
+			if isEn {
+				errs = append(errs, "Please select an available time slot")
+			} else {
+				errs = append(errs, "Выберите свободное время приёма из доступных слотов")
+			}
 		} else {
 			if !timeSlotRegex.MatchString(bookingTime) {
-				errs = append(errs, "Некорректный формат времени приёма")
+				if isEn {
+					errs = append(errs, "Invalid appointment time format")
+				} else {
+					errs = append(errs, "Некорректный формат времени приёма")
+				}
 			}
 		}
 	}
 
-	// 5. Consent 152-ФЗ
+	// 5. Consent 152-ФЗ / Privacy policy
 	consent := strings.TrimSpace(input.Consent)
 	if consent != "on" && consent != "true" && consent != "1" {
-		errs = append(errs, "Необходимо согласие на обработку персональных данных (152-ФЗ)")
+		if isEn {
+			errs = append(errs, "Consent to personal data processing is required")
+		} else {
+			errs = append(errs, "Необходимо согласие на обработку персональных данных (152-ФЗ)")
+		}
 	}
 
 	// 6. Comment length check
 	comment := strings.TrimSpace(input.Comment)
 	if len([]rune(comment)) > 1000 {
-		errs = append(errs, "Длина комментария не должна превышать 1000 символов")
+		if isEn {
+			errs = append(errs, "Comment must not exceed 1000 characters")
+		} else {
+			errs = append(errs, "Длина комментария не должна превышать 1000 символов")
+		}
 	}
 
 	return errs

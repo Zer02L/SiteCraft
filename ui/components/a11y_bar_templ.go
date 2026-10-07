@@ -9,6 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"sitecraft/internal/i18n"
+
 	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
@@ -42,11 +44,141 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " Шрифт:</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А (Стандарт)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А (Крупный)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А+ (Макс)</button></div><!-- Цветовые схемы --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1\">Цвет:</span> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('black-on-white')\" data-a11y-btn-theme=\"black-on-white\" class=\"px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition cursor-pointer\" title=\"Чёрным по белому\">Ц (Ч/Б)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('white-on-black')\" data-a11y-btn-theme=\"white-on-black\" class=\"px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition cursor-pointer\" title=\"Белым по чёрному\">Ц (Инверсия)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer\" title=\"Синим по голубому\">Ц (Синий)</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Изображения: Вкл</button></div><!-- Закрыть режим --><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.font"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 21, Col: 31}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.font_normal"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 29, Col: 38}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.font_large"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 37, Col: 37}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.font_xlarge"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 45, Col: 38}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</button></div><!-- Цветовые схемы --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.color"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 51, Col: 78}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('black-on-white')\" data-a11y-btn-theme=\"black-on-white\" class=\"px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition cursor-pointer\" title=\"Чёрным по белому\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var7 string
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.color_bw"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 59, Col: 35}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('white-on-black')\" data-a11y-btn-theme=\"white-on-black\" class=\"px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition cursor-pointer\" title=\"Белым по чёрному\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 string
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.color_wb"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 68, Col: 35}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer\" title=\"Синим по голубому\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.color_blue"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 77, Col: 37}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var10 string
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.images"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 97, Col: 33}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var11 string
+		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.images_on"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 97, Col: 67}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</button></div><!-- Закрыть режим --><div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var12 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -62,7 +194,16 @@ func A11yBar() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " Обычная версия")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var13 string
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.reset"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 112, Col: 32}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -75,11 +216,11 @@ func A11yBar() templ.Component {
 				"onclick": "window.A11Y.toggle()",
 			},
 			Class: "text-xs font-bold gap-1.5 transition",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var12), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,18 +1,22 @@
 package layouts
 
 import (
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 )
 
 templ Base(title string, description string, settings models.SiteSettings, seoOpt ...models.SEOData) {
 	{{ seo := resolveSEO(title, description, settings, seoOpt...) }}
 	<!DOCTYPE html>
-	<html lang="ru" class="scroll-smooth" data-theme={ settings.Theme }>
+	<html lang={ i18n.GetLocale(ctx) } class="scroll-smooth" data-theme={ settings.Theme }>
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>{ seo.Title }</title>
 			<meta name="description" content={ seo.Description }/>
+			<link rel="alternate" hreflang="ru" href="?lang=ru"/>
+			<link rel="alternate" hreflang="en" href="?lang=en"/>
+			<meta property="og:locale" content={ i18n.OGLocale(ctx) }/>
 			if seo.NoIndex {
 				<meta name="robots" content="noindex, nofollow"/>
 			}

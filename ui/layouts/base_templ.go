@@ -9,6 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 )
 
@@ -34,147 +35,154 @@ func Base(title string, description string, settings models.SiteSettings, seoOpt
 		}
 		ctx = templ.ClearChildren(ctx)
 		seo := resolveSEO(title, description, settings, seoOpt...)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"ru\" class=\"scroll-smooth\" data-theme=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!doctype html><html lang=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.ResolveAttributeValue(settings.Theme)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.GetLocale(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 10, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 11, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"scroll-smooth\" data-theme=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(seo.Title)
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.ResolveAttributeValue(settings.Theme)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 14, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 11, Col: 85}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</title><meta name=\"description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(seo.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 15, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 15, Col: 21}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if seo.NoIndex {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<meta name=\"robots\" content=\"noindex, nofollow\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</title><meta name=\"description\" content=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
 		}
-		if seo.CanonicalURL != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<link rel=\"canonical\" href=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var5 templ.SafeURL
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(seo.CanonicalURL)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 20, Col: 49}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 16, Col: 53}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Open Graph / SEO --><meta property=\"og:title\" content=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><link rel=\"alternate\" hreflang=\"ru\" href=\"?lang=ru\"><link rel=\"alternate\" hreflang=\"en\" href=\"?lang=en\"><meta property=\"og:locale\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Title)
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.OGLocale(ctx))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 24, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 19, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\"><meta property=\"og:description\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 25, Col: 60}
+		if seo.NoIndex {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<meta name=\"robots\" content=\"noindex, nofollow\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if seo.CanonicalURL != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<link rel=\"canonical\" href=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 templ.SafeURL
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(seo.CanonicalURL)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 24, Col: 49}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"><meta property=\"og:type\" content=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<!-- Open Graph / SEO --><meta property=\"og:title\" content=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGType)
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 26, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 28, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"><meta property=\"og:description\" content=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 29, Col: 60}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\"><meta property=\"og:type\" content=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var10 string
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGType)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 30, Col: 48}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if seo.CanonicalURL != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<meta property=\"og:url\" content=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<meta property=\"og:url\" content=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.CanonicalURL)
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.CanonicalURL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 28, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 32, Col: 54}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		if seo.OGImage != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<meta property=\"og:image\" content=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGImage)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 31, Col: 51}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -183,75 +191,94 @@ func Base(title string, description string, settings models.SiteSettings, seoOpt
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<!-- Twitter Cards -->")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if seo.TwitterCard != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<meta name=\"twitter:card\" content=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.TwitterCard)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 36, Col: 55}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\"><meta name=\"twitter:title\" content=\"")
+		if seo.OGImage != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<meta property=\"og:image\" content=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var12 string
-			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Title)
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGImage)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 37, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 35, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\"><meta name=\"twitter:description\" content=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!-- Twitter Cards -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if seo.TwitterCard != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<meta name=\"twitter:card\" content=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var13 string
-			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.TwitterCard)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 38, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 40, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\"><meta name=\"twitter:title\" content=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var14 string
+			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Title)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 41, Col: 50}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\"><meta name=\"twitter:description\" content=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var15 string
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.Description)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 42, Col: 62}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if seo.OGImage != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<meta name=\"twitter:image\" content=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<meta name=\"twitter:image\" content=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGImage)
+				var templ_7745c5c3_Var16 string
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.ResolveAttributeValue(seo.OGImage)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 40, Col: 53}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/layouts/base.templ`, Line: 44, Col: 53}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<!-- Schema.org JSON-LD Structured Data -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<!-- Schema.org JSON-LD Structured Data -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -261,37 +288,37 @@ func Base(title string, description string, settings models.SiteSettings, seoOpt
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Google Fonts: Merriweather + Inter + Bebas Neue --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap\" rel=\"stylesheet\"><!-- HTMX (Zero-JS foundation for AJAX requests) --><script src=\"https://unpkg.com/htmx.org@4.0.0/dist/htmx.min.js\"></script><!-- HTMX 4 + Alpine.js official compatibility extension --><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-alpine-compat.js\"></script><!-- Telegram WebApp SDK (автоматическая адаптация для TMA) --><script src=\"https://telegram.org/js/telegram-web-app.js\"></script><script>\n\t\t\t\t(function() {\n\t\t\t\t\tif (window.Telegram && window.Telegram.WebApp) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar tg = window.Telegram.WebApp;\n\t\t\t\t\t\t\ttg.ready();\n\t\t\t\t\t\t\ttg.expand();\n\t\t\t\t\t\t\tdocument.addEventListener('htmx:configRequest', function(evt) {\n\t\t\t\t\t\t\t\tif (tg.initData) {\n\t\t\t\t\t\t\t\t\tevt.detail.headers['X-Telegram-Init-Data'] = tg.initData;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t} catch(e) {}\n\t\t\t\t\t}\n\t\t\t\t})();\n\t\t\t</script><!-- Alpine.js + Mask Plugin for light client-side state (modals, mobile menu, phone masks) --><script defer src=\"https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Cloudflare Turnstile (если включен) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<!-- Google Fonts: Merriweather + Inter + Bebas Neue --><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\"><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap\" rel=\"stylesheet\"><!-- HTMX (Zero-JS foundation for AJAX requests) --><script src=\"https://unpkg.com/htmx.org@4.0.0/dist/htmx.min.js\"></script><!-- HTMX 4 + Alpine.js official compatibility extension --><script src=\"https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-alpine-compat.js\"></script><!-- Telegram WebApp SDK (автоматическая адаптация для TMA) --><script src=\"https://telegram.org/js/telegram-web-app.js\"></script><script>\n\t\t\t\t(function() {\n\t\t\t\t\tif (window.Telegram && window.Telegram.WebApp) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar tg = window.Telegram.WebApp;\n\t\t\t\t\t\t\ttg.ready();\n\t\t\t\t\t\t\ttg.expand();\n\t\t\t\t\t\t\tdocument.addEventListener('htmx:configRequest', function(evt) {\n\t\t\t\t\t\t\t\tif (tg.initData) {\n\t\t\t\t\t\t\t\t\tevt.detail.headers['X-Telegram-Init-Data'] = tg.initData;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t} catch(e) {}\n\t\t\t\t\t}\n\t\t\t\t})();\n\t\t\t</script><!-- Alpine.js + Mask Plugin for light client-side state (modals, mobile menu, phone masks) --><script defer src=\"https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js\"></script><script defer src=\"https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js\"></script><!-- Cloudflare Turnstile (если включен) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableTurnstile && settings.TurnstileSiteKey != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<script src=\"https://challenges.cloudflare.com/turnstile/v0/api.js\" async defer></script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<script src=\"https://challenges.cloudflare.com/turnstile/v0/api.js\" async defer></script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<!-- Яндекс Метрика (если указан ID) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<!-- Яндекс Метрика (если указан ID) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.YandexMetrikaID != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<script type=\"text/javascript\">\n\t\t\t\t\t(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};\n\t\t\t\t\tm[i].l=1*new Date();\n\t\t\t\t\tfor (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}\n\t\t\t\t\tk=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})\n\t\t\t\t\t(window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\");\n\t\t\t\t\tym({ settings.YandexMetrikaID }, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });\n\t\t\t\t</script>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<script type=\"text/javascript\">\n\t\t\t\t\t(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};\n\t\t\t\t\tm[i].l=1*new Date();\n\t\t\t\t\tfor (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}\n\t\t\t\t\tk=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})\n\t\t\t\t\t(window, document, \"script\", \"https://mc.yandex.ru/metrika/tag.js\", \"ym\");\n\t\t\t\t\tym({ settings.YandexMetrikaID }, \"init\", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true });\n\t\t\t\t</script>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<!-- Скомпилированные стили Tailwind с семантическими токенами --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Скомпилированные стили Tailwind с семантическими токенами --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.PrimaryColor != "" || settings.AccentColor != "" || settings.BackgroundColor != "" || settings.FontFamily != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<style>\n\t\t\t\t\t:root {\n\t\t\t\t\t\tif settings.PrimaryColor != \"\" {\n\t\t\t\t\t\t\t--color-primary: { settings.PrimaryColor };\n\t\t\t\t\t\t\t--color-primary-dark: color-mix(in srgb, { settings.PrimaryColor }, black 25%);\n\t\t\t\t\t\t\t--color-primary-light: color-mix(in srgb, { settings.PrimaryColor }, white 25%);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.AccentColor != \"\" {\n\t\t\t\t\t\t\t--color-accent: { settings.AccentColor };\n\t\t\t\t\t\t\t--color-accent-hover: color-mix(in srgb, { settings.AccentColor }, black 15%);\n\t\t\t\t\t\t\t--color-accent-light: color-mix(in srgb, { settings.AccentColor } 15%, white);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.BackgroundColor != \"\" {\n\t\t\t\t\t\t\t--color-surface: { settings.BackgroundColor };\n\t\t\t\t\t\t\t--color-surface-muted: color-mix(in srgb, { settings.BackgroundColor }, black 4%);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.FontFamily != \"\" {\n\t\t\t\t\t\t\t--font-custom: { settings.FontFamily }, sans-serif;\n\t\t\t\t\t\t\tfont-family: var(--font-custom);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t</style>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<style>\n\t\t\t\t\t:root {\n\t\t\t\t\t\tif settings.PrimaryColor != \"\" {\n\t\t\t\t\t\t\t--color-primary: { settings.PrimaryColor };\n\t\t\t\t\t\t\t--color-primary-dark: color-mix(in srgb, { settings.PrimaryColor }, black 25%);\n\t\t\t\t\t\t\t--color-primary-light: color-mix(in srgb, { settings.PrimaryColor }, white 25%);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.AccentColor != \"\" {\n\t\t\t\t\t\t\t--color-accent: { settings.AccentColor };\n\t\t\t\t\t\t\t--color-accent-hover: color-mix(in srgb, { settings.AccentColor }, black 15%);\n\t\t\t\t\t\t\t--color-accent-light: color-mix(in srgb, { settings.AccentColor } 15%, white);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.BackgroundColor != \"\" {\n\t\t\t\t\t\t\t--color-surface: { settings.BackgroundColor };\n\t\t\t\t\t\t\t--color-surface-muted: color-mix(in srgb, { settings.BackgroundColor }, black 4%);\n\t\t\t\t\t\t}\n\t\t\t\t\t\tif settings.FontFamily != \"\" {\n\t\t\t\t\t\t\t--font-custom: { settings.FontFamily }, sans-serif;\n\t\t\t\t\t\t\tfont-family: var(--font-custom);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t</style>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) --><script>\n\t\t\t\t(function() {\n\t\t\t\t\tconst root = document.documentElement;\n\t\t\t\t\t\n\t\t\t\t\t// Тема сайта (сохраняется в localStorage)\n\t\t\t\t\tconst savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'main';\n\t\t\t\t\troot.setAttribute('data-theme', savedTheme);\n\n\t\t\t\t\t// API Доступности (a11y)\n\t\t\t\t\twindow.A11Y = {\n\t\t\t\t\t\tactive: localStorage.getItem('a11y_active') === 'true',\n\t\t\t\t\t\tfontSize: localStorage.getItem('a11y_font') || 'normal',\n\t\t\t\t\t\tspacing: localStorage.getItem('a11y_spacing') || 'normal',\n\t\t\t\t\t\ttheme: localStorage.getItem('a11y_theme') || 'black-on-white',\n\t\t\t\t\t\timages: localStorage.getItem('a11y_images') || 'on',\n\n\t\t\t\t\t\tapply: function() {\n\t\t\t\t\t\t\tconst toolbar = document.getElementById('a11y-toolbar');\n\t\t\t\t\t\t\tif (this.active) {\n\t\t\t\t\t\t\t\troot.classList.add('a11y-mode');\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', this.fontSize);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', this.theme);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.remove('hidden');\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\troot.classList.remove('a11y-mode');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-font');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-spacing');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-theme');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-images');\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.add('hidden');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggle: function() {\n\t\t\t\t\t\t\tthis.active = !this.active;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_active', this.active);\n\t\t\t\t\t\t\tthis.apply();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetFont: function(size) {\n\t\t\t\t\t\t\tthis.fontSize = size;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_font', size);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', size);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetColorScheme: function(scheme) {\n\t\t\t\t\t\t\tthis.theme = scheme;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_theme', scheme);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', scheme);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleSpacing: function() {\n\t\t\t\t\t\t\tthis.spacing = (this.spacing === 'normal') ? 'wide' : 'normal';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_spacing', this.spacing);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleImages: function() {\n\t\t\t\t\t\t\tthis.images = (this.images === 'on') ? 'off' : 'on';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_images', this.images);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tupdateUI: function() {\n\t\t\t\t\t\t\tconst sBtn = document.getElementById('a11y-spacing-btn');\n\t\t\t\t\t\t\tif (sBtn) sBtn.textContent = this.spacing === 'wide' ? 'Интервал: Широкий' : 'Интервал: Обычный';\n\t\t\t\t\t\t\tconst iBtn = document.getElementById('a11y-images-btn');\n\t\t\t\t\t\t\tif (iBtn) iBtn.textContent = this.images === 'off' ? 'Изображения: Выкл' : 'Изображения: Вкл';\n\t\t\t\t\t\t}\n\t\t\t\t\t};\n\n\t\t\t\t\t// Переключение тем сайта (Основная + Сезоны + Гармоническая + День/Ночь)\n\t\t\t\t\twindow.getThemeState = function() {\n\t\t\t\t\t\tconst current = root.getAttribute('data-theme') || 'main';\n\t\t\t\t\t\tconst isNight = current.endsWith('-night') || current === 'dark';\n\t\t\t\t\t\tlet base = current.replace('-night', '').replace('-day', '');\n\t\t\t\t\t\tif (base === 'dark' || base === 'default' || base === 'legal') base = 'main';\n\t\t\t\t\t\treturn { base: base, isNight: isNight };\n\t\t\t\t\t};\n\n\t\t\t\t\twindow.setSiteTheme = function(seasonName) {\n\t\t\t\t\t\tconst state = window.getThemeState();\n\t\t\t\t\t\tconst season = seasonName || state.base;\n\t\t\t\t\t\tconst newTheme = state.isNight ? (season + '-night') : season;\n\t\t\t\t\t\troot.setAttribute('data-theme', newTheme);\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_theme', newTheme);\n\t\t\t\t\t\twindow.dispatchEvent(new CustomEvent('themechanged', { detail: { theme: newTheme, season: season, isNight: state.isNight } }));\n\t\t\t\t\t};\n\n\t\t\t\t\twindow.toggleNightMode = function() {\n\t\t\t\t\t\tconst state = window.getThemeState();\n\t\t\t\t\t\tconst newTheme = state.isNight ? state.base : (state.base + '-night');\n\t\t\t\t\t\troot.setAttribute('data-theme', newTheme);\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_theme', newTheme);\n\t\t\t\t\t\twindow.dispatchEvent(new CustomEvent('themechanged', { detail: { theme: newTheme, season: state.base, isNight: !state.isNight } }));\n\t\t\t\t\t};\n\n\t\t\t\t\t// ----------------------------------------------------\n\t\t\t\t\t// ⚡ Микро-движок Scroll Reveal (IntersectionObserver < 0.5 КБ)\n\t\t\t\t\t// ----------------------------------------------------\n\t\t\t\t\tfunction initScrollReveal(scope) {\n\t\t\t\t\t\tif (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;\n\t\t\t\t\t\tif (root.classList.contains('a11y-mode')) return;\n\n\t\t\t\t\t\tconst rootElement = scope || document;\n\t\t\t\t\t\tconst elements = rootElement.querySelectorAll('[data-reveal]:not(.is-revealed)');\n\t\t\t\t\t\tif (!elements.length) return;\n\n\t\t\t\t\t\tif (!('IntersectionObserver' in window)) {\n\t\t\t\t\t\t\telements.forEach(function(el) { el.classList.add('is-revealed'); });\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tconst observer = new IntersectionObserver(function(entries) {\n\t\t\t\t\t\t\tentries.forEach(function(entry) {\n\t\t\t\t\t\t\t\tif (entry.isIntersecting) {\n\t\t\t\t\t\t\t\t\tentry.target.classList.add('is-revealed');\n\t\t\t\t\t\t\t\t\tobserver.unobserve(entry.target);\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });\n\n\t\t\t\t\t\telements.forEach(function(el) { observer.observe(el); });\n\t\t\t\t\t}\n\n\t\t\t\t\t// Первичная синхронизация после загрузки DOM\n\t\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t\tif (window.htmx && window.htmx.findExtension) {\n\t\t\t\t\t\t\tvar ext = window.htmx.findExtension('alpine-compat');\n\t\t\t\t\t\t\tif (ext && !window.htmx.findExtension('hx-alpine-compat')) {\n\t\t\t\t\t\t\t\twindow.htmx.registerExtension('hx-alpine-compat', ext);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\twindow.A11Y.apply();\n\t\t\t\t\t\tinitScrollReveal();\n\t\t\t\t\t});\n\n\t\t\t\t\t// Бесшовный перезапуск при HTMX Swap (фрагментарные обновления)\n\t\t\t\t\tdocument.addEventListener('htmx:after:swap', function(evt) {\n\t\t\t\t\t\tinitScrollReveal(evt.detail.target);\n\t\t\t\t\t});\n\t\t\t\t\tdocument.addEventListener('htmx:afterSwap', function(evt) {\n\t\t\t\t\t\tinitScrollReveal(evt.detail.target);\n\t\t\t\t\t});\n\t\t\t\t})();\n\t\t\t</script></head><body class=\"bg-surface text-content antialiased flex flex-col min-h-screen\" hx-ext=\"alpine-compat, hx-alpine-compat\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) --><script>\n\t\t\t\t(function() {\n\t\t\t\t\tconst root = document.documentElement;\n\t\t\t\t\t\n\t\t\t\t\t// Тема сайта (сохраняется в localStorage)\n\t\t\t\t\tconst savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'main';\n\t\t\t\t\troot.setAttribute('data-theme', savedTheme);\n\n\t\t\t\t\t// API Доступности (a11y)\n\t\t\t\t\twindow.A11Y = {\n\t\t\t\t\t\tactive: localStorage.getItem('a11y_active') === 'true',\n\t\t\t\t\t\tfontSize: localStorage.getItem('a11y_font') || 'normal',\n\t\t\t\t\t\tspacing: localStorage.getItem('a11y_spacing') || 'normal',\n\t\t\t\t\t\ttheme: localStorage.getItem('a11y_theme') || 'black-on-white',\n\t\t\t\t\t\timages: localStorage.getItem('a11y_images') || 'on',\n\n\t\t\t\t\t\tapply: function() {\n\t\t\t\t\t\t\tconst toolbar = document.getElementById('a11y-toolbar');\n\t\t\t\t\t\t\tif (this.active) {\n\t\t\t\t\t\t\t\troot.classList.add('a11y-mode');\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', this.fontSize);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', this.theme);\n\t\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.remove('hidden');\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\troot.classList.remove('a11y-mode');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-font');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-spacing');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-theme');\n\t\t\t\t\t\t\t\troot.removeAttribute('data-a11y-images');\n\t\t\t\t\t\t\t\tif (toolbar) toolbar.classList.add('hidden');\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggle: function() {\n\t\t\t\t\t\t\tthis.active = !this.active;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_active', this.active);\n\t\t\t\t\t\t\tthis.apply();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetFont: function(size) {\n\t\t\t\t\t\t\tthis.fontSize = size;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_font', size);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-font', size);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tsetColorScheme: function(scheme) {\n\t\t\t\t\t\t\tthis.theme = scheme;\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_theme', scheme);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-theme', scheme);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleSpacing: function() {\n\t\t\t\t\t\t\tthis.spacing = (this.spacing === 'normal') ? 'wide' : 'normal';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_spacing', this.spacing);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-spacing', this.spacing);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\ttoggleImages: function() {\n\t\t\t\t\t\t\tthis.images = (this.images === 'on') ? 'off' : 'on';\n\t\t\t\t\t\t\tlocalStorage.setItem('a11y_images', this.images);\n\t\t\t\t\t\t\troot.setAttribute('data-a11y-images', this.images);\n\t\t\t\t\t\t\tthis.updateUI();\n\t\t\t\t\t\t},\n\n\t\t\t\t\t\tupdateUI: function() {\n\t\t\t\t\t\t\tconst sBtn = document.getElementById('a11y-spacing-btn');\n\t\t\t\t\t\t\tif (sBtn) sBtn.textContent = this.spacing === 'wide' ? 'Интервал: Широкий' : 'Интервал: Обычный';\n\t\t\t\t\t\t\tconst iBtn = document.getElementById('a11y-images-btn');\n\t\t\t\t\t\t\tif (iBtn) iBtn.textContent = this.images === 'off' ? 'Изображения: Выкл' : 'Изображения: Вкл';\n\t\t\t\t\t\t}\n\t\t\t\t\t};\n\n\t\t\t\t\t// Переключение тем сайта (Основная + Сезоны + Гармоническая + День/Ночь)\n\t\t\t\t\twindow.getThemeState = function() {\n\t\t\t\t\t\tconst current = root.getAttribute('data-theme') || 'main';\n\t\t\t\t\t\tconst isNight = current.endsWith('-night') || current === 'dark';\n\t\t\t\t\t\tlet base = current.replace('-night', '').replace('-day', '');\n\t\t\t\t\t\tif (base === 'dark' || base === 'default' || base === 'legal') base = 'main';\n\t\t\t\t\t\treturn { base: base, isNight: isNight };\n\t\t\t\t\t};\n\n\t\t\t\t\twindow.setSiteTheme = function(seasonName) {\n\t\t\t\t\t\tconst state = window.getThemeState();\n\t\t\t\t\t\tconst season = seasonName || state.base;\n\t\t\t\t\t\tconst newTheme = state.isNight ? (season + '-night') : season;\n\t\t\t\t\t\troot.setAttribute('data-theme', newTheme);\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_theme', newTheme);\n\t\t\t\t\t\twindow.dispatchEvent(new CustomEvent('themechanged', { detail: { theme: newTheme, season: season, isNight: state.isNight } }));\n\t\t\t\t\t};\n\n\t\t\t\t\twindow.toggleNightMode = function() {\n\t\t\t\t\t\tconst state = window.getThemeState();\n\t\t\t\t\t\tconst newTheme = state.isNight ? state.base : (state.base + '-night');\n\t\t\t\t\t\troot.setAttribute('data-theme', newTheme);\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_theme', newTheme);\n\t\t\t\t\t\twindow.dispatchEvent(new CustomEvent('themechanged', { detail: { theme: newTheme, season: state.base, isNight: !state.isNight } }));\n\t\t\t\t\t};\n\n\t\t\t\t\t// ----------------------------------------------------\n\t\t\t\t\t// ⚡ Микро-движок Scroll Reveal (IntersectionObserver < 0.5 КБ)\n\t\t\t\t\t// ----------------------------------------------------\n\t\t\t\t\tfunction initScrollReveal(scope) {\n\t\t\t\t\t\tif (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;\n\t\t\t\t\t\tif (root.classList.contains('a11y-mode')) return;\n\n\t\t\t\t\t\tconst rootElement = scope || document;\n\t\t\t\t\t\tconst elements = rootElement.querySelectorAll('[data-reveal]:not(.is-revealed)');\n\t\t\t\t\t\tif (!elements.length) return;\n\n\t\t\t\t\t\tif (!('IntersectionObserver' in window)) {\n\t\t\t\t\t\t\telements.forEach(function(el) { el.classList.add('is-revealed'); });\n\t\t\t\t\t\t\treturn;\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tconst observer = new IntersectionObserver(function(entries) {\n\t\t\t\t\t\t\tentries.forEach(function(entry) {\n\t\t\t\t\t\t\t\tif (entry.isIntersecting) {\n\t\t\t\t\t\t\t\t\tentry.target.classList.add('is-revealed');\n\t\t\t\t\t\t\t\t\tobserver.unobserve(entry.target);\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });\n\n\t\t\t\t\t\telements.forEach(function(el) { observer.observe(el); });\n\t\t\t\t\t}\n\n\t\t\t\t\t// Первичная синхронизация после загрузки DOM\n\t\t\t\t\tdocument.addEventListener('DOMContentLoaded', function() {\n\t\t\t\t\t\tif (window.htmx && window.htmx.findExtension) {\n\t\t\t\t\t\t\tvar ext = window.htmx.findExtension('alpine-compat');\n\t\t\t\t\t\t\tif (ext && !window.htmx.findExtension('hx-alpine-compat')) {\n\t\t\t\t\t\t\t\twindow.htmx.registerExtension('hx-alpine-compat', ext);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\twindow.A11Y.apply();\n\t\t\t\t\t\tinitScrollReveal();\n\t\t\t\t\t});\n\n\t\t\t\t\t// Бесшовный перезапуск при HTMX Swap (фрагментарные обновления)\n\t\t\t\t\tdocument.addEventListener('htmx:after:swap', function(evt) {\n\t\t\t\t\t\tinitScrollReveal(evt.detail.target);\n\t\t\t\t\t});\n\t\t\t\t\tdocument.addEventListener('htmx:afterSwap', function(evt) {\n\t\t\t\t\t\tinitScrollReveal(evt.detail.target);\n\t\t\t\t\t});\n\t\t\t\t})();\n\t\t\t</script></head><body class=\"bg-surface text-content antialiased flex flex-col min-h-screen\" hx-ext=\"alpine-compat, hx-alpine-compat\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -299,7 +326,7 @@ func Base(title string, description string, settings models.SiteSettings, seoOpt
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

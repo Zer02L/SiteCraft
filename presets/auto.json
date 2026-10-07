@@ -5,6 +5,8 @@
     "theme": "auto",
     "enable_a11y": false,
     "enable_alpine": false,
+    "header_variant": "minimal",
+    "footer_variant": "columns",
     "map_mode": "lazy",
     "booking_mode": "simple"
   },
@@ -24,7 +26,7 @@
     "map_iframe": "https://yandex.ru/map-widget/v1/?ll=37.617698%2C55.755864&z=14"
   },
   "blocks": [
-    { "type": "hero", "title": "Главный баннер СТО", "order": 1, "active": true },
+    { "type": "split_hero", "title": "Конверсионный экран СТО", "order": 1, "active": true },
     { "type": "services", "title": "Виды ремонта и стоимость", "order": 2, "active": true },
     { "type": "booking", "title": "Быстрый расчет стоимости и запись", "order": 3, "active": true },
     { "type": "features", "title": "Наши преимущества и гарантия", "order": 4, "active": true },

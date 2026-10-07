@@ -112,6 +112,11 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.BoolField{Name: "payment_sandbox"},
 			&core.BoolField{Name: "enable_blog"},
 			&core.BoolField{Name: "enable_tma"},
+			&core.BoolField{Name: "enable_tracker"},
+			&core.BoolField{Name: "enable_i18n"},
+			&core.TextField{Name: "default_lang"},
+			&core.TextField{Name: "header_variant"},
+			&core.TextField{Name: "footer_variant"},
 		)
 
 		if err := app.Save(col); err != nil {
@@ -119,7 +124,7 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		log.Println("[Migration] Коллекция site_settings успешно создана")
 	} else {
-		// Ensure payment, theming, blog, and TMA fields exist
+		// Ensure payment, theming, blog, TMA, and i18n fields exist
 		changed := false
 		if col.Fields.GetByName("primary_color") == nil {
 			col.Fields.Add(&core.TextField{Name: "primary_color"})
@@ -145,6 +150,16 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		if col.Fields.GetByName("enable_tracker") == nil {
 			col.Fields.Add(&core.BoolField{Name: "enable_tracker"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_i18n") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_i18n"})
+			col.Fields.Add(&core.TextField{Name: "default_lang"})
+			changed = true
+		}
+		if col.Fields.GetByName("header_variant") == nil {
+			col.Fields.Add(&core.TextField{Name: "header_variant"})
+			col.Fields.Add(&core.TextField{Name: "footer_variant"})
 			changed = true
 		}
 		if changed {
@@ -417,6 +432,8 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		BookingMode:    "slots",
 		EnablePayment:  false,
 		PaymentSandbox: true,
+		EnableI18n:     true,
+		DefaultLang:    "ru",
 	}
 
 	rec, err := app.FindFirstRecordByFilter("site_settings", "")
@@ -457,6 +474,18 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		settings.EnableBlog = rec.GetBool("enable_blog")
 		settings.EnableTMA = rec.GetBool("enable_tma")
 		settings.EnableTracker = rec.GetBool("enable_tracker")
+		if rec.Collection().Fields.GetByName("enable_i18n") != nil {
+			settings.EnableI18n = rec.GetBool("enable_i18n")
+		} else {
+			settings.EnableI18n = true
+		}
+		if defL := rec.GetString("default_lang"); defL != "" {
+			settings.DefaultLang = defL
+		} else {
+			settings.DefaultLang = "ru"
+		}
+		settings.HeaderVariant = rec.GetString("header_variant")
+		settings.FooterVariant = rec.GetString("footer_variant")
 	}
 
 	c.SetSettings(settings)

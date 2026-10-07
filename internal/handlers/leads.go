@@ -10,6 +10,7 @@ import (
 
 	"sitecraft/internal/data"
 	"sitecraft/internal/events"
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 
 	"github.com/pocketbase/dbx"
@@ -37,6 +38,8 @@ func NewLeadHandler(app *pocketbase.PocketBase, bus ...events.Bus) *LeadHandler 
 
 // HandleCreateLead handles form submissions from the landing page.
 func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
+	ctx := e.Request.Context()
+	lang := i18n.GetLocale(ctx)
 	settings := data.GetSiteSettings(h.app)
 
 	name := strings.TrimSpace(e.Request.FormValue("name"))
@@ -60,7 +63,7 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 		Mode:        settings.BookingMode,
 	}
 
-	validationErrors := ValidateLeadForm(input)
+	validationErrors := ValidateLeadFormLocalized(input, lang)
 
 	// Если есть ошибки валидации — возвращаем структурированное сообщение
 	if len(validationErrors) > 0 {
@@ -72,17 +75,18 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 			))
 		}
 
+		errorTitle := i18n.T(ctx, "error.form_check")
 		errorHTML := fmt.Sprintf(`
 			<div class="p-4 bg-rose-50 border border-rose-300 rounded-xl text-rose-900 text-sm shadow-sm transition-all duration-200">
 				<div class="font-bold flex items-center gap-2 mb-2 text-rose-800">
 					<svg class="w-5 h-5 text-rose-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-					Пожалуйста, проверьте данные формы:
+					%s
 				</div>
 				<ul class="text-xs text-rose-700 space-y-1.5 ml-1">
 					%s
 				</ul>
 			</div>
-		`, errList.String())
+		`, html.EscapeString(errorTitle), errList.String())
 		return e.HTML(http.StatusUnprocessableEntity, errorHTML)
 	}
 
@@ -97,15 +101,17 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 			dbx.Params{"date": bookingDate, "time": bookingTime},
 		)
 		if len(existingRecords) > 0 {
-			return e.HTML(http.StatusConflict, `
+			slotTitle := i18n.T(ctx, "booking.slot_taken_title")
+			slotDesc := i18n.T(ctx, "booking.slot_taken_desc")
+			return e.HTML(http.StatusConflict, fmt.Sprintf(`
 				<div class="p-4 bg-amber-50 border border-amber-300 rounded-xl text-amber-900 text-sm shadow-sm">
 					<div class="font-bold flex items-center gap-2 mb-1 text-amber-800">
 						<svg class="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-						Выбранное время уже занято
+						%s
 					</div>
-					<p class="text-xs text-amber-700">К сожалению, этот слот только что забронировали. Пожалуйста, выберите другое свободное время.</p>
+					<p class="text-xs text-amber-700">%s</p>
 				</div>
-			`)
+			`, html.EscapeString(slotTitle), html.EscapeString(slotDesc)))
 		}
 	}
 
@@ -141,12 +147,14 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 
 		if err := h.app.Save(leadRecord); err != nil {
 			log.Printf("[Leads Error] Не удалось сохранить заявку в базу: %v\n", err)
-			return e.HTML(http.StatusInternalServerError, `
+			serverTitle := i18n.T(ctx, "error.server_title")
+			serverDesc := i18n.T(ctx, "error.server_desc")
+			return e.HTML(http.StatusInternalServerError, fmt.Sprintf(`
 				<div class="p-4 bg-rose-50 border border-rose-300 rounded-xl text-rose-800 text-sm">
-					<div class="font-bold">Ошибка сервера</div>
-					<p class="mt-1 text-xs">Не удалось сохранить запись. Пожалуйста, повторите попытку или позвоните нам по телефону.</p>
+					<div class="font-bold">%s</div>
+					<p class="mt-1 text-xs">%s</p>
 				</div>
-			`)
+			`, html.EscapeString(serverTitle), html.EscapeString(serverDesc)))
 		}
 		leadModel.ID = leadRecord.Id
 	}
@@ -163,21 +171,24 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 	// Возвращаем сообщение об успехе
 	var successMsg string
 	if bookingDate != "" && bookingTime != "" {
-		successMsg = fmt.Sprintf(`Мы зарезервировали для вас <strong>%s в %s</strong>. Наш специалист свяжется с вами по номеру <strong>%s</strong> для подтверждения.`,
-			html.EscapeString(bookingDate), html.EscapeString(bookingTime), html.EscapeString(phone))
+		successMsg = fmt.Sprintf(i18n.T(ctx, "booking.success_slots"),
+			"<strong>"+html.EscapeString(bookingDate)+"</strong>",
+			"<strong>"+html.EscapeString(bookingTime)+"</strong>",
+			"<strong>"+html.EscapeString(phone)+"</strong>")
 	} else {
-		successMsg = fmt.Sprintf(`Спасибо за обращение! Наш менеджер свяжется с вами по номеру <strong>%s</strong> в ближайшее рабочее время.`,
-			html.EscapeString(phone))
+		successMsg = fmt.Sprintf(i18n.T(ctx, "booking.success_simple"),
+			"<strong>"+html.EscapeString(phone)+"</strong>")
 	}
 
+	successTitle := i18n.T(ctx, "booking.success_title")
 	successHTML := fmt.Sprintf(`
 		<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-800 text-sm shadow-sm transition-all duration-200">
 			<div class="font-bold flex items-center gap-2">
 				<svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-				Заявка успешно принята!
+				%s
 			</div>
 			<p class="mt-2 text-xs text-emerald-700">%s</p>
 		</div>
-	`, successMsg)
+	`, html.EscapeString(successTitle), successMsg)
 	return e.HTML(http.StatusOK, successHTML)
 }

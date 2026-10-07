@@ -193,3 +193,38 @@ func TestValidatePaymentForm(t *testing.T) {
 		}
 	})
 }
+
+func TestValidateLeadFormLocalized_EN(t *testing.T) {
+	t.Run("Returns English error messages when lang is en", func(t *testing.T) {
+		input := LeadFormInput{
+			Name:     "",
+			Phone:    "123",
+			Consent:  "",
+			Honeypot: "http://bot.com",
+			Mode:     "simple",
+		}
+		errs := ValidateLeadFormLocalized(input, "en")
+		if len(errs) != 1 || errs[0] != "Spam filter blocked the submission" {
+			t.Errorf("expected English spam error, got: %v", errs)
+		}
+
+		input.Honeypot = ""
+		errs = ValidateLeadFormLocalized(input, "en")
+		if len(errs) < 3 {
+			t.Errorf("expected multiple English errors, got: %v", errs)
+		}
+		foundName := false
+		foundPhone := false
+		for _, e := range errs {
+			if strings.Contains(e, "Please provide your name") {
+				foundName = true
+			}
+			if strings.Contains(e, "Invalid phone number") {
+				foundPhone = true
+			}
+		}
+		if !foundName || !foundPhone {
+			t.Errorf("expected English validation messages, got: %v", errs)
+		}
+	})
+}

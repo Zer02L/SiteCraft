@@ -1,6 +1,8 @@
 package components
 
 import (
+	"sitecraft/internal/i18n"
+
 	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
@@ -16,7 +18,7 @@ templ A11yBar() {
 			<div class="flex items-center gap-1 sm:gap-2">
 				<span class="text-xs uppercase font-bold mr-1 flex items-center gap-1">
 					@icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"})
-					Шрифт:
+					{ i18n.T(ctx, "a11y.font") }
 				</span>
 				<button
 					type="button"
@@ -24,7 +26,7 @@ templ A11yBar() {
 					data-a11y-btn-font="normal"
 					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
-					А (Стандарт)
+					{ i18n.T(ctx, "a11y.font_normal") }
 				</button>
 				<button
 					type="button"
@@ -32,7 +34,7 @@ templ A11yBar() {
 					data-a11y-btn-font="large"
 					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
-					А (Крупный)
+					{ i18n.T(ctx, "a11y.font_large") }
 				</button>
 				<button
 					type="button"
@@ -40,13 +42,13 @@ templ A11yBar() {
 					data-a11y-btn-font="xlarge"
 					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
-					А+ (Макс)
+					{ i18n.T(ctx, "a11y.font_xlarge") }
 				</button>
 			</div>
 
 			<!-- Цветовые схемы -->
 			<div class="flex items-center gap-1 sm:gap-2">
-				<span class="text-xs uppercase font-bold mr-1">Цвет:</span>
+				<span class="text-xs uppercase font-bold mr-1">{ i18n.T(ctx, "a11y.color") }</span>
 				<button
 					type="button"
 					onclick="window.A11Y.setColorScheme('black-on-white')"
@@ -54,7 +56,7 @@ templ A11yBar() {
 					class="px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition cursor-pointer"
 					title="Чёрным по белому"
 				>
-					Ц (Ч/Б)
+					{ i18n.T(ctx, "a11y.color_bw") }
 				</button>
 				<button
 					type="button"
@@ -63,7 +65,7 @@ templ A11yBar() {
 					class="px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition cursor-pointer"
 					title="Белым по чёрному"
 				>
-					Ц (Инверсия)
+					{ i18n.T(ctx, "a11y.color_wb") }
 				</button>
 				<button
 					type="button"
@@ -72,7 +74,7 @@ templ A11yBar() {
 					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer"
 					title="Синим по голубому"
 				>
-					Ц (Синий)
+					{ i18n.T(ctx, "a11y.color_blue") }
 				</button>
 			</div>
 
@@ -92,7 +94,7 @@ templ A11yBar() {
 					onclick="window.A11Y.toggleImages()"
 					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
-					Изображения: Вкл
+					{ i18n.T(ctx, "a11y.images") } { i18n.T(ctx, "a11y.images_on") }
 				</button>
 			</div>
 
@@ -107,7 +109,7 @@ templ A11yBar() {
 					Class: "text-xs font-bold gap-1.5 transition",
 				}) {
 					@icons.X(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
-					Обычная версия
+					{ i18n.T(ctx, "a11y.reset") }
 				}
 			</div>
 		</div>

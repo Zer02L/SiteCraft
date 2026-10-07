@@ -23,6 +23,16 @@ type BlockRenderer func(block models.PageBlock, ctx RenderContext) templ.Compone
 // BlockRegistry maps block type string identifier to its pluggable renderer
 var BlockRegistry = map[string]BlockRenderer{
 	"hero": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		if variant, ok := b.Payload["variant"].(string); ok {
+			switch variant {
+			case "split":
+				return hero.SplitHero(ctx.Content, ctx.Settings)
+			case "cyber":
+				return hero.CyberHero(ctx.Content, ctx.Settings)
+			case "classic":
+				return hero.Hero(ctx.Content)
+			}
+		}
 		if ctx.Settings.Theme == "cyber" {
 			return hero.CyberHero(ctx.Content, ctx.Settings)
 		}
@@ -30,6 +40,9 @@ var BlockRegistry = map[string]BlockRenderer{
 	},
 	"cyber_hero": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return hero.CyberHero(ctx.Content, ctx.Settings)
+	},
+	"split_hero": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return hero.SplitHero(ctx.Content, ctx.Settings)
 	},
 	"schedule": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return sections.ScheduleBar(ctx.Content)

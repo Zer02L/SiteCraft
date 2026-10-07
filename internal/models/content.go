@@ -28,10 +28,16 @@ type SiteSettings struct {
 	PaymentSecret  string `json:"payment_secret"`
 	PaymentSandbox bool   `json:"payment_sandbox"`
 
-	// Новые модули (Этап 1: Блог и TMA: Telegram Mini App, Этап 2: Трекер заказов)
-	EnableBlog    bool `json:"enable_blog"`
-	EnableTMA     bool `json:"enable_tma"`
-	EnableTracker bool `json:"enable_tracker"`
+	// Новые модули (Этап 1: Блог и TMA: Telegram Mini App, Этап 2: Трекер заказов, Локализация)
+	EnableBlog    bool   `json:"enable_blog"`
+	EnableTMA     bool   `json:"enable_tma"`
+	EnableTracker bool   `json:"enable_tracker"`
+	EnableI18n    bool   `json:"enable_i18n"`
+	DefaultLang   string `json:"default_lang"` // ru, en
+
+	// Варианты шапки и подвала (Layout Variants: classic, minimal, centered / columns)
+	HeaderVariant string `json:"header_variant"`
+	FooterVariant string `json:"footer_variant"`
 }
 
 // SiteContent holds content blocks displayed on the website

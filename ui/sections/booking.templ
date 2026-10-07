@@ -1,6 +1,7 @@
 package sections
 
 import (
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 
 	"github.com/axadrn/shadcn-templ/v2/components/badge"
@@ -17,67 +18,93 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 					Variant: badge.VariantSecondary,
 					Class:   "section-badge mb-2",
 				}) {
-					Форма связи
+					{ i18n.T(ctx, "booking.badge") }
 				}
 				<h2 class="font-serif-title text-3xl font-bold text-content">
-
 					if settings.BookingMode == "simple" {
-						Оставить заявку на консультацию
+						{ i18n.T(ctx, "booking.simple_title") }
 					} else {
-						Онлайн-запись на приём
+						{ i18n.T(ctx, "booking.slots_title") }
 					}
 				</h2>
 				<p class="text-content-muted mt-2 text-sm max-w-2xl mx-auto">
 					if settings.BookingMode == "simple" {
-						Заполните контактные данные, и мы свяжемся с вами в течение 15 минут.
+						{ i18n.T(ctx, "booking.simple_desc") }
 					} else {
-						Выберите удобную дату и доступный слот времени. Зеленым отмечены свободные часы, серым — занятые.
+						{ i18n.T(ctx, "booking.slots_desc") }
 					}
 				</p>
 			</div>
 
 			if settings.BookingMode == "simple" {
-				<!-- Режим 1: Простая лидген-форма (Zero-JS HTMX) -->
-				<div class="max-w-xl mx-auto bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10">
+				<!-- Режим 1: Простая лидген-форма -->
+				<div
+					x-data="{
+						phone: '',
+						formatPhone(val) {
+							let digits = (val || '').replace(/\D/g, '');
+							if (!digits) return '';
+							if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
+							let res = '+7';
+							if (digits.length > 0) res += ' (' + digits.substring(0, 3);
+							if (digits.length >= 4) res += ') ' + digits.substring(3, 6);
+							if (digits.length >= 7) res += '-' + digits.substring(6, 8);
+							if (digits.length >= 9) res += '-' + digits.substring(8, 10);
+							return res;
+						},
+						onPhoneInput(e) {
+							this.phone = this.formatPhone(e.target.value);
+						}
+					}"
+					class="max-w-xl mx-auto bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10"
+				>
 					<form
 						hx-post="/api/leads"
 						hx-target="#booking-response"
 						hx-swap="innerHTML transition:true"
+						@htmx:after-request="if ($event.detail.successful) { $el.reset(); phone = ''; }"
 						class="space-y-4"
 					>
 						<!-- Honeypot антиспам-ловушка (скрыта от людей) -->
 						<div class="hidden" aria-hidden="true">
-							<label>Не заполняйте это поле: <input type="text" name="company_website_url" tabindex="-1" autocomplete="off"/></label>
+							<label>URL: <input type="text" name="company_website_url" tabindex="-1" autocomplete="off"/></label>
 						</div>
 
 						<div>
-							<label class="block text-xs font-semibold text-content/80 mb-1">Ваше имя *</label>
+							<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.name_label") }</label>
 							<input
 								type="text"
 								name="name"
 								required
-								placeholder="Иван Иванов"
+								minlength="2"
+								maxlength="100"
+								autocomplete="name"
+								placeholder={ i18n.T(ctx, "booking.name_placeholder") }
 								class="w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition"
 							/>
 						</div>
 
 						<div>
-							<label class="block text-xs font-semibold text-content/80 mb-1">Номер телефона *</label>
+							<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.phone_label") }</label>
 							<input
 								type="tel"
 								name="phone"
+								x-model="phone"
+								@input="onPhoneInput($event)"
 								required
-								placeholder="+7 (999) 000-00-00"
+								autocomplete="tel"
+								placeholder={ i18n.T(ctx, "booking.phone_placeholder") }
 								class="w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition"
 							/>
 						</div>
 
 						<div>
-							<label class="block text-xs font-semibold text-content/80 mb-1">Комментарий к заявке</label>
+							<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.comment_label") }</label>
 							<textarea
 								name="comment"
 								rows="3"
-								placeholder="Кратко опишите ваш вопрос..."
+								maxlength="1000"
+								placeholder={ i18n.T(ctx, "booking.comment_placeholder") }
 								class="w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition"
 							></textarea>
 						</div>
@@ -93,7 +120,7 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 									class="mt-0.5 rounded border-content/20 text-primary focus:ring-accent"
 								/>
 								<span class="text-xs text-content-muted leading-snug">
-									Я даю согласие на обработку персональных данных в соответствии со <span class="underline decoration-stone-400">152-ФЗ</span> *
+									{ i18n.T(ctx, "booking.consent_text") } *
 								</span>
 							</label>
 						</div>
@@ -107,7 +134,7 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 								@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
 							</span>
 							@icons.Send(templ.Attributes{"class": "w-4 h-4 mr-1"})
-							<span>Отправить заявку</span>
+							<span>{ i18n.T(ctx, "booking.submit_simple") }</span>
 						}
 					</form>
 					<div id="booking-response" class="mt-4"></div>
@@ -268,11 +295,11 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 						<div class="flex items-center justify-between mb-4 pb-3 border-b border-content/10">
 							<h3 class="font-bold text-content text-base flex items-center gap-2">
 								<svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-								1. Выберите дату
+								1. { i18n.T(ctx, "booking.date_label") }
 							</h3>
 							<div class="flex items-center gap-3 text-xs">
-								<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Свободно</span>
-								<span class="flex items-center gap-1.5 text-content-muted"><span class="w-2.5 h-2.5 rounded-full bg-stone-300"></span> Занято</span>
+								<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> { i18n.T(ctx, "booking.legend_free") }</span>
+								<span class="flex items-center gap-1.5 text-content-muted"><span class="w-2.5 h-2.5 rounded-full bg-stone-300"></span> { i18n.T(ctx, "booking.legend_busy") }</span>
 							</div>
 						</div>
 
@@ -294,7 +321,7 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 
 						<!-- Сетка слотов времени -->
 						<div class="mb-4">
-							<h4 class="font-semibold text-content text-sm mb-3">2. Выберите время приёма:</h4>
+							<h4 class="font-semibold text-content text-sm mb-3">2. { i18n.T(ctx, "booking.time_label") }</h4>
 							<div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
 								<template x-for="slot in currentSlots()" :key="slot.time">
 									<button
@@ -316,25 +343,25 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 
 						<div class="p-3 bg-amber-50/80 rounded-lg border border-amber-200/80 text-xs text-amber-800 flex items-center gap-2">
 							<svg class="w-4 h-4 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-							<span>Обеденный перерыв: { content.LunchBreak } (приём приостановлен).</span>
+							<span>{ i18n.T(ctx, "footer.lunch") } { content.LunchBreak }.</span>
 						</div>
 					</div>
 
 					<!-- Форма подтверждения (правая колонка) -->
 					<div class="lg:col-span-5 bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10">
-						<h3 class="font-serif-title text-xl font-bold text-content mb-1">Данные для записи</h3>
-						<p class="text-xs text-content-muted mb-5">Заполните поля для резервирования времени в графике</p>
+						<h3 class="font-serif-title text-xl font-bold text-content mb-1">{ i18n.T(ctx, "booking.slots_title") }</h3>
+						<p class="text-xs text-content-muted mb-5">{ i18n.T(ctx, "booking.slots_desc") }</p>
 
 						<!-- Индикатор выбранного времени -->
 						<div
 							:class="errors.time ? 'border-rose-300 bg-rose-50/50' : (selectedTime ? 'border-emerald-300 bg-emerald-50/30' : 'border-content/10 bg-surface-muted')"
 							class="mb-4 p-3 rounded-xl border text-xs flex items-center justify-between transition"
 						>
-							<span class="text-content-muted">Выбранное время:</span>
+							<span class="text-content-muted">{ i18n.T(ctx, "booking.time_label") }:</span>
 							<span
 								:class="selectedTime ? 'text-emerald-700' : 'text-content-muted'"
 								class="font-bold"
-								x-text="selectedTime ? (selectedDate + ' в ' + selectedTime) : 'Не выбрано'"
+								x-text="selectedTime ? (selectedDate + ' ' + selectedTime) : '—'"
 							></span>
 						</div>
 
@@ -357,14 +384,14 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 							<input type="hidden" name="booking_time" :value="selectedTime"/>
 
 							<div>
-								<label class="block text-xs font-semibold text-content/80 mb-1">ФИО *</label>
+								<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.name_label") }</label>
 								<input
 									type="text"
 									name="name"
 									x-model="name"
 									@input="if (touched.name) validateName()"
 									@blur="touched.name = true; validateName()"
-									placeholder="Иванов Иван Иванович"
+									placeholder={ i18n.T(ctx, "booking.name_placeholder") }
 									class="w-full px-3.5 py-2.5 border rounded-lg focus:ring-2 focus:outline-none text-sm border-content/20 focus:ring-accent transition"
 								/>
 								<template x-if="errors.name">
@@ -373,14 +400,14 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 							</div>
 
 							<div>
-								<label class="block text-xs font-semibold text-content/80 mb-1">Номер телефона *</label>
+								<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.phone_label") }</label>
 								<input
 									type="tel"
 									name="phone"
 									x-model="phone"
 									@input="onPhoneInput($event)"
 									@blur="touched.phone = true; validatePhone()"
-									placeholder="+7 (999) 000-00-00"
+									placeholder={ i18n.T(ctx, "booking.phone_placeholder") }
 									class="w-full px-3.5 py-2.5 border rounded-lg focus:ring-2 focus:outline-none text-sm border-content/20 focus:ring-accent transition"
 								/>
 								<template x-if="errors.phone">
@@ -389,22 +416,12 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 							</div>
 
 							<div>
-								<label class="block text-xs font-semibold text-content/80 mb-1">Тема обращения</label>
-								<input
-									type="text"
-									name="action_type"
-									placeholder="Консультация, документы, услуга..."
-									class="w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm bg-surface"
-								/>
-							</div>
-
-							<div>
-								<label class="block text-xs font-semibold text-content/80 mb-1">Комментарий</label>
+								<label class="block text-xs font-semibold text-content/80 mb-1">{ i18n.T(ctx, "booking.comment_label") }</label>
 								<textarea
 									name="comment"
 									x-model="comment"
 									rows="2"
-									placeholder="Дополнительные детали..."
+									placeholder={ i18n.T(ctx, "booking.comment_placeholder") }
 									class="w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition"
 								></textarea>
 							</div>
@@ -418,7 +435,7 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 										class="mt-0.5 rounded border-content/20 text-primary focus:ring-accent"
 									/>
 									<span class="text-xs text-content-muted leading-snug">
-										Согласие на обработку персональных данных (152-ФЗ) *
+										{ i18n.T(ctx, "booking.consent_text") } *
 									</span>
 								</label>
 								<template x-if="errors.consent">
@@ -435,7 +452,7 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 									@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
 								</span>
 								@icons.CalendarCheck(templ.Attributes{"class": "w-4 h-4 mr-1"})
-								<span>Подтвердить запись</span>
+								<span>{ i18n.T(ctx, "booking.submit_slots") }</span>
 							}
 						</form>
 

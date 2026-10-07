@@ -240,7 +240,7 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = components.Footer(content).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = components.Footer(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

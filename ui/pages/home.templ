@@ -41,6 +41,6 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 			@sections.MapSection(content, settings)
 		}
 
-		@components.Footer(content)
+		@components.Footer(content, settings)
 	}
 }

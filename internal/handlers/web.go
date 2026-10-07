@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"sitecraft/internal/data"
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/pages"
@@ -34,8 +35,13 @@ func (h *WebHandler) HandleHome(e *core.RequestEvent) error {
 	bookedSlots := data.GetBookedSlots(h.app)
 	blocks := data.GetPageBlocks(h.app)
 
+	// Автоматическая локализация контента и сервисов при переключении на EN
+	ctx := e.Request.Context()
+	content = i18n.LocalizeContent(ctx, content)
+	services = i18n.LocalizeServices(ctx, services)
+
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-	return pages.Home(settings, content, services, bookedSlots, blocks).Render(e.Request.Context(), e.Response)
+	return pages.Home(settings, content, services, bookedSlots, blocks).Render(ctx, e.Response)
 }
 
 // HandleMapFrame serves lazy-loaded interactive map iframe via HTMX.

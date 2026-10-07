@@ -1,11 +1,23 @@
 package components
 
 import (
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 )
 
-templ Footer(content models.SiteContent) {
-	<!-- Footer -->
+templ Footer(content models.SiteContent, settings models.SiteSettings) {
+	switch settings.FooterVariant {
+		case "minimal":
+			@FooterMinimal(content, settings)
+		case "columns":
+			@FooterColumns(content, settings)
+		default:
+			@FooterClassic(content, settings)
+	}
+}
+
+templ FooterClassic(content models.SiteContent, settings models.SiteSettings) {
+	<!-- Footer Classic: 3 колонки -->
 	<footer class="bg-primary-dark text-stone-300 py-12 mt-auto text-sm border-t-2 border-accent">
 		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
 			<div>
@@ -14,20 +26,134 @@ templ Footer(content models.SiteContent) {
 				<p class="text-xs text-content-muted mt-2">{ content.HeroSubtitle }</p>
 			</div>
 			<div>
-				<div class="text-white font-semibold text-sm mb-3">Контакты для связи</div>
+				<div class="text-white font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.contacts_title") }</div>
 				if content.Phone1 != "" {
-					<p class="text-xs text-stone-300">Основной: <a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent">{ content.Phone1 }</a></p>
+					<p class="text-xs text-stone-300">{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent transition">{ content.Phone1 }</a></p>
 				}
 				if content.Phone2 != "" {
-					<p class="text-xs text-stone-300 mt-1">Дополнительный: <a href={ templ.URL("tel:" + content.Phone2) } class="hover:text-accent">{ content.Phone2 }</a></p>
+					<p class="text-xs text-stone-300 mt-1">{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="hover:text-accent transition">{ content.Phone2 }</a></p>
+				}
+				if content.Address != "" {
+					<p class="text-xs text-content-muted mt-2">{ content.Address }</p>
 				}
 			</div>
 			<div>
-				<div class="text-white font-semibold text-sm mb-3">Режим работы</div>
+				<div class="text-white font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.hours_title") }</div>
 				<p class="text-xs text-stone-300">{ content.WorkHours }</p>
-				<p class="text-xs text-content-muted">Перерыв: { content.LunchBreak }</p>
-				<p class="text-xs text-content-muted mt-2">© 2026 { content.HeroTitle }. Все права защищены.</p>
+				if content.LunchBreak != "" {
+					<p class="text-xs text-content-muted">{ i18n.T(ctx, "footer.lunch") } { content.LunchBreak }</p>
+				}
+				<p class="text-xs text-content-muted mt-2">{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</p>
 			</div>
+		</div>
+	</footer>
+}
+
+templ FooterMinimal(content models.SiteContent, settings models.SiteSettings) {
+	<!-- Footer Minimal: компактная элегантная полоса с кнопкой 'Наверх' -->
+	<footer class="bg-primary-dark text-stone-300 py-6 mt-auto text-xs border-t border-accent/40">
+		<div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+			<div class="flex items-center space-x-2">
+				<span class="font-serif-title font-bold text-white text-sm">{ content.HeroTitle }</span>
+				<span class="text-stone-500">•</span>
+				<span class="text-stone-400">{ i18n.T(ctx, "footer.rights", "") }</span>
+			</div>
+
+			<div class="flex items-center space-x-4">
+				if content.Phone1 != "" {
+					<a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent font-medium transition text-stone-300">
+						{ content.Phone1 }
+					</a>
+				}
+				<button
+					type="button"
+					onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+					class="flex items-center gap-1 text-accent hover:underline cursor-pointer"
+					title={ i18n.T(ctx, "btn.to_top") }
+				>
+					<span>{ i18n.T(ctx, "btn.to_top") }</span>
+					<span>↑</span>
+				</button>
+			</div>
+		</div>
+	</footer>
+}
+
+templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
+	<!-- Footer Columns: расширенный 4-колоночный подвал с полными ссылками -->
+	<footer class="bg-primary-dark text-stone-300 pt-14 pb-8 mt-auto text-xs border-t-2 border-accent">
+		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+			<!-- Колонка 1: Бренд и миссия -->
+			<div class="space-y-3">
+				<div class="text-white font-serif-title font-bold text-lg tracking-wide">{ content.HeroTitle }</div>
+				<p class="text-xs text-accent font-medium">{ content.OwnerName }</p>
+				<p class="text-stone-400 leading-relaxed text-[11px] line-clamp-4">{ content.HeroSubtitle }</p>
+			</div>
+
+			<!-- Колонка 2: Навигация -->
+			<div>
+				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "nav.home") }</div>
+				<ul class="space-y-2">
+					<li><a href="/#about" class="hover:text-accent transition">{ i18n.T(ctx, "nav.about") }</a></li>
+					<li><a href="/#services" class="hover:text-accent transition">{ i18n.T(ctx, "nav.services_full") }</a></li>
+					<li><a href="/#booking" class="hover:text-accent transition">{ i18n.T(ctx, "nav.booking_full") }</a></li>
+					<li><a href="/track" class="hover:text-accent transition">{ i18n.T(ctx, "nav.tracker_full") }</a></li>
+					<li><a href="/blog" class="hover:text-accent transition">{ i18n.T(ctx, "nav.blog_full") }</a></li>
+				</ul>
+			</div>
+
+			<!-- Колонка 3: Контакты & Адрес -->
+			<div>
+				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "footer.contacts_title") }</div>
+				<div class="space-y-2">
+					if content.Phone1 != "" {
+						<p>{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="text-white hover:text-accent font-medium transition">{ content.Phone1 }</a></p>
+					}
+					if content.Phone2 != "" {
+						<p>{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="text-white hover:text-accent font-medium transition">{ content.Phone2 }</a></p>
+					}
+					if content.Address != "" {
+						<p class="text-stone-400 mt-2">{ content.Address }</p>
+					}
+					<p class="text-stone-400">{ i18n.T(ctx, "footer.hours_title") } { content.WorkHours }</p>
+				</div>
+			</div>
+
+			<!-- Колонка 4: Служебные опции -->
+			<div>
+				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "nav.admin") }</div>
+				<div class="space-y-2.5">
+					if settings.EnableA11y {
+						<button
+							type="button"
+							onclick="window.A11Y.toggle()"
+							class="text-left hover:text-accent transition flex items-center gap-1.5 cursor-pointer text-stone-300"
+						>
+							<span>👁️</span> { i18n.T(ctx, "a11y.toggle") }
+						</button>
+					}
+					<div>
+						<a href="/_/" target="_blank" class="hover:text-accent transition text-stone-300">
+							{ i18n.T(ctx, "nav.admin_full") }
+						</a>
+					</div>
+					<div class="pt-2">
+						<button
+							type="button"
+							onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+							class="px-3 py-1.5 rounded bg-white/10 hover:bg-accent hover:text-primary-dark transition text-white font-medium cursor-pointer"
+						>
+							↑ { i18n.T(ctx, "btn.to_top") }
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Нижняя полоса с копирайтом -->
+		<div class="max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-stone-400">
+			<div>{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</div>
+			<div class="text-accent/80 font-mono">Powered by SiteCraft</div>
 		</div>
 	</footer>
 }

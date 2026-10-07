@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"sitecraft/internal/events"
+	"sitecraft/internal/i18n"
 	"sitecraft/internal/notifications"
 
 	"github.com/pocketbase/pocketbase"
@@ -14,6 +15,9 @@ import (
 
 // RegisterRoutes registers all website and API routes onto the PocketBase router.
 func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEvent]) {
+	// Middleware: локализация (ru/en определение из cookie, query, Accept-Language)
+	r.BindFunc(i18n.Middleware())
+
 	bus := events.Default()
 	notifications.RegisterSubscribers(bus)
 
@@ -55,4 +59,5 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	// API Бизнес-действия
 	r.POST("/api/leads", leadHandler.HandleCreateLead)
 	r.POST("/api/payment/create", paymentHandler.HandleCreatePayment)
+	r.GET("/api/lang/{code}", i18n.HandleSetLang)
 }

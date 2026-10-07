@@ -1,0 +1,159 @@
+package hero
+
+import (
+	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
+templ SplitHero(content models.SiteContent, settings models.SiteSettings) {
+	<!-- Split Hero: двухколоночный конверсионный главный экран -->
+	<section class="relative bg-gradient-to-br from-primary-dark via-primary to-primary-dark text-white py-16 md:py-24 px-4 overflow-hidden border-b-4 border-accent">
+		<!-- Декоративные фоновые элементы -->
+		<div class="absolute -top-32 -left-32 w-96 h-96 bg-accent/15 rounded-full blur-3xl pointer-events-none"></div>
+		<div class="absolute -bottom-32 -right-32 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+
+		<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10">
+			<!-- Левая колонка: Основной оффер и преимущества -->
+			<div class="lg:col-span-7 space-y-6 text-center lg:text-left" data-reveal="left">
+				if content.HeroBadge != "" {
+					@badge.Badge(badge.Props{
+						Variant: badge.VariantSecondary,
+						Class:   "bg-white/10 text-accent border border-accent/40 font-semibold uppercase tracking-wider text-xs px-3.5 py-1.5 shadow-sm inline-flex items-center",
+					}) {
+						<span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
+						{ content.HeroBadge }
+					}
+				}
+
+				<h1 class="font-serif-title text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
+					{ content.HeroTitle }
+					if content.OwnerName != "" {
+						<br/>
+						<span class="text-accent underline decoration-accent/40 decoration-wavy decoration-1">{ content.OwnerName }</span>
+					}
+				</h1>
+
+				<p class="text-stone-200 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+					{ content.HeroSubtitle }
+				</p>
+
+				<!-- Буллеты преимуществ -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-left max-w-lg mx-auto lg:mx-0 text-xs sm:text-sm text-stone-200">
+					<div class="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+						<span class="text-accent">✓</span>
+						<span>Быстрая запись без очередей</span>
+					</div>
+					<div class="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+						<span class="text-accent">✓</span>
+						<span>Официально и с гарантией</span>
+					</div>
+					<div class="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+						<span class="text-accent">✓</span>
+						<span>Работаем по стандартам</span>
+					</div>
+					<div class="flex items-center space-x-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+						<span class="text-accent">✓</span>
+						<span>Консультация специалистов</span>
+					</div>
+				</div>
+
+				<!-- Кнопки действий -->
+				<div class="pt-4 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start">
+					@button.Button(button.Props{
+						Variant: button.VariantDefault,
+						Size:    button.SizeLg,
+						Href:    "#booking",
+						Class:   "bg-accent hover:bg-accent-hover text-primary-dark font-bold shadow-xl hover:-translate-y-0.5 transition duration-200",
+					}) {
+						@icons.Calendar(templ.Attributes{"class": "w-5 h-5 mr-2"})
+						Записаться на прием
+					}
+					if content.Phone1 != "" {
+						@button.Button(button.Props{
+							Variant: button.VariantOutline,
+							Size:    button.SizeLg,
+							Href:    "tel:" + content.Phone1,
+							Class:   "bg-white/10 hover:bg-white/20 text-white font-medium border-white/25 hover:-translate-y-0.5 transition duration-200",
+						}) {
+							@icons.Phone(templ.Attributes{"class": "w-5 h-5 text-accent mr-2"})
+							{ content.Phone1 }
+						}
+					}
+				</div>
+			</div>
+
+			<!-- Правая колонка: Экспресс-карточка быстрого контакта / информации -->
+			<div class="lg:col-span-5 flex justify-center" data-reveal="scale" data-reveal-delay="200">
+				<div class="w-full max-w-sm bg-surface text-content rounded-3xl p-6 sm:p-7 shadow-2xl border-2 border-accent/40 relative backdrop-blur-md">
+					<div class="flex items-center justify-between border-b border-content/10 pb-4 mb-5">
+						<div>
+							<h3 class="font-serif-title font-bold text-lg text-primary leading-tight">Прием и сервис</h3>
+							<p class="text-xs text-content-muted">Официальный офис</p>
+						</div>
+						<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
+							<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+							Открыто
+						</span>
+					</div>
+
+					<div class="space-y-4 text-xs">
+						if content.WorkHours != "" {
+							<div class="flex items-start space-x-3">
+								<div class="w-7 h-7 rounded-lg bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
+									@icons.Clock(templ.Attributes{"class": "w-4 h-4"})
+								</div>
+								<div>
+									<div class="font-semibold text-content">Часы работы</div>
+									<div class="text-content-muted">{ content.WorkHours }</div>
+									if content.LunchBreak != "" {
+										<div class="text-[11px] text-content-muted/80">Обед: { content.LunchBreak }</div>
+									}
+								</div>
+							</div>
+						}
+
+						if content.Address != "" {
+							<div class="flex items-start space-x-3">
+								<div class="w-7 h-7 rounded-lg bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
+									@icons.MapPin(templ.Attributes{"class": "w-4 h-4"})
+								</div>
+								<div>
+									<div class="font-semibold text-content">Адрес</div>
+									<div class="text-content-muted">{ content.Address }</div>
+									if content.AddressSub != "" {
+										<div class="text-[11px] text-content-muted/80">{ content.AddressSub }</div>
+									}
+								</div>
+							</div>
+						}
+
+						if content.Phone1 != "" {
+							<div class="flex items-start space-x-3">
+								<div class="w-7 h-7 rounded-lg bg-accent/20 flex items-center justify-center text-accent shrink-0 mt-0.5">
+									@icons.PhoneCall(templ.Attributes{"class": "w-4 h-4"})
+								</div>
+								<div>
+									<div class="font-semibold text-content">Телефон</div>
+									<a href={ templ.URL("tel:" + content.Phone1) } class="text-primary font-bold hover:text-accent transition">{ content.Phone1 }</a>
+								</div>
+							</div>
+						}
+					</div>
+
+					<div class="mt-6 pt-5 border-t border-content/10">
+						<a
+							href="#booking"
+							class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-xs bg-primary text-white hover:bg-primary-dark transition shadow-md"
+						>
+							<span>Выбрать свободное время</span>
+							<span>→</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+}

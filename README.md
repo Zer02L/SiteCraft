@@ -8,6 +8,7 @@
 ![Tailwind v4](https://img.shields.io/badge/Tailwind%20CSS-v4.3%20(Oxide)-38bdf8?style=flat-square)
 ![UI](https://img.shields.io/badge/UI-shadcn--templ%20%2B%20Lucide-000000?style=flat-square)
 ![Interactive UI](https://img.shields.io/badge/Stack-HTMX%20%2B%20Alpine.js%20(Compat)-purple?style=flat-square)
+![Localization](https://img.shields.io/badge/i18n-RU%20%2F%20EN%20(Zero--JS)-blueviolet?style=flat-square)
 ![Multi-Tenant](https://img.shields.io/badge/Multi--Tenant-Fleet%20of%20Binaries-emerald?style=flat-square)
 
 ---
@@ -26,10 +27,11 @@
    * **`go-templ-lucide-icons`** — 100% типобезопасные векторные иконки без сырого SVG-кода.
    * **`tailwind-animations`** — плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
 6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
-7. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
-8. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
-9. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
-10. **Бизнес-модули "из коробки":**
+7. **Модуль локализации i18n (RU / EN):** Полноценная многоязычность (`internal/i18n`) из коробки: определение языка через URL-параметр `?lang=`, Cookie или заголовок `Accept-Language`, Zero-JS переключатель языков, динамический `<html lang="...">`, `hreflang`, `og:locale` для SEO и локализованные сообщения валидации форм.
+8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
+9. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
+10. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
+11. **Бизнес-модули "из коробки":**
     * **B2B-трекер заказов в реальном времени (`/track`):** Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара и онлайн-оплатой через ЮKassa.
     * **SEO-Блог и База знаний (`/blog`):** Экспертные статьи, живой поиск HTMX, динамический `sitemap.xml` и счетчик просмотров.
     * **Telegram Mini Apps (TMA) E-commerce & Paywall:** Запуск магазина (`/shop`) с нативной кнопкой Telegram MainButton, беспарольная авторизация HMAC-SHA256 и закрытый VIP-клуб (`/vip`).
@@ -213,6 +215,36 @@ pages.RegisterBlock("showcase", func(b models.PageBlock, ctx pages.RenderContext
 ```
 
 Все блоки страницы упорядочиваются и настраиваются через коллекцию `page_blocks` в админке PocketBase.
+
+---
+
+## 🌍 Модуль интернационализации и локализации (i18n RU / EN)
+
+Движок оснащен встроенным модулем локализации (`internal/i18n`), поддерживающим русский (`ru`) и английский (`en`) языки:
+
+```
+internal/i18n/
+├── i18n.go         # Ядро: нормализация локали, извлечение из запроса, контекст, T(), Plural(), OGLocale()
+├── catalogs.go     # Словари переводов (навигация, темы, a11y, кнопки, расписание, ошибки, футер)
+├── middleware.go   # PocketBase Router Middleware (детекция языка, запись cookie site_lang)
+├── handler.go      # HTTP-хэндлер переключения языка (/api/lang/{code}) с редиректом
+├── localize.go     # Хелперы локализации динамического контента и услуг
+└── i18n_test.go    # Модульные тесты для всех компонентов локализации
+```
+
+### Возможности модуля:
+1. **Каскадное определение языка запроса (Fallback Cascade):**
+   * Параметр строки запроса: `?lang=en` или `?lang=ru` (высший приоритет, сразу обновляет Cookie).
+   * Cookie браузера: `site_lang` (хранит выбор пользователя в течение 1 года).
+   * HTTP-заголовок `Accept-Language`: автоматический выбор предпочтительного языка гостя.
+   * Дефолтный язык сайта из настроек `site_settings.default_lang` (по умолчанию `ru`).
+2. **Zero-JS переключатель языков:** В шапку сайта ([header.templ](ui/components/header.templ)) встроен компонент `LanguageSwitcher()`, работающий как чистые HTML-ссылки `/api/lang/ru` и `/api/lang/en`. Работает мгновенно даже при отключенном JavaScript.
+3. **SEO-интернационализация:**
+   * Динамический атрибут `<html lang="{locale}">` в [base.templ](ui/layouts/base.templ).
+   * Теги `<link rel="alternate" hreflang="ru" ...>` и `hreflang="en"`.
+   * OpenGraph мета-тег `<meta property="og:locale" content="ru_RU" / "en_US">`.
+4. **Локализованная валидация форм:** Ошибки отправки заявок (имя, телефон, капча/honeypot) возвращаются на языке текущего пользователя.
+5. **Управление из админки:** Флаг `enable_i18n` (включение/отключение отображения переключателя) и `default_lang` в коллекции `site_settings`.
 
 ---
 

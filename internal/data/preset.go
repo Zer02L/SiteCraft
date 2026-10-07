@@ -63,11 +63,21 @@ func ApplyPreset(app core.App, presetPath string) error {
 		rec.Set("enable_tma", preset.Settings.EnableTMA)
 		rec.Set("enable_payment", preset.Settings.EnablePayment)
 		rec.Set("payment_sandbox", preset.Settings.PaymentSandbox)
+		rec.Set("enable_i18n", preset.Settings.EnableI18n)
+		if preset.Settings.DefaultLang != "" {
+			rec.Set("default_lang", preset.Settings.DefaultLang)
+		}
 		if preset.Settings.MapMode != "" {
 			rec.Set("map_mode", preset.Settings.MapMode)
 		}
 		if preset.Settings.BookingMode != "" {
 			rec.Set("booking_mode", preset.Settings.BookingMode)
+		}
+		if preset.Settings.HeaderVariant != "" {
+			rec.Set("header_variant", preset.Settings.HeaderVariant)
+		}
+		if preset.Settings.FooterVariant != "" {
+			rec.Set("footer_variant", preset.Settings.FooterVariant)
 		}
 		if err := app.Save(rec); err != nil {
 			log.Printf("[Preset Error] Failed to save site_settings: %v\n", err)
