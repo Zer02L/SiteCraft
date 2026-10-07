@@ -70,21 +70,23 @@ templ Base(title string, description string, settings models.SiteSettings) {
 				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
 			</style>
 
-			<!-- Динамическая инъекция темы из PocketBase (Theming Engine) -->
+			<!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->
 			if settings.PrimaryColor != "" || settings.AccentColor != "" || settings.BackgroundColor != "" || settings.FontFamily != "" {
 				<style>
 					:root {
 						if settings.PrimaryColor != "" {
 							--color-primary: { settings.PrimaryColor };
-							--color-primary-dark: { settings.PrimaryColor };
-							--color-primary-light: { settings.PrimaryColor };
+							--color-primary-dark: color-mix(in srgb, { settings.PrimaryColor }, black 25%);
+							--color-primary-light: color-mix(in srgb, { settings.PrimaryColor }, white 25%);
 						}
 						if settings.AccentColor != "" {
 							--color-accent: { settings.AccentColor };
-							--color-accent-hover: { settings.AccentColor };
+							--color-accent-hover: color-mix(in srgb, { settings.AccentColor }, black 15%);
+							--color-accent-light: color-mix(in srgb, { settings.AccentColor } 15%, white);
 						}
 						if settings.BackgroundColor != "" {
 							--color-surface: { settings.BackgroundColor };
+							--color-surface-muted: color-mix(in srgb, { settings.BackgroundColor }, black 4%);
 						}
 						if settings.FontFamily != "" {
 							--font-custom: { settings.FontFamily }, sans-serif;

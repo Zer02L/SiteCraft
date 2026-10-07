@@ -9,33 +9,33 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "rgb(var(--color-primary) / <alpha-value>)",
-          dark: "rgb(var(--color-primary-dark) / <alpha-value>)",
-          light: "rgb(var(--color-primary-light) / <alpha-value>)",
+          DEFAULT: "color-mix(in srgb, var(--color-primary) calc(100% * <alpha-value>), transparent)",
+          dark: "color-mix(in srgb, var(--color-primary-dark) calc(100% * <alpha-value>), transparent)",
+          light: "color-mix(in srgb, var(--color-primary-light) calc(100% * <alpha-value>), transparent)",
         },
         accent: {
-          DEFAULT: "rgb(var(--color-accent) / <alpha-value>)",
-          hover: "rgb(var(--color-accent-hover) / <alpha-value>)",
-          light: "rgb(var(--color-accent-light) / <alpha-value>)",
+          DEFAULT: "color-mix(in srgb, var(--color-accent) calc(100% * <alpha-value>), transparent)",
+          hover: "color-mix(in srgb, var(--color-accent-hover) calc(100% * <alpha-value>), transparent)",
+          light: "color-mix(in srgb, var(--color-accent-light) calc(100% * <alpha-value>), transparent)",
         },
         surface: {
-          DEFAULT: "rgb(var(--color-surface) / <alpha-value>)",
-          muted: "rgb(var(--color-surface-muted) / <alpha-value>)",
+          DEFAULT: "color-mix(in srgb, var(--color-surface) calc(100% * <alpha-value>), transparent)",
+          muted: "color-mix(in srgb, var(--color-surface-muted) calc(100% * <alpha-value>), transparent)",
         },
         content: {
-          DEFAULT: "rgb(var(--color-content) / <alpha-value>)",
-          muted: "rgb(var(--color-content-muted) / <alpha-value>)",
+          DEFAULT: "color-mix(in srgb, var(--color-content) calc(100% * <alpha-value>), transparent)",
+          muted: "color-mix(in srgb, var(--color-content-muted) calc(100% * <alpha-value>), transparent)",
         },
         // Legacy colors mapped to semantic tokens for smooth transition
         legal: {
-          burgundy: "rgb(var(--color-primary) / <alpha-value>)",
-          burgundydark: "rgb(var(--color-primary-dark) / <alpha-value>)",
-          burgundylight: "rgb(var(--color-primary-light) / <alpha-value>)",
-          gold: "rgb(var(--color-accent) / <alpha-value>)",
-          goldhover: "rgb(var(--color-accent-hover) / <alpha-value>)",
-          goldlight: "rgb(var(--color-accent-light) / <alpha-value>)",
-          light: "rgb(var(--color-surface) / <alpha-value>)",
-          muted: "rgb(var(--color-content-muted) / <alpha-value>)",
+          burgundy: "color-mix(in srgb, var(--color-primary) calc(100% * <alpha-value>), transparent)",
+          burgundydark: "color-mix(in srgb, var(--color-primary-dark) calc(100% * <alpha-value>), transparent)",
+          burgundylight: "color-mix(in srgb, var(--color-primary-light) calc(100% * <alpha-value>), transparent)",
+          gold: "color-mix(in srgb, var(--color-accent) calc(100% * <alpha-value>), transparent)",
+          goldhover: "color-mix(in srgb, var(--color-accent-hover) calc(100% * <alpha-value>), transparent)",
+          goldlight: "color-mix(in srgb, var(--color-accent-light) calc(100% * <alpha-value>), transparent)",
+          light: "color-mix(in srgb, var(--color-surface) calc(100% * <alpha-value>), transparent)",
+          muted: "color-mix(in srgb, var(--color-content-muted) calc(100% * <alpha-value>), transparent)",
         }
       },
       fontFamily: {

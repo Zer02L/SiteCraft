@@ -1,6 +1,7 @@
 /* =========================================
-   SEMANTIC THEME TOKENS (CSS VARIABLES)
-   RGB triplets format for Tailwind opacity support
+   MODERN CSS LEVEL 4 COLOR TOKENS
+   Поддержка HEX, HSL, OKLCH и автоматический расчет
+   через color-mix()
    ========================================= */
 
 :root,
@@ -8,276 +9,266 @@ html[data-theme="default"],
 html[data-theme="main"],
 html[data-theme="main-day"] {
   /* ОСНОВНАЯ ТЕМА — ДЕНЬ (MAIN / DAY) */
-  --color-primary: 30 41 59;           /* slate-800 */
-  --color-primary-dark: 15 23 42;      /* slate-900 */
-  --color-primary-light: 51 65 85;     /* slate-700 */
-  --color-accent: 37 99 235;           /* blue-600 */
-  --color-accent-hover: 29 78 216;     /* blue-700 */
-  --color-accent-light: 239 246 255;   /* blue-50 */
-  --color-surface: 255 255 255;        /* white */
-  --color-surface-muted: 248 250 252;  /* slate-50 */
-  --color-content: 15 23 42;           /* slate-900 */
-  --color-content-muted: 100 116 139;  /* slate-500 */
+  --color-primary: #1e293b;            /* slate-800 */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 30%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-accent: #2563eb;             /* blue-600 */
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 12%, white);
+  --color-surface: #ffffff;
+  --color-surface-muted: color-mix(in srgb, var(--color-primary) 3%, white);
+  --color-content: #0f172a;
+  --color-content-muted: #64748b;
 }
 
 html[data-theme="main-night"],
 html[data-theme="dark"] {
   /* ОСНОВНАЯ ТЕМА — НОЧЬ (MAIN / NIGHT) */
-  --color-primary: 15 23 42;           /* slate-900 */
-  --color-primary-dark: 2 6 23;        /* slate-950 */
-  --color-primary-light: 30 41 59;     /* slate-800 */
-  --color-accent: 59 130 246;          /* blue-500 */
-  --color-accent-hover: 96 165 250;    /* blue-400 */
-  --color-accent-light: 30 41 59;      /* slate-800 */
-  --color-surface: 15 23 42;           /* #0f172a */
-  --color-surface-muted: 30 41 59;     /* #1e293b */
-  --color-content: 248 250 252;        /* #f8fafc */
-  --color-content-muted: 148 163 184;  /* slate-400 */
+  --color-primary: #0f172a;            /* slate-900 */
+  --color-primary-dark: #020617;       /* slate-950 */
+  --color-primary-light: #1e293b;      /* slate-800 */
+  --color-accent: #3b82f6;             /* blue-500 */
+  --color-accent-hover: #60a5fa;       /* blue-400 */
+  --color-accent-light: #1e293b;
+  --color-surface: #0f172a;
+  --color-surface-muted: #1e293b;
+  --color-content: #f8fafc;
+  --color-content-muted: #94a3b8;
 }
 
 /* =========================================
-   1. ВЕСНА (SPRING) — Цветущая свежесть, сочная зелень и первоцветы
+   1. ВЕСНА (SPRING)
    ========================================= */
 html[data-theme="spring"],
 html[data-theme="spring-day"] {
-  --color-primary: 22 101 52;          /* green-800 */
-  --color-primary-dark: 20 83 45;      /* green-900 */
-  --color-primary-light: 34 197 94;    /* green-500 */
-  --color-accent: 16 185 129;          /* emerald-500 */
-  --color-accent-hover: 5 150 105;     /* emerald-600 */
-  --color-accent-light: 236 253 245;   /* emerald-50 */
-  --color-surface: 255 255 255;        /* clean white */
-  --color-surface-muted: 240 253 244;  /* green-50 */
-  --color-content: 20 83 45;           /* green-900 */
-  --color-content-muted: 74 107 90;    /* soft sage */
+  --color-primary: #166534;            /* green-800 */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 25%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-accent: #10b981;             /* emerald-500 */
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 15%, white);
+  --color-surface: #ffffff;
+  --color-surface-muted: #f0fdf4;
+  --color-content: #14532d;
+  --color-content-muted: #4a6b5a;
 }
 
 html[data-theme="spring-night"] {
-  --color-primary: 6 36 20;            /* deep dark forest */
-  --color-primary-dark: 2 18 10;       /* obsidian green */
-  --color-primary-light: 20 83 45;     /* green-900 */
-  --color-accent: 52 211 153;          /* emerald-400 */
-  --color-accent-hover: 110 231 183;   /* emerald-300 */
-  --color-accent-light: 12 50 28;
-  --color-surface: 10 26 18;           /* midnight emerald */
-  --color-surface-muted: 17 41 29;     /* dark pine */
-  --color-content: 236 253 245;        /* mint white */
-  --color-content-muted: 134 175 152;  /* sage muted */
+  --color-primary: #062414;
+  --color-primary-dark: #02120a;
+  --color-primary-light: #14532d;
+  --color-accent: #34d399;
+  --color-accent-hover: #6ee7b7;
+  --color-accent-light: #0c321c;
+  --color-surface: #0a1a12;
+  --color-surface-muted: #11291d;
+  --color-content: #ecfdf5;
+  --color-content-muted: #86af98;
 }
 
 /* =========================================
-   2. ЛЕТО (SUMMER) — Тёплое солнце, лазурное небо и песок
+   2. ЛЕТО (SUMMER)
    ========================================= */
 html[data-theme="summer"],
 html[data-theme="summer-day"] {
-  --color-primary: 194 65 12;          /* amber-800 / warm terracotta */
-  --color-primary-dark: 154 52 10;     /* amber-900 */
-  --color-primary-light: 249 115 22;   /* orange-500 */
-  --color-accent: 234 88 12;           /* sun orange-600 */
-  --color-accent-hover: 194 65 12;     /* orange-700 */
-  --color-accent-light: 255 247 237;   /* orange-50 */
-  --color-surface: 255 255 255;        /* warm white */
-  --color-surface-muted: 255 251 235;  /* amber-50 */
-  --color-content: 67 20 7;            /* warm brown-900 */
-  --color-content-muted: 154 82 50;    /* muted bronze */
+  --color-primary: #c2410c;            /* amber-800 / terracotta */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 25%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-accent: #ea580c;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 12%, white);
+  --color-surface: #ffffff;
+  --color-surface-muted: #fffbeb;
+  --color-content: #431407;
+  --color-content-muted: #9a5232;
 }
 
 html[data-theme="summer-night"] {
-  --color-primary: 41 20 10;           /* deep canyon night */
-  --color-primary-dark: 24 10 5;       /* dark obsidian amber */
-  --color-primary-light: 67 20 7;      /* warm deep slate */
-  --color-accent: 251 146 60;          /* glowing amber-400 */
-  --color-accent-hover: 253 186 116;   /* amber-300 */
-  --color-accent-light: 55 27 15;
-  --color-surface: 24 16 12;           /* midnight terracotta */
-  --color-surface-muted: 38 24 18;     /* warm dusk */
-  --color-content: 255 247 237;        /* sunset white */
-  --color-content-muted: 194 148 128;  /* muted dust */
+  --color-primary: #29140a;
+  --color-primary-dark: #180a05;
+  --color-primary-light: #431407;
+  --color-accent: #fb923c;
+  --color-accent-hover: #fdba74;
+  --color-accent-light: #371b0f;
+  --color-surface: #18100c;
+  --color-surface-muted: #261812;
+  --color-content: #fff7ed;
+  --color-content-muted: #c29480;
 }
 
 /* =========================================
-   3. ОСЕНЬ (AUTUMN) — Золотая листва, багрянец и уютный каштан
+   3. ОСЕНЬ (AUTUMN)
    ========================================= */
 html[data-theme="autumn"],
 html[data-theme="autumn-day"] {
-  --color-primary: 154 52 18;          /* rust/russet brown-orange */
-  --color-primary-dark: 120 40 14;     /* deep chestnut */
-  --color-primary-light: 180 83 9;     /* amber-700 */
-  --color-accent: 217 119 6;           /* maple gold / amber-600 */
-  --color-accent-hover: 180 83 9;      /* amber-700 */
-  --color-accent-light: 254 243 199;   /* amber-100 */
-  --color-surface: 254 252 247;        /* parchment warm white */
-  --color-surface-muted: 247 241 230;  /* dry leaf cream */
-  --color-content: 41 24 15;           /* oak deep wood */
-  --color-content-muted: 120 90 70;    /* chestnut muted */
+  --color-primary: #9a3412;            /* chestnut */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 25%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-accent: #d97706;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 15%, white);
+  --color-surface: #fefcf7;
+  --color-surface-muted: #f7f1e6;
+  --color-content: #29180f;
+  --color-content-muted: #785a46;
 }
 
 html[data-theme="autumn-night"] {
-  --color-primary: 36 18 10;           /* roasted chestnut */
-  --color-primary-dark: 20 10 5;       /* charcoal autumn */
-  --color-primary-light: 60 30 18;
-  --color-accent: 245 158 11;          /* glowing amber */
-  --color-accent-hover: 251 191 36;    /* yellow-400 */
-  --color-accent-light: 50 25 15;
-  --color-surface: 22 14 10;           /* autumn twilight */
-  --color-surface-muted: 34 22 16;     /* dark wood */
-  --color-content: 254 243 199;        /* gold-tinted white */
-  --color-content-muted: 175 140 120;  /* muted copper */
+  --color-primary: #24120a;
+  --color-primary-dark: #140a05;
+  --color-primary-light: #3c1e12;
+  --color-accent: #f59e0b;
+  --color-accent-hover: #fbbf24;
+  --color-accent-light: #32190f;
+  --color-surface: #160e0a;
+  --color-surface-muted: #221610;
+  --color-content: #fef3c7;
+  --color-content-muted: #af8c78;
 }
 
 /* =========================================
-   4. ЗИМА (WINTER) — Морозный иней, ледниковый циан и серебро
+   4. ЗИМА (WINTER)
    ========================================= */
 html[data-theme="winter"],
 html[data-theme="winter-day"] {
-  --color-primary: 15 76 129;          /* classic deep ice blue */
-  --color-primary-dark: 10 50 85;      /* polar deep */
-  --color-primary-light: 2 132 199;    /* sky-600 */
-  --color-accent: 14 165 233;          /* glacier cyan / sky-500 */
-  --color-accent-hover: 2 132 199;     /* sky-600 */
-  --color-accent-light: 240 249 255;   /* sky-50 */
-  --color-surface: 255 255 255;        /* pure snow white */
-  --color-surface-muted: 241 245 249;  /* slate-100 */
-  --color-content: 15 23 42;           /* slate-900 */
-  --color-content-muted: 100 116 139;  /* slate-500 */
+  --color-primary: #0f4c81;            /* deep ice blue */
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 25%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-accent: #0ea5e9;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 15%, white);
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-content: #0f172a;
+  --color-content-muted: #64748b;
 }
 
 html[data-theme="winter-night"] {
-  --color-primary: 11 26 44;           /* arctic night */
-  --color-primary-dark: 6 15 28;       /* deep polar trench */
-  --color-primary-light: 23 48 78;     /* frosted navy */
-  --color-accent: 56 189 248;          /* northern cyan-400 */
-  --color-accent-hover: 125 211 252;   /* sky-300 */
-  --color-accent-light: 20 45 75;
-  --color-surface: 10 20 34;           /* glacial dark */
-  --color-surface-muted: 17 32 52;     /* midnight blizzard */
-  --color-content: 240 249 255;        /* frosty white */
-  --color-content-muted: 147 175 200;  /* polar silver */
+  --color-primary: #0b1a2c;
+  --color-primary-dark: #060f1c;
+  --color-primary-light: #17304e;
+  --color-accent: #38bdf8;
+  --color-accent-hover: #7dd3fc;
+  --color-accent-light: #142d4b;
+  --color-surface: #0a1422;
+  --color-surface-muted: #112034;
+  --color-content: #f0f9ff;
+  --color-content-muted: #93afc8;
 }
 
 /* Дополнительные алиасы ниш */
 html[data-theme="cyber"] {
-  --color-primary: 26 23 23;
-  --color-primary-dark: 20 18 18;
-  --color-primary-light: 42 38 38;
-  --color-accent: 240 78 46;
-  --color-accent-hover: 255 106 77;
-  --color-accent-light: 38 28 28;
-  --color-surface: 20 18 18;
-  --color-surface-muted: 28 25 25;
-  --color-content: 245 243 239;
-  --color-content-muted: 156 150 146;
+  --color-primary: #1a1717;
+  --color-primary-dark: #141212;
+  --color-primary-light: #2a2626;
+  --color-accent: #f04e2e;
+  --color-accent-hover: #ff6a4d;
+  --color-accent-light: #261c1c;
+  --color-surface: #141212;
+  --color-surface-muted: #1c1919;
+  --color-content: #f5f3ef;
+  --color-content-muted: #9c9692;
 }
 
 /* =========================================
-   5. ВЫЧИСЛЯЕМАЯ ГАРМОНИЧЕСКАЯ ТЕМА (HARMONIC / DYNAMIC HSL)
-   Все второстепенные цвета, акценты, фоны и границы рассчитываются
-   математически на базе главного тона (--h-primary) через HSL/RGB
+   5. ВЫЧИСЛЯЕМАЯ ГАРМОНИЧЕСКАЯ ТЕМА (HARMONIC / OKLCH & COLOR-MIX)
+   Все оттенки, акценты, фоны и границы рассчитываются
+   математически через color-mix() прямо в браузере!
    ========================================= */
 html[data-theme="harmonic"],
 html[data-theme="harmonic-day"] {
-  /* Базовый тон (Hue: 220 = сапфировый/индиго). 
-     Если изменить только этот оттенок, вся палитра сайта пересчитается автоматически! */
-  --h-primary: 224;
-  --s-primary: 64%;
-  --l-primary: 32%;
+  /* Базовый тон (Сапфировый/Индиго) */
+  --color-primary: #1d3586;
+  --color-primary-dark: color-mix(in srgb, var(--color-primary), black 35%);
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 35%);
 
-  /* Главный цвет (Deep Indigo / Sapphire) */
-  --color-primary: 29 53 134;          /* hsl(224, 64%, 32%) */
-  --color-primary-dark: 17 32 82;      /* hsl(224, 65%, 20%) - затемнение на -12% L */
-  --color-primary-light: 49 84 199;    /* hsl(224, 60%, 48%) - осветление на +16% L */
+  /* Триадный теплый акцент */
+  --color-accent: #d97706;
+  --color-accent-hover: color-mix(in srgb, var(--color-accent), black 20%);
+  --color-accent-light: color-mix(in srgb, var(--color-accent) 15%, white);
 
-  /* Второстепенный / Акцентный: комплементарный триадный тон (+155° от главного -> янтарно-золотой) */
-  --color-accent: 217 119 6;           /* hsl(39, 94%, 44%) */
-  --color-accent-hover: 180 83 9;      /* hsl(39, 92%, 36%) - затемнение на -8% L */
-  --color-accent-light: 254 243 199;   /* hsl(48, 96%, 89%) - ультра-светлый пастельный оттенок */
+  /* Фоновые поверхности, гармонично тонированные главным цветом */
+  --color-surface: #ffffff;
+  --color-surface-muted: color-mix(in srgb, var(--color-primary) 5%, white);
 
-  /* Поверхности (фон страниц и карточек): тот же тон Hue 224, но сверх-низкая насыщенность (8%) и высокая яркость (99% / 96%) */
-  --color-surface: 255 255 255;        /* чистый фон */
-  --color-surface-muted: 243 246 251;  /* hsl(224, 40%, 97%) - оттеночная гармоничная заливка */
-
-  /* Текст контента: контрастный глубокий оттенок главного тона */
-  --color-content: 15 23 42;           /* hsl(224, 47%, 11%) */
-  --color-content-muted: 92 108 132;   /* hsl(224, 18%, 44%) */
+  /* Контент */
+  --color-content: #0f172a;
+  --color-content-muted: color-mix(in srgb, var(--color-primary) 35%, #64748b);
 }
 
 html[data-theme="harmonic-night"] {
-  /* Базовый тон ночью: тот же Hue 224, инвертированная шкала светлоты */
-  --color-primary: 15 23 42;           /* hsl(224, 47%, 11%) */
-  --color-primary-dark: 7 11 22;       /* hsl(224, 52%, 6%) */
-  --color-primary-light: 30 46 84;     /* hsl(224, 47%, 22%) */
+  --color-primary: #0f172a;
+  --color-primary-dark: #070b16;
+  --color-primary-light: #1e2e54;
 
-  /* Неоновый акцент: комплементарный триадный тон с повышенной светимостью ночью */
-  --color-accent: 245 158 11;          /* hsl(38, 92%, 50%) */
-  --color-accent-hover: 251 191 36;    /* hsl(41, 96%, 56%) */
-  --color-accent-light: 69 41 4;       /* глубокий оттенок янтарного */
+  --color-accent: #f59e0b;
+  --color-accent-hover: #fbbf24;
+  --color-accent-light: #452904;
 
-  /* Поверхности: глубокий сапфировый тёмный фон (Hue 224, Sat 35%, Light 8% / 13%) */
-  --color-surface: 13 18 31;           /* hsl(224, 40%, 9%) */
-  --color-surface-muted: 22 30 51;     /* hsl(224, 40%, 14%) */
+  --color-surface: #0d121f;
+  --color-surface-muted: #161e33;
 
-  /* Контент ночью */
-  --color-content: 241 245 252;        /* hsl(224, 60%, 97%) */
-  --color-content-muted: 144 161 189;  /* hsl(224, 25%, 65%) */
+  --color-content: #f1f5fc;
+  --color-content-muted: #90a1bd;
 }
 
 /* =========================================
-   5. ДАЛЬТОНИЗМ / ВЫСОКИЙ КОНТРАСТ (COLORBLIND)
+   6. ДАЛЬТОНИЗМ / ВЫСОКИЙ КОНТРАСТ (COLORBLIND)
    ========================================= */
 html[data-theme="colorblind"] {
-  --color-primary: 15 23 42;           /* slate-900 */
-  --color-primary-dark: 2 6 23;        /* slate-950 */
-  --color-primary-light: 30 41 59;     /* slate-800 */
-  --color-accent: 37 99 235;           /* blue-600 */
-  --color-accent-hover: 29 78 216;     /* blue-700 */
-  --color-accent-light: 239 246 255;   /* blue-50 */
-  --color-surface: 248 250 252;        /* slate-50 */
-  --color-surface-muted: 241 245 249;  /* slate-100 */
-  --color-content: 15 23 42;           /* slate-900 */
-  --color-content-muted: 71 85 105;    /* slate-600 */
+  --color-primary: #0f172a;
+  --color-primary-dark: #020617;
+  --color-primary-light: #1e293b;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-light: #eff6ff;
+  --color-surface: #f8fafc;
+  --color-surface-muted: #f1f5f9;
+  --color-content: #0f172a;
+  --color-content-muted: #475569;
 }
 
 /* =========================================
-   6. РЕЖИМЫ ДОСТУПНОСТИ A11Y (ТОКЕНЫ ГОСТ)
+   7. РЕЖИМЫ ДОСТУПНОСТИ A11Y (ТОКЕНЫ ГОСТ)
    ========================================= */
 /* Схема 1: Чёрным по белому */
 html.a11y-mode[data-a11y-theme="black-on-white"] {
-  --color-primary: 0 0 0;
-  --color-primary-dark: 0 0 0;
-  --color-primary-light: 0 0 0;
-  --color-accent: 0 0 0;
-  --color-accent-hover: 0 0 0;
-  --color-accent-light: 255 255 255;
-  --color-surface: 255 255 255;
-  --color-surface-muted: 255 255 255;
-  --color-content: 0 0 0;
-  --color-content-muted: 0 0 0;
+  --color-primary: #000000;
+  --color-primary-dark: #000000;
+  --color-primary-light: #000000;
+  --color-accent: #000000;
+  --color-accent-hover: #000000;
+  --color-accent-light: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #ffffff;
+  --color-content: #000000;
+  --color-content-muted: #000000;
 }
 
 /* Схема 2: Белым по чёрному */
 html.a11y-mode[data-a11y-theme="white-on-black"] {
-  --color-primary: 255 255 255;
-  --color-primary-dark: 255 255 255;
-  --color-primary-light: 255 255 255;
-  --color-accent: 255 255 255;
-  --color-accent-hover: 255 255 255;
-  --color-accent-light: 0 0 0;
-  --color-surface: 0 0 0;
-  --color-surface-muted: 0 0 0;
-  --color-content: 255 255 255;
-  --color-content-muted: 255 255 255;
+  --color-primary: #ffffff;
+  --color-primary-dark: #ffffff;
+  --color-primary-light: #ffffff;
+  --color-accent: #ffffff;
+  --color-accent-hover: #ffffff;
+  --color-accent-light: #000000;
+  --color-surface: #000000;
+  --color-surface-muted: #000000;
+  --color-content: #ffffff;
+  --color-content-muted: #ffffff;
 }
 
 /* Схема 3: Тёмно-синим по голубому */
 html.a11y-mode[data-a11y-theme="blue-on-cyan"] {
-  --color-primary: 6 52 98;
-  --color-primary-dark: 6 52 98;
-  --color-primary-light: 6 52 98;
-  --color-accent: 6 52 98;
-  --color-accent-hover: 6 52 98;
-  --color-accent-light: 198 226 255;
-  --color-surface: 198 226 255;
-  --color-surface-muted: 198 226 255;
-  --color-content: 6 52 98;
-  --color-content-muted: 6 52 98;
+  --color-primary: #063462;
+  --color-primary-dark: #063462;
+  --color-primary-light: #063462;
+  --color-accent: #063462;
+  --color-accent-hover: #063462;
+  --color-accent-light: #c6e2ff;
+  --color-surface: #c6e2ff;
+  --color-surface-muted: #c6e2ff;
+  --color-content: #063462;
+  --color-content-muted: #063462;
 }
