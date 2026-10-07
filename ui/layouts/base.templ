@@ -173,7 +173,7 @@ templ Base(title string, description string, settings models.SiteSettings) {
 						}
 					};
 
-					// Переключение тем сайта (Основная + Времена года + День/Ночь)
+					// Переключение тем сайта (Основная + Сезоны + Гармоническая + День/Ночь)
 					window.getThemeState = function() {
 						const current = root.getAttribute('data-theme') || 'main';
 						const isNight = current.endsWith('-night') || current === 'dark';
