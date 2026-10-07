@@ -1,95 +1,168 @@
-# ⚡ SiteCraft Starter Kit
+# ⚡ SiteCraft Engine & Starter Kit
 
-**SiteCraft** — универсальный модульный стартовый набор (Boilerplate) для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов со встроенной панелью управления на стеке **Go 1.27 + PocketBase + Templ + HTMX + Tailwind CSS**.
+**SiteCraft** — универсальный модульный движок и стартовый набор для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов малого и среднего бизнеса (SMB) на стеке **Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS**.
 
 ![PageSpeed](https://img.shields.io/badge/PageSpeed-100%2F100-success?style=flat-square)
 ![Binary Size](https://img.shields.io/badge/Single%20Binary-~25MB-blue?style=flat-square)
-![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--40MB-orange?style=flat-square)
-![Zero JS](https://img.shields.io/badge/Zero--JS-HTMX%20Foundation-purple?style=flat-square)
+![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--35MB-orange?style=flat-square)
+![Interactive UI](https://img.shields.io/badge/UI-HTMX%20%2B%20Alpine.js-purple?style=flat-square)
+![Multi-Tenant](https://img.shields.io/badge/Multi--Tenant-Fleet%20of%20Binaries-emerald?style=flat-square)
 
 ---
 
 ## 🎯 Ключевые преимущества
 
-1. **Единый бинарник (~25 МБ):** Веб-сервер, база данных SQLite, панель управления (`/_/`), шаблоны и ассеты скомпилированы в один файл.
+1. **Единый автономный бинарник (~25 МБ):** Веб-сервер, база данных SQLite, панель управления (`/_/`), шаблоны и ассеты скомпилированы в один файл.
 2. **Нулевой рантайм Node.js в продакшене:** Стили и шаблоны компилируются заранее при сборке.
 3. **In-Memory Cache (sync.RWMutex):** Отдача страниц за **< 10 мс (TTFB)** с автоматической инвалидацией при редактировании данных в админке.
-4. **Модульный конструктор секций (Block Reordering):** Управление порядком и видимостью блоков на странице прямо из PocketBase.
-5. **Встроенный модуль онлайн-оплаты:** Поддержка **ЮKassa** и встроенный Mock Sandbox для тестирования.
-6. **Антиспам и безопасность:** Невидимый Honeypot для ботов и серверная XSS-санитизация через `bluemonday`.
-7. **Бизнес-модули "из коробки":**
+4. **Связка HTMX + Alpine.js:** 
+   * **Alpine.js + @alpinejs/mask** — мгновенные клиентские микро-интеракции (мобильное бургер-меню, маски номеров телефонов, календарь).
+   * **HTMX** — серверные AJAX-действия без перезагрузки страниц (отправка заявок, lazy-loading карты, проверка занятых слотов).
+5. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
+6. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`.
+7. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
+8. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
+9. **Бизнес-модули "из коробки":**
+   * **B2B-трекер заказов в реальном времени (`/track`):** Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара и онлайн-оплатой через ЮKassa.
+   * **SEO-Блог и База знаний (`/blog`):** Экспертные статьи, живой поиск HTMX, динамический `sitemap.xml` и счетчик просмотров.
+   * **Telegram Mini Apps (TMA) E-commerce & Paywall:** Запуск магазина (`/shop`) с нативной кнопкой Telegram MainButton, беспарольная авторизация HMAC-SHA256 и закрытый VIP-клуб (`/vip`).
+   * Онлайн-оплата **ЮKassa** со встроенным Sandbox.
    * Панель доступности для слабовидящих по **ГОСТ Р 52872-2019** (микро-скрипт Vanilla JS < 1.5 КБ).
-   * Запись на приём по слотам времени или простая лидген-форма.
+   * Интерактивная запись по слотам времени или простая лидген-форма.
+   * Невидимый Honeypot для ботов и серверная XSS-санитизация через `bluemonday`.
    * Асинхронные уведомления в **Telegram Bot** и **CRM Webhooks** (amoCRM / Битрикс24).
-   * Поддержка 5 дизайн-тем: `legal`, `medical`, `auto`, `tech`, `dark`.
 
 ---
 
-## 🚀 Быстрый старт
+## 🚀 Управление парком сайтов (Fleet of Binaries)
 
-### 1. Сборка проекта через интерактивный CLI
+Для создания и обслуживания десятков клиентских сайтов используйте встроенный CLI-оркестратор [fleet.sh](fleet.sh):
 
 ```bash
-# Инициализация и сборка проекта под нужную нишу (legal, medical, auto, beauty)
-./init-project.sh --name="my-site" --preset=medical --theme=medical
+# 1. Создать изолированный сайт клиента с нишевым пресетом
+./fleet.sh create auto-service   --preset=repair   --theme=auto    --port=8091  # СТО с B2B-трекером заказов
+./fleet.sh create pizza-craft    --preset=delivery --theme=warm    --port=8092  # Доставка еды + TMA корзина
+./fleet.sh create vip-lawyers    --preset=academy  --theme=legal   --port=8093  # Закрытый VIP-клуб / курсы
+./fleet.sh create dental-clinic  --preset=medical  --theme=medical --port=8094  # Стоматология с записью
+
+# 2. Запуск и управление инстансами в фоне
+./fleet.sh start auto-express
+./fleet.sh list                 # Таблица статусов (SITE_ID, PRESET, PORT, STATUS, PID)
+./fleet.sh restart auto-express
+./fleet.sh stop auto-express
+
+# 3. Экспорт сайта клиента в статический HTML/CSS
+./fleet.sh export auto-express ./dist-auto
+
+# 4. Резервное копирование и передача клиенту «под ключ»
+./fleet.sh backup auto-express  # Создает автономный архив backup_*.tar.gz с базой SQLite и файлами
 ```
 
-Скрипт автоматически:
-* Компилирует Templ шаблоны (`templ generate`).
-* Минифицирует Tailwind стили с семантическими дизайн-токенами (`tailwindcss --minify`).
-* Собирает автономный бинарный файл в `bin/my-site`.
+Подробное описание архитектуры читайте в **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)**.
 
-### 2. Запуск сервера
+---
 
+## 🎨 Динамический Theming Engine
+
+Помимо 7 готовых дизайн-тем оформления (`legal`, `medical`, `auto`, `beauty`, `tech`, `cyber`, `dark`), движок поддерживает произвольную палитру прямо из админки PocketBase (`site_settings`):
+
+* `primary_color`: базовый цвет бренда (например, `#0d9488` или `13 148 136`)
+* `accent_color`: акцентный цвет кнопок и плашек (например, `#f59e0b` или `245 158 11`)
+* `background_color`: фон страниц сайта
+* `font_family`: семейство шрифта Google Fonts (например, `Inter`, `Roboto`, `Montserrat`)
+
+Стили динамически инжектируются в `:root` шаблона [base.templ](ui/layouts/base.templ) без необходимости перекомпилировать Tailwind CSS!
+
+---
+
+## 🧩 Реестр компонентов (Block Registry)
+
+Архитектура рендеринга секций построена на паттерне Factory / Registry в [ui/pages/registry.go](ui/pages/registry.go):
+
+```go
+// Регистрация кастомного блока (плагина)
+pages.RegisterBlock("video_banner", func(b models.PageBlock, ctx pages.RenderContext) templ.Component {
+    return components.VideoBanner(b.Payload)
+})
+```
+
+Все блоки страницы упорядочиваются и настраиваются через коллекцию `page_blocks` в админке PocketBase.
+
+---
+
+## 📦 Статический экспорт (Static SSG)
+
+Вы можете использовать SiteCraft не только как серверное приложение, но и как генератор статики:
+
+```bash
+./bin/sitecraft export --out=./dist --preset=medical
+```
+Команда собирает оптимизированный `index.html`, минифицированные стили и все медиа-ассеты в папку `./dist`, готовую к размещению на GitHub Pages, Vercel, Netlify или Cloudflare.
+
+---
+
+## 🏗 Архитектура шаблонов и последовательность компонентов
+
+В SiteCraft каждый пресет задает свою уникальную воронку конверсии и порядок секций:
+
+| Ниша / Пресет | Стратегия воронки | Последовательность секций и компонентов |
+| :--- | :--- | :--- |
+| **Юридический / Нотариус**<br>`presets/legal.json` | **Легитимность и регламент:** официальный статус, расписание и правовые стандарты. | `Hero` → `Schedule` → `Features` → `Services` → `Steps` → `Booking` → `FAQ` → `Map` |
+| **Медицинский центр**<br>`presets/medical.json` | **Доверие к врачам:** оборудование, профильные врачи и подготовка к анализам. | `Hero` → `Features` → `Services` → `Team` → `Booking` → `Reviews` → `FAQ` → `Schedule` → `Map` |
+| **Автосервис / СТО**<br>`presets/auto.json`, `presets/repair.json` | **Прайс-лист, быстрый лидген и B2B-трекер:** прозрачные цены на ТО, гарантия 12 месяцев. | `Hero` → `Services` → `Booking` → `Features` → `Steps` → `Reviews` → `FAQ` → `Map` → `Schedule` |
+| **Салон красоты & SPA**<br>`presets/beauty.json` | **Visual First (Эстетика):** портфолио работ, бьюти-меню и карточки топ-мастеров. | `Hero` → `Gallery` → `Services` → `Features` → `Team` → `Reviews` → `Booking` → `FAQ` → `Map` |
+| **Киберпанк & Web3**<br>`presets/cyber.json` | **Futuristic Experience:** темная high-tech эстетика, CyberHero, шрифт Bebas Neue. | `CyberHero` → `Features` → `Services` → `Booking` → `FAQ` |
+| **Доставка еды / Dark Kitchen**<br>`presets/delivery.json` | **Food E-commerce & TMA:** меню, акции, онлайн-корзина с интеграцией Telegram WebApp. | `Hero` → `Services` → `Features` → `Steps` → `Reviews` → `Booking` → `FAQ` |
+| **Академия & Онлайн-курсы**<br>`presets/academy.json` | **EdTech & Paywall:** программа обучения, лекторы, подписка на VIP-клуб. | `Hero` → `Features` → `Services` → `Team` → `Steps` → `Reviews` → `Booking` → `FAQ` |
+
+---
+
+## 📊 Сравнение с аналогами
+
+| Критерий | SiteCraft (Go + PocketBase + HTMX) | WordPress (PHP + MySQL) | Tilda / Webflow (No-Code SaaS) | Next.js + Strapi (Node.js Fullstack) |
+|---|---|---|---|---|
+| **Потребление RAM** | **~20–35 МБ** | 250–600 МБ | Облако (SaaS) | 350–800 МБ |
+| **TTFB (отклик)** | **< 10 мс** | 150–500 мс | 100–300 мс | 50–150 мс |
+| **Сложность деплоя** | **1 бинарник** (или Docker) | LAMP/LEMP стек + плагины | 0 (кнопка в облаке) | Node.js рантайм + БД + Redis |
+| **Встроенная админка** | **Да (PocketBase)** | Да (тяжелая CMS) | Да (визуальный редактор) | Да (в Headless CMS) |
+| **Стоимость владения** | **$0** (до 50 сайтов на VPS за $10) | $5–15/мес за сайт | $12–25/мес за сайт | $15–30/мес |
+| **Контроль данных** | **100% On-Premise (SQLite)** | 100% On-Premise | 0% (Vendor lock-in) | 100% On-Premise |
+| **Интерактивность UI** | **HTMX + Alpine.js** | jQuery / тяжелые плагины | Базовые виджеты | React/Vue гидратация |
+| **PageSpeed** | **95–100** | 50–80 | 60–85 | 85–95 |
+
+---
+
+## 🛠 Быстрый старт одного сайта
+
+### Интерактивная сборка
+```bash
+./init-project.sh
+```
+Скрипт предложит выбрать сферу бизнеса, тему оформления и учетные данные суперпользователя.
+
+### Ручной запуск бинарника
 ```bash
 ./bin/my-site serve --http=127.0.0.1:8090 --preset=medical
 ```
-
 * **Сайт:** [http://127.0.0.1:8090](http://127.0.0.1:8090)
-* **Панель управления PocketBase:** [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/) *(задайте email и пароль супер-админа при первом входе)*.
-
----
-
-## 📦 Готовые нишевые пресеты
-
-В каталоге `presets/` подготовлены готовые структуры данных:
-* `presets/legal.json` — Юридические компании, адвокаты, нотариусы.
-* `presets/medical.json` — Медицинские клиники, стоматологии, диагностика.
-* `presets/auto.json` — Автосервисы, СТО, детейлинг-центры.
-* `presets/beauty.json` — Салоны красоты, барбершопы, спа-центры.
-
----
-
-## 🛠 Разработка (Live-Reload)
-
-При наличии [devenv](https://devenv.sh):
-```bash
-devenv shell
-dev # запуск air для автопересборки при изменении .go, .templ и .css файлов
-```
-
-Ручная сборка:
-```bash
-templ generate
-tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
-go test ./...
-go build -ldflags="-s -w" -o bin/sitecraft .
-```
+* **Панель управления PocketBase:** [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
+  * **Логин по умолчанию:** `admin@local.dev`
+  * **Пароль по умолчанию:** `admin123456`
 
 ---
 
 ## 🐳 Развертывание в Docker
 
-В репозитории подготовлены мультистейдж `Dockerfile` и `docker-compose.yml`:
-
 ```bash
 docker compose up -d --build
 ```
-Все данные (база SQLite и загруженные файлы) сохраняются в томе `pb_data`. Для бэкапа достаточно скопировать эту папку.
+Все данные (база SQLite и загруженные файлы) сохраняются в томе `pb_data`.
 
 ---
 
 ## 📚 Документация
 
-* **[GUIDELINES.md](GUIDELINES.md)** — Полное руководство разработчика, устройство In-Memory кэша, дизайн-токены Tailwind, платежи, санитизация и подробное сравнение со стеками WordPress, Tilda и Next.js.
-* **[SITECRAFT_ARCHITECTURE_PLAN.md](SITECRAFT_ARCHITECTURE_PLAN.md)** — Архитектурная спецификация (RFC), обоснование технических решений и дорожная карта.
+* **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)** — Архитектура мультисайтового парка инстансов (Fleet of Binaries), интеграция с Caddy/Nginx.
+* **[123.md](123.md)** — Спецификация и статус внедрения модулей движка.
+* **[GUIDELINES.md](GUIDELINES.md)** — Руководство разработчика, кэширование, платежи и безопасность.
+* **[SITECRAFT_ARCHITECTURE_PLAN.md](SITECRAFT_ARCHITECTURE_PLAN.md)** — Архитектурный RFC и первоначальный план проекта.
