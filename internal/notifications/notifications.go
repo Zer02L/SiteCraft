@@ -2,12 +2,14 @@ package notifications
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	"sitecraft/internal/events"
 	"sitecraft/internal/models"
 )
 
@@ -15,15 +17,71 @@ var httpClient = &http.Client{
 	Timeout: 5 * time.Second,
 }
 
-// SendLeadNotification sends notification to Telegram and/or external CRM webhook
-func SendLeadNotification(settings models.SiteSettings, lead models.Lead) {
-	if settings.TelegramBotToken != "" && settings.TelegramChatID != "" {
-		go sendTelegram(settings.TelegramBotToken, settings.TelegramChatID, lead)
-	}
+// Notifier defines the interface for outbound lead notifications.
+type Notifier interface {
+	NotifyLead(ctx context.Context, settings models.SiteSettings, lead models.Lead) error
+}
 
-	if settings.WebhookURL != "" {
-		go sendWebhook(settings.WebhookURL, lead)
+// TelegramNotifier sends lead messages to Telegram.
+type TelegramNotifier struct{}
+
+func (t *TelegramNotifier) NotifyLead(ctx context.Context, settings models.SiteSettings, lead models.Lead) error {
+	if settings.TelegramBotToken == "" || settings.TelegramChatID == "" {
+		return nil
 	}
+	sendTelegram(settings.TelegramBotToken, settings.TelegramChatID, lead)
+	return nil
+}
+
+// WebhookNotifier dispatches leads to external CRM systems.
+type WebhookNotifier struct{}
+
+func (w *WebhookNotifier) NotifyLead(ctx context.Context, settings models.SiteSettings, lead models.Lead) error {
+	if settings.WebhookURL == "" {
+		return nil
+	}
+	sendWebhook(settings.WebhookURL, lead)
+	return nil
+}
+
+// CompositeNotifier dispatches notifications to multiple notifiers.
+type CompositeNotifier struct {
+	notifiers []Notifier
+}
+
+func NewCompositeNotifier(notifiers ...Notifier) *CompositeNotifier {
+	return &CompositeNotifier{notifiers: notifiers}
+}
+
+func (c *CompositeNotifier) NotifyLead(ctx context.Context, settings models.SiteSettings, lead models.Lead) error {
+	for _, n := range c.notifiers {
+		_ = n.NotifyLead(ctx, settings, lead)
+	}
+	return nil
+}
+
+// RegisterSubscribers attaches notification handlers to the event bus.
+func RegisterSubscribers(bus events.Bus) {
+	composite := NewCompositeNotifier(
+		&TelegramNotifier{},
+		&WebhookNotifier{},
+	)
+
+	bus.Subscribe(events.EventLeadCreated, func(ctx context.Context, event events.Event) error {
+		leadEvent, ok := event.(events.LeadCreatedEvent)
+		if !ok {
+			return nil
+		}
+		return composite.NotifyLead(ctx, leadEvent.Settings, leadEvent.Lead)
+	})
+}
+
+// SendLeadNotification maintains backward compatibility while delegating.
+func SendLeadNotification(settings models.SiteSettings, lead models.Lead) {
+	events.Default().Publish(context.Background(), events.LeadCreatedEvent{
+		Settings: settings,
+		Lead:     lead,
+	})
 }
 
 func sendTelegram(token, chatID string, lead models.Lead) {
