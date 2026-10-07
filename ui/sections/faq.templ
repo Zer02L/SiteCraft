@@ -3,6 +3,9 @@ package sections
 import (
 	"fmt"
 	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ Faq(theme string, payload *models.FAQPayload) {
@@ -12,8 +15,13 @@ templ Faq(theme string, payload *models.FAQPayload) {
 			<!-- Режим 1: Полностью Data-Driven из JSON Payload -->
 			<div class="text-center mb-12" data-reveal>
 				if payload.Badge != "" {
-					<div class="section-badge">
-						{ payload.Badge }
+					<div class="inline-flex justify-center mb-3">
+						@badge.Badge(badge.Props{
+							Variant: badge.VariantSecondary,
+							Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3 text-primary bg-primary/10",
+						}) {
+							{ payload.Badge }
+						}
 					</div>
 				}
 				<h2 class="section-title">
@@ -33,7 +41,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay={ fmt.Sprintf("%d", (idx%4)*100) } class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>{ item.Question }</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							{ item.Answer }
@@ -54,7 +62,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Нужно ли готовиться к сдаче анализов крови?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Большинство биохимических анализов и исследований крови сдаются строго натощак (8-12 часов после приема пищи). Разрешается пить чистую негазированную воду. За сутки исключите жирную пищу и алкоголь.
@@ -63,7 +71,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="100" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Как быстро приходят результаты УЗИ и обследований?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Протокол ультразвукового исследования и снимки экспертного класса выдаются врачом сразу же после завершения процедуры (в течение 10–15 минут).
@@ -72,7 +80,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="200" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Принимают ли врачи по полису ОМС или ДМС?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Мы сотрудничаем с большинством страховых компаний по программам ДМС. Для согласования визита по ДМС обратитесь к куратору вашей страховой компании перед приёмом.
@@ -84,7 +92,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Сколько времени занимает комплексная диагностика?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Полная компьютерная диагностика сканером и осмотр ходовой части на подъемнике занимают от 40 до 60 минут. Вы получите подробный диагностический лист с рекомендациями.
@@ -93,7 +101,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="100" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Можно ли привезти свои запчасти и моторное масло?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Да, вы можете привезти собственные расходные материалы. При этом гарантия автосервиса будет распространяться на качество выполненных монтажных работ.
@@ -102,7 +110,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="200" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Есть ли гарантия на выполненный ремонт?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Да, мы предоставляем письменную гарантию 12 месяцев (или 20 000 км пробега) на слесарные работы и установленные оригинальные комплектующие.
@@ -114,7 +122,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>За сколько дней необходимо записываться к топ-стилистам?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							К ведущим мастерам рекомендуем записываться за 3–5 дней. Однако мы всегда оставляем горячие «окна» день-в-день — уточняйте у администратора.
@@ -123,7 +131,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="100" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Как проводится стерилизация инструментов?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							В 4 этапа: ультразвуковая дезинфекция, предстерилизационная очистка, сушка и стерилизация в сухожаровом шкафу ГП-20. Индивидуальный крафт-пакет вскрывается строго при вас.
@@ -132,7 +140,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="200" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Какую косметику и красители вы используете?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Мы работаем только на оригинальной премиальной продукции L'Oreal Professionnel, Davines (Италия) и Lebel (Япония) с сертификатами подлинности.
@@ -144,7 +152,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Какие документы необходимы для оформления доверенности?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Оригинал паспорта гражданина РФ доверителя, полные паспортные данные поверенного лица (копия или четкое фото паспорта). При автодоверенности — ПТС или СТС.
@@ -153,7 +161,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="100" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Какой срок для открытия наследственного дела?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Заявление о принятии наследства должно быть подано нотариусу в течение 6 месяцев со дня открытия наследства (дня смерти наследодателя).
@@ -162,7 +170,7 @@ templ Faq(theme string, payload *models.FAQPayload) {
 					<details data-reveal data-reveal-delay="200" class="group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition">
 						<summary class="flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none">
 							<span>Можно ли подать документы удаленно или направить представителя?</span>
-							<span class="text-accent group-open:rotate-180 transition transform text-lg">▾</span>
+							@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"})
 						</summary>
 						<p class="mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10">
 							Проекты документов можно выслать предварительно на электронную почту для проверки. Непосредственное удостоверение требует личного присутствия либо совершения действия через единую систему удаленных действий.

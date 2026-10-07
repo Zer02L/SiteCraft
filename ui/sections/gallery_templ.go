@@ -8,6 +8,10 @@ package sections
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import (
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+)
+
 func Gallery(theme string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,7 +33,36 @@ func Gallery(theme string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Visual Portfolio / Photo Gallery --><section id=\"gallery\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20 uppercase tracking-wider mb-2\">Галерея</div><h2 class=\"font-serif-title text-3xl font-bold text-content\">Портфолио и атмосфера</h2><p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">Взгляните на результаты нашей работы и комфортное пространство студии</p></div><div class=\"grid grid-cols-2 md:grid-cols-4 gap-4\"><div data-reveal data-reveal-delay=\"100\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-pink-100 via-rose-50 to-amber-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">💇\u200d♀️</span> <span class=\"font-bold text-xs text-content\">Airtouch & Укладка</span> <span class=\"text-[10px] text-content-muted mt-1\">Холодный блонд</span></div></div><div data-reveal data-reveal-delay=\"200\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-rose-100 via-pink-50 to-purple-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">💅</span> <span class=\"font-bold text-xs text-content\">Smart-педикюр</span> <span class=\"text-[10px] text-content-muted mt-1\">Стойкий глянец</span></div></div><div data-reveal data-reveal-delay=\"300\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-amber-100 via-orange-50 to-rose-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">✨</span> <span class=\"font-bold text-xs text-content\">Макияж & Образ</span> <span class=\"text-[10px] text-content-muted mt-1\">Вечерний стиль</span></div></div><div data-reveal data-reveal-delay=\"400\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-teal-50 via-pink-50 to-amber-100 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">🌸</span> <span class=\"font-bold text-xs text-content\">SPA для волос</span> <span class=\"text-[10px] text-content-muted mt-1\">Глубокое питание</span></div></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Visual Portfolio / Photo Gallery --><section id=\"gallery\" class=\"py-16 px-4 max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Галерея")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = badge.Badge(badge.Props{
+			Variant: badge.VariantSecondary,
+			Class:   "section-badge mb-2",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h2 class=\"font-serif-title text-3xl font-bold text-content\">Портфолио и атмосфера</h2><p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">Взгляните на результаты нашей работы и комфортное пространство студии</p></div><div class=\"grid grid-cols-2 md:grid-cols-4 gap-4\"><div data-reveal data-reveal-delay=\"100\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-pink-100 via-rose-50 to-amber-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">💇\u200d♀️</span> <span class=\"font-bold text-xs text-content\">Airtouch & Укладка</span> <span class=\"text-[10px] text-content-muted mt-1\">Холодный блонд</span></div></div><div data-reveal data-reveal-delay=\"200\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-rose-100 via-pink-50 to-purple-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">💅</span> <span class=\"font-bold text-xs text-content\">Smart-педикюр</span> <span class=\"text-[10px] text-content-muted mt-1\">Стойкий глянец</span></div></div><div data-reveal data-reveal-delay=\"300\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-amber-100 via-orange-50 to-rose-50 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">✨</span> <span class=\"font-bold text-xs text-content\">Макияж & Образ</span> <span class=\"text-[10px] text-content-muted mt-1\">Вечерний стиль</span></div></div><div data-reveal data-reveal-delay=\"400\" class=\"group relative overflow-hidden rounded-2xl bg-surface-muted aspect-square border border-content/10\"><div class=\"w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-teal-50 via-pink-50 to-amber-100 p-6 text-center group-hover:scale-105 transition duration-300\"><span class=\"text-4xl mb-2\">🌸</span> <span class=\"font-bold text-xs text-content\">SPA для волос</span> <span class=\"text-[10px] text-content-muted mt-1\">Глубокое питание</span></div></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

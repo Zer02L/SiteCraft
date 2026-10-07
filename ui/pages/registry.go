@@ -61,6 +61,9 @@ var BlockRegistry = map[string]BlockRenderer{
 	"map": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return sections.MapSection(ctx.Content, ctx.Settings)
 	},
+	"showcase": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return components.UIShowcase()
+	},
 	"rich_text": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return components.DynamicBlock(b)
 	},

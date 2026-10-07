@@ -138,7 +138,7 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings, models.NewHomeSEO(settings, content, "")).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

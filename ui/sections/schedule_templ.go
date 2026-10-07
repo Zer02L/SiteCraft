@@ -10,6 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"sitecraft/internal/models"
+
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 func ScheduleBar(content models.SiteContent) templ.Component {
@@ -33,114 +35,138 @@ func ScheduleBar(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Info Bar (График работы) --><section id=\"schedule\" class=\"bg-surface border-b border-content/10 py-8 px-4 shadow-sm\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6\"><!-- Часы работы --><div data-reveal data-reveal-delay=\"100\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 transition\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg></div><div><h4 class=\"font-bold text-content text-sm\">Часы приёма:</h4><p class=\"text-xs text-content-muted mt-1 font-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Info Bar (График работы) --><section id=\"schedule\" class=\"bg-surface border-b border-content/10 py-8 px-4 shadow-sm\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6\"><!-- Часы работы --><div data-reveal data-reveal-delay=\"100\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Clock(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div><h4 class=\"font-bold text-content text-sm\">Часы приёма:</h4><p class=\"text-xs text-content-muted mt-1 font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(content.WorkHours)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 18, Col: 79}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 20, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</p><p class=\"text-xs text-content-muted\">Перерыв: <span class=\"font-semibold text-amber-700\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p><p class=\"text-xs text-content-muted\">Перерыв: <span class=\"font-semibold text-amber-700\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.LunchBreak)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 19, Col: 122}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 21, Col: 122}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></p><p class=\"text-xs text-content-muted mt-0.5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></p><p class=\"text-xs text-content-muted mt-0.5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(content.DaysOff)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 20, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 22, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</p></div></div><!-- Телефоны --><div data-reveal data-reveal-delay=\"200\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 transition\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z\"></path></svg></div><div><h4 class=\"font-bold text-content text-sm\">Телефоны для справок:</h4><div class=\"mt-1 space-y-0.5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div></div><!-- Телефоны --><div data-reveal data-reveal-delay=\"200\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.PhoneCall(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div><h4 class=\"font-bold text-content text-sm\">Телефоны для справок:</h4><div class=\"mt-1 space-y-0.5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if content.Phone1 != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<a href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 templ.SafeURL
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinURLErrs(templ.URL("tel:" + content.Phone1))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 33, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 35, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"block text-sm font-bold text-primary hover:underline\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"block text-sm font-bold text-primary hover:underline\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 33, Col: 131}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 35, Col: 131}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</a> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</a> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
 		if content.Phone2 != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<a href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 templ.SafeURL
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinURLErrs(templ.URL("tel:" + content.Phone2))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 36, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 38, Col: 51}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"block text-sm font-semibold text-content/80 hover:underline\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"block text-sm font-semibold text-content/80 hover:underline\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone2)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 36, Col: 138}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/schedule.templ`, Line: 38, Col: 138}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</a>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><p class=\"text-xs text-content-muted mt-0.5\">Быстрая предварительная консультация</p></div></div><!-- Порядок приёма --><div data-reveal data-reveal-delay=\"300\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 transition\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\"></path></svg></div><div><h4 class=\"font-bold text-content text-sm\">Приём граждан и клиентов:</h4><p class=\"text-xs text-content-muted mt-1\">Приём ведется по предварительной электронной записи или в порядке живой очереди при наличии свободных окон.</p><a href=\"#booking\" class=\"text-xs font-semibold text-primary hover:underline inline-block mt-1\">Выбрать свободное время ↓</a></div></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><p class=\"text-xs text-content-muted mt-0.5\">Быстрая предварительная консультация</p></div></div><!-- Порядок приёма --><div data-reveal data-reveal-delay=\"300\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.ShieldCheck(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><div><h4 class=\"font-bold text-content text-sm\">Приём граждан и клиентов:</h4><p class=\"text-xs text-content-muted mt-1\">Приём ведется по предварительной электронной записи или в порядке живой очереди при наличии свободных окон.</p><a href=\"#booking\" class=\"text-xs font-semibold text-primary hover:underline inline-block mt-1\">Выбрать свободное время ↓</a></div></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

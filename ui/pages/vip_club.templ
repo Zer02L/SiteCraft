@@ -4,6 +4,10 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *models.TMAUser) {
@@ -21,10 +25,14 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 			<div class="max-w-4xl mx-auto">
 				<!-- Шапка клуба -->
 				<div class="text-center mb-8">
-					<div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-900 text-xs font-bold rounded-full mb-3">
-						<span>👑 Закрытый клуб и база знаний</span>
-						<span>•</span>
-						<span>Ниша В</span>
+					<div class="inline-flex justify-center mb-3">
+						@badge.Badge(badge.Props{
+							Variant: badge.VariantSecondary,
+							Class:   "text-xs font-bold gap-1 py-1 px-3 text-amber-900 bg-amber-500/20",
+						}) {
+							@icons.Crown(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-600"})
+							<span>Закрытый клуб и база знаний • Ниша В</span>
+						}
 					</div>
 					<h1 class="text-2xl sm:text-4xl font-serif-title font-bold text-content leading-tight">
 						Эксклюзивные материалы и мастер-классы
@@ -36,22 +44,23 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 
 				if user != nil && user.IsVIP {
 					<!-- ДОСТУП ОТКРЫТ: VIP Панель -->
-					<div class="bg-gradient-to-r from-stone-900 to-stone-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 border border-stone-700">
+					<div class="bg-gradient-to-r from-stone-900 to-stone-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 border border-stone-700 animate-fade-in">
 						<div class="flex items-center justify-between flex-wrap gap-4">
 							<div class="flex items-center gap-3">
-								<div class="w-12 h-12 rounded-full bg-amber-400 text-content font-bold flex items-center justify-center text-lg shadow">
-									👑
+								<div class="w-12 h-12 rounded-full bg-amber-400 text-stone-950 font-bold flex items-center justify-center text-lg shadow">
+									@icons.Crown(templ.Attributes{"class": "w-6 h-6"})
 								</div>
 								<div>
 									<div class="font-bold text-base sm:text-lg flex items-center gap-2">
 										<span>Добро пожаловать, { user.FirstName }!</span>
-										<span class="px-2 py-0.5 bg-amber-400 text-content text-[10px] font-extrabold rounded uppercase tracking-wider">VIP активен</span>
+										<span class="px-2 py-0.5 bg-amber-400 text-stone-950 text-[10px] font-extrabold rounded uppercase tracking-wider">VIP активен</span>
 									</div>
-									<div class="text-xs text-content-muted">{ "@" + user.Username } • Неограниченный доступ ко всем закрытым материалам</div>
+									<div class="text-xs text-stone-400">{ "@" + user.Username } • Неограниченный доступ ко всем закрытым материалам</div>
 								</div>
 							</div>
-							<div class="text-xs text-stone-300 bg-surface/10 px-3 py-1.5 rounded-xl border border-white/10">
-								Статус: <span class="text-emerald-400 font-bold">Оплачено</span>
+							<div class="text-xs text-stone-300 bg-surface/10 px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5">
+								<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+								<span>Статус: <strong class="text-emerald-400">Оплачено</strong></span>
 							</div>
 						</div>
 					</div>
@@ -95,7 +104,9 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 							</p>
 							<div class="aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner">
 								<div class="w-full h-full flex flex-col items-center justify-center text-content-muted p-6 text-center">
-									<div class="w-12 h-12 rounded-full bg-surface/10 flex items-center justify-center text-white mb-2">▶</div>
+									<div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white mb-2">
+										@icons.Play(templ.Attributes{"class": "w-5 h-5"})
+									</div>
 									<span class="text-xs font-medium">Модуль открывается в соответствии с расписанием</span>
 								</div>
 							</div>
@@ -103,9 +114,9 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 					</div>
 				} else {
 					<!-- ДОСТУП ЗАКРЫТ: Paywall экран -->
-					<div class="bg-surface rounded-3xl p-6 sm:p-10 border border-content/10 shadow-xl max-w-xl mx-auto">
-						<div class="w-16 h-16 mx-auto rounded-3xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-3xl mb-4 shadow-inner">
-							🔒
+					<div class="bg-surface rounded-3xl p-6 sm:p-10 border border-content/10 shadow-xl max-w-xl mx-auto animate-fade-in-up">
+						<div class="w-16 h-16 mx-auto rounded-3xl bg-amber-400/20 text-amber-600 flex items-center justify-center mb-4 shadow-inner">
+							@icons.Lock(templ.Attributes{"class": "w-8 h-8"})
 						</div>
 						<h2 class="text-xl sm:text-2xl font-serif-title font-bold text-center text-content mb-2">
 							Доступ ограничен подпиской
@@ -117,19 +128,27 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 						<!-- Преимущества членства -->
 						<div class="space-y-3 mb-8 bg-surface p-4 rounded-2xl border border-content/10 text-xs sm:text-sm">
 							<div class="flex items-center gap-2.5 text-content">
-								<span class="text-emerald-500 font-bold">✓</span>
+								<span class="text-emerald-500 font-bold">
+									@icons.Check(templ.Attributes{"class": "w-4 h-4"})
+								</span>
 								<span>Доступ к 15+ часам закрытых видео-разборов</span>
 							</div>
 							<div class="flex items-center gap-2.5 text-content">
-								<span class="text-emerald-500 font-bold">✓</span>
+								<span class="text-emerald-500 font-bold">
+									@icons.Check(templ.Attributes{"class": "w-4 h-4"})
+								</span>
 								<span>Библиотека образцов документов с комментариями</span>
 							</div>
 							<div class="flex items-center gap-2.5 text-content">
-								<span class="text-emerald-500 font-bold">✓</span>
+								<span class="text-emerald-500 font-bold">
+									@icons.Check(templ.Attributes{"class": "w-4 h-4"})
+								</span>
 								<span>Прямые эфиры и разборы вопросов дважды в месяц</span>
 							</div>
 							<div class="flex items-center gap-2.5 text-content">
-								<span class="text-emerald-500 font-bold">✓</span>
+								<span class="text-emerald-500 font-bold">
+									@icons.Check(templ.Attributes{"class": "w-4 h-4"})
+								</span>
 								<span>Мгновенный вход по клику без логинов и паролей</span>
 							</div>
 						</div>
@@ -141,14 +160,18 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 								<span class="text-xs text-content-muted"> / месяц</span>
 							</div>
 
-							<button
-								type="button"
-								@click="openPayment()"
-								class="w-full py-3.5 bg-primary text-white font-bold text-sm rounded-xl hover:bg-primary-dark active:scale-95 transition shadow-lg cursor-pointer flex items-center justify-center gap-2"
-							>
+							@button.Button(button.Props{
+								Type:    "button",
+								Variant: button.VariantDefault,
+								Class:   "w-full py-3.5 font-bold text-sm rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2",
+								Attributes: templ.Attributes{
+									"@click": "openPayment()",
+								},
+							}) {
+								@icons.CreditCard(templ.Attributes{"class": "w-4 h-4"})
 								<span>Оформить VIP-доступ через ЮKassa</span>
-								<span>→</span>
-							</button>
+								@icons.ArrowRight(templ.Attributes{"class": "w-4 h-4"})
+							}
 
 							<p class="text-[11px] text-content-muted mt-3">
 								Безопасная оплата. Доступ активируется автоматически сразу после платежа.

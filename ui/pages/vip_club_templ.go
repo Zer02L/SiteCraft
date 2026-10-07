@@ -12,6 +12,10 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 func VIPClub(settings models.SiteSettings, content models.SiteContent, user *models.TMAUser) templ.Component {
@@ -61,48 +65,178 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main x-data=\"vipPaywall()\" x-init=\"checkTMA()\" class=\"flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-4xl mx-auto\"><!-- Шапка клуба --><div class=\"text-center mb-8\"><div class=\"inline-flex items-center gap-2 px-3 py-1 bg-amber-500/20 text-amber-900 text-xs font-bold rounded-full mb-3\"><span>👑 Закрытый клуб и база знаний</span> <span>•</span> <span>Ниша В</span></div><h1 class=\"text-2xl sm:text-4xl font-serif-title font-bold text-content leading-tight\">Эксклюзивные материалы и мастер-классы</h1><p class=\"text-content-muted text-xs sm:text-sm mt-2 max-w-xl mx-auto\">Практические разборы сложных дел, готовые шаблоны договоров и закрытые видео-уроки от ведущих экспертов.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<main x-data=\"vipPaywall()\" x-init=\"checkTMA()\" class=\"flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8\"><div class=\"max-w-4xl mx-auto\"><!-- Шапка клуба --><div class=\"text-center mb-8\"><div class=\"inline-flex justify-center mb-3\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var3 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = icons.Crown(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-600"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span>Закрытый клуб и база знаний • Ниша В</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = badge.Badge(badge.Props{
+				Variant: badge.VariantSecondary,
+				Class:   "text-xs font-bold gap-1 py-1 px-3 text-amber-900 bg-amber-500/20",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><h1 class=\"text-2xl sm:text-4xl font-serif-title font-bold text-content leading-tight\">Эксклюзивные материалы и мастер-классы</h1><p class=\"text-content-muted text-xs sm:text-sm mt-2 max-w-xl mx-auto\">Практические разборы сложных дел, готовые шаблоны договоров и закрытые видео-уроки от ведущих экспертов.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if user != nil && user.IsVIP {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- ДОСТУП ОТКРЫТ: VIP Панель --> <div class=\"bg-gradient-to-r from-stone-900 to-stone-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 border border-stone-700\"><div class=\"flex items-center justify-between flex-wrap gap-4\"><div class=\"flex items-center gap-3\"><div class=\"w-12 h-12 rounded-full bg-amber-400 text-content font-bold flex items-center justify-center text-lg shadow\">👑</div><div><div class=\"font-bold text-base sm:text-lg flex items-center gap-2\"><span>Добро пожаловать, ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- ДОСТУП ОТКРЫТ: VIP Панель --> <div class=\"bg-gradient-to-r from-stone-900 to-stone-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl mb-10 border border-stone-700 animate-fade-in\"><div class=\"flex items-center justify-between flex-wrap gap-4\"><div class=\"flex items-center gap-3\"><div class=\"w-12 h-12 rounded-full bg-amber-400 text-stone-950 font-bold flex items-center justify-center text-lg shadow\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(user.FirstName)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 47, Col: 65}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				templ_7745c5c3_Err = icons.Crown(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "!</span> <span class=\"px-2 py-0.5 bg-amber-400 text-content text-[10px] font-extrabold rounded uppercase tracking-wider\">VIP активен</span></div><div class=\"text-xs text-content-muted\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div><div class=\"font-bold text-base sm:text-lg flex items-center gap-2\"><span>Добро пожаловать, ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs("@" + user.Username)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.FirstName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 50, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 55, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " • Неограниченный доступ ко всем закрытым материалам</div></div></div><div class=\"text-xs text-stone-300 bg-surface/10 px-3 py-1.5 rounded-xl border border-white/10\">Статус: <span class=\"text-emerald-400 font-bold\">Оплачено</span></div></div></div><!-- Сетка видео-уроков (Headless плееры) --> <div class=\"space-y-8\"><h2 class=\"text-xl font-bold font-serif-title text-content\">Доступные видео-модули</h2><!-- Урок 1 --><div class=\"bg-surface rounded-3xl p-6 border border-content/10 shadow-sm\"><div class=\"flex items-center justify-between text-xs text-content-muted mb-3\"><span class=\"font-bold text-primary\">Модуль 1 • Видеоразбор</span> <span>Длительность: 28 минут</span></div><h3 class=\"text-lg font-bold text-content mb-2\">Практический аудит чистоты объекта недвижимости</h3><p class=\"text-xs sm:text-sm text-content-muted mb-4\">Пошаговый разбор реального кейса: проверка по архивам, наследственным спорам и банкротным реестрам.</p><!-- Headless Video Container (Kinescope/VK/Rutube embed) --><div class=\"aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner\"><iframe class=\"w-full h-full\" src=\"https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ\" title=\"Видеоурок\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div></div><!-- Урок 2 --><div class=\"bg-surface rounded-3xl p-6 border border-content/10 shadow-sm\"><div class=\"flex items-center justify-between text-xs text-content-muted mb-3\"><span class=\"font-bold text-primary\">Модуль 2 • Практикум</span> <span>Длительность: 35 минут</span></div><h3 class=\"text-lg font-bold text-content mb-2\">Составление брачных договоров и соглашений о разделе</h3><p class=\"text-xs sm:text-sm text-content-muted mb-4\">Тонкости формулировок, которые не сможет оспорить ни один суд.</p><div class=\"aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner\"><div class=\"w-full h-full flex flex-col items-center justify-center text-content-muted p-6 text-center\"><div class=\"w-12 h-12 rounded-full bg-surface/10 flex items-center justify-center text-white mb-2\">▶</div><span class=\"text-xs font-medium\">Модуль открывается в соответствии с расписанием</span></div></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "!</span> <span class=\"px-2 py-0.5 bg-amber-400 text-stone-950 text-[10px] font-extrabold rounded uppercase tracking-wider\">VIP активен</span></div><div class=\"text-xs text-stone-400\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("@" + user.Username)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 58, Col: 66}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " • Неограниченный доступ ко всем закрытым материалам</div></div></div><div class=\"text-xs text-stone-300 bg-surface/10 px-3 py-1.5 rounded-xl border border-white/10 flex items-center gap-1.5\"><span class=\"w-2 h-2 rounded-full bg-emerald-400 animate-pulse\"></span> <span>Статус: <strong class=\"text-emerald-400\">Оплачено</strong></span></div></div></div><!-- Сетка видео-уроков (Headless плееры) --> <div class=\"space-y-8\"><h2 class=\"text-xl font-bold font-serif-title text-content\">Доступные видео-модули</h2><!-- Урок 1 --><div class=\"bg-surface rounded-3xl p-6 border border-content/10 shadow-sm\"><div class=\"flex items-center justify-between text-xs text-content-muted mb-3\"><span class=\"font-bold text-primary\">Модуль 1 • Видеоразбор</span> <span>Длительность: 28 минут</span></div><h3 class=\"text-lg font-bold text-content mb-2\">Практический аудит чистоты объекта недвижимости</h3><p class=\"text-xs sm:text-sm text-content-muted mb-4\">Пошаговый разбор реального кейса: проверка по архивам, наследственным спорам и банкротным реестрам.</p><!-- Headless Video Container (Kinescope/VK/Rutube embed) --><div class=\"aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner\"><iframe class=\"w-full h-full\" src=\"https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ\" title=\"Видеоурок\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe></div></div><!-- Урок 2 --><div class=\"bg-surface rounded-3xl p-6 border border-content/10 shadow-sm\"><div class=\"flex items-center justify-between text-xs text-content-muted mb-3\"><span class=\"font-bold text-primary\">Модуль 2 • Практикум</span> <span>Длительность: 35 минут</span></div><h3 class=\"text-lg font-bold text-content mb-2\">Составление брачных договоров и соглашений о разделе</h3><p class=\"text-xs sm:text-sm text-content-muted mb-4\">Тонкости формулировок, которые не сможет оспорить ни один суд.</p><div class=\"aspect-video w-full rounded-2xl overflow-hidden bg-stone-900 relative shadow-inner\"><div class=\"w-full h-full flex flex-col items-center justify-center text-content-muted p-6 text-center\"><div class=\"w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white mb-2\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Play(templ.Attributes{"class": "w-5 h-5"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><span class=\"text-xs font-medium\">Модуль открывается в соответствии с расписанием</span></div></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- ДОСТУП ЗАКРЫТ: Paywall экран --> <div class=\"bg-surface rounded-3xl p-6 sm:p-10 border border-content/10 shadow-xl max-w-xl mx-auto\"><div class=\"w-16 h-16 mx-auto rounded-3xl bg-amber-400/20 text-amber-600 flex items-center justify-center text-3xl mb-4 shadow-inner\">🔒</div><h2 class=\"text-xl sm:text-2xl font-serif-title font-bold text-center text-content mb-2\">Доступ ограничен подпиской</h2><p class=\"text-xs sm:text-sm text-content-muted text-center mb-6\">Материалы закрытого клуба доступны только для зарегистрированных участников.</p><!-- Преимущества членства --><div class=\"space-y-3 mb-8 bg-surface p-4 rounded-2xl border border-content/10 text-xs sm:text-sm\"><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">✓</span> <span>Доступ к 15+ часам закрытых видео-разборов</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">✓</span> <span>Библиотека образцов документов с комментариями</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">✓</span> <span>Прямые эфиры и разборы вопросов дважды в месяц</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">✓</span> <span>Мгновенный вход по клику без логинов и паролей</span></div></div><!-- Тариф и кнопка оплаты --><div class=\"text-center pt-2 border-t border-content/10\"><div class=\"mb-4\"><span class=\"text-2xl sm:text-3xl font-extrabold text-content\">2 900 ₽</span> <span class=\"text-xs text-content-muted\">/ месяц</span></div><button type=\"button\" @click=\"openPayment()\" class=\"w-full py-3.5 bg-primary text-white font-bold text-sm rounded-xl hover:bg-primary-dark active:scale-95 transition shadow-lg cursor-pointer flex items-center justify-center gap-2\"><span>Оформить VIP-доступ через ЮKassa</span> <span>→</span></button><p class=\"text-[11px] text-content-muted mt-3\">Безопасная оплата. Доступ активируется автоматически сразу после платежа.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<!-- ДОСТУП ЗАКРЫТ: Paywall экран --> <div class=\"bg-surface rounded-3xl p-6 sm:p-10 border border-content/10 shadow-xl max-w-xl mx-auto animate-fade-in-up\"><div class=\"w-16 h-16 mx-auto rounded-3xl bg-amber-400/20 text-amber-600 flex items-center justify-center mb-4 shadow-inner\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Lock(templ.Attributes{"class": "w-8 h-8"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><h2 class=\"text-xl sm:text-2xl font-serif-title font-bold text-center text-content mb-2\">Доступ ограничен подпиской</h2><p class=\"text-xs sm:text-sm text-content-muted text-center mb-6\">Материалы закрытого клуба доступны только для зарегистрированных участников.</p><!-- Преимущества членства --><div class=\"space-y-3 mb-8 bg-surface p-4 rounded-2xl border border-content/10 text-xs sm:text-sm\"><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Check(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span> <span>Доступ к 15+ часам закрытых видео-разборов</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Check(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span> <span>Библиотека образцов документов с комментариями</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Check(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span> <span>Прямые эфиры и разборы вопросов дважды в месяц</span></div><div class=\"flex items-center gap-2.5 text-content\"><span class=\"text-emerald-500 font-bold\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Check(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span> <span>Мгновенный вход по клику без логинов и паролей</span></div></div><!-- Тариф и кнопка оплаты --><div class=\"text-center pt-2 border-t border-content/10\"><div class=\"mb-4\"><span class=\"text-2xl sm:text-3xl font-extrabold text-content\">2 900 ₽</span> <span class=\"text-xs text-content-muted\">/ месяц</span></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					templ_7745c5c3_Err = icons.CreditCard(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<span>Оформить VIP-доступ через ЮKassa</span>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = icons.ArrowRight(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = button.Button(button.Props{
+					Type:    "button",
+					Variant: button.VariantDefault,
+					Class:   "w-full py-3.5 font-bold text-sm rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2",
+					Attributes: templ.Attributes{
+						"@click": "openPayment()",
+					},
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<p class=\"text-[11px] text-content-muted mt-3\">Безопасная оплата. Доступ активируется автоматически сразу после платежа.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></main><!-- Скрипт беспарольной авторизации через Telegram WebApp --> <script>\n\t\t\tfunction vipPaywall() {\n\t\t\t\treturn {\n\t\t\t\t\tcheckTMA() {\n\t\t\t\t\t\tif (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {\n\t\t\t\t\t\t\t// Отправляем initData на сервер для беспарольного входа\n\t\t\t\t\t\t\tfetch('/api/tma/auth', {\n\t\t\t\t\t\t\t\tmethod: 'POST',\n\t\t\t\t\t\t\t\theaders: { 'Content-Type': 'application/json' },\n\t\t\t\t\t\t\t\tbody: JSON.stringify({ initData: window.Telegram.WebApp.initData })\n\t\t\t\t\t\t\t})\n\t\t\t\t\t\t\t.then(function(res) { return res.json(); })\n\t\t\t\t\t\t\t.then(function(data) {\n\t\t\t\t\t\t\t\tif (data.is_vip) {\n\t\t\t\t\t\t\t\t\t// Если статус обновился, перезагружаем страницу с сессией\n\t\t\t\t\t\t\t\t\twindow.location.reload();\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\topenPayment() {\n\t\t\t\t\t\t// Открываем модальное окно оплаты ЮKassa\n\t\t\t\t\t\thtmx.ajax('GET', '/api/payment/modal', { target: 'body', swap: 'beforeend' });\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t</script> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></main><!-- Скрипт беспарольной авторизации через Telegram WebApp --> <script>\n\t\t\tfunction vipPaywall() {\n\t\t\t\treturn {\n\t\t\t\t\tcheckTMA() {\n\t\t\t\t\t\tif (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {\n\t\t\t\t\t\t\t// Отправляем initData на сервер для беспарольного входа\n\t\t\t\t\t\t\tfetch('/api/tma/auth', {\n\t\t\t\t\t\t\t\tmethod: 'POST',\n\t\t\t\t\t\t\t\theaders: { 'Content-Type': 'application/json' },\n\t\t\t\t\t\t\t\tbody: JSON.stringify({ initData: window.Telegram.WebApp.initData })\n\t\t\t\t\t\t\t})\n\t\t\t\t\t\t\t.then(function(res) { return res.json(); })\n\t\t\t\t\t\t\t.then(function(data) {\n\t\t\t\t\t\t\t\tif (data.is_vip) {\n\t\t\t\t\t\t\t\t\t// Если статус обновился, перезагружаем страницу с сессией\n\t\t\t\t\t\t\t\t\twindow.location.reload();\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t}\n\t\t\t\t\t},\n\t\t\t\t\topenPayment() {\n\t\t\t\t\t\t// Открываем модальное окно оплаты ЮKassa\n\t\t\t\t\t\thtmx.ajax('GET', '/api/payment/modal', { target: 'body', swap: 'beforeend' });\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t</script> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

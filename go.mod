@@ -8,8 +8,11 @@ require (
 )
 
 require (
+	github.com/Oudwins/tailwind-merge-go v0.2.3 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
+	github.com/axadrn/shadcn-templ/v2 v2.0.0-beta.13 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/bryanvaz/go-templ-lucide-icons v0.480.0 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.1.0 // indirect

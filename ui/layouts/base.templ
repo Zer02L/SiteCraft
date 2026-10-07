@@ -4,18 +4,48 @@ import (
 	"sitecraft/internal/models"
 )
 
-templ Base(title string, description string, settings models.SiteSettings) {
+templ Base(title string, description string, settings models.SiteSettings, seoOpt ...models.SEOData) {
+	{{ seo := resolveSEO(title, description, settings, seoOpt...) }}
 	<!DOCTYPE html>
 	<html lang="ru" class="scroll-smooth" data-theme={ settings.Theme }>
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>{ title }</title>
-			<meta name="description" content={ description }/>
+			<title>{ seo.Title }</title>
+			<meta name="description" content={ seo.Description }/>
+			if seo.NoIndex {
+				<meta name="robots" content="noindex, nofollow"/>
+			}
+			if seo.CanonicalURL != "" {
+				<link rel="canonical" href={ seo.CanonicalURL }/>
+			}
+
 			<!-- Open Graph / SEO -->
-			<meta property="og:title" content={ title }/>
-			<meta property="og:description" content={ description }/>
-			<meta property="og:type" content="website"/>
+			<meta property="og:title" content={ seo.Title }/>
+			<meta property="og:description" content={ seo.Description }/>
+			<meta property="og:type" content={ seo.OGType }/>
+			if seo.CanonicalURL != "" {
+				<meta property="og:url" content={ seo.CanonicalURL }/>
+			}
+			if seo.OGImage != "" {
+				<meta property="og:image" content={ seo.OGImage }/>
+			}
+
+			<!-- Twitter Cards -->
+			if seo.TwitterCard != "" {
+				<meta name="twitter:card" content={ seo.TwitterCard }/>
+				<meta name="twitter:title" content={ seo.Title }/>
+				<meta name="twitter:description" content={ seo.Description }/>
+				if seo.OGImage != "" {
+					<meta name="twitter:image" content={ seo.OGImage }/>
+				}
+			}
+
+			<!-- Schema.org JSON-LD Structured Data -->
+			for _, jsonld := range seo.JSONLDScripts() {
+				@RenderJSONLD(jsonld)
+			}
+
 			<!-- Google Fonts: Merriweather + Inter + Bebas Neue -->
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -23,6 +53,8 @@ templ Base(title string, description string, settings models.SiteSettings) {
 			
 			<!-- HTMX (Zero-JS foundation for AJAX requests) -->
 			<script src="https://unpkg.com/htmx.org@4.0.0/dist/htmx.min.js"></script>
+			<!-- HTMX 4 + Alpine.js official compatibility extension -->
+			<script src="https://cdn.jsdelivr.net/npm/htmx.org@4.0.0/dist/ext/hx-alpine-compat.js"></script>
 
 			<!-- Telegram WebApp SDK (автоматическая адаптация для TMA) -->
 			<script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -231,6 +263,12 @@ templ Base(title string, description string, settings models.SiteSettings) {
 
 					// Первичная синхронизация после загрузки DOM
 					document.addEventListener('DOMContentLoaded', function() {
+						if (window.htmx && window.htmx.findExtension) {
+							var ext = window.htmx.findExtension('alpine-compat');
+							if (ext && !window.htmx.findExtension('hx-alpine-compat')) {
+								window.htmx.registerExtension('hx-alpine-compat', ext);
+							}
+						}
 						window.A11Y.apply();
 						initScrollReveal();
 					});
@@ -245,8 +283,9 @@ templ Base(title string, description string, settings models.SiteSettings) {
 				})();
 			</script>
 		</head>
-		<body class="bg-surface text-content antialiased flex flex-col min-h-screen">
+		<body class="bg-surface text-content antialiased flex flex-col min-h-screen" hx-ext="alpine-compat, hx-alpine-compat">
 			{ children... }
 		</body>
+
 	</html>
 }

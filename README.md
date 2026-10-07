@@ -6,7 +6,8 @@
 ![Binary Size](https://img.shields.io/badge/Single%20Binary-~25MB-blue?style=flat-square)
 ![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--35MB-orange?style=flat-square)
 ![Tailwind v4](https://img.shields.io/badge/Tailwind%20CSS-v4.3%20(Oxide)-38bdf8?style=flat-square)
-![Interactive UI](https://img.shields.io/badge/UI-HTMX%20%2B%20Alpine.js-purple?style=flat-square)
+![UI](https://img.shields.io/badge/UI-shadcn--templ%20%2B%20Lucide-000000?style=flat-square)
+![Interactive UI](https://img.shields.io/badge/Stack-HTMX%20%2B%20Alpine.js%20(Compat)-purple?style=flat-square)
 ![Multi-Tenant](https://img.shields.io/badge/Multi--Tenant-Fleet%20of%20Binaries-emerald?style=flat-square)
 
 ---
@@ -16,22 +17,27 @@
 1. **Единый автономный бинарник (~25 МБ):** Веб-сервер, база данных SQLite, панель управления (`/_/`), шаблоны и ассеты скомпилированы в один файл.
 2. **Нулевой рантайм Node.js в продакшене:** Стили и шаблоны компилируются заранее при сборке.
 3. **In-Memory Cache (sync.RWMutex):** Отдача страниц за **< 10 мс (TTFB)** с автоматической инвалидацией при редактировании данных в админке.
-4. **Связка HTMX + Alpine.js:** 
-   * **Alpine.js + @alpinejs/mask** — мгновенные клиентские микро-интеракции (мобильное бургер-меню, маски номеров телефонов, календарь).
-   * **HTMX** — серверные AJAX-действия без перезагрузки страниц (отправка заявок, lazy-loading карты, проверка занятых слотов).
-5. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
-6. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`.
-7. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
-8. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
-9. **Бизнес-модули "из коробки":**
-   * **B2B-трекер заказов в реальном времени (`/track`):** Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара и онлайн-оплатой через ЮKassa.
-   * **SEO-Блог и База знаний (`/blog`):** Экспертные статьи, живой поиск HTMX, динамический `sitemap.xml` и счетчик просмотров.
-   * **Telegram Mini Apps (TMA) E-commerce & Paywall:** Запуск магазина (`/shop`) с нативной кнопкой Telegram MainButton, беспарольная авторизация HMAC-SHA256 и закрытый VIP-клуб (`/vip`).
-   * Онлайн-оплата **ЮKassa** со встроенным Sandbox.
-   * Панель доступности для слабовидящих по **ГОСТ Р 52872-2019** (микро-скрипт Vanilla JS < 1.5 КБ).
-   * Интерактивная запись по слотам времени или простая лидген-форма.
-   * Невидимый Honeypot для ботов и серверная XSS-санитизация через `bluemonday`.
-   * Асинхронные уведомления в **Telegram Bot** и **CRM Webhooks** (amoCRM / Битрикс24).
+4. **Связка HTMX + Alpine.js (`hx-alpine-compat`):** 
+   * **`hx-alpine-compat`** — нативная совместимость HTMX и Alpine.js при динамических DOM-свопах (автоматическая переинициализация реактивного состояния, модалок и форм без утечек памяти).
+   * **Alpine.js + @alpinejs/mask** — мгновенные клиентские микро-интеракции (мобильное бургер-меню, маски номеров телефонов, корзина, календарь).
+   * **HTMX** — серверные AJAX-действия без перезагрузки страниц (отправка заявок, lazy-loading карты, проверка занятых слотов, живой поиск).
+5. **Дизайн-система `shadcn-templ` + `lucide-icons`:**
+   * **`shadcn-templ/v2`** — типобезопасные компоненты кнопок (`@button.Button`) и бейджей (`@badge.Badge`) с вариантами (`Default`, `Secondary`, `Outline`, `Destructive`, `Ghost`), размерами и мостовыми токенами темы.
+   * **`go-templ-lucide-icons`** — 100% типобезопасные векторные иконки без сырого SVG-кода.
+   * **`tailwind-animations`** — плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
+6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
+7. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
+8. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
+9. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
+10. **Бизнес-модули "из коробки":**
+    * **B2B-трекер заказов в реальном времени (`/track`):** Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара и онлайн-оплатой через ЮKassa.
+    * **SEO-Блог и База знаний (`/blog`):** Экспертные статьи, живой поиск HTMX, динамический `sitemap.xml` и счетчик просмотров.
+    * **Telegram Mini Apps (TMA) E-commerce & Paywall:** Запуск магазина (`/shop`) с нативной кнопкой Telegram MainButton, беспарольная авторизация HMAC-SHA256 и закрытый VIP-клуб (`/vip`).
+    * Онлайн-оплата **ЮKassa** со встроенным Sandbox.
+    * Панель доступности для слабовидящих по **ГОСТ Р 52872-2019** (микро-скрипт Vanilla JS < 1.5 КБ).
+    * Интерактивная запись по слотам времени или простая лидген-форма.
+    * Невидимый Honeypot для ботов и серверная XSS-санитизация через `bluemonday`.
+    * Асинхронные уведомления в **Telegram Bot** и **CRM Webhooks** (amoCRM / Битрикс24).
 
 ---
 
@@ -181,6 +187,13 @@ flowchart LR
 ### 3. Управление палитрой из админки PocketBase (`site_settings`)
 При указании базового `primary_color` или `accent_color` в панели управления, движок **автоматически вычисляет** через `color-mix()` всю цветовую шкалу бренда (hover-состояния, темные и светлые оттенки кнопок, тонированные фоны карточек) без пересборки CSS!
 
+### 4. Дизайн-система shadcn-templ, Lucide и Tailwind Animations
+Интерфейс построен на модульных и доступных примитивах:
+* **UI-компоненты `shadcn-templ` ([ui/assets/css/shadcn.css](ui/assets/css/shadcn.css)):** Внедрены кнопки (`@button.Button`) и бейджи (`@badge.Badge`) с мостовыми классами `.cn-button`, `.cn-badge`, связанными с дизайн-токенами сайта и темами оформления (Dark, Light, Cyber, Harmonic).
+* **Иконки `go-templ-lucide-icons`:** Единая типобезопасная коллекция векторных иконок для всех компонентов интерфейса. Никаких inline SVG-дубликатов.
+* **Микровзаимодействия `tailwind-animations` ([ui/assets/css/animations.css](ui/assets/css/animations.css), [ui/assets/css/tw-animate.css](ui/assets/css/tw-animate.css)):** Плавные переходы, свечение бейджей `animate-pulse-glow`, всплытие списков `animate-fade-in-up`, модальные окна `animate-scale-in`, микро-лифт карточек (`hover:-translate-y-1 hover:shadow-md`) и тактильный отклик кнопок (`active:scale-[0.98]`).
+* **Доступность из коробки:** Все тяжелые анимации автоматически отключаются при включении режима для слабовидящих (`body.a11y-mode`) или пользовательской настройки ОС `prefers-reduced-motion: reduce`.
+
 ---
 
 ## 🧩 Реестр компонентов (Block Registry)
@@ -191,6 +204,11 @@ flowchart LR
 // Регистрация кастомного блока (плагина)
 pages.RegisterBlock("video_banner", func(b models.PageBlock, ctx pages.RenderContext) templ.Component {
     return components.VideoBanner(b.Payload)
+})
+
+// Готовый блок витрины UI компонентов shadcn-templ + Lucide
+pages.RegisterBlock("showcase", func(b models.PageBlock, ctx pages.RenderContext) templ.Component {
+    return components.UIShowcase()
 })
 ```
 

@@ -5,6 +5,10 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ TrackerPage(settings models.SiteSettings, content models.SiteContent, order *models.ServiceOrder, searchCode string, notFound bool) {
@@ -18,10 +22,14 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 			<div class="max-w-3xl mx-auto">
 				<!-- Заголовок страницы -->
 				<div class="text-center mb-8">
-					<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2">
-						<span>⚡ Онлайн-сервис</span>
-						<span>•</span>
-						<span>B2B Трекер заказов</span>
+					<div class="inline-flex items-center gap-2 mb-2">
+						@badge.Badge(badge.Props{
+							Variant: badge.VariantSecondary,
+							Class:   "text-xs font-bold gap-1 py-1 px-3 text-primary bg-primary/10",
+						}) {
+							@icons.Zap(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-500 fill-amber-500"})
+							<span>Онлайн-сервис • B2B Трекер заказов</span>
+						}
 					</div>
 					<h1 class="text-2xl sm:text-3xl font-serif-title font-bold text-content">
 						Статус готовности заказа
@@ -40,17 +48,19 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 							placeholder="Например: SRV-4182"
 							class="flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
 						/>
-						<button
-							type="submit"
-							class="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow cursor-pointer whitespace-nowrap"
-						>
-							Найти заказ
-						</button>
+						@button.Button(button.Props{
+							Type:    "submit",
+							Variant: button.VariantDefault,
+							Class:   "px-6 py-3 rounded-xl font-bold cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2",
+						}) {
+							@icons.Search(templ.Attributes{"class": "w-4 h-4"})
+							<span>Найти</span>
+						}
 					</form>
 				</div>
 
 				if notFound {
-					<div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center text-rose-800 text-sm max-w-md mx-auto">
+					<div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center text-rose-800 text-sm max-w-md mx-auto shadow-sm animate-fade-in-down">
 						<div class="font-bold text-base mb-1">Заказ не найден</div>
 						<p class="text-xs">Проверьте правильность введенного номера квитанции или свяжитесь с мастером-приемщиком.</p>
 					</div>
@@ -63,7 +73,7 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 						hx-get={ "/api/track/status/" + order.OrderCode }
 						hx-trigger="every 15s"
 						hx-swap="outerHTML"
-						class="bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl"
+						class="bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl transition-all"
 					>
 						@TrackerStatusCard(settings, *order)
 					</div>
@@ -72,8 +82,14 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 					<div class="bg-surface/70 rounded-2xl p-6 border border-content/10 text-center max-w-md mx-auto text-xs text-content-muted">
 						<span class="font-bold text-content/80">Демонстрационные квитанции для проверки:</span>
 						<div class="flex justify-center gap-3 mt-2">
-							<a href="/track?code=SRV-4182" class="px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline">SRV-4182 (Авто)</a>
-							<a href="/track?code=FIX-9021" class="px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline">FIX-9021 (iPhone)</a>
+							<a href="/track?code=SRV-4182" class="px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline flex items-center gap-1">
+								@icons.Car(templ.Attributes{"class": "w-3.5 h-3.5"})
+								<span>SRV-4182 (Авто)</span>
+							</a>
+							<a href="/track?code=FIX-9021" class="px-3 py-1.5 bg-surface-muted rounded-lg text-primary font-bold hover:underline flex items-center gap-1">
+								@icons.Wrench(templ.Attributes{"class": "w-3.5 h-3.5"})
+								<span>FIX-9021 (iPhone)</span>
+							</a>
 						</div>
 					</div>
 				}
@@ -94,12 +110,12 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 						№ { order.OrderCode }
 					</span>
 					if order.CurrentStage == "ready" {
-						<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-lg flex items-center gap-1">
+						<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-lg flex items-center gap-1.5">
 							<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
 							Готов к выдаче
 						</span>
 					} else if order.CurrentStage == "in_progress" {
-						<span class="px-2.5 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-lg flex items-center gap-1">
+						<span class="px-2.5 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-lg flex items-center gap-1.5">
 							<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
 							В работе
 						</span>
@@ -128,12 +144,14 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					{ fmt.Sprintf("%.0f", order.TotalAmount) } ₽
 				</div>
 				if order.IsPaid {
-					<span class="inline-block mt-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-						✓ Оплачено
+					<span class="inline-flex items-center gap-1 mt-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+						@icons.CheckCircle2(templ.Attributes{"class": "w-3 h-3"})
+						<span>Оплачено</span>
 					</span>
 				} else {
-					<span class="inline-block mt-1 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-						Ожидает оплаты
+					<span class="inline-flex items-center gap-1 mt-1 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+						@icons.Clock(templ.Attributes{"class": "w-3 h-3"})
+						<span>Ожидает оплаты</span>
 					</span>
 				}
 			</div>
@@ -149,7 +167,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					<!-- Этап 1: Принят -->
 					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
 						<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
-							✓
+							@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 						</div>
 						<div>
 							<div class="font-bold text-xs text-content">1. Принят</div>
@@ -161,7 +179,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
 						if order.CurrentStage == "diagnostics" || order.CurrentStage == "in_progress" || order.CurrentStage == "ready" || order.CurrentStage == "completed" {
 							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
-								✓
+								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
 							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
@@ -178,11 +196,11 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
 						if order.CurrentStage == "in_progress" {
 							<div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow animate-pulse">
-								⚙
+								@icons.Wrench(templ.Attributes{"class": "w-4 h-4 animate-spin-slow"})
 							</div>
 						} else if order.CurrentStage == "ready" || order.CurrentStage == "completed" {
 							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
-								✓
+								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
 							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
@@ -199,7 +217,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
 						if order.CurrentStage == "ready" || order.CurrentStage == "completed" {
 							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow ring-4 ring-emerald-100">
-								✓
+								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
 							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
@@ -224,7 +242,9 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 						<div class="flex items-start gap-3 text-xs">
 							<div class="mt-0.5">
 								if h.Done {
-									<span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">✓</span>
+									<span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">
+										@icons.Check(templ.Attributes{"class": "w-2.5 h-2.5"})
+									</span>
 								} else {
 									<span class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-[10px]">●</span>
 								}
@@ -258,9 +278,10 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					hx-get={ "/api/payment/modal?order_code=" + order.OrderCode }
 					hx-target="body"
 					hx-swap="beforeend"
-					class="w-full sm:w-auto px-6 py-3 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow cursor-pointer whitespace-nowrap"
+					class="w-full sm:w-auto px-6 py-3 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow cursor-pointer whitespace-nowrap flex items-center justify-center gap-1.5 active:scale-95"
 				>
-					Оплатить { fmt.Sprintf("%.0f", order.TotalAmount) } ₽ онлайн →
+					<span>Оплатить { fmt.Sprintf("%.0f", order.TotalAmount) } ₽ онлайн</span>
+					@icons.ArrowRight(templ.Attributes{"class": "w-3.5 h-3.5"})
 				</button>
 			</div>
 		}

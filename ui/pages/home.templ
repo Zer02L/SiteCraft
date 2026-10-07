@@ -9,7 +9,7 @@ import (
 )
 
 templ Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock) {
-	@layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings) {
+	@layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings, models.NewHomeSEO(settings, content, "")) {
 		if settings.EnableA11y {
 			@components.A11yBar()
 		}

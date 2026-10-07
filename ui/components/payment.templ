@@ -3,35 +3,46 @@ package components
 import (
 	"fmt"
 	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fixedAmount float64, orderCode string) {
 	<!-- Модуль онлайн-оплаты заказа / предоплаты услуги -->
 	<div
 		id="payment-modal"
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4"
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fade-in"
 	>
-		<div class="card-base max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-fade-in border-content/20">
+		<div class="card-base max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-zoom-in border-content/20">
 			<button
 				type="button"
 				onclick="document.getElementById('payment-modal').remove()"
-				class="absolute top-4 right-4 text-content-muted hover:text-content text-xl font-bold cursor-pointer"
+				class="absolute top-4 right-4 text-content-muted hover:text-content p-1 rounded-lg transition cursor-pointer"
+				aria-label="Закрыть"
 			>
-				✕
+				@icons.X(templ.Attributes{"class": "w-5 h-5"})
 			</button>
 
 			<div class="text-center mb-6">
-				<div class="w-12 h-12 rounded-full bg-accent/15 text-accent mx-auto flex items-center justify-center text-xl font-bold mb-3">
-					💳
+				<div class="w-12 h-12 rounded-full bg-accent/15 text-accent mx-auto flex items-center justify-center mb-3 animate-pulse-glow">
+					@icons.CreditCard(templ.Attributes{"class": "w-6 h-6"})
 				</div>
 				if orderCode != "" {
-					<span class="px-2.5 py-0.5 bg-accent/20 text-accent text-xs font-bold rounded-lg uppercase tracking-wider">Квитанция № { orderCode }</span>
+					@badge.Badge(badge.Props{
+						Variant: badge.VariantSecondary,
+						Class:   "bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider mb-2",
+					}) {
+						Квитанция № { orderCode }
+					}
 					<h3 class="font-serif-title text-xl font-bold text-content mt-2">Оплата выполненных работ</h3>
 				} else {
 					<h3 class="font-serif-title text-xl font-bold text-content">Оплата услуги</h3>
 				}
 				<p class="text-xs text-content-muted mt-1">{ service.Title }</p>
 			</div>
+
 
 			<form
 				hx-post="/api/payment/create"
@@ -52,7 +63,8 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 							<span class="text-2xl font-extrabold text-content">{ fmt.Sprintf("%.0f", fixedAmount) } ₽</span>
 						</div>
 						<p class="text-[11px] text-content-muted mt-1 flex items-center gap-1">
-							<span>🔒</span> Сумма зафиксирована в заказ-наряде и не подлежит изменению.
+							@icons.Lock(templ.Attributes{"class": "w-3.5 h-3.5 text-accent shrink-0"})
+							<span>Сумма зафиксирована в заказ-наряде и не подлежит изменению.</span>
 						</p>
 					</div>
 				} else {
@@ -127,17 +139,20 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 					</div>
 				}
 
-				<button
-					type="submit"
-					class="w-full text-surface bg-accent hover:bg-accent-hover font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
-				>
-					<span class="htmx-indicator animate-spin inline-block w-4 h-4 border-2 border-surface border-t-transparent rounded-full"></span>
+				@button.Button(button.Props{
+					Variant: button.VariantDefault,
+					Type:    button.TypeSubmit,
+					Class:   "w-full text-surface bg-accent hover:bg-accent-hover font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]",
+				}) {
+					<span class="htmx-indicator">
+						@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
+					</span>
 					if orderCode != "" && fixedAmount > 0 {
 						<span>Оплатить { fmt.Sprintf("%.0f", fixedAmount) } ₽ онлайн</span>
 					} else {
 						<span>Перейти к защищенной оплате</span>
 					}
-				</button>
+				}
 			</form>
 
 			<div id="payment-result" class="mt-4"></div>
@@ -146,19 +161,23 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 }
 
 templ PaymentSuccessMessage(res models.PaymentResponse) {
-	<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-900 text-sm">
+	<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-900 text-sm animate-fade-in-up">
 		<div class="font-bold flex items-center gap-2">
-			<span>✓</span> Ссылка на оплату сформирована
+			@icons.CheckCircle2(templ.Attributes{"class": "w-5 h-5 text-emerald-600 shrink-0"})
+			<span>Ссылка на оплату сформирована</span>
 		</div>
 		<p class="text-xs text-emerald-700 mt-1">Заказ #{ res.PaymentID } зарегистрирован.</p>
 		<div class="mt-3">
-			<a
-				href={ templ.URL(res.PaymentURL) }
-				target="_blank"
-				class="inline-block bg-primary text-white font-bold px-4 py-2 rounded-lg text-xs hover:bg-primary-dark transition"
-			>
-				{ fmt.Sprintf("Оплатить онлайн →") }
-			</a>
+			@button.Button(button.Props{
+				Variant: button.VariantDefault,
+				Size:    button.SizeSm,
+				Href:    res.PaymentURL,
+				Target:  "_blank",
+				Class:   "bg-primary text-white font-bold text-xs hover:bg-primary-dark transition shadow-xs",
+			}) {
+				Оплатить онлайн →
+			}
 		</div>
 	</div>
 }
+

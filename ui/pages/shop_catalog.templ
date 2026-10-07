@@ -4,6 +4,9 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem) {
@@ -21,10 +24,14 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 			<div class="max-w-4xl mx-auto">
 				<!-- Шапка магазина -->
 				<div class="text-center mb-8">
-					<div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-content text-xs font-bold rounded-full mb-2">
-						<span>⚡ Telegram Mini App</span>
-						<span>•</span>
-						<span>Быстрый заказ</span>
+					<div class="inline-flex justify-center mb-2">
+						@badge.Badge(badge.Props{
+							Variant: badge.VariantSecondary,
+							Class:   "text-xs font-bold gap-1 py-1 px-3 text-content bg-accent/20",
+						}) {
+							@icons.Zap(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-500 fill-amber-500"})
+							<span>Telegram Mini App • Быстрый заказ</span>
+						}
 					</div>
 					<h1 class="text-2xl sm:text-3xl font-serif-title font-bold text-content">
 						Каталог товаров и услуг
@@ -37,7 +44,7 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<!-- Список товаров / услуг -->
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-24">
 					for _, item := range services {
-						<div class="bg-surface rounded-2xl p-5 border border-content/10 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+						<div class="bg-surface rounded-2xl p-5 border border-content/10 shadow-sm flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition duration-200">
 							<div>
 								<div class="flex items-start justify-between gap-2">
 									<h3 class="font-bold text-content text-base">{ item.Title }</h3>
@@ -51,13 +58,17 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 							</div>
 
 							<div class="mt-4 pt-3 border-t border-content/10 flex items-center justify-between">
-								<span class="text-[11px] text-content-muted font-medium">В наличии</span>
+								<span class="text-[11px] text-content-muted font-medium flex items-center gap-1">
+									<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+									<span>В наличии</span>
+								</span>
 								<button
 									type="button"
 									@click={ "addToCart('" + item.Title + "', '" + item.Price + "')" }
 									class="px-3.5 py-1.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark active:scale-95 transition shadow-sm cursor-pointer flex items-center gap-1.5"
 								>
-									<span>+ В корзину</span>
+									@icons.Plus(templ.Attributes{"class": "w-3.5 h-3.5"})
+									<span>В корзину</span>
 								</button>
 							</div>
 						</div>
@@ -68,18 +79,24 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<div
 					x-show="cart.length > 0"
 					x-cloak
-					class="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50 bg-stone-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-stone-700 backdrop-blur-md"
+					class="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50 bg-stone-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-stone-700 backdrop-blur-md animate-fade-in-up"
 				>
-					<div>
-						<div class="text-xs text-stone-300">В корзине: <span x-text="cart.length" class="font-bold text-accent"></span> поз.</div>
-						<div class="text-base font-bold text-white"><span x-text="totalPrice"></span> ₽</div>
+					<div class="flex items-center gap-3">
+						<div class="w-9 h-9 rounded-xl bg-surface/10 flex items-center justify-center text-amber-400">
+							@icons.ShoppingCart(templ.Attributes{"class": "w-4 h-4"})
+						</div>
+						<div>
+							<div class="text-xs text-stone-300">В корзине: <span x-text="cart.length" class="font-bold text-accent"></span> поз.</div>
+							<div class="text-base font-bold text-white"><span x-text="totalPrice"></span> ₽</div>
+						</div>
 					</div>
 					<button
 						type="button"
 						@click="checkoutModalOpen = true"
-						class="px-5 py-2.5 bg-accent text-content text-xs font-bold rounded-xl hover:bg-amber-400 active:scale-95 transition shadow cursor-pointer"
+						class="px-5 py-2.5 bg-accent text-content text-xs font-bold rounded-xl hover:bg-amber-400 active:scale-95 transition shadow cursor-pointer flex items-center gap-1.5"
 					>
-						Оформить заказ →
+						<span>Оформить заказ</span>
+						@icons.ArrowRight(templ.Attributes{"class": "w-3.5 h-3.5"})
 					</button>
 				</div>
 
@@ -87,15 +104,17 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<div
 					x-show="checkoutModalOpen"
 					x-cloak
-					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
 				>
 					<div
 						@click.away="checkoutModalOpen = false"
-						class="bg-surface rounded-3xl max-w-md w-full p-6 shadow-2xl border border-content/10 overflow-y-auto max-h-[90vh]"
+						class="bg-surface rounded-3xl max-w-md w-full p-6 shadow-2xl border border-content/10 overflow-y-auto max-h-[90vh] animate-scale-in"
 					>
 						<div class="flex items-center justify-between pb-3 border-b border-content/10">
 							<h3 class="font-serif-title font-bold text-lg text-content">Оформление заказа</h3>
-							<button @click="checkoutModalOpen = false" class="text-content-muted hover:text-content-muted text-xl font-bold">✕</button>
+							<button @click="checkoutModalOpen = false" class="text-content-muted hover:text-content p-1 rounded-lg">
+								@icons.X(templ.Attributes{"class": "w-4 h-4"})
+							</button>
 						</div>
 
 						<!-- Список выбранного -->

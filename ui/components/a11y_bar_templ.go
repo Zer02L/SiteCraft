@@ -8,6 +8,11 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import (
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
 func A11yBar() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,7 +34,52 @@ func A11yBar() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) --><div id=\"a11y-toolbar\" class=\"hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium\"><div class=\"max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3\"><!-- Размер шрифта --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1\">Шрифт:</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition\">А (Стандарт)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition\">А (Крупный)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition\">А+ (Макс)</button></div><!-- Цветовые схемы --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1\">Цвет:</span> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('black-on-white')\" data-a11y-btn-theme=\"black-on-white\" class=\"px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition\" title=\"Чёрным по белому\">Ц (Ч/Б)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('white-on-black')\" data-a11y-btn-theme=\"white-on-black\" class=\"px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition\" title=\"Белым по чёрному\">Ц (Инверсия)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition\" title=\"Синим по голубому\">Ц (Синий)</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition\">Изображения: Вкл</button></div><!-- Закрыть режим --><div><button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded border border-rose-800 transition cursor-pointer\">✕ Обычная версия</button></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) --><div id=\"a11y-toolbar\" class=\"hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down\"><div class=\"max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3\"><!-- Размер шрифта --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1 flex items-center gap-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " Шрифт:</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А (Стандарт)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А (Крупный)</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">А+ (Макс)</button></div><!-- Цветовые схемы --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1\">Цвет:</span> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('black-on-white')\" data-a11y-btn-theme=\"black-on-white\" class=\"px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition cursor-pointer\" title=\"Чёрным по белому\">Ц (Ч/Б)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('white-on-black')\" data-a11y-btn-theme=\"white-on-black\" class=\"px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition cursor-pointer\" title=\"Белым по чёрному\">Ц (Инверсия)</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer\" title=\"Синим по голубому\">Ц (Синий)</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Изображения: Вкл</button></div><!-- Закрыть режим --><div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = icons.X(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " Обычная версия")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = button.Button(button.Props{
+			Variant: button.VariantDestructive,
+			Size:    button.SizeSm,
+			Attributes: templ.Attributes{
+				"onclick": "window.A11Y.toggle()",
+			},
+			Class: "text-xs font-bold gap-1.5 transition",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

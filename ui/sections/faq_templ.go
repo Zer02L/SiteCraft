@@ -11,6 +11,9 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 func Faq(theme string, payload *models.FAQPayload) templ.Component {
@@ -44,16 +47,37 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if payload.Badge != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"section-badge\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"inline-flex justify-center mb-3\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var2 string
-				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Badge)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 16, Col: 21}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+				templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					var templ_7745c5c3_Var3 string
+					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Badge)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 23, Col: 22}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = badge.Badge(badge.Props{
+					Variant: badge.VariantSecondary,
+					Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3 text-primary bg-primary/10",
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -67,12 +91,12 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if payload.Title != "" {
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 21, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 29, Col: 21}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -91,12 +115,12 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 27, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 35, Col: 51}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -114,12 +138,12 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%d", (idx%4)*100))
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%d", (idx%4)*100))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 33, Col: 76}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 41, Col: 76}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -127,65 +151,169 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item.Question)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 35, Col: 28}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
 				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Answer)
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Question)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 39, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 43, Col: 28}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</p></details>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.Answer)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/faq.templ`, Line: 47, Col: 20}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</p></details>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<!-- Режим 2: Встроенный fallback по темам --> <div class=\"text-center mb-12\" data-reveal><div class=\"section-badge\">Вопрос — Ответ</div><h2 class=\"section-title\">Часто задаваемые вопросы</h2><p class=\"section-subtitle\">Собрали ответы на самые популярные вопросы наших клиентов</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<!-- Режим 2: Встроенный fallback по темам --> <div class=\"text-center mb-12\" data-reveal><div class=\"section-badge\">Вопрос — Ответ</div><h2 class=\"section-title\">Часто задаваемые вопросы</h2><p class=\"section-subtitle\">Собрали ответы на самые популярные вопросы наших клиентов</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if theme == "medical" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Нужно ли готовиться к сдаче анализов крови?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Большинство биохимических анализов и исследований крови сдаются строго натощак (8-12 часов после приема пищи). Разрешается пить чистую негазированную воду. За сутки исключите жирную пищу и алкоголь.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как быстро приходят результаты УЗИ и обследований?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Протокол ультразвукового исследования и снимки экспертного класса выдаются врачом сразу же после завершения процедуры (в течение 10–15 минут).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Принимают ли врачи по полису ОМС или ДМС?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Мы сотрудничаем с большинством страховых компаний по программам ДМС. Для согласования визита по ДМС обратитесь к куратору вашей страховой компании перед приёмом.</p></details></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Нужно ли готовиться к сдаче анализов крови?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Большинство биохимических анализов и исследований крови сдаются строго натощак (8-12 часов после приема пищи). Разрешается пить чистую негазированную воду. За сутки исключите жирную пищу и алкоголь.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как быстро приходят результаты УЗИ и обследований?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Протокол ультразвукового исследования и снимки экспертного класса выдаются врачом сразу же после завершения процедуры (в течение 10–15 минут).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Принимают ли врачи по полису ОМС или ДМС?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Мы сотрудничаем с большинством страховых компаний по программам ДМС. Для согласования визита по ДМС обратитесь к куратору вашей страховой компании перед приёмом.</p></details></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "auto" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Сколько времени занимает комплексная диагностика?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Полная компьютерная диагностика сканером и осмотр ходовой части на подъемнике занимают от 40 до 60 минут. Вы получите подробный диагностический лист с рекомендациями.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли привезти свои запчасти и моторное масло?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, вы можете привезти собственные расходные материалы. При этом гарантия автосервиса будет распространяться на качество выполненных монтажных работ.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Есть ли гарантия на выполненный ремонт?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, мы предоставляем письменную гарантию 12 месяцев (или 20 000 км пробега) на слесарные работы и установленные оригинальные комплектующие.</p></details></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Сколько времени занимает комплексная диагностика?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Полная компьютерная диагностика сканером и осмотр ходовой части на подъемнике занимают от 40 до 60 минут. Вы получите подробный диагностический лист с рекомендациями.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли привезти свои запчасти и моторное масло?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, вы можете привезти собственные расходные материалы. При этом гарантия автосервиса будет распространяться на качество выполненных монтажных работ.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Есть ли гарантия на выполненный ремонт?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, мы предоставляем письменную гарантию 12 месяцев (или 20 000 км пробега) на слесарные работы и установленные оригинальные комплектующие.</p></details></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "beauty" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>За сколько дней необходимо записываться к топ-стилистам?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">К ведущим мастерам рекомендуем записываться за 3–5 дней. Однако мы всегда оставляем горячие «окна» день-в-день — уточняйте у администратора.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как проводится стерилизация инструментов?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">В 4 этапа: ультразвуковая дезинфекция, предстерилизационная очистка, сушка и стерилизация в сухожаровом шкафу ГП-20. Индивидуальный крафт-пакет вскрывается строго при вас.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какую косметику и красители вы используете?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Мы работаем только на оригинальной премиальной продукции L'Oreal Professionnel, Davines (Италия) и Lebel (Япония) с сертификатами подлинности.</p></details></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>За сколько дней необходимо записываться к топ-стилистам?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">К ведущим мастерам рекомендуем записываться за 3–5 дней. Однако мы всегда оставляем горячие «окна» день-в-день — уточняйте у администратора.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как проводится стерилизация инструментов?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">В 4 этапа: ультразвуковая дезинфекция, предстерилизационная очистка, сушка и стерилизация в сухожаровом шкафу ГП-20. Индивидуальный крафт-пакет вскрывается строго при вас.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какую косметику и красители вы используете?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Мы работаем только на оригинальной премиальной продукции L'Oreal Professionnel, Davines (Италия) и Lebel (Япония) с сертификатами подлинности.</p></details></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какие документы необходимы для оформления доверенности?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Оригинал паспорта гражданина РФ доверителя, полные паспортные данные поверенного лица (копия или четкое фото паспорта). При автодоверенности — ПТС или СТС.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какой срок для открытия наследственного дела?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Заявление о принятии наследства должно быть подано нотариусу в течение 6 месяцев со дня открытия наследства (дня смерти наследодателя).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли подать документы удаленно или направить представителя?</span> <span class=\"text-accent group-open:rotate-180 transition transform text-lg\">▾</span></summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Проекты документов можно выслать предварительно на электронную почту для проверки. Непосредственное удостоверение требует личного присутствия либо совершения действия через единую систему удаленных действий.</p></details></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какие документы необходимы для оформления доверенности?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Оригинал паспорта гражданина РФ доверителя, полные паспортные данные поверенного лица (копия или четкое фото паспорта). При автодоверенности — ПТС или СТС.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какой срок для открытия наследственного дела?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Заявление о принятии наследства должно быть подано нотариусу в течение 6 месяцев со дня открытия наследства (дня смерти наследодателя).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли подать документы удаленно или направить представителя?</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-accent group-open:rotate-180 transition-transform duration-200 shrink-0"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Проекты документов можно выслать предварительно на электронную почту для проверки. Непосредственное удостоверение требует личного присутствия либо совершения действия через единую систему удаленных действий.</p></details></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

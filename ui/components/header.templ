@@ -2,6 +2,9 @@ package components
 
 import (
 	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ Header(content models.SiteContent, settings models.SiteSettings) {
@@ -15,16 +18,15 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 
 		<div class="max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center">
 			<div class="flex items-center space-x-3">
-				<div class="w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner">
-					<svg class="w-6 h-6 a11y-keep-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-					</svg>
+				<div class="w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner animate-pulse-glow">
+					@icons.Scale(templ.Attributes{"class": "w-5 h-5 a11y-keep-icon"})
 				</div>
 				<div>
 					<div class="text-white font-serif-title font-bold text-lg tracking-wide leading-tight">{ content.HeroTitle }</div>
 					<div class="text-xs text-accent font-medium">{ content.OwnerName }</div>
 				</div>
 			</div>
+
 
 			<!-- Desktop Nav -->
 			<nav class="hidden md:flex items-center space-x-5 text-sm font-medium">
@@ -75,7 +77,7 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 						<span x-show="season === 'autumn'">🍁</span>
 						<span x-show="season === 'winter'">❄️</span>
 						<span class="capitalize" x-text="season === 'main' ? 'Основная' : (season === 'harmonic' ? 'Гармония' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима'))))"></span>
-						<svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+						@icons.ChevronDown(templ.Attributes{"class": "w-3 h-3 ml-0.5"})
 					</button>
 
 					<!-- Выпадающий список сезонов -->
@@ -83,7 +85,7 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 						x-show="open"
 						x-cloak
 						@click.outside="open = false"
-						class="absolute top-full left-0 mt-1.5 w-44 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs"
+						class="absolute top-full left-0 mt-1.5 w-44 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs animate-fade-in"
 					>
 						<button type="button" @click="changeSeason('main')" class="w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium">
 							<span>🏛️</span> Основная
@@ -126,12 +128,20 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 						class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer"
 						title="Версия для слабовидящих"
 					>
-						<span>👓</span>
+						@icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"})
 						<span>Для слабовидящих</span>
 					</button>
 				}
 
-				<a href="/_/" target="_blank" class="text-accent border border-accent/50 px-2.5 py-1 rounded text-xs hover:bg-accent hover:text-primary-dark transition font-semibold">Админка</a>
+				@button.Button(button.Props{
+					Variant: button.VariantOutline,
+					Size:    button.SizeXs,
+					Href:    "/_/",
+					Target:  "_blank",
+					Class:   "text-accent border-accent/50 hover:bg-accent hover:text-primary-dark font-semibold transition",
+				}) {
+					Админка
+				}
 			</nav>
 
 			<!-- Mobile Controls -->
@@ -143,10 +153,17 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 						class="px-2.5 py-1.5 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white cursor-pointer"
 						title="Версия для слабовидящих"
 					>
-						<span>👓</span>
+						@icons.Eye(templ.Attributes{"class": "w-4 h-4"})
 					</button>
 				}
-				<a href="#booking" class="bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded shadow">Запись</a>
+				@button.Button(button.Props{
+					Variant: button.VariantDefault,
+					Size:    button.SizeSm,
+					Href:    "#booking",
+					Class:   "bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded shadow",
+				}) {
+					Запись
+				}
 				<!-- Alpine.js Hamburger Button -->
 				<button
 					type="button"
@@ -154,15 +171,16 @@ templ Header(content models.SiteContent, settings models.SiteSettings) {
 					class="p-1.5 rounded-lg border border-white/20 bg-surface/10 text-white hover:text-accent focus:outline-none cursor-pointer"
 					aria-label="Меню навигации"
 				>
-					<svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-					</svg>
-					<svg x-show="mobileMenuOpen" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-					</svg>
+					<span x-show="!mobileMenuOpen" class="flex items-center">
+						@icons.Menu(templ.Attributes{"class": "w-6 h-6"})
+					</span>
+					<span x-show="mobileMenuOpen" x-cloak class="flex items-center">
+						@icons.X(templ.Attributes{"class": "w-6 h-6"})
+					</span>
 				</button>
 			</div>
 		</div>
+
 
 		<!-- Mobile Menu Drawer (Alpine.js) -->
 		<div

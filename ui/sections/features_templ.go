@@ -11,6 +11,9 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 func Features(theme string, payload *models.FeaturesPayload) templ.Component {
@@ -44,173 +47,247 @@ func Features(theme string, payload *models.FeaturesPayload) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if payload.Badge != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20 uppercase tracking-wider mb-2\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var2 string
-				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Badge)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 16, Col: 21}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div>")
+				templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+					templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+					templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+					if !templ_7745c5c3_IsBuffer {
+						defer func() {
+							templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+							if templ_7745c5c3_Err == nil {
+								templ_7745c5c3_Err = templ_7745c5c3_BufErr
+							}
+						}()
+					}
+					ctx = templ.InitializeContext(ctx)
+					var templ_7745c5c3_Var3 string
+					templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Badge)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 22, Col: 21}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					return nil
+				})
+				templ_7745c5c3_Err = badge.Badge(badge.Props{
+					Variant: badge.VariantSecondary,
+					Class:   "section-badge mb-2",
+				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<h2 class=\"font-serif-title text-3xl font-bold text-content\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h2 class=\"font-serif-title text-3xl font-bold text-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if payload.Title != "" {
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 21, Col: 21}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Почему выбирают нас")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</h2>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			if payload.Subtitle != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 27, Col: 83}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 27, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</p>")
+			} else {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "Почему выбирают нас")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div><div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</h2>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for idx, item := range payload.Items {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div data-reveal data-reveal-delay=\"")
+			if payload.Subtitle != "" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%d", (idx%4+1)*100))
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 33, Col: 74}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 33, Col: 83}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			for idx, item := range payload.Items {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div data-reveal data-reveal-delay=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("%d", (idx%4+1)*100))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 39, Col: 74}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if item.Icon != "" {
-					var templ_7745c5c3_Var6 string
-					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item.Icon)
+					var templ_7745c5c3_Var7 string
+					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Icon)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 36, Col: 19}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 42, Col: 19}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "✦")
+					templ_7745c5c3_Err = icons.Sparkles(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><h3 class=\"font-bold text-content text-base mb-2\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 41, Col: 68}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</h3><p class=\"text-content-muted text-xs leading-relaxed\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><h3 class=\"font-bold text-content text-base mb-2\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
-				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.Description)
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 42, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 47, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</h3><p class=\"text-content-muted text-xs leading-relaxed\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var9 string
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(item.Description)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/features.templ`, Line: 48, Col: 78}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<!-- Режим 2: Встроенный fallback по темам --> <div class=\"text-center mb-12\" data-reveal><div class=\"inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full border border-primary/20 uppercase tracking-wider mb-2\">Наши стандарты</div><h2 class=\"font-serif-title text-3xl font-bold text-content\">Почему выбирают нас</h2><p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">Гарантируем высокое качество, пунктуальность и индивидуальный подход к каждой задаче</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<!-- Режим 2: Встроенный fallback по темам --> <div class=\"text-center mb-12\" data-reveal>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "Наши стандарты")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = badge.Badge(badge.Props{
+				Variant: badge.VariantSecondary,
+				Class:   "section-badge mb-2",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<h2 class=\"font-serif-title text-3xl font-bold text-content\">Почему выбирают нас</h2><p class=\"text-content-muted mt-2 max-w-xl mx-auto text-sm\">Гарантируем высокое качество, пунктуальность и индивидуальный подход к каждой задаче</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if theme == "medical" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🩺</div><h3 class=\"font-bold text-content text-base mb-2\">Врачи высшей категории</h3><p class=\"text-content-muted text-xs leading-relaxed\">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🔬</div><h3 class=\"font-bold text-content text-base mb-2\">Собственная лаборатория</h3><p class=\"text-content-muted text-xs leading-relaxed\">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">⚡</div><h3 class=\"font-bold text-content text-base mb-2\">Без очередей</h3><p class=\"text-content-muted text-xs leading-relaxed\">Точный приём по электронным талонам и предварительной записи минута в минуту.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-content text-base mb-2\">Лицензия Минздрава</h3><p class=\"text-content-muted text-xs leading-relaxed\">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🩺</div><h3 class=\"font-bold text-content text-base mb-2\">Врачи высшей категории</h3><p class=\"text-content-muted text-xs leading-relaxed\">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🔬</div><h3 class=\"font-bold text-content text-base mb-2\">Собственная лаборатория</h3><p class=\"text-content-muted text-xs leading-relaxed\">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">⚡</div><h3 class=\"font-bold text-content text-base mb-2\">Без очередей</h3><p class=\"text-content-muted text-xs leading-relaxed\">Точный приём по электронным талонам и предварительной записи минута в минуту.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-content text-base mb-2\">Лицензия Минздрава</h3><p class=\"text-content-muted text-xs leading-relaxed\">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "auto" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🔧</div><h3 class=\"font-bold text-content text-base mb-2\">Дилерское оборудование</h3><p class=\"text-content-muted text-xs leading-relaxed\">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">📄</div><h3 class=\"font-bold text-content text-base mb-2\">Гарантия 12 месяцев</h3><p class=\"text-content-muted text-xs leading-relaxed\">Письменная гарантия на все выполненные работы и установленные запчасти.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">📦</div><h3 class=\"font-bold text-content text-base mb-2\">Склад запчастей</h3><p class=\"text-content-muted text-xs leading-relaxed\">Более 5 000 оригинальных и проверенных аналоговых деталей всегда в наличии.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">☕</div><h3 class=\"font-bold text-content text-base mb-2\">Комфортная зона ожидания</h3><p class=\"text-content-muted text-xs leading-relaxed\">Wi-Fi, кофе, мониторы с видеотрансляцией из ремонтной зоны прямо в зале.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🔧</div><h3 class=\"font-bold text-content text-base mb-2\">Дилерское оборудование</h3><p class=\"text-content-muted text-xs leading-relaxed\">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">📄</div><h3 class=\"font-bold text-content text-base mb-2\">Гарантия 12 месяцев</h3><p class=\"text-content-muted text-xs leading-relaxed\">Письменная гарантия на все выполненные работы и установленные запчасти.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">📦</div><h3 class=\"font-bold text-content text-base mb-2\">Склад запчастей</h3><p class=\"text-content-muted text-xs leading-relaxed\">Более 5 000 оригинальных и проверенных аналоговых деталей всегда в наличии.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">☕</div><h3 class=\"font-bold text-content text-base mb-2\">Комфортная зона ожидания</h3><p class=\"text-content-muted text-xs leading-relaxed\">Wi-Fi, кофе, мониторы с видеотрансляцией из ремонтной зоны прямо в зале.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "beauty" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">✨</div><h3 class=\"font-bold text-content text-base mb-2\">Премиум-косметика</h3><p class=\"text-content-muted text-xs leading-relaxed\">Официальные составы L'Oreal Professionnel, Davines и Lebel прямо от дистрибьютора.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">✂️</div><h3 class=\"font-bold text-content text-base mb-2\">Топ-стилисты и колористы</h3><p class=\"text-content-muted text-xs leading-relaxed\">Дипломированные мастера с международным опытом и постоянным повышением квалификации.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-content text-base mb-2\">100% стерильность СанПиН</h3><p class=\"text-content-muted text-xs leading-relaxed\">Сухожаровой шкаф ГП-20, одноразовые наборы и индивидуальные крафт-пакеты при вас.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🥂</div><h3 class=\"font-bold text-content text-base mb-2\">Атмосфера релакса</h3><p class=\"text-content-muted text-xs leading-relaxed\">Тихая музыка, натуральный кофе, шампанское и бережный персонализированный сервис.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">✨</div><h3 class=\"font-bold text-content text-base mb-2\">Премиум-косметика</h3><p class=\"text-content-muted text-xs leading-relaxed\">Официальные составы L'Oreal Professionnel, Davines и Lebel прямо от дистрибьютора.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">✂️</div><h3 class=\"font-bold text-content text-base mb-2\">Топ-стилисты и колористы</h3><p class=\"text-content-muted text-xs leading-relaxed\">Дипломированные мастера с международным опытом и постоянным повышением квалификации.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-content text-base mb-2\">100% стерильность СанПиН</h3><p class=\"text-content-muted text-xs leading-relaxed\">Сухожаровой шкаф ГП-20, одноразовые наборы и индивидуальные крафт-пакеты при вас.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🥂</div><h3 class=\"font-bold text-content text-base mb-2\">Атмосфера релакса</h3><p class=\"text-content-muted text-xs leading-relaxed\">Тихая музыка, натуральный кофе, шампанское и бережный персонализированный сервис.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "cyber" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🌐</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Metaverse Native</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Бесшовный перенос 3D-аватаров и цифровых активов между открытыми виртуальными мирами.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">⚡</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Sub-5ms Latency</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Сверхбыстрый рендеринг и пространственная синхронизация без задержек и лагов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Identity Security</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Криптографическая защита аватаров и инвентаря на уровне аппаратных ключей.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🎮</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Custom Modding</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Открытый SDK для создания персональных скинов, локаций и механик взаимодействия.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🌐</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Metaverse Native</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Бесшовный перенос 3D-аватаров и цифровых активов между открытыми виртуальными мирами.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">⚡</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Sub-5ms Latency</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Сверхбыстрый рендеринг и пространственная синхронизация без задержек и лагов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🛡️</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Identity Security</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Криптографическая защита аватаров и инвентаря на уровне аппаратных ключей.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-[#1f1b1b] p-6 rounded-sm border border-[#332e2e] shadow-sm hover:border-[#F04E2E]/60 transition\"><div class=\"w-12 h-12 rounded bg-[#F04E2E]/20 text-[#F04E2E] flex items-center justify-center text-2xl mb-4\">🎮</div><h3 class=\"font-bold text-[#F3EFEA] text-base mb-2 font-condensed tracking-wide uppercase\">Custom Modding</h3><p class=\"text-[#a8a19c] text-xs leading-relaxed\">Открытый SDK для создания персональных скинов, локаций и механик взаимодействия.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">⚖️</div><h3 class=\"font-bold text-content text-base mb-2\">Строго по закону</h3><p class=\"text-content-muted text-xs leading-relaxed\">Совершение всех юридических процедур в точном соответствии с законодательством РФ.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">🔒</div><h3 class=\"font-bold text-content text-base mb-2\">Тайна совершения действий</h3><p class=\"text-content-muted text-xs leading-relaxed\">Абсолютная конфиденциальность сведений и защита персональных данных доверителей.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">⚡</div><h3 class=\"font-bold text-content text-base mb-2\">Электронные реестры</h3><p class=\"text-content-muted text-xs leading-relaxed\">Мгновенная проверка и регистрация документов в Единой информационной системе.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg transition\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4\">💼</div><h3 class=\"font-bold text-content text-base mb-2\">Комплексный приём</h3><p class=\"text-content-muted text-xs leading-relaxed\">Подготовка проектов договоров, запросы в Росреестр и регистрация под ключ.</p></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Scale(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</div><h3 class=\"font-bold text-content text-base mb-2\">Строго по закону</h3><p class=\"text-content-muted text-xs leading-relaxed\">Совершение всех юридических процедур в точном соответствии с законодательством РФ.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.ShieldCheck(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><h3 class=\"font-bold text-content text-base mb-2\">Тайна совершения действий</h3><p class=\"text-content-muted text-xs leading-relaxed\">Абсолютная конфиденциальность сведений и защита персональных данных доверителей.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Zap(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><h3 class=\"font-bold text-content text-base mb-2\">Электронные реестры</h3><p class=\"text-content-muted text-xs leading-relaxed\">Мгновенная проверка и регистрация документов в Единой информационной системе.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"bg-surface p-6 rounded-2xl border border-content/10 shadow-sm hover:shadow-lg hover:-translate-y-1 transition duration-300\"><div class=\"w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = icons.Briefcase(templ.Attributes{"class": "w-6 h-6"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><h3 class=\"font-bold text-content text-base mb-2\">Комплексный приём</h3><p class=\"text-content-muted text-xs leading-relaxed\">Подготовка проектов договоров, запросы в Росреестр и регистрация под ключ.</p></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

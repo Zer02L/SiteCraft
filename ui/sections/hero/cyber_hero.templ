@@ -2,6 +2,8 @@ package hero
 
 import (
 	"sitecraft/internal/models"
+
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
 templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
@@ -35,11 +37,12 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 				<a href="/_/" class="group flex items-center gap-2 text-xs tracking-wider uppercase font-semibold text-white/90 hover:text-white transition bg-surface/5 hover:bg-surface/10 px-4 py-2.5 rounded-sm border border-white/10">
 					<span>Log in</span>
 					<div class="w-5 h-5 bg-[#F04E2E] flex items-center justify-center text-white text-[11px] rounded-[2px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200">
-						↗
+						@icons.ArrowUpRight(templ.Attributes{"class": "w-3.5 h-3.5 text-white"})
 					</div>
 				</a>
 			</div>
 		</header>
+
 
 		<!-- Главный контент: Grid Hero -->
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-start relative z-10 flex-1">
@@ -82,8 +85,8 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 							<div class="relative shrink-0 w-20 h-20 bg-black/40 border border-[#363030] flex items-center justify-center rounded">
 								<img src="/assets/cyber_helmet.png" alt="Hero Helmet" class="w-16 h-16 object-contain group-hover:scale-110 transition duration-300"/>
 								<!-- Оранжевая кнопка + -->
-								<button class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-[#F04E2E] hover:bg-[#ff684a] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md transition">
-									+
+								<button class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-[#F04E2E] hover:bg-[#ff684a] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md transition cursor-pointer">
+									@icons.Plus(templ.Attributes{"class": "w-4 h-4 text-white"})
 								</button>
 							</div>
 

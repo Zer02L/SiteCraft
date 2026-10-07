@@ -8,6 +8,11 @@ package sections
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import (
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
 func Steps(theme string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,22 +34,115 @@ func Steps(theme string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Process / How It Works (1-2-3-4 Steps) --><section id=\"steps\" class=\"py-16 px-4 bg-surface-muted/50 border-t border-b border-content/10\"><div class=\"max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal><div class=\"section-badge\">Этапы работы</div><h2 class=\"section-title\">Как мы работаем</h2><p class=\"section-subtitle\">Прозрачный и понятный процесс от первого обращения до готового результата</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Process / How It Works (1-2-3-4 Steps) --><section id=\"steps\" class=\"py-16 px-4 bg-surface-muted/50 border-t border-b border-content/10\"><div class=\"max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Этапы работы")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = badge.Badge(badge.Props{
+			Variant: badge.VariantSecondary,
+			Class:   "section-badge mb-2",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h2 class=\"section-title\">Как мы работаем</h2><p class=\"section-subtitle\">Прозрачный и понятный процесс от первого обращения до готового результата</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if theme == "auto" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1\">Приём и осмотр</h3><p class=\"card-desc text-xs\">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1\">Диагностика</h3><p class=\"card-desc text-xs\">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1\">Согласование сметы</h3><p class=\"card-desc text-xs\">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1\">Ремонт и выдача</h3><p class=\"card-desc text-xs\">Выполняем ремонт, проводим тест качества и выдаем авто с актом и гарантией 1 год.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.Car(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Приём и осмотр</h3><p class=\"card-desc text-xs\">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.Wrench(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Диагностика</h3><p class=\"card-desc text-xs\">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.FileText(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Согласование сметы</h3><p class=\"card-desc text-xs\">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.CheckCircle2(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " Ремонт и выдача</h3><p class=\"card-desc text-xs\">Выполняем ремонт, проводим тест качества и выдаем авто с актом и гарантией 1 год.</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1\">Запись на сайте</h3><p class=\"card-desc text-xs\">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1\">Подтверждение</h3><p class=\"card-desc text-xs\">Мы связываемся с вами и уточняем список необходимых для визита документов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1\">Визит без очередей</h3><p class=\"card-desc text-xs\">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1\">Готовый результат</h3><p class=\"card-desc text-xs\">Получите заверенные документы, протокол обследования или выполненную услугу.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.Calendar(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " Запись на сайте</h3><p class=\"card-desc text-xs\">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.PhoneCall(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " Подтверждение</h3><p class=\"card-desc text-xs\">Мы связываемся с вами и уточняем список необходимых для визита документов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.Clock(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " Визит без очередей</h3><p class=\"card-desc text-xs\">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.CheckCircle2(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " Готовый результат</h3><p class=\"card-desc text-xs\">Получите заверенные документы, протокол обследования или выполненную услугу.</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

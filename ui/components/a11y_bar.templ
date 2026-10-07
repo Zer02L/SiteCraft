@@ -1,20 +1,28 @@
 package components
 
+import (
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
 templ A11yBar() {
 	<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) -->
 	<div
 		id="a11y-toolbar"
-		class="hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium"
+		class="hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down"
 	>
 		<div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
 			<!-- Размер шрифта -->
 			<div class="flex items-center gap-1 sm:gap-2">
-				<span class="text-xs uppercase font-bold mr-1">Шрифт:</span>
+				<span class="text-xs uppercase font-bold mr-1 flex items-center gap-1">
+					@icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"})
+					Шрифт:
+				</span>
 				<button
 					type="button"
 					onclick="window.A11Y.setFont('normal')"
 					data-a11y-btn-font="normal"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
 					А (Стандарт)
 				</button>
@@ -22,7 +30,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setFont('large')"
 					data-a11y-btn-font="large"
-					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition"
+					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
 					А (Крупный)
 				</button>
@@ -30,7 +38,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setFont('xlarge')"
 					data-a11y-btn-font="xlarge"
-					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition"
+					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
 					А+ (Макс)
 				</button>
@@ -43,7 +51,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setColorScheme('black-on-white')"
 					data-a11y-btn-theme="black-on-white"
-					class="px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition"
+					class="px-2.5 py-1 bg-surface text-black border-2 border-black text-xs rounded transition cursor-pointer"
 					title="Чёрным по белому"
 				>
 					Ц (Ч/Б)
@@ -52,7 +60,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setColorScheme('white-on-black')"
 					data-a11y-btn-theme="white-on-black"
-					class="px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition"
+					class="px-2.5 py-1 bg-black text-white border-2 border-white text-xs rounded transition cursor-pointer"
 					title="Белым по чёрному"
 				>
 					Ц (Инверсия)
@@ -61,7 +69,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setColorScheme('blue-on-cyan')"
 					data-a11y-btn-theme="blue-on-cyan"
-					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition"
+					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer"
 					title="Синим по голубому"
 				>
 					Ц (Синий)
@@ -74,7 +82,7 @@ templ A11yBar() {
 					type="button"
 					id="a11y-spacing-btn"
 					onclick="window.A11Y.toggleSpacing()"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
 					Интервал: Обычный
 				</button>
@@ -82,7 +90,7 @@ templ A11yBar() {
 					type="button"
 					id="a11y-images-btn"
 					onclick="window.A11Y.toggleImages()"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition"
+					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
 				>
 					Изображения: Вкл
 				</button>
@@ -90,14 +98,19 @@ templ A11yBar() {
 
 			<!-- Закрыть режим -->
 			<div>
-				<button
-					type="button"
-					onclick="window.A11Y.toggle()"
-					class="px-3 py-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs rounded border border-rose-800 transition cursor-pointer"
-				>
-					✕ Обычная версия
-				</button>
+				@button.Button(button.Props{
+					Variant: button.VariantDestructive,
+					Size:    button.SizeSm,
+					Attributes: templ.Attributes{
+						"onclick": "window.A11Y.toggle()",
+					},
+					Class: "text-xs font-bold gap-1.5 transition",
+				}) {
+					@icons.X(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
+					Обычная версия
+				}
 			</div>
 		</div>
 	</div>
 }
+
