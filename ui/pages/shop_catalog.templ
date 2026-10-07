@@ -1,0 +1,295 @@
+package pages
+
+import (
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
+)
+
+templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem) {
+	@layouts.Base("Каталог и доставка (TMA) — "+content.HeroTitle, "Онлайн-заказ товаров и доставки", settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
+
+		<main
+			x-data="tmaShop()"
+			x-init="initShop()"
+			class="flex-grow bg-surface py-8 px-4 sm:px-6 lg:px-8"
+		>
+			<div class="max-w-4xl mx-auto">
+				<!-- Шапка магазина -->
+				<div class="text-center mb-8">
+					<div class="inline-flex items-center gap-2 px-3 py-1 bg-accent/20 text-stone-800 text-xs font-bold rounded-full mb-2">
+						<span>⚡ Telegram Mini App</span>
+						<span>•</span>
+						<span>Быстрый заказ</span>
+					</div>
+					<h1 class="text-2xl sm:text-3xl font-serif-title font-bold text-stone-900">
+						Каталог товаров и услуг
+					</h1>
+					<p class="text-xs sm:text-sm text-stone-600 mt-1">
+						Добавьте позиции в корзину и оформите заказ за 1 минуту
+					</p>
+				</div>
+
+				<!-- Список товаров / услуг -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-24">
+					for _, item := range services {
+						<div class="bg-white rounded-2xl p-5 border border-stone-200 shadow-sm flex flex-col justify-between hover:shadow-md transition">
+							<div>
+								<div class="flex items-start justify-between gap-2">
+									<h3 class="font-bold text-stone-900 text-base">{ item.Title }</h3>
+									<span class="text-sm font-bold text-primary whitespace-nowrap bg-primary/10 px-2 py-0.5 rounded-lg">
+										{ item.Price }
+									</span>
+								</div>
+								<p class="text-xs text-stone-500 mt-2 line-clamp-2 leading-relaxed">
+									{ item.Description }
+								</p>
+							</div>
+
+							<div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between">
+								<span class="text-[11px] text-stone-400 font-medium">В наличии</span>
+								<button
+									type="button"
+									@click={ "addToCart('" + item.Title + "', '" + item.Price + "')" }
+									class="px-3.5 py-1.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark active:scale-95 transition shadow-sm cursor-pointer flex items-center gap-1.5"
+								>
+									<span>+ В корзину</span>
+								</button>
+							</div>
+						</div>
+					}
+				</div>
+
+				<!-- Плавающая плашка корзины (для обычных браузеров и TMA) -->
+				<div
+					x-show="cart.length > 0"
+					x-cloak
+					class="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50 bg-stone-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-stone-700 backdrop-blur-md"
+				>
+					<div>
+						<div class="text-xs text-stone-300">В корзине: <span x-text="cart.length" class="font-bold text-accent"></span> поз.</div>
+						<div class="text-base font-bold text-white"><span x-text="totalPrice"></span> ₽</div>
+					</div>
+					<button
+						type="button"
+						@click="checkoutModalOpen = true"
+						class="px-5 py-2.5 bg-accent text-stone-900 text-xs font-bold rounded-xl hover:bg-amber-400 active:scale-95 transition shadow cursor-pointer"
+					>
+						Оформить заказ →
+					</button>
+				</div>
+
+				<!-- Модальное окно чекаута -->
+				<div
+					x-show="checkoutModalOpen"
+					x-cloak
+					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+				>
+					<div
+						@click.away="checkoutModalOpen = false"
+						class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 overflow-y-auto max-h-[90vh]"
+					>
+						<div class="flex items-center justify-between pb-3 border-b border-stone-100">
+							<h3 class="font-serif-title font-bold text-lg text-stone-900">Оформление заказа</h3>
+							<button @click="checkoutModalOpen = false" class="text-stone-400 hover:text-stone-600 text-xl font-bold">✕</button>
+						</div>
+
+						<!-- Список выбранного -->
+						<div class="my-4 space-y-2">
+							<template x-for="(item, idx) in cart" :key="idx">
+								<div class="flex items-center justify-between text-xs py-1.5 border-b border-stone-50">
+									<span x-text="item.title" class="text-stone-800 font-medium truncate pr-2"></span>
+									<div class="flex items-center gap-2">
+										<span x-text="item.price" class="text-stone-500 font-semibold"></span>
+										<button @click="removeFromCart(idx)" class="text-rose-500 hover:text-rose-700 font-bold px-1">✕</button>
+									</div>
+								</div>
+							</template>
+							<div class="pt-2 flex justify-between font-bold text-sm text-stone-900">
+								<span>Итого к оплате:</span>
+								<span class="text-primary"><span x-text="totalPrice"></span> ₽</span>
+							</div>
+						</div>
+
+						<!-- Форма контактных данных -->
+						<form @submit.prevent="submitOrder()" class="space-y-3">
+							<div>
+								<label class="block text-[11px] font-bold text-stone-600 uppercase mb-1">Ваше имя</label>
+								<input
+									type="text"
+									x-model="formData.name"
+									required
+									placeholder="Константин"
+									class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+								/>
+							</div>
+
+							<div>
+								<label class="block text-[11px] font-bold text-stone-600 uppercase mb-1">Номер телефона</label>
+								<input
+									type="tel"
+									x-model="formData.phone"
+									x-mask="+7 (999) 999-99-99"
+									required
+									placeholder="+7 (999) 000-00-00"
+									class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+								/>
+							</div>
+
+							<div>
+								<label class="block text-[11px] font-bold text-stone-600 uppercase mb-1">Способ получения</label>
+								<div class="grid grid-cols-2 gap-2 text-xs">
+									<label class="flex items-center gap-1.5 p-2 rounded-xl border cursor-pointer" :class="formData.deliveryType === 'delivery' ? 'border-primary bg-primary/5 text-primary font-bold' : 'border-stone-200 text-stone-600'">
+										<input type="radio" value="delivery" x-model="formData.deliveryType" class="hidden"/>
+										<span>🛵 Курьер</span>
+									</label>
+									<label class="flex items-center gap-1.5 p-2 rounded-xl border cursor-pointer" :class="formData.deliveryType === 'pickup' ? 'border-primary bg-primary/5 text-primary font-bold' : 'border-stone-200 text-stone-600'">
+										<input type="radio" value="pickup" x-model="formData.deliveryType" class="hidden"/>
+										<span>🏢 Самовывоз</span>
+									</label>
+								</div>
+							</div>
+
+							<div x-show="formData.deliveryType === 'delivery'">
+								<label class="block text-[11px] font-bold text-stone-600 uppercase mb-1">Адрес доставки</label>
+								<input
+									type="text"
+									x-model="formData.address"
+									placeholder="г. Краснодар, ул. Ленина 12, кв. 4"
+									class="w-full px-3 py-2 rounded-xl border border-stone-300 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+								/>
+							</div>
+
+							<div x-show="orderStatus" class="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-medium text-center" x-text="orderStatus"></div>
+
+							<button
+								type="submit"
+								:disabled="isSubmitting"
+								class="w-full mt-3 py-3 bg-primary text-white font-bold text-sm rounded-xl hover:bg-primary-dark transition shadow-md cursor-pointer disabled:opacity-50"
+							>
+								<span x-show="!isSubmitting">Подтвердить заказ</span>
+								<span x-show="isSubmitting">Оформление...</span>
+							</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Скрипт интеграции TMA Shop -->
+		<script>
+			function tmaShop() {
+				return {
+					cart: [],
+					checkoutModalOpen: false,
+					isSubmitting: false,
+					orderStatus: '',
+					formData: {
+						name: '',
+						phone: '',
+						deliveryType: 'delivery',
+						address: '',
+						telegramUser: '',
+						telegramId: 0
+					},
+					initShop() {
+						// Подтягиваем данные из Telegram WebApp если открыто в мессенджере
+						if (window.Telegram && window.Telegram.WebApp) {
+							var tg = window.Telegram.WebApp;
+							if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+								var u = tg.initDataUnsafe.user;
+								this.formData.name = (u.first_name || '') + ' ' + (u.last_name || '');
+								this.formData.name = this.formData.name.trim();
+								this.formData.telegramUser = u.username || '';
+								this.formData.telegramId = u.id || 0;
+							}
+						}
+					},
+					get totalPrice() {
+						var sum = 0;
+						this.cart.forEach(function(item) {
+							// Извлекаем цифры из цены
+							var digits = item.price.replace(/[^\d]/g, '');
+							var num = parseInt(digits, 10);
+							if (!isNaN(num)) sum += num;
+						});
+						return sum;
+					},
+					addToCart(title, price) {
+						this.cart.push({ title: title, price: price });
+						this.updateTGMainButton();
+					},
+					removeFromCart(index) {
+						this.cart.splice(index, 1);
+						this.updateTGMainButton();
+					},
+					updateTGMainButton() {
+						if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.MainButton) {
+							var mb = window.Telegram.WebApp.MainButton;
+							if (this.cart.length > 0) {
+								mb.setText('Заказ на ' + this.totalPrice + ' ₽');
+								mb.show();
+								var self = this;
+								mb.onClick(function() {
+									self.checkoutModalOpen = true;
+								});
+							} else {
+								mb.hide();
+							}
+						}
+					},
+					submitOrder() {
+						var self = this;
+						self.isSubmitting = true;
+						self.orderStatus = '';
+
+						var itemsList = self.cart.map(function(i) { return i.title + ' (' + i.price + ')'; });
+
+						fetch('/api/shop/checkout', {
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({
+								name: self.formData.name,
+								phone: self.formData.phone,
+								address: self.formData.address,
+								delivery_type: self.formData.deliveryType,
+								telegram_user: self.formData.telegramUser,
+								telegram_id: self.formData.telegramId,
+								items: itemsList,
+								total_amount: self.totalPrice,
+								comment: ''
+							})
+						})
+						.then(function(res) { return res.json(); })
+						.then(function(data) {
+							self.isSubmitting = false;
+							if (data.success) {
+								self.orderStatus = 'Заказ №' + data.order_id + ' успешно принят! Менеджер свяжется с вами.';
+								self.cart = [];
+								if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.MainButton) {
+									window.Telegram.WebApp.MainButton.hide();
+								}
+								setTimeout(function() {
+									self.checkoutModalOpen = false;
+									self.orderStatus = '';
+								}, 3000);
+							} else {
+								self.orderStatus = 'Ошибка: ' + (data.error || 'попробуйте снова');
+							}
+						})
+						.catch(function(err) {
+							self.isSubmitting = false;
+							self.orderStatus = 'Сетевая ошибка при отправке';
+						});
+					}
+				}
+			}
+		</script>
+
+		@components.Footer(content)
+	}
+}

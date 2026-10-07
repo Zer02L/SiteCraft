@@ -36,6 +36,20 @@ html[data-theme="medical"] {
   --color-content-muted: 100 116 139;  /* slate-500 */
 }
 
+/* КРАСОТА / САЛОН КРАСОТЫ / SPA (BEAUTY) */
+html[data-theme="beauty"] {
+  --color-primary: 190 24 93;          /* pink-700 */
+  --color-primary-dark: 131 24 67;     /* pink-900 */
+  --color-primary-light: 219 39 119;   /* pink-600 */
+  --color-accent: 217 119 6;           /* amber-600 gold */
+  --color-accent-hover: 180 83 9;      /* amber-700 */
+  --color-accent-light: 253 242 248;   /* pink-50 */
+  --color-surface: 253 251 247;        /* warm-50 */
+  --color-surface-muted: 247 242 237;  /* warm-100 */
+  --color-content: 28 25 23;           /* stone-900 */
+  --color-content-muted: 120 113 108;  /* stone-500 */
+}
+
 /* АВТОСЕРВИС / СТО / ДЕТЕЙЛИНГ (AUTO) */
 html[data-theme="auto"] {
   --color-primary: 225 29 72;          /* rose-600 */
@@ -78,6 +92,20 @@ html[data-theme="dark"] {
   --color-content-muted: 139 148 158;  /* #8b949e */
 }
 
+/* КИБЕРПАНК / VIRTUALITY ТЕМА (CYBER) */
+html[data-theme="cyber"] {
+  --color-primary: 26 23 23;           /* #1a1717 dark metal */
+  --color-primary-dark: 20 18 18;      /* #141212 deep dark */
+  --color-primary-light: 42 38 38;     /* #2a2626 surface */
+  --color-accent: 240 78 46;           /* #f04e2e cyber coral-red */
+  --color-accent-hover: 255 106 77;    /* #ff6a4d */
+  --color-accent-light: 38 28 28;      /* card dark */
+  --color-surface: 20 18 18;           /* #141212 */
+  --color-surface-muted: 28 25 25;     /* #1c1919 */
+  --color-content: 245 243 239;        /* #f5f3ef cream-white */
+  --color-content-muted: 156 150 146;  /* muted silver */
+}
+
 /* Базовые стили для переключения тем */
 body {
   transition: background-color 0.25s ease, color 0.25s ease;
@@ -113,6 +141,29 @@ html[data-theme="dark"] .bg-white {
   background-color: #161b22 !important;
   color: #e6edf3 !important;
   border-color: #30363d !important;
+}
+
+/* =========================================
+   1.1 КИБЕРПАНК ТЕМА (CYBER THEME OVERRIDES)
+   ========================================= */
+html[data-theme="cyber"] body {
+  background-color: #161414 !important;
+  color: #f5f3ef !important;
+}
+
+html[data-theme="cyber"] header {
+  background-color: #161414 !important;
+  border-color: #2e2a2a !important;
+}
+
+html[data-theme="cyber"] section {
+  border-color: #2e2a2a !important;
+}
+
+html[data-theme="cyber"] .bg-white {
+  background-color: #1f1b1b !important;
+  color: #f5f3ef !important;
+  border-color: #2e2a2a !important;
 }
 
 html[data-theme="dark"] .bg-stone-50,
@@ -401,3 +452,79 @@ html.a11y-mode .bg-stone-100.cursor-not-allowed {
   opacity: 0.6 !important;
   text-decoration: line-through !important;
 }
+
+/* ==========================================================================
+   2. МИКРО-АНИМАЦИИ: SCROLL REVEAL & VIEW TRANSITIONS (< 1.5 КБ JS overhead)
+   ========================================================================== */
+
+/* Базовое состояние для элементов с data-reveal (скрыто, смещено) */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal="left"] {
+  transform: translateX(-20px);
+}
+
+[data-reveal="right"] {
+  transform: translateX(20px);
+}
+
+[data-reveal="scale"] {
+  transform: scale(0.96);
+}
+
+/* Активное состояние при попадании во вьюпорт */
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Каскадная задержка для карточек (Stagger) */
+[data-reveal-delay="100"] { transition-delay: 100ms; }
+[data-reveal-delay="200"] { transition-delay: 200ms; }
+[data-reveal-delay="300"] { transition-delay: 300ms; }
+[data-reveal-delay="400"] { transition-delay: 400ms; }
+
+/* CSS Scroll-Driven: полоса прогресса чтения в шапке */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress-bar {
+    transform-origin: 0% 50%;
+    animation: grow-progress auto linear;
+    animation-timeline: scroll();
+  }
+
+  @keyframes grow-progress {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+}
+
+/* Нативная поддержка HTMX View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.22s;
+}
+
+/* Полное выключение анимаций для режима слабовидящих или настроек ОС */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  .scroll-progress-bar {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+html.a11y-mode [data-reveal],
+html.a11y-mode .scroll-progress-bar {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+

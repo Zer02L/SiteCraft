@@ -16,6 +16,7 @@ type PresetData struct {
 	Settings models.SiteSettings  `json:"settings"`
 	Content  models.SiteContent   `json:"content"`
 	Services []models.ServiceItem `json:"services"`
+	Blocks   []models.PageBlock   `json:"blocks"`
 }
 
 // ApplyPreset loads a JSON preset from file and writes it to PocketBase collections
@@ -46,8 +47,22 @@ func ApplyPreset(app core.App, presetPath string) error {
 		if preset.Settings.Theme != "" {
 			rec.Set("theme", preset.Settings.Theme)
 		}
+		if preset.Settings.PrimaryColor != "" {
+			rec.Set("primary_color", preset.Settings.PrimaryColor)
+		}
+		if preset.Settings.AccentColor != "" {
+			rec.Set("accent_color", preset.Settings.AccentColor)
+		}
+		if preset.Settings.BackgroundColor != "" {
+			rec.Set("background_color", preset.Settings.BackgroundColor)
+		}
 		rec.Set("enable_a11y", preset.Settings.EnableA11y)
 		rec.Set("enable_alpine", preset.Settings.EnableAlpine)
+		rec.Set("enable_tracker", preset.Settings.EnableTracker)
+		rec.Set("enable_blog", preset.Settings.EnableBlog)
+		rec.Set("enable_tma", preset.Settings.EnableTMA)
+		rec.Set("enable_payment", preset.Settings.EnablePayment)
+		rec.Set("payment_sandbox", preset.Settings.PaymentSandbox)
 		if preset.Settings.MapMode != "" {
 			rec.Set("map_mode", preset.Settings.MapMode)
 		}
@@ -102,6 +117,31 @@ func ApplyPreset(app core.App, presetPath string) error {
 				rec.Set("order", s.Order)
 				rec.Set("active", true)
 				_ = app.Save(rec)
+			}
+		}
+	}
+
+	// 4. Update page blocks if provided (Structural variations between presets)
+	if len(preset.Blocks) > 0 {
+		blocksCol, err := app.FindCollectionByNameOrId("page_blocks")
+		if err == nil {
+			existing, _ := app.FindRecordsByFilter("page_blocks", "", "", 0, 0)
+			for _, r := range existing {
+				_ = app.Delete(r)
+			}
+			for _, b := range preset.Blocks {
+				rec := core.NewRecord(blocksCol)
+				rec.Set("type", b.Type)
+				rec.Set("title", b.Title)
+				rec.Set("content", b.Content)
+				rec.Set("order", b.Order)
+				rec.Set("active", true)
+				if b.Payload != nil {
+					rec.Set("payload", b.Payload)
+				}
+				if err := app.Save(rec); err != nil {
+					log.Printf("[Preset Error] Failed to save page_block (%s): %v\n", b.Type, err)
+				}
 			}
 		}
 	}

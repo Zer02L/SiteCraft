@@ -1,0 +1,124 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
+)
+
+templ BlogPost(settings models.SiteSettings, content models.SiteContent, article models.ArticleItem, relatedArticles []models.ArticleItem) {
+	@layouts.Base(article.Title+" — "+content.HeroTitle, article.Excerpt, settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
+
+		<main class="flex-grow bg-surface py-12 px-4 sm:px-6 lg:px-8">
+			<article class="max-w-4xl mx-auto">
+				<!-- Хлебные крошки -->
+				<nav class="flex items-center text-xs text-stone-500 mb-6 space-x-2">
+					<a href="/" class="hover:text-primary transition font-medium">Главная</a>
+					<span>/</span>
+					<a href="/blog" class="hover:text-primary transition font-medium">Блог</a>
+					<span>/</span>
+					<span class="text-stone-800 font-semibold truncate max-w-xs sm:max-w-md">{ article.Title }</span>
+				</nav>
+
+				<!-- Заголовок статьи -->
+				<header class="mb-8">
+					<div class="flex flex-wrap items-center gap-3 text-xs text-stone-500 mb-3">
+						<span class="flex items-center gap-1.5 font-medium">
+							<svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+							</svg>
+							{ article.PublishedAt }
+						</span>
+						if article.AuthorName != "" {
+							<span>•</span>
+							<span class="font-medium text-stone-700">Автор: { article.AuthorName }</span>
+						}
+						<span>•</span>
+						<span class="flex items-center gap-1">
+							<svg class="w-4 h-4 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+							</svg>
+							{ fmt.Sprintf("%d просмотров", article.ViewsCount) }
+						</span>
+					</div>
+
+					<h1 class="text-2xl sm:text-4xl font-serif-title font-bold text-stone-900 leading-tight">
+						{ article.Title }
+					</h1>
+
+					if len(article.Tags) > 0 {
+						<div class="flex flex-wrap gap-2 mt-4">
+							for _, tag := range article.Tags {
+								<span class="px-2.5 py-1 bg-stone-100 text-stone-700 rounded-lg text-xs font-medium">
+									#{ tag }
+								</span>
+							}
+						</div>
+					}
+				</header>
+
+				<!-- Обложка -->
+				if article.CoverImage != "" {
+					<div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-stone-100">
+						<img src={ article.CoverImage } alt={ article.Title } class="w-full h-full object-cover"/>
+					</div>
+				}
+
+				<!-- Содержимое статьи -->
+				<div class="bg-white rounded-2xl p-6 sm:p-10 border border-stone-200 shadow-sm">
+					<div class="article-content max-w-none text-stone-800 text-base leading-relaxed space-y-4">
+						@templ.Raw(article.Content)
+					</div>
+
+					<!-- Баннер консультации / записи внутри статьи (CTA) -->
+					<div class="mt-12 p-6 sm:p-8 bg-surface rounded-xl border border-primary/20 flex flex-col sm:flex-row items-center justify-between gap-6">
+						<div class="text-left">
+							<h3 class="text-lg font-bold text-stone-900 font-serif-title">Нужна помощь или консультация?</h3>
+							<p class="text-xs sm:text-sm text-stone-600 mt-1 max-w-md">
+								Запишитесь на прием онлайн без очередей в удобное для вас время.
+							</p>
+						</div>
+						<a
+							href="/#booking"
+							class="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow whitespace-nowrap cursor-pointer"
+						>
+							Записаться на прием
+						</a>
+					</div>
+				</div>
+
+				<!-- Похожие статьи -->
+				if len(relatedArticles) > 0 {
+					<div class="mt-12">
+						<h3 class="text-xl font-bold font-serif-title text-stone-900 mb-6">Читайте также</h3>
+						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+							for _, rel := range relatedArticles {
+								if rel.ID != article.ID {
+									@BlogCard(rel)
+								}
+							}
+						</div>
+					</div>
+				}
+
+				<!-- Кнопка возврата -->
+				<div class="mt-8 text-center">
+					<a href="/blog" class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline">
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+						</svg>
+						Вернуться ко всем статьям
+					</a>
+				</div>
+			</article>
+		</main>
+
+		@components.Footer(content)
+	}
+}

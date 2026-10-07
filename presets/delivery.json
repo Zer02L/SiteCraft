@@ -1,0 +1,69 @@
+{
+  "settings": {
+    "site_name": "Craft Pizza & Burger",
+    "tagline": "Быстрая доставка горячей пиццы и бургеров за 35 минут",
+    "theme": "warm",
+    "primary_color": "234 88 12",
+    "accent_color": "245 158 11",
+    "background_color": "255 251 235",
+    "enable_a11y": false,
+    "enable_alpine": true,
+    "map_mode": "lazy",
+    "booking_mode": "simple",
+    "enable_tma": true,
+    "enable_blog": true,
+    "enable_payment": true,
+    "payment_sandbox": true
+  },
+  "content": {
+    "hero_badge": "🔥 Доставка 35 минут • Заказ в Telegram",
+    "hero_title": "Пицца и Бургеры из дровяной печи",
+    "hero_subtitle": "Готовим из свежих фермерских продуктов. Хрустящее неаполитанское тесто, сочные мраморные котлеты и фирменные соусы.",
+    "owner_name": "Шеф-повар Марко Беллини",
+    "owner_title": "Крафтовая кухня и доставка",
+    "phone1": "+7 (800) 555-35-35",
+    "phone2": "+7 (918) 111-22-33",
+    "work_hours": "Ежедневно: 10:00 - 23:00",
+    "lunch_break": "Без перерыва",
+    "days_off": "Без выходных",
+    "address": "г. Краснодар, ул. Красная 118",
+    "address_sub": "Вход с торца, открытая кухня",
+    "map_iframe": "https://yandex.ru/map-widget/v1/?ll=38.975313%2C45.035470&z=14"
+  },
+  "blocks": [
+    { "type": "hero", "title": "Главный баннер доставки", "order": 1, "active": true },
+    { "type": "services", "title": "Меню и комбо-наборы", "order": 2, "active": true },
+    { "type": "features", "title": "Почему наши клиенты заказывают снова", "order": 3, "active": true },
+    { "type": "booking", "title": "Заказ столика и предзаказ", "order": 4, "active": true },
+    { "type": "steps", "title": "Как работает быстрая доставка", "order": 5, "active": true },
+    { "type": "reviews", "title": "Отзывы гурманов", "order": 6, "active": true },
+    { "type": "faq", "title": "Зоны доставки и оплата", "order": 7, "active": true },
+    { "type": "map", "title": "Наш ресторан на карте", "order": 8, "active": true }
+  ],
+  "services": [
+    {
+      "title": "Пицца Пепперони Дьявола (33 см)",
+      "description": "Острая салями пепперони, моцарелла fior di latte, томатный соус san marzano, перец халапеньо.",
+      "price": "790 ₽",
+      "order": 1
+    },
+    {
+      "title": "Бургер Трюфельный Блэк Ангус",
+      "description": "Котлета из мраморной говядины prime, сыр чеддер, карамелизованный лук, трюфельный айоли, булочка бриошь.",
+      "price": "620 ₽",
+      "order": 2
+    },
+    {
+      "title": "Пицца Четыре Сыра с грушей",
+      "description": "Дор блю, пармезан, горгонзола, моцарелла, слайсы карамелизированной груши, грецкий орех.",
+      "price": "890 ₽",
+      "order": 3
+    },
+    {
+      "title": "Комбо «Большая компания» (2 пиццы + 2 бургера + напитки)",
+      "description": "Идеально для офиса или компании из 4-6 человек. Экономия 25%.",
+      "price": "2 490 ₽",
+      "order": 4
+    }
+  ]
+}

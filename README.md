@@ -56,9 +56,15 @@ flowchart TD
             H_Track["B2B Tracker (/track)"]
             H_TMA["TMA Mini App & VIP Club (/vip)"]
             H_Lead["Lead Generator & Slots (/booking)"]
-            H_Pay["Yookassa Payment (/payment)"]
+            H_Pay["Payment Handler (/payment)"]
         end
         
+        subgraph EventBusLayer["Событийная шина & Сервисы (internal/events & internal/notifications)"]
+            EBus["In-Memory Event Bus (bus.go)\n(LeadCreatedEvent, OrderPaidEvent)"]
+            Subscribers["Subscribers / Notifier Interface\n(TelegramNotifier, WebhookNotifier)"]
+            PayGateway["PaymentProvider Interface\n(YooKassa, MockProvider)"]
+        end
+
         subgraph RenderingLayer["Шаблонизация & UI (ui/pages & ui/sections)"]
             Registry["Block Registry / Factory Pattern\n(Hero, Services, Booking, FAQ, Gallery, etc.)"]
             Templ["Templ Go Templates (Type-safe HTML)"]
@@ -89,14 +95,19 @@ flowchart TD
     Registry --> Templ
     Templ --> ClientLibs
 
+    H_Lead -.->|Publish Event| EBus
+    H_Pay -.->|Publish Event| EBus
+    EBus --> Subscribers
+    H_Pay --> PayGateway
+
     BusinessHandlers --> Cache
     Cache --> PB
     PB --> SQLite
     PB -.->|Инвалидация кэша OnRecordChange| Cache
 
-    H_Lead -.->|Асинхронные уведомления| TG
-    H_Lead -.->|Webhooks| CRM
-    H_Pay -.->|Создание платежей| Yoo
+    Subscribers -.->|Асинхронные уведомления| TG
+    Subscribers -.->|Webhooks| CRM
+    PayGateway -.->|API Запросы| Yoo
     
     PB --> SSG
 ```
@@ -173,6 +184,24 @@ pages.RegisterBlock("video_banner", func(b models.PageBlock, ctx pages.RenderCon
 ```
 
 Все блоки страницы упорядочиваются и настраиваются через коллекцию `page_blocks` в админке PocketBase.
+
+---
+
+## ⚡ Событийная шина и слабая связанность (Event-Driven Bus)
+
+Бизнес-хэндлеры не вызывают напрямую внешние сервисы. Вместо этого используется внутрипроцессная шина событий (`internal/events/bus.go`):
+
+```go
+// Публикация события заявки из любого модуля
+eventBus.Publish(ctx, events.LeadCreatedEvent{
+    Settings: settings,
+    Lead:     leadModel,
+})
+```
+
+* **Подписчики (`internal/notifications/notifications.go`):** Telegram-бот и CRM-вебхуки подписываются на события изолированно, не блокируя HTTP-ответ посетителю сайта.
+* **Интерфейс `Notifier`:** поддерживает композитный паттерн (`CompositeNotifier`) для одновременной отправки в несколько каналов.
+* **Интерфейс `PaymentProvider`:** абстрагирует платежные системы (ЮKassa, Тинькофф, тестовый Mock-провайдер) с внедрением зависимостей через опции конструктора `NewPaymentHandler`.
 
 ---
 

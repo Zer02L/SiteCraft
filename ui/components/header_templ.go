@@ -33,14 +33,14 @@ func Header(content models.SiteContent, settings models.SiteSettings) templ.Comp
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Header --><header class=\"bg-primary text-white sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\"><svg class=\"w-6 h-6 a11y-keep-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.8\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><div><div class=\"text-white font-serif-title font-bold text-lg tracking-wide leading-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Header --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-white sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><!-- Zero-JS CSS Scroll Progress Indicator --><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\"><svg class=\"w-6 h-6 a11y-keep-icon\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.8\" d=\"M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg></div><div><div class=\"text-white font-serif-title font-bold text-lg tracking-wide leading-tight\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 18, Col: 111}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 24, Col: 111}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -53,33 +53,33 @@ func Header(content models.SiteContent, settings models.SiteSettings) templ.Comp
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 19, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 25, Col: 69}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></div><nav class=\"hidden md:flex items-center space-x-5 text-sm font-medium\"><a href=\"#about\" class=\"hover:text-accent transition\">О нас</a> <a href=\"#schedule\" class=\"hover:text-accent transition\">Режим</a> <a href=\"#services\" class=\"hover:text-accent transition\">Услуги</a> <a href=\"#booking\" class=\"hover:text-accent transition\">Запись</a> <a href=\"#map\" class=\"hover:text-accent transition\">Контакты</a><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div></div><!-- Desktop Nav --><nav class=\"hidden md:flex items-center space-x-5 text-sm font-medium\"><a href=\"/#about\" class=\"hover:text-accent transition\">О нас</a> <a href=\"/#schedule\" class=\"hover:text-accent transition\">Режим</a> <a href=\"/#services\" class=\"hover:text-accent transition\">Услуги</a> <a href=\"/#booking\" class=\"hover:text-accent transition\">Запись</a> <a href=\"/track\" class=\"hover:text-accent transition\">Трекер</a> <a href=\"/blog\" class=\"hover:text-accent transition\">Блог</a> <a href=\"/#map\" class=\"hover:text-accent transition\">Контакты</a><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-white/5 cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span> <span>Для слабовидящих</span></button>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-white/5 cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span> <span>Для слабовидящих</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Переключатель тем оформления (Vanilla JS) --><div class=\"flex items-center bg-black/25 p-1 rounded-lg border border-white/10 text-xs\"><button type=\"button\" onclick=\"window.setSiteTheme('legal')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Бордовая / Юридическая тема\">🏛️</button> <button type=\"button\" onclick=\"window.setSiteTheme('medical')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Медицинская / Бирюзовая тема\">🏥</button> <button type=\"button\" onclick=\"window.setSiteTheme('auto')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Авто / Драйв тема\">🚗</button> <button type=\"button\" onclick=\"window.setSiteTheme('tech')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"IT / Корпоративная тема\">💻</button> <button type=\"button\" onclick=\"window.setSiteTheme('dark')\" class=\"px-2 py-1 rounded hover:text-accent transition cursor-pointer\" title=\"Тёмная тема\">🌙</button></div><a href=\"/_/\" target=\"_blank\" class=\"text-accent border border-accent/50 px-2.5 py-1 rounded text-xs hover:bg-accent hover:text-primary-dark transition font-semibold\">Админка</a></nav><div class=\"md:hidden flex items-center gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<a href=\"/_/\" target=\"_blank\" class=\"text-accent border border-accent/50 px-2.5 py-1 rounded text-xs hover:bg-accent hover:text-primary-dark transition font-semibold\">Админка</a></nav><!-- Mobile Controls --><div class=\"md:hidden flex items-center gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-2 py-1 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-2.5 py-1.5 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white cursor-pointer\" title=\"Версия для слабовидящих\"><span>👓</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<a href=\"#booking\" class=\"bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded\">Запись</a></div></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<a href=\"#booking\" class=\"bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded shadow\">Запись</a><!-- Alpine.js Hamburger Button --><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-white/20 bg-white/10 text-white hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><svg x-show=\"!mobileMenuOpen\" class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg> <svg x-show=\"mobileMenuOpen\" x-cloak class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div><!-- Mobile Menu Drawer (Alpine.js) --><div x-show=\"mobileMenuOpen\" x-cloak x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 -translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100 translate-y-0\" x-transition:leave-end=\"opacity-0 -translate-y-2\" class=\"md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-4 space-y-3\"><nav class=\"flex flex-col space-y-2 text-sm font-medium\"><a href=\"/#about\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">О нас</a> <a href=\"/#schedule\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Режим работы</a> <a href=\"/#services\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Услуги и цены</a> <a href=\"/#booking\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Онлайн-запись</a> <a href=\"/track\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Статус заказа</a> <a href=\"/blog\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Блог и публикации</a> <a href=\"/#map\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-white/10 hover:text-accent transition\">Контакты и адрес</a> <a href=\"/_/\" target=\"_blank\" class=\"py-2 px-3 rounded text-accent border border-accent/40 font-semibold text-center mt-2\">Панель управления (PocketBase)</a></nav></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

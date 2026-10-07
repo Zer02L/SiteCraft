@@ -1,0 +1,268 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
+)
+
+templ TrackerPage(settings models.SiteSettings, content models.SiteContent, order *models.ServiceOrder, searchCode string, notFound bool) {
+	@layouts.Base("Отслеживание статуса заказа — "+content.HeroTitle, "Проверка статуса готовности ремонта и сервисных работ в реальном времени", settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
+
+		<main class="flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8">
+			<div class="max-w-3xl mx-auto">
+				<!-- Заголовок страницы -->
+				<div class="text-center mb-8">
+					<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-2">
+						<span>⚡ Онлайн-сервис</span>
+						<span>•</span>
+						<span>B2B Трекер заказов</span>
+					</div>
+					<h1 class="text-2xl sm:text-3xl font-serif-title font-bold text-stone-900">
+						Статус готовности заказа
+					</h1>
+					<p class="text-xs sm:text-sm text-stone-600 mt-1">
+						Введите номер квитанции или заказ-наряда для проверки статуса работ
+					</p>
+
+					<!-- Форма ввода номера заказа -->
+					<form action="/track" method="GET" class="mt-6 flex max-w-md mx-auto gap-2">
+						<input
+							type="text"
+							name="code"
+							value={ searchCode }
+							required
+							placeholder="Например: SRV-4182"
+							class="flex-grow px-4 py-3 rounded-xl border border-stone-300 bg-white text-stone-900 text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+						/>
+						<button
+							type="submit"
+							class="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition shadow cursor-pointer whitespace-nowrap"
+						>
+							Найти заказ
+						</button>
+					</form>
+				</div>
+
+				if notFound {
+					<div class="bg-rose-50 border border-rose-200 rounded-2xl p-6 text-center text-rose-800 text-sm max-w-md mx-auto">
+						<div class="font-bold text-base mb-1">Заказ не найден</div>
+						<p class="text-xs">Проверьте правильность введенного номера квитанции или свяжитесь с мастером-приемщиком.</p>
+					</div>
+				}
+
+				if order != nil {
+					<!-- Карточка заказа с Realtime SSE / HTMX обновлением -->
+					<div
+						id="tracker-order-container"
+						hx-get={ "/api/track/status/" + order.OrderCode }
+						hx-trigger="every 15s"
+						hx-swap="outerHTML"
+						class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-xl"
+					>
+						@TrackerStatusCard(settings, *order)
+					</div>
+				} else if !notFound {
+					<!-- Демо-подсказка при первом открытии -->
+					<div class="bg-white/70 rounded-2xl p-6 border border-stone-200 text-center max-w-md mx-auto text-xs text-stone-500">
+						<span class="font-bold text-stone-700">Демонстрационные квитанции для проверки:</span>
+						<div class="flex justify-center gap-3 mt-2">
+							<a href="/track?code=SRV-4182" class="px-3 py-1.5 bg-stone-100 rounded-lg text-primary font-bold hover:underline">SRV-4182 (Авто)</a>
+							<a href="/track?code=FIX-9021" class="px-3 py-1.5 bg-stone-100 rounded-lg text-primary font-bold hover:underline">FIX-9021 (iPhone)</a>
+						</div>
+					</div>
+				}
+			</div>
+		</main>
+
+		@components.Footer(content)
+	}
+}
+
+templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) {
+	<div>
+		<!-- Шапка квитанции -->
+		<div class="flex flex-wrap items-center justify-between pb-6 border-b border-stone-100 gap-4">
+			<div>
+				<div class="flex items-center gap-2">
+					<span class="px-3 py-1 bg-stone-900 text-accent font-bold text-sm tracking-wider rounded-lg uppercase">
+						№ { order.OrderCode }
+					</span>
+					if order.CurrentStage == "ready" {
+						<span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold text-xs rounded-lg flex items-center gap-1">
+							<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+							Готов к выдаче
+						</span>
+					} else if order.CurrentStage == "in_progress" {
+						<span class="px-2.5 py-1 bg-blue-100 text-blue-800 font-bold text-xs rounded-lg flex items-center gap-1">
+							<span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+							В работе
+						</span>
+					} else if order.CurrentStage == "diagnostics" {
+						<span class="px-2.5 py-1 bg-amber-100 text-amber-800 font-bold text-xs rounded-lg">
+							Диагностика
+						</span>
+					} else {
+						<span class="px-2.5 py-1 bg-stone-100 text-stone-700 font-bold text-xs rounded-lg">
+							Принят
+						</span>
+					}
+				</div>
+				<h2 class="text-xl sm:text-2xl font-serif-title font-bold text-stone-900 mt-2">
+					{ order.ItemTitle }
+				</h2>
+				if order.ClientName != "" {
+					<p class="text-xs text-stone-500 mt-0.5">Владелец: { order.ClientName }</p>
+				}
+			</div>
+
+			<!-- Финансовый блок -->
+			<div class="text-right">
+				<div class="text-xs text-stone-500">Стоимость работ:</div>
+				<div class="text-2xl font-extrabold text-stone-900">
+					{ fmt.Sprintf("%.0f", order.TotalAmount) } ₽
+				</div>
+				if order.IsPaid {
+					<span class="inline-block mt-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+						✓ Оплачено
+					</span>
+				} else {
+					<span class="inline-block mt-1 text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+						Ожидает оплаты
+					</span>
+				}
+			</div>
+		</div>
+
+		<!-- Интерактивный прогресс-бар этапов -->
+		<div class="py-8">
+			<div class="relative">
+				<!-- Соединяющая линия -->
+				<div class="hidden sm:block absolute top-5 left-8 right-8 h-1 bg-stone-200 -z-0"></div>
+
+				<div class="grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10">
+					<!-- Этап 1: Принят -->
+					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
+						<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
+							✓
+						</div>
+						<div>
+							<div class="font-bold text-xs text-stone-800">1. Принят</div>
+							<div class="text-[10px] text-stone-500">Осмотр и оформление</div>
+						</div>
+					</div>
+
+					<!-- Этап 2: Диагностика -->
+					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
+						if order.CurrentStage == "diagnostics" || order.CurrentStage == "in_progress" || order.CurrentStage == "ready" || order.CurrentStage == "completed" {
+							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
+								✓
+							</div>
+						} else {
+							<div class="w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm">
+								2
+							</div>
+						}
+						<div>
+							<div class="font-bold text-xs text-stone-800">2. Диагностика</div>
+							<div class="text-[10px] text-stone-500">Дефектовка узлов</div>
+						</div>
+					</div>
+
+					<!-- Этап 3: В работе -->
+					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
+						if order.CurrentStage == "in_progress" {
+							<div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-sm shadow animate-pulse">
+								⚙
+							</div>
+						} else if order.CurrentStage == "ready" || order.CurrentStage == "completed" {
+							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow">
+								✓
+							</div>
+						} else {
+							<div class="w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm">
+								3
+							</div>
+						}
+						<div>
+							<div class="font-bold text-xs text-stone-800">3. В работе</div>
+							<div class="text-[10px] text-stone-500">Выполнение работ</div>
+						</div>
+					</div>
+
+					<!-- Этап 4: Готов -->
+					<div class="flex sm:flex-col items-center gap-3 text-left sm:text-center">
+						if order.CurrentStage == "ready" || order.CurrentStage == "completed" {
+							<div class="w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow ring-4 ring-emerald-100">
+								✓
+							</div>
+						} else {
+							<div class="w-10 h-10 rounded-full bg-stone-200 text-stone-500 font-bold flex items-center justify-center text-sm">
+								4
+							</div>
+						}
+						<div>
+							<div class="font-bold text-xs text-stone-800">4. Готов к выдаче</div>
+							<div class="text-[10px] text-stone-500">Передача клиенту</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Детализация истории этапов от мастера -->
+		if len(order.StagesHistory) > 0 {
+			<div class="bg-surface rounded-2xl p-5 border border-stone-200 mb-6">
+				<h3 class="text-xs font-bold text-stone-500 uppercase tracking-wider mb-3">Хронология обслуживания</h3>
+				<div class="space-y-3">
+					for _, h := range order.StagesHistory {
+						<div class="flex items-start gap-3 text-xs">
+							<div class="mt-0.5">
+								if h.Done {
+									<span class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-[10px]">✓</span>
+								} else {
+									<span class="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-[10px]">●</span>
+								}
+							</div>
+							<div class="flex-grow">
+								<div class="flex justify-between items-center">
+									<span class="font-bold text-stone-800">{ h.Title }</span>
+									if h.Timestamp != "" {
+										<span class="text-[11px] text-stone-400">{ h.Timestamp }</span>
+									}
+								</div>
+								if h.Comment != "" {
+									<p class="text-stone-600 mt-0.5">{ h.Comment }</p>
+								}
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		}
+
+		<!-- Кнопка быстрой оплаты при готовности заказа -->
+		if order.CurrentStage == "ready" && !order.IsPaid {
+			<div class="p-5 bg-emerald-50 rounded-2xl border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+				<div>
+					<h4 class="font-bold text-emerald-900 text-sm">Ваш заказ готов к выдаче!</h4>
+					<p class="text-xs text-emerald-700 mt-0.5">Вы можете оплатить ремонт онлайн перед визитом в сервисный центр.</p>
+				</div>
+				<button
+					type="button"
+					hx-get={ "/api/payment/modal?order_code=" + order.OrderCode }
+					hx-target="body"
+					hx-swap="beforeend"
+					class="w-full sm:w-auto px-6 py-3 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-700 transition shadow cursor-pointer whitespace-nowrap"
+				>
+					Оплатить { fmt.Sprintf("%.0f", order.TotalAmount) } ₽ онлайн →
+				</button>
+			</div>
+		}
+	</div>
+}

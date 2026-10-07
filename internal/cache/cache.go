@@ -12,10 +12,12 @@ type Store struct {
 	content      models.SiteContent
 	services     []models.ServiceItem
 	blocks       []models.PageBlock
+	articles     []models.ArticleItem
 	settingsSet  bool
 	contentSet   bool
 	servicesSet  bool
 	blocksSet    bool
+	articlesSet  bool
 }
 
 var defaultStore = &Store{}
@@ -112,6 +114,31 @@ func (s *Store) InvalidateBlocks() {
 	s.blocksSet = false
 }
 
+func (s *Store) GetArticles() ([]models.ArticleItem, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if !s.articlesSet {
+		return nil, false
+	}
+	out := make([]models.ArticleItem, len(s.articles))
+	copy(out, s.articles)
+	return out, true
+}
+
+func (s *Store) SetArticles(articles []models.ArticleItem) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.articles = make([]models.ArticleItem, len(articles))
+	copy(s.articles, articles)
+	s.articlesSet = true
+}
+
+func (s *Store) InvalidateArticles() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.articlesSet = false
+}
+
 func (s *Store) InvalidateAll() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -119,4 +146,5 @@ func (s *Store) InvalidateAll() {
 	s.contentSet = false
 	s.servicesSet = false
 	s.blocksSet = false
+	s.articlesSet = false
 }

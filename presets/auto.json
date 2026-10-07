@@ -11,7 +11,7 @@
   "content": {
     "hero_badge": "Боксы свободны для заезда",
     "hero_title": "Автосервис & ТО",
-    "hero_subtitle": "Качественный ремонт двигателей, ходовой части и замена расходников с гарантией 12 месяцев.",
+    "hero_subtitle": "Качественный ремонт двигателей, ходовой части и замена расходников с официальной гарантией 12 месяцев.",
     "owner_name": "Сертифицированные мастера СТО",
     "owner_title": "Ремонт и ТО любых марок авто",
     "phone1": "+7 (999) 777-66-55",
@@ -23,6 +23,17 @@
     "address_sub": "Охраняемая территория, въезд свободный",
     "map_iframe": "https://yandex.ru/map-widget/v1/?ll=37.617698%2C55.755864&z=14"
   },
+  "blocks": [
+    { "type": "hero", "title": "Главный баннер СТО", "order": 1, "active": true },
+    { "type": "services", "title": "Виды ремонта и стоимость", "order": 2, "active": true },
+    { "type": "booking", "title": "Быстрый расчет стоимости и запись", "order": 3, "active": true },
+    { "type": "features", "title": "Наши преимущества и гарантия", "order": 4, "active": true },
+    { "type": "steps", "title": "4 шага обслуживания авто", "order": 5, "active": true },
+    { "type": "reviews", "title": "Отзывы автолюбителей", "order": 6, "active": true },
+    { "type": "faq", "title": "Вопросы о гарантии и запчастях", "order": 7, "active": true },
+    { "type": "map", "title": "Как заехать на территорию", "order": 8, "active": true },
+    { "type": "schedule", "title": "График дежурных мастеров", "order": 9, "active": true }
+  ],
   "services": [
     {
       "title": "Комплексная диагностика автомобиля",

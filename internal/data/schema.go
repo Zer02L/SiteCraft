@@ -1,13 +1,17 @@
 package data
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
 
 	"github.com/microcosm-cc/bluemonday"
+	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/tools/filesystem"
 )
@@ -31,13 +35,19 @@ func InitSchema(app core.App) error {
 	if err := initLeadsCollection(app); err != nil {
 		return err
 	}
+	if err := initArticlesCollection(app); err != nil {
+		return err
+	}
+	if err := initServiceOrdersCollection(app); err != nil {
+		return err
+	}
 	RegisterCacheHooks(app)
 	return nil
 }
 
 // RegisterCacheHooks sets up event listeners to invalidate in-memory cache upon admin updates
 func RegisterCacheHooks(app core.App) {
-	collections := []string{"site_settings", "site_content", "services", "page_blocks"}
+	collections := []string{"site_settings", "site_content", "services", "page_blocks", "articles"}
 	app.OnRecordAfterCreateSuccess(collections...).BindFunc(func(e *core.RecordEvent) error {
 		invalidateByCollection(e.Record.Collection().Name)
 		return e.Next()
@@ -67,6 +77,9 @@ func invalidateByCollection(colName string) {
 	case "page_blocks":
 		c.InvalidateBlocks()
 		log.Println("[Cache] page_blocks invalidated")
+	case "articles":
+		c.InvalidateArticles()
+		log.Println("[Cache] articles invalidated")
 	}
 }
 
@@ -77,7 +90,11 @@ func initSiteSettingsCollection(app core.App) error {
 		col.Fields.Add(
 			&core.TextField{Name: "site_name", Required: true},
 			&core.TextField{Name: "tagline"},
-			&core.TextField{Name: "theme"}, // legal, medical, auto, tech, default
+			&core.TextField{Name: "theme"}, // legal, medical, auto, tech, default, custom
+			&core.TextField{Name: "primary_color"},
+			&core.TextField{Name: "accent_color"},
+			&core.TextField{Name: "background_color"},
+			&core.TextField{Name: "font_family"},
 			&core.BoolField{Name: "enable_a11y"},
 			&core.BoolField{Name: "enable_alpine"},
 			&core.BoolField{Name: "enable_turnstile"},
@@ -93,6 +110,8 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.TextField{Name: "payment_shop_id"},
 			&core.TextField{Name: "payment_secret"},
 			&core.BoolField{Name: "payment_sandbox"},
+			&core.BoolField{Name: "enable_blog"},
+			&core.BoolField{Name: "enable_tma"},
 		)
 
 		if err := app.Save(col); err != nil {
@@ -100,13 +119,32 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		log.Println("[Migration] Коллекция site_settings успешно создана")
 	} else {
-		// Ensure payment fields exist
+		// Ensure payment, theming, blog, and TMA fields exist
 		changed := false
+		if col.Fields.GetByName("primary_color") == nil {
+			col.Fields.Add(&core.TextField{Name: "primary_color"})
+			col.Fields.Add(&core.TextField{Name: "accent_color"})
+			col.Fields.Add(&core.TextField{Name: "background_color"})
+			col.Fields.Add(&core.TextField{Name: "font_family"})
+			changed = true
+		}
 		if col.Fields.GetByName("enable_payment") == nil {
 			col.Fields.Add(&core.BoolField{Name: "enable_payment"})
 			col.Fields.Add(&core.TextField{Name: "payment_shop_id"})
 			col.Fields.Add(&core.TextField{Name: "payment_secret"})
 			col.Fields.Add(&core.BoolField{Name: "payment_sandbox"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_blog") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_blog"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_tma") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_tma"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_tracker") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_tracker"})
 			changed = true
 		}
 		if changed {
@@ -219,12 +257,23 @@ func initPageBlocksCollection(app core.App) error {
 			&core.TextField{Name: "content"},
 			&core.NumberField{Name: "order", OnlyInt: true},
 			&core.BoolField{Name: "active"},
+			&core.JSONField{Name: "payload"},
 		)
 
 		if err := app.Save(col); err != nil {
 			return err
 		}
 		log.Println("[Migration] Коллекция page_blocks успешно создана")
+	} else {
+		// Убеждаемся, что поле payload существует у существующей коллекции
+		if col.Fields.GetByName("payload") == nil {
+			col.Fields.Add(&core.JSONField{Name: "payload"})
+			if err := app.Save(col); err != nil {
+				log.Printf("[Migration Error] Не удалось добавить поле payload в page_blocks: %v\n", err)
+			} else {
+				log.Println("[Migration] Поле payload успешно добавлено в схему page_blocks")
+			}
+		}
 	}
 
 	count, _ := app.CountRecords("page_blocks")
@@ -382,6 +431,10 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		if val := rec.GetString("theme"); val != "" {
 			settings.Theme = val
 		}
+		settings.PrimaryColor = rec.GetString("primary_color")
+		settings.AccentColor = rec.GetString("accent_color")
+		settings.BackgroundColor = rec.GetString("background_color")
+		settings.FontFamily = rec.GetString("font_family")
 		settings.EnableA11y = rec.GetBool("enable_a11y")
 		settings.EnableAlpine = rec.GetBool("enable_alpine")
 		settings.EnableTurnstile = rec.GetBool("enable_turnstile")
@@ -401,6 +454,9 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		settings.PaymentShopID = rec.GetString("payment_shop_id")
 		settings.PaymentSecret = rec.GetString("payment_secret")
 		settings.PaymentSandbox = rec.GetBool("payment_sandbox")
+		settings.EnableBlog = rec.GetBool("enable_blog")
+		settings.EnableTMA = rec.GetBool("enable_tma")
+		settings.EnableTracker = rec.GetBool("enable_tracker")
 	}
 
 	c.SetSettings(settings)
@@ -510,6 +566,20 @@ func GetPageBlocks(app core.App) []models.PageBlock {
 		// Санитизируем произвольный HTML/контент от XSS через bluemonday
 		sanitizedContent := htmlSanitizer.Sanitize(rawContent)
 
+		var payload map[string]interface{}
+		rawJSON := r.Get("payload")
+		if rawJSON != nil {
+			if m, ok := rawJSON.(map[string]interface{}); ok {
+				payload = m
+			} else {
+				// В PocketBase JSONField может возвращать types.JSONRaw или байты
+				b, err := json.Marshal(rawJSON)
+				if err == nil && len(b) > 2 {
+					_ = json.Unmarshal(b, &payload)
+				}
+			}
+		}
+
 		blocks = append(blocks, models.PageBlock{
 			ID:      r.Id,
 			Type:    r.GetString("type"),
@@ -517,6 +587,7 @@ func GetPageBlocks(app core.App) []models.PageBlock {
 			Content: sanitizedContent,
 			Order:   r.GetInt("order"),
 			Active:  r.GetBool("active"),
+			Payload: payload,
 		})
 	}
 
@@ -569,3 +640,305 @@ func GetBookedSlots(app core.App) map[string][]string {
 	}
 	return result
 }
+
+func initArticlesCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("articles")
+	if err != nil {
+		col = core.NewBaseCollection("articles")
+		col.Fields.Add(
+			&core.TextField{Name: "title", Required: true},
+			&core.TextField{Name: "slug", Required: true},
+			&core.TextField{Name: "excerpt"},
+			&core.EditorField{Name: "content"},
+			&core.FileField{Name: "cover_image"},
+			&core.TextField{Name: "author_name"},
+			&core.TextField{Name: "published_at"},
+			&core.BoolField{Name: "is_published"},
+			&core.NumberField{Name: "views_count", OnlyInt: true},
+			&core.TextField{Name: "seo_title"},
+			&core.TextField{Name: "seo_description"},
+			&core.TextField{Name: "tags"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция articles для SEO-блога успешно создана")
+	}
+
+	count, _ := app.CountRecords("articles")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("articles")
+		if err != nil {
+			return err
+		}
+
+		defaultArticles := []struct {
+			Title   string
+			Slug    string
+			Excerpt string
+			Content string
+			Author  string
+			Date    string
+			Tags    string
+			Views   int
+		}{
+			{
+				Title:   "Как правильно подготовить документы для сделки с недвижимостью",
+				Slug:    "kak-podgotovit-dokumenty-dlya-sdelki",
+				Excerpt: "Полное пошаговое руководство от экспертов: перечень обязательных справок, типичные юридические ошибки и сроки действия документов.",
+				Content: `<h2>1. Базовый пакет документов</h2><p>При совершении любых юридически значимых действий с недвижимым имуществом критически важно заблаговременно проверить актуальность правоустанавливающих документов.</p><h3>Обязательный перечень:</h3><ul><li>Выписка из ЕГРН об основных характеристиках и зарегистрированных правах (срок действия — 30 календарных дней).</li><li>Договор-основание (купли-продажи, дарения, приватизации или свидетельство о праве на наследство).</li><li>Нотариально удостоверенное согласие супруга (при наличии зарегистрированного брака).</li></ul><h2>2. Риски и подводные камни</h2><p>Особое внимание следует уделить наличию скрытых обременений, несовершеннолетних собственников и задолженностей по коммунальным платежам. Своевременное нотариальное удостоверение договора гарантирует чистоту сделки и защищает стороны от судебных претензий третьих лиц.</p>`,
+				Author:  "Владислав Захаров",
+				Date:    "2026-10-01",
+				Tags:    "Недвижимость, Советы, Право",
+				Views:   142,
+			},
+			{
+				Title:   "Электронная регистрация и цифровые нотариальные действия в 2026 году",
+				Slug:    "elektronnaya-registratsiya-notariat-2026",
+				Excerpt: "Как современные технологии экономят ваше время: удаленное удостоверение сделок, передача заявлений в Росреестр и цифровая подпись.",
+				Content: `<h2>Цифровизация юридических процедур</h2><p>В 2026 году нотариат полностью интегрирован с государственными цифровыми сервисами. Граждане и представители бизнеса могут совершать большинство действий без очередей в ведомствах.</p><h3>Преимущества электронной подачи:</h3><p>Нотариус самостоятельно направляет пакет документов в Росреестр и налоговые органы в электронном виде с использованием квалифицированной ЭЦП. Регистрация прав собственности происходит всего за 1 рабочий день.</p>`,
+				Author:  "Юридический отдел",
+				Date:    "2026-10-05",
+				Tags:    "Цифровизация, Технологии, Нотариат",
+				Views:   89,
+			},
+		}
+
+		for _, a := range defaultArticles {
+			rec := core.NewRecord(col)
+			rec.Set("title", a.Title)
+			rec.Set("slug", a.Slug)
+			rec.Set("excerpt", a.Excerpt)
+			rec.Set("content", a.Content)
+			rec.Set("author_name", a.Author)
+			rec.Set("published_at", a.Date)
+			rec.Set("is_published", true)
+			rec.Set("views_count", a.Views)
+			rec.Set("seo_title", a.Title)
+			rec.Set("seo_description", a.Excerpt)
+			rec.Set("tags", a.Tags)
+			_ = app.Save(rec)
+		}
+		log.Println("[Migration] Демонстрационные экспертные статьи успешно добавлены в articles")
+	}
+
+	return nil
+}
+
+// GetArticles retrieves published articles from cache or PocketBase
+func GetArticles(app core.App) []models.ArticleItem {
+	c := cache.GetStore()
+	if cached, ok := c.GetArticles(); ok {
+		return cached
+	}
+
+	records, err := app.FindRecordsByFilter("articles", "is_published = true", "-published_at,-created", 0, 0)
+	if err != nil || len(records) == 0 {
+		return nil
+	}
+
+	var articles []models.ArticleItem
+	for _, r := range records {
+		var tags []string
+		if rawTags := r.GetString("tags"); rawTags != "" {
+			parts := strings.Split(rawTags, ",")
+			for _, p := range parts {
+				trimmed := strings.TrimSpace(p)
+				if trimmed != "" {
+					tags = append(tags, trimmed)
+				}
+			}
+		}
+
+		cover := ""
+		if file := r.GetString("cover_image"); file != "" {
+			cover = "/api/files/articles/" + r.Id + "/" + file
+		}
+
+		articles = append(articles, models.ArticleItem{
+			ID:             r.Id,
+			Title:          r.GetString("title"),
+			Slug:           r.GetString("slug"),
+			Excerpt:        r.GetString("excerpt"),
+			Content:        htmlSanitizer.Sanitize(r.GetString("content")),
+			CoverImage:     cover,
+			AuthorName:     r.GetString("author_name"),
+			PublishedAt:    r.GetString("published_at"),
+			IsPublished:    r.GetBool("is_published"),
+			ViewsCount:     r.GetInt("views_count"),
+			SEOTitle:       r.GetString("seo_title"),
+			SEODescription: r.GetString("seo_description"),
+			Tags:           tags,
+		})
+	}
+
+	c.SetArticles(articles)
+	return articles
+}
+
+// GetArticleBySlug finds a published article by slug
+func GetArticleBySlug(app core.App, slug string) (*models.ArticleItem, error) {
+	articles := GetArticles(app)
+	for _, a := range articles {
+		if a.Slug == slug {
+			return &a, nil
+		}
+	}
+
+	rec, err := app.FindFirstRecordByFilter("articles", "slug = {:slug} && is_published = true", dbx.Params{"slug": slug})
+	if err != nil || rec == nil {
+		return nil, fmt.Errorf("article not found")
+	}
+
+	var tags []string
+	if rawTags := rec.GetString("tags"); rawTags != "" {
+		parts := strings.Split(rawTags, ",")
+		for _, p := range parts {
+			trimmed := strings.TrimSpace(p)
+			if trimmed != "" {
+				tags = append(tags, trimmed)
+			}
+		}
+	}
+
+	cover := ""
+	if file := rec.GetString("cover_image"); file != "" {
+		cover = "/api/files/articles/" + rec.Id + "/" + file
+	}
+
+	art := &models.ArticleItem{
+		ID:             rec.Id,
+		Title:          rec.GetString("title"),
+		Slug:           rec.GetString("slug"),
+		Excerpt:        rec.GetString("excerpt"),
+		Content:        htmlSanitizer.Sanitize(rec.GetString("content")),
+		CoverImage:     cover,
+		AuthorName:     rec.GetString("author_name"),
+		PublishedAt:    rec.GetString("published_at"),
+		IsPublished:    rec.GetBool("is_published"),
+		ViewsCount:     rec.GetInt("views_count"),
+		SEOTitle:       rec.GetString("seo_title"),
+		SEODescription: rec.GetString("seo_description"),
+		Tags:           tags,
+	}
+	return art, nil
+}
+
+// IncrementArticleViews increments the views counter for an article
+func IncrementArticleViews(app core.App, id string) {
+	rec, err := app.FindRecordById("articles", id)
+	if err == nil && rec != nil {
+		rec.Set("views_count", rec.GetInt("views_count")+1)
+		_ = app.Save(rec)
+	}
+}
+
+func initServiceOrdersCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("service_orders")
+	if err != nil {
+		col = core.NewBaseCollection("service_orders")
+		col.Fields.Add(
+			&core.TextField{Name: "order_code", Required: true},
+			&core.TextField{Name: "client_name"},
+			&core.TextField{Name: "client_phone"},
+			&core.TextField{Name: "item_title", Required: true},
+			&core.TextField{Name: "current_stage"}, // received, diagnostics, in_progress, ready, completed
+			&core.NumberField{Name: "total_amount"},
+			&core.BoolField{Name: "is_paid"},
+			&core.JSONField{Name: "stages_history"},
+			&core.TextField{Name: "notes"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция service_orders для B2B-трекера успешно создана")
+	}
+
+	count, _ := app.CountRecords("service_orders")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("service_orders")
+		if err != nil {
+			return err
+		}
+
+		demoHistory := []models.OrderStageHistory{
+			{Stage: "received", Title: "Автомобиль принят мастером", Timestamp: "06.10 09:15", Comment: "Пробег 84 200 км, визуальный осмотр кузова", Done: true},
+			{Stage: "diagnostics", Title: "Компьютерная диагностика и дефектовка", Timestamp: "06.10 11:30", Comment: "Выявлен износ тормозных колодок и замена масла", Done: true},
+			{Stage: "in_progress", Title: "Выполнение сервисных работ", Timestamp: "07.10 10:00", Comment: "Замена масла в двигателе, установка оригинальных колодок", Done: false},
+			{Stage: "ready", Title: "Готов к выдаче", Timestamp: "", Comment: "Автомобиль на чистке и готов к передаче владельцу", Done: false},
+		}
+
+		rec := core.NewRecord(col)
+		rec.Set("order_code", "SRV-4182")
+		rec.Set("client_name", "Константин")
+		rec.Set("client_phone", "+7 (999) 123-45-67")
+		rec.Set("item_title", "BMW X5 3.0d (х819ок123)")
+		rec.Set("current_stage", "in_progress")
+		rec.Set("total_amount", 14500.0)
+		rec.Set("is_paid", false)
+		rec.Set("stages_history", demoHistory)
+		rec.Set("notes", "Комплексное ТО и замена расходников")
+		_ = app.Save(rec)
+
+		// Второй тестовый заказ со статусом ready для проверки оплаты
+		demoReadyHistory := []models.OrderStageHistory{
+			{Stage: "received", Title: "Устройство принято в СЦ", Timestamp: "06.10 14:00", Comment: "iPhone 14 Pro, трещина стекла дисплея", Done: true},
+			{Stage: "diagnostics", Title: "Инженерная диагностика", Timestamp: "06.10 15:20", Comment: "Матрица цела, требуется замена верхнего стекла", Done: true},
+			{Stage: "in_progress", Title: "Замена стекла на OCA-пленку", Timestamp: "07.10 11:00", Comment: "Процедура выполнена на заводском оборудовании", Done: true},
+			{Stage: "ready", Title: "Готов к выдаче клиенту", Timestamp: "07.10 12:45", Comment: "Устройство собрано, проверено, готово к выдаче", Done: true},
+		}
+		recReady := core.NewRecord(col)
+		recReady.Set("order_code", "FIX-9021")
+		recReady.Set("client_name", "Елена")
+		recReady.Set("client_phone", "+7 (918) 765-43-21")
+		recReady.Set("item_title", "iPhone 14 Pro (Deep Purple)")
+		recReady.Set("current_stage", "ready")
+		recReady.Set("total_amount", 6800.0)
+		recReady.Set("is_paid", false)
+		recReady.Set("stages_history", demoReadyHistory)
+		recReady.Set("notes", "Замена стекла экрана по заводской технологии")
+		_ = app.Save(recReady)
+
+		log.Println("[Migration] Демонстрационные заказы SRV-4182 и FIX-9021 успешно созданы")
+	}
+
+	return nil
+}
+
+// GetServiceOrderByCode retrieves a service order by its unique tracking code
+func GetServiceOrderByCode(app core.App, code string) (*models.ServiceOrder, error) {
+	cleanCode := strings.ToUpper(strings.TrimSpace(code))
+	rec, err := app.FindFirstRecordByFilter("service_orders", "order_code = {:code}", dbx.Params{"code": cleanCode})
+	if err != nil || rec == nil {
+		return nil, fmt.Errorf("заказ с кодом %s не найден", code)
+	}
+
+	var history []models.OrderStageHistory
+	rawJSON := rec.Get("stages_history")
+	if rawJSON != nil {
+		b, err := json.Marshal(rawJSON)
+		if err == nil {
+			_ = json.Unmarshal(b, &history)
+		}
+	}
+
+	order := &models.ServiceOrder{
+		ID:            rec.Id,
+		OrderCode:     rec.GetString("order_code"),
+		ClientName:    rec.GetString("client_name"),
+		ClientPhone:   rec.GetString("client_phone"),
+		ItemTitle:     rec.GetString("item_title"),
+		CurrentStage:  rec.GetString("current_stage"),
+		TotalAmount:   rec.GetFloat("total_amount"),
+		IsPaid:        rec.GetBool("is_paid"),
+		StagesHistory: history,
+		Notes:         rec.GetString("notes"),
+		CreatedAt:     rec.GetString("created"),
+		UpdatedAt:     rec.GetString("updated"),
+	}
+
+	return order, nil
+}
+

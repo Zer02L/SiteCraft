@@ -1,0 +1,184 @@
+package sections
+
+templ Reviews(theme string) {
+	<!-- Structural section: Customer Reviews / Testimonials -->
+	<section id="reviews" class="py-16 px-4 bg-stone-100 border-t border-b border-stone-200">
+		<div class="max-w-6xl mx-auto">
+			<div class="text-center mb-12" data-reveal>
+				<div class="inline-block px-3 py-1 bg-accent/20 text-accent-hover text-xs font-semibold rounded-full border border-accent/30 uppercase tracking-wider mb-2">Отзывы клиентов</div>
+				<h2 class="font-serif-title text-3xl font-bold text-stone-900">Что говорят наши клиенты</h2>
+				<p class="text-stone-500 mt-2 max-w-xl mx-auto text-sm">Реальные отзывы доверителей и посетителей с независимых площадок</p>
+			</div>
+
+			if theme == "medical" {
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Прекрасная клиника! Проходила УЗИ и сдавала анализы. Никаких очередей, всё точно по времени. Врач подробно объяснил каждый показатель и успокоил.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">ЕМ</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Елена Михайлова</div>
+								<div class="text-[11px] text-stone-400">Пациент отделения УЗИ</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Терапевт очень внимательно изучил все симптомы, назначил только нужные анализы без навязывания лишних услуг. Результаты пришли на почту в тот же вечер!»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">АС</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Алексей Смирнов</div>
+								<div class="text-[11px] text-stone-400">Первичный приём</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Современное оборудование, чистота и вежливый персонал. Записалась через сайт за минуту, сразу перезвонили и подтвердили запись. Очень рекомендую!»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">ОВ</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Ольга Васильева</div>
+								<div class="text-[11px] text-stone-400">Регулярный чекап</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			} else if theme == "auto" {
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Делал плановое ТО и замену тормозных дисков. Сделали за 2 часа, старые детали положили в багажник в коробках. Честный подход без развода на допы.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">ДП</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Дмитрий Попов</div>
+								<div class="text-[11px] text-stone-400">Toyota Camry</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Нашли причину стука в передней подвеске, которую два других сервиса не могли диагностировать. Запчасти были на складе, починили в тот же день.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">МК</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Максим Кузнецов</div>
+								<div class="text-[11px] text-stone-400">Skoda Octavia</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Отличная зона ожидания с монитором ремонта и вкусным кофе. Мастер подробно показал на подъемнике все изношенные узлы. Дали гарантию на год.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">СА</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Сергей Андреев</div>
+								<div class="text-[11px] text-stone-400">Kia Sportage</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			} else if theme == "beauty" {
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Делала сложное окрашивание Airtouch у топ-колориста. Цвет получился волшебный, волосы мягкие и блестящие. Атмосфера в салоне просто королевская!»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">АК</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Анна Ковалева</div>
+								<div class="text-[11px] text-stone-400">Сложное окрашивание</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Идеальный Smart-педикюр и маникюр! Инструменты вскрывали при мне из стерильного пакета, всё аккуратно и безболезненно. Покрытие держится месяц.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">МС</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Мария Соколова</div>
+								<div class="text-[11px] text-stone-400">Ногтевой сервис</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Прекрасный спа-уход перед важным мероприятием. Укладка продержалась весь вечер даже при ветреной погоде. Угостили вкусным кофе и десертом.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">КБ</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Кристина Белова</div>
+								<div class="text-[11px] text-stone-400">Укладка & SPA</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			} else {
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+					<div data-reveal data-reveal-delay="100" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Оформляли сделку купли-продажи квартиры. Всё прошло спокойно, чётко и строго по закону. Нотариус подробно разъяснил каждый пункт договора.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">ВГ</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Виктор Григорьев</div>
+								<div class="text-[11px] text-stone-400">Удостоверение сделки</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="200" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Быстро заверили генеральную доверенность для юридического лица. Записались заранее онлайн, приняли ровно в назначенное время без ожидания.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">НМ</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Наталья Мельникова</div>
+								<div class="text-[11px] text-stone-400">Оформление доверенности</div>
+							</div>
+						</div>
+					</div>
+					<div data-reveal data-reveal-delay="300" class="bg-white p-6 rounded-2xl border border-stone-200 shadow-sm flex flex-col justify-between">
+						<div>
+							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
+							<p class="text-stone-700 text-sm italic leading-relaxed">«Ведение наследственного дела прошло без стресса. Помогли оперативно запросить архивные справки и оформить свидетельство о праве на наследство.»</p>
+						</div>
+						<div class="mt-4 pt-4 border-t border-stone-100 flex items-center gap-3">
+							<div class="w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs">АР</div>
+							<div>
+								<div class="text-xs font-bold text-stone-900">Андрей Романов</div>
+								<div class="text-[11px] text-stone-400">Наследственное дело</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+}

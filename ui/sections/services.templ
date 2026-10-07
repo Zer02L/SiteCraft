@@ -1,21 +1,26 @@
-package components
+package sections
 
 import (
+	"fmt"
 	"sitecraft/internal/models"
 )
 
 templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 	<!-- Services Section -->
 	<section id="services" class="py-16 px-4 max-w-6xl mx-auto">
-		<div class="text-center mb-12">
+		<div class="text-center mb-12" data-reveal>
 			<div class="inline-block px-3 py-1 bg-amber-50 text-amber-800 text-xs font-semibold rounded-full border border-amber-200 uppercase tracking-wider mb-2">Направления</div>
 			<h2 class="font-serif-title text-3xl font-bold text-stone-900">Услуги и стоимость</h2>
 			<p class="text-stone-500 mt-2 max-w-xl mx-auto text-sm">Профессиональный подход, прозрачные цены и фиксированные сроки выполнения работ</p>
 		</div>
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-			for _, s := range services {
-				<div class="bg-white p-6 rounded-xl border border-stone-200/90 shadow-sm hover:shadow-md hover:border-accent/50 transition flex flex-col justify-between">
+			for idx, s := range services {
+				<div
+					data-reveal
+					data-reveal-delay={ fmt.Sprintf("%d", ((idx % 3) + 1) * 100) }
+					class="bg-white p-6 rounded-xl border border-stone-200/90 shadow-sm hover:shadow-xl hover:border-accent/60 hover:-translate-y-1 transition duration-300 flex flex-col justify-between"
+				>
 					<div>
 						<div class="w-8 h-8 rounded-lg bg-stone-100 text-primary flex items-center justify-center font-serif-title font-bold text-sm mb-3">✦</div>
 						<h3 class="text-lg font-bold text-stone-900 mb-2">{ s.Title }</h3>
@@ -31,7 +36,7 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 								type="button"
 								hx-get={ "/api/payment/modal?service_id=" + s.ID }
 								hx-target="#payment-modal-container"
-								hx-swap="innerHTML"
+								hx-swap="innerHTML transition:true"
 								class="text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer"
 							>
 								Оплатить онлайн

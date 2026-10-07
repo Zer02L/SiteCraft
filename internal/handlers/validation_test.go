@@ -103,3 +103,93 @@ func TestValidateLeadForm(t *testing.T) {
 		}
 	})
 }
+
+func TestValidatePaymentForm(t *testing.T) {
+	validOrderPayment := PaymentFormInput{
+		OrderCode: "ORD-2026-101",
+		Amount:    3500.0,
+		Email:     "client@example.com",
+		Phone:     "+7 (999) 000-11-22",
+		Consent:   "on",
+		Honeypot:  "",
+	}
+
+	t.Run("Valid order payment passes", func(t *testing.T) {
+		errs := ValidatePaymentForm(validOrderPayment, true)
+		if len(errs) != 0 {
+			t.Errorf("expected 0 errors, got: %v", errs)
+		}
+	})
+
+	t.Run("Honeypot catches bots immediately", func(t *testing.T) {
+		input := validOrderPayment
+		input.Honeypot = "https://bot-site.com"
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) != 1 || !strings.Contains(errs[0], "Спам-фильтр") {
+			t.Errorf("expected honeypot error, got: %v", errs)
+		}
+	})
+
+	t.Run("Invalid email fails 54-FZ validation", func(t *testing.T) {
+		input := validOrderPayment
+		input.Email = "invalid-email"
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for invalid email, got none")
+		}
+
+		input.Email = ""
+		errs = ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for empty email, got none")
+		}
+	})
+
+	t.Run("Invalid amount fails", func(t *testing.T) {
+		input := validOrderPayment
+		input.Amount = 0
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for 0 amount, got none")
+		}
+
+		input.Amount = 5.0
+		errs = ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for amount < 10, got none")
+		}
+
+		input.Amount = 1500000.0
+		errs = ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for amount > 1M, got none")
+		}
+	})
+
+	t.Run("Missing order code fails when isOrderPayment is true", func(t *testing.T) {
+		input := validOrderPayment
+		input.OrderCode = ""
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for missing order code, got none")
+		}
+	})
+
+	t.Run("Missing phone fails for order payment", func(t *testing.T) {
+		input := validOrderPayment
+		input.Phone = ""
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for missing phone on order payment, got none")
+		}
+	})
+
+	t.Run("Missing consent fails 152-FZ", func(t *testing.T) {
+		input := validOrderPayment
+		input.Consent = ""
+		errs := ValidatePaymentForm(input, true)
+		if len(errs) == 0 {
+			t.Errorf("expected error for missing consent, got none")
+		}
+	})
+}

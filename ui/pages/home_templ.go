@@ -12,6 +12,8 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+	"sitecraft/ui/sections"
+	"sitecraft/ui/sections/hero"
 )
 
 func Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock) templ.Component {
@@ -61,43 +63,20 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Динамический модульный рендеринг секций по порядку (Block Reordering) --> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Динамический модульный рендеринг секций через BlockRegistry (Factory Pattern) --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if len(blocks) > 0 {
 				for _, b := range blocks {
-					switch b.Type {
-					case "hero":
-						templ_7745c5c3_Err = components.Hero(content).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					case "schedule":
-						templ_7745c5c3_Err = components.ScheduleBar(content).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					case "services":
-						templ_7745c5c3_Err = components.Services(services, settings).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					case "booking":
-						templ_7745c5c3_Err = components.Booking(content, bookedSlots, settings).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					case "map":
-						templ_7745c5c3_Err = components.MapSection(content, settings).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					case "rich_text", "html":
-						templ_7745c5c3_Err = components.DynamicBlock(b).Render(ctx, templ_7745c5c3_Buffer)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
+					templ_7745c5c3_Err = RenderBlock(b, RenderContext{
+						Settings:    settings,
+						Content:     content,
+						Services:    services,
+						BookedSlots: bookedSlots,
+					}).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
 					}
 				}
 			} else {
@@ -105,28 +84,51 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.Hero(content).Render(ctx, templ_7745c5c3_Buffer)
+				if settings.Theme == "cyber" {
+					templ_7745c5c3_Err = hero.CyberHero(content, settings).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else {
+					templ_7745c5c3_Err = hero.Hero(content).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.ScheduleBar(content).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.ScheduleBar(content).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.Services(services, settings).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.Features(settings.Theme, nil).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.Booking(content, bookedSlots, settings).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.Services(services, settings).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.MapSection(content, settings).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.Reviews(settings.Theme).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = sections.Booking(content, bookedSlots, settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = sections.Faq(settings.Theme, nil).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = sections.MapSection(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

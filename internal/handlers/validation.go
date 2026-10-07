@@ -21,6 +21,7 @@ type LeadFormInput struct {
 
 var nonDigitRegex = regexp.MustCompile(`\D`)
 var timeSlotRegex = regexp.MustCompile(`^\d{2}:\d{2}$`)
+var emailRegex = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
 
 // ValidateLeadForm validates the input values from the appointment booking / contact form.
 func ValidateLeadForm(input LeadFormInput) []string {
@@ -89,3 +90,71 @@ func ValidateLeadForm(input LeadFormInput) []string {
 
 	return errs
 }
+
+// PaymentFormInput represents fields submitted when initiating an online payment.
+type PaymentFormInput struct {
+	OrderCode string
+	Amount    float64
+	Email     string
+	Phone     string
+	Consent   string
+	Honeypot  string
+}
+
+// ValidatePaymentForm validates user input for payment forms.
+func ValidatePaymentForm(input PaymentFormInput, isOrderPayment bool) []string {
+	var errs []string
+
+	// 1. Anti-spam Honeypot check
+	if strings.TrimSpace(input.Honeypot) != "" {
+		errs = append(errs, "Спам-фильтр заблокировал отправку формы")
+		return errs
+	}
+
+	// 2. Email validation (required for 54-FZ electronic receipt)
+	email := strings.TrimSpace(input.Email)
+	if email == "" {
+		errs = append(errs, "Укажите Email для отправки электронного чека (54-ФЗ)")
+	} else if len(email) > 150 || !emailRegex.MatchString(email) {
+		errs = append(errs, "Укажите корректный адрес электронной почты (например, client@mail.ru)")
+	}
+
+	// 3. Phone validation
+	phone := strings.TrimSpace(input.Phone)
+	if phone != "" {
+		digitsOnly := nonDigitRegex.ReplaceAllString(phone, "")
+		if len(digitsOnly) < 10 || len(digitsOnly) > 15 {
+			errs = append(errs, "Некорректный номер телефона (требуется от 10 цифр)")
+		}
+	} else if isOrderPayment {
+		errs = append(errs, "Укажите контактный номер телефона")
+	}
+
+	// 4. Amount validation
+	if input.Amount <= 0 {
+		errs = append(errs, "Сумма оплаты должна быть больше 0 ₽")
+	} else if input.Amount < 10 {
+		errs = append(errs, "Минимальная сумма онлайн-платежа — 10 ₽")
+	} else if input.Amount > 1000000 {
+		errs = append(errs, "Сумма одного платежа не может превышать 1 000 000 ₽")
+	}
+
+	// 5. Order Code validation
+	if isOrderPayment {
+		cleanCode := strings.TrimSpace(input.OrderCode)
+		if cleanCode == "" {
+			errs = append(errs, "Не указан номер заказ-наряда")
+		} else if len(cleanCode) < 3 || len(cleanCode) > 30 {
+			errs = append(errs, "Некорректный номер заказ-наряда")
+		}
+	}
+
+	// 6. 152-FZ Consent check
+	consent := strings.TrimSpace(input.Consent)
+	if consent != "on" && consent != "true" && consent != "1" {
+		errs = append(errs, "Необходимо согласие на обработку персональных данных и условия оферты")
+	}
+
+	return errs
+}
+

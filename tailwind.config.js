@@ -37,6 +37,9 @@ module.exports = {
           light: "rgb(var(--color-surface) / <alpha-value>)",
           muted: "rgb(var(--color-content-muted) / <alpha-value>)",
         }
+      },
+      fontFamily: {
+        condensed: ['"Bebas Neue"', '"Barlow Condensed"', 'Impact', 'sans-serif'],
       }
     },
   },

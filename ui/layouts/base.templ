@@ -16,26 +16,36 @@ templ Base(title string, description string, settings models.SiteSettings) {
 			<meta property="og:title" content={ title }/>
 			<meta property="og:description" content={ description }/>
 			<meta property="og:type" content="website"/>
-			<!-- Google Fonts: Merriweather + Inter -->
+			<!-- Google Fonts: Merriweather + Inter + Bebas Neue -->
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+			<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
 			
 			<!-- HTMX (Zero-JS foundation for AJAX requests) -->
-			<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+			<script src="https://unpkg.com/htmx.org@4.0.0/dist/htmx.min.js"></script>
+
+			<!-- Telegram WebApp SDK (автоматическая адаптация для TMA) -->
+			<script src="https://telegram.org/js/telegram-web-app.js"></script>
 			<script>
-				document.addEventListener('htmx:beforeOnLoad', function (evt) {
-					if (evt.detail.xhr.status === 422 || evt.detail.xhr.status === 400 || evt.detail.xhr.status === 409) {
-						evt.detail.shouldSwap = true;
-						evt.detail.isError = false;
+				(function() {
+					if (window.Telegram && window.Telegram.WebApp) {
+						try {
+							var tg = window.Telegram.WebApp;
+							tg.ready();
+							tg.expand();
+							document.addEventListener('htmx:configRequest', function(evt) {
+								if (tg.initData) {
+									evt.detail.headers['X-Telegram-Init-Data'] = tg.initData;
+								}
+							});
+						} catch(e) {}
 					}
-				});
+				})();
 			</script>
 
-			<!-- Опциональный Alpine.js (подключается только если enable_alpine == true) -->
-			if settings.EnableAlpine {
-				<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-			}
+			<!-- Alpine.js + Mask Plugin for light client-side state (modals, mobile menu, phone masks) -->
+			<script defer src="https://unpkg.com/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+			<script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 			<!-- Cloudflare Turnstile (если включен) -->
 			if settings.EnableTurnstile && settings.TurnstileSiteKey != "" {
@@ -59,6 +69,30 @@ templ Base(title string, description string, settings models.SiteSettings) {
 			<style>
 				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
 			</style>
+
+			<!-- Динамическая инъекция темы из PocketBase (Theming Engine) -->
+			if settings.PrimaryColor != "" || settings.AccentColor != "" || settings.BackgroundColor != "" || settings.FontFamily != "" {
+				<style>
+					:root {
+						if settings.PrimaryColor != "" {
+							--color-primary: { settings.PrimaryColor };
+							--color-primary-dark: { settings.PrimaryColor };
+							--color-primary-light: { settings.PrimaryColor };
+						}
+						if settings.AccentColor != "" {
+							--color-accent: { settings.AccentColor };
+							--color-accent-hover: { settings.AccentColor };
+						}
+						if settings.BackgroundColor != "" {
+							--color-surface: { settings.BackgroundColor };
+						}
+						if settings.FontFamily != "" {
+							--font-custom: { settings.FontFamily }, sans-serif;
+							font-family: var(--font-custom);
+						}
+					}
+				</style>
+			}
 
 			<!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) -->
 			<script>
@@ -145,9 +179,46 @@ templ Base(title string, description string, settings models.SiteSettings) {
 						localStorage.setItem('sitecraft_theme', themeName);
 					};
 
+					// ----------------------------------------------------
+					// ⚡ Микро-движок Scroll Reveal (IntersectionObserver < 0.5 КБ)
+					// ----------------------------------------------------
+					function initScrollReveal(scope) {
+						if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+						if (root.classList.contains('a11y-mode')) return;
+
+						const rootElement = scope || document;
+						const elements = rootElement.querySelectorAll('[data-reveal]:not(.is-revealed)');
+						if (!elements.length) return;
+
+						if (!('IntersectionObserver' in window)) {
+							elements.forEach(function(el) { el.classList.add('is-revealed'); });
+							return;
+						}
+
+						const observer = new IntersectionObserver(function(entries) {
+							entries.forEach(function(entry) {
+								if (entry.isIntersecting) {
+									entry.target.classList.add('is-revealed');
+									observer.unobserve(entry.target);
+								}
+							});
+						}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+						elements.forEach(function(el) { observer.observe(el); });
+					}
+
 					// Первичная синхронизация после загрузки DOM
 					document.addEventListener('DOMContentLoaded', function() {
 						window.A11Y.apply();
+						initScrollReveal();
+					});
+
+					// Бесшовный перезапуск при HTMX Swap (фрагментарные обновления)
+					document.addEventListener('htmx:after:swap', function(evt) {
+						initScrollReveal(evt.detail.target);
+					});
+					document.addEventListener('htmx:afterSwap', function(evt) {
+						initScrollReveal(evt.detail.target);
 					});
 				})();
 			</script>
