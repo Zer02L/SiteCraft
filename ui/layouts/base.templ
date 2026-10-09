@@ -216,7 +216,7 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 						const current = root.getAttribute('data-theme') || 'main';
 						const isNight = current.endsWith('-night') || current === 'dark';
 						let base = current.replace('-night', '').replace('-day', '');
-						if (base === 'dark' || base === 'default' || base === 'legal') base = 'main';
+						if (base === 'dark' || base === 'default') base = 'main';
 						return { base: base, isNight: isNight };
 					};
 

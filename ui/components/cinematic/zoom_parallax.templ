@@ -1,0 +1,126 @@
+package cinematic
+
+type ZoomParallaxProps struct {
+	Eyebrow     string
+	Title       string
+	Subtitle    string
+	CenterImage string
+	BadgeLeft   string
+	BadgeRight  string
+}
+
+templ ZoomParallax(props ZoomParallaxProps) {
+	<div class="cinematic-zoom-parallax relative h-[260vh] w-full" data-zoom-parallax>
+		<div class="sticky top-0 h-[100dvh] w-full overflow-hidden flex items-center justify-center bg-surface">
+			<!-- Фоновый слой: радиальное свечение -->
+			<div class="zoom-layer-bg absolute inset-0 bg-radial from-accent/15 via-primary/5 to-transparent pointer-events-none will-change-transform"></div>
+
+			<!-- Средний слой: Главный объект / карточка -->
+			<div class="zoom-layer-center relative z-10 flex flex-col items-center justify-center text-center p-6 will-change-transform">
+				if props.Eyebrow != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-3 block">
+						{ props.Eyebrow }
+					</span>
+				}
+				<h2 class="text-4xl sm:text-7xl font-extrabold text-content tracking-tight mb-4">
+					{ props.Title }
+				</h2>
+				if props.Subtitle != "" {
+					<p class="text-lg text-content-muted max-w-lg mb-8">
+						{ props.Subtitle }
+					</p>
+				}
+				if props.CenterImage != "" {
+					<div
+						class="w-72 sm:w-96 aspect-video rounded-3xl bg-cover bg-center border border-surface-muted shadow-2xl"
+						style={ "background-image: url('" + props.CenterImage + "');" }
+					></div>
+				}
+			</div>
+
+			<!-- Передний план: Парящие бейджи, пролетающие мимо камеры (Zoom past) -->
+			if props.BadgeLeft != "" {
+				<div class="zoom-layer-fg-left absolute left-6 sm:left-16 bottom-24 z-20 px-6 py-3.5 rounded-2xl bg-surface/90 border border-surface-muted shadow-2xl backdrop-blur-md will-change-transform">
+					<span class="text-sm font-bold text-accent font-mono">{ props.BadgeLeft }</span>
+				</div>
+			}
+			if props.BadgeRight != "" {
+				<div class="zoom-layer-fg-right absolute right-6 sm:right-16 top-24 z-20 px-6 py-3.5 rounded-2xl bg-surface/90 border border-surface-muted shadow-2xl backdrop-blur-md will-change-transform">
+					<span class="text-sm font-bold text-primary font-mono">{ props.BadgeRight }</span>
+				</div>
+			}
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			function loadMotion(cb) {
+				if (window.Motion) return cb(window.Motion);
+				var s = document.querySelector('script[data-motion-cdn]');
+				if (!s) {
+					s = document.createElement('script');
+					s.src = 'https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.min.js';
+					s.dataset.motionCdn = 'true';
+					document.head.appendChild(s);
+				}
+				s.addEventListener('load', function() { cb(window.Motion); });
+			}
+
+			function initZoomMotion() {
+				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+				var containers = document.querySelectorAll('[data-zoom-parallax]');
+				if (containers.length === 0) return;
+
+				loadMotion(function(Motion) {
+					containers.forEach(function(container) {
+						if (container.dataset.motionBound) return;
+						container.dataset.motionBound = 'true';
+
+						var bg = container.querySelector('.zoom-layer-bg');
+						var center = container.querySelector('.zoom-layer-center');
+						var fgLeft = container.querySelector('.zoom-layer-fg-left');
+						var fgRight = container.querySelector('.zoom-layer-fg-right');
+
+						// Непрерывный интерполированный скраббинг глубины зума через Motion
+						Motion.scroll(function(info) {
+							var p = typeof info === 'number' ? info : (info && info.y ? info.y.progress : 0);
+
+							if (bg) {
+								bg.style.transform = 'scale(' + (1 + p * 0.45).toFixed(3) + ')';
+							}
+							if (center) {
+								center.style.transform = 'scale(' + (1 + p * 0.65).toFixed(3) + ')';
+								center.style.opacity = (1 - p * 0.45).toFixed(3);
+							}
+							if (fgLeft) {
+								var scaleL = 1 + p * 2.8;
+								var xL = -p * 280;
+								var opL = Math.max(0, 1 - p * 1.6);
+								fgLeft.style.transform = 'translate(' + xL.toFixed(1) + 'px, 0px) scale(' + scaleL.toFixed(3) + ')';
+								fgLeft.style.opacity = opL.toFixed(3);
+							}
+							if (fgRight) {
+								var scaleR = 1 + p * 2.8;
+								var xR = p * 280;
+								var opR = Math.max(0, 1 - p * 1.6);
+								fgRight.style.transform = 'translate(' + xR.toFixed(1) + 'px, 0px) scale(' + scaleR.toFixed(3) + ')';
+								fgRight.style.opacity = opR.toFixed(3);
+							}
+						}, {
+							target: container,
+							offset: ["start start", "end end"]
+						});
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initZoomMotion);
+			} else {
+				initZoomMotion();
+			}
+			document.addEventListener('htmx:afterSwap', initZoomMotion);
+		})();
+	</script>
+}

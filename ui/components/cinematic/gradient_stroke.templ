@@ -1,0 +1,69 @@
+package cinematic
+
+templ GradientStrokeText(strokeText string, filledSubtext string) {
+	<section class="cinematic-gradient-stroke py-20 px-4 text-center select-none flex flex-col items-center justify-center">
+		<!-- Контурный анимированный текст -->
+		<div class="stroke-text-wrapper mb-6">
+			<h2 class="cinematic-stroke-text text-6xl sm:text-8xl md:text-9xl font-black uppercase tracking-tighter leading-none">
+				{ strokeText }
+			</h2>
+		</div>
+
+		if filledSubtext != "" {
+			<!-- Залитый переливающийся текст -->
+			<p class="cinematic-filled-text text-2xl sm:text-4xl md:text-5xl font-extrabold uppercase tracking-tight">
+				{ filledSubtext }
+			</p>
+		}
+	</section>
+
+	<style>
+		.cinematic-stroke-text {
+			color: transparent;
+			-webkit-text-stroke: 2px var(--color-accent);
+			background: linear-gradient(
+				90deg,
+				var(--color-accent),
+				var(--color-primary),
+				var(--color-accent-light, #38bdf8),
+				var(--color-accent)
+			);
+			background-size: 300% 100%;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			animation: gradientStrokeMove 6s linear infinite;
+		}
+
+		.cinematic-filled-text {
+			background: linear-gradient(
+				135deg,
+				var(--color-content),
+				var(--color-accent),
+				var(--color-primary)
+			);
+			background-size: 200% 200%;
+			-webkit-background-clip: text;
+			background-clip: text;
+			-webkit-text-fill-color: transparent;
+			animation: gradientFilledShift 5s ease infinite;
+		}
+
+		@keyframes gradientStrokeMove {
+			0% { background-position: 0% 50%; }
+			100% { background-position: 300% 50%; }
+		}
+
+		@keyframes gradientFilledShift {
+			0%, 100% { background-position: 0% 50%; }
+			50% { background-position: 100% 50%; }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.cinematic-stroke-text,
+			.cinematic-filled-text {
+				animation: none !important;
+			}
+		}
+	</style>
+}

@@ -1,0 +1,119 @@
+package cinematic
+
+type HorizontalSlide struct {
+	Tag      string
+	Title    string
+	Desc     string
+	ImageURL string
+}
+
+templ HorizontalScrollHijack(title string, subtitle string, slides []HorizontalSlide) {
+	<div class="cinematic-horizontal-section relative h-[320vh] w-full" data-horizontal-section>
+		<div class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col justify-center bg-surface">
+			<!-- Заголовок над лентой -->
+			<div class="px-6 md:px-12 mb-8 flex items-end justify-between">
+				<div>
+					if subtitle != "" {
+						<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+					}
+					if title != "" {
+						<h2 class="text-3xl sm:text-5xl font-extrabold text-content tracking-tight">{ title }</h2>
+					}
+				</div>
+				<div class="hidden sm:flex items-center gap-2 text-xs font-mono text-content-muted">
+					<span class="inline-block w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+					<span>Motion WAAPI • Скролльте для горизонтального движения</span>
+					<span>→</span>
+				</div>
+			</div>
+
+			<!-- Горизонтальная движущаяся дорожка -->
+			<div
+				class="horizontal-track flex gap-8 px-6 md:px-12 will-change-transform"
+				style="width: max-content;"
+			>
+				for idx, s := range slides {
+					<div
+						class="slide-card shrink-0 w-[300px] sm:w-[420px] rounded-3xl bg-surface-muted/40 border border-surface-muted p-8 flex flex-col justify-between shadow-xl"
+					>
+						if s.ImageURL != "" {
+							<div
+								class="w-full h-48 rounded-2xl bg-cover bg-center mb-6 border border-surface-muted/60"
+								style={ "background-image: url('" + s.ImageURL + "');" }
+							></div>
+						}
+						<div>
+							<div class="flex items-center justify-between mb-3">
+								<span class="text-xs font-mono font-bold text-accent">0{ templ.EscapeString(string(rune(idx+1))) }</span>
+								if s.Tag != "" {
+									<span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-accent/10 text-accent">
+										{ s.Tag }
+									</span>
+								}
+							</div>
+							<h3 class="text-2xl font-bold text-content mb-3">{ s.Title }</h3>
+							<p class="text-sm text-content-muted leading-relaxed">{ s.Desc }</p>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			function loadMotion(cb) {
+				if (window.Motion) return cb(window.Motion);
+				var s = document.querySelector('script[data-motion-cdn]');
+				if (!s) {
+					s = document.createElement('script');
+					s.src = 'https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.min.js';
+					s.dataset.motionCdn = 'true';
+					document.head.appendChild(s);
+				}
+				s.addEventListener('load', function() { cb(window.Motion); });
+			}
+
+			function initHorizontalMotion() {
+				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+				var containers = document.querySelectorAll('[data-horizontal-section]');
+				if (containers.length === 0) return;
+
+				loadMotion(function(Motion) {
+					containers.forEach(function(container) {
+						if (container.dataset.motionBound) return;
+						container.dataset.motionBound = 'true';
+
+						var track = container.querySelector('.horizontal-track');
+						if (!track) return;
+
+						var maxTranslate = 0;
+						function calcTranslate() {
+							maxTranslate = Math.max(0, track.scrollWidth - window.innerWidth + 80);
+						}
+						calcTranslate();
+						window.addEventListener('resize', calcTranslate);
+
+						// Непрерывный аппаратный скраббинг через Motion One (WAAPI)
+						Motion.scroll(function(info) {
+							if (maxTranslate <= 0) return;
+							var p = typeof info === 'number' ? info : (info && info.y ? info.y.progress : 0);
+							track.style.transform = 'translateX(-' + (p * maxTranslate).toFixed(1) + 'px)';
+						}, {
+							target: container,
+							offset: ["start start", "end end"]
+						});
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initHorizontalMotion);
+			} else {
+				initHorizontalMotion();
+			}
+			document.addEventListener('htmx:afterSwap', initHorizontalMotion);
+		})();
+	</script>
+}

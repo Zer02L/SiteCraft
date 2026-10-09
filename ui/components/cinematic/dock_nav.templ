@@ -1,0 +1,82 @@
+package cinematic
+
+type DockNavItem struct {
+	Label string
+	Icon  string
+	URL   string
+}
+
+templ DockNav(items []DockNavItem) {
+	<div class="cinematic-dock-wrapper flex justify-center py-6 select-none">
+		<nav
+			class="dock-container flex items-end gap-3 px-4 py-3 rounded-2xl bg-surface/80 border border-surface-muted/80 backdrop-blur-xl shadow-2xl"
+			data-dock-nav
+		>
+			for _, item := range items {
+				<a
+					href={ templ.SafeURL(item.URL) }
+					class="dock-item group relative flex flex-col items-center origin-bottom transition-all duration-100 ease-out"
+					style="width: 48px; height: 48px;"
+				>
+					<!-- Всплывающая подсказка над иконкой -->
+					<span class="pointer-events-none absolute -top-9 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded-md text-[11px] font-semibold bg-zinc-900 text-white shadow-md whitespace-nowrap">
+						{ item.Label }
+					</span>
+
+					<div class="dock-icon-box w-full h-full rounded-xl bg-surface-muted/60 border border-surface-muted flex items-center justify-center text-xl text-content group-hover:text-accent shadow-sm group-hover:shadow-md transition-colors">
+						{ item.Icon }
+					</div>
+				</a>
+			}
+		</nav>
+	</div>
+
+	<script>
+		(function() {
+			function initDocks() {
+				document.querySelectorAll('[data-dock-nav]').forEach(function(dock) {
+					if (dock.dataset.dockInit) return;
+					dock.dataset.dockInit = 'true';
+
+					var items = dock.querySelectorAll('.dock-item');
+					var baseSize = 48;
+					var maxSize = 72;
+					var maxDist = 120;
+
+					dock.addEventListener('mousemove', function(e) {
+						var mouseX = e.clientX;
+						items.forEach(function(item) {
+							var rect = item.getBoundingClientRect();
+							var itemCenterX = rect.left + rect.width / 2;
+							var dist = Math.abs(mouseX - itemCenterX);
+
+							if (dist < maxDist) {
+								var scale = 1 + (1 - dist / maxDist) * 0.5;
+								var newSize = baseSize * scale;
+								item.style.width = newSize + 'px';
+								item.style.height = newSize + 'px';
+							} else {
+								item.style.width = baseSize + 'px';
+								item.style.height = baseSize + 'px';
+							}
+						});
+					});
+
+					dock.addEventListener('mouseleave', function() {
+						items.forEach(function(item) {
+							item.style.width = baseSize + 'px';
+							item.style.height = baseSize + 'px';
+						});
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initDocks);
+			} else {
+				initDocks();
+			}
+			document.addEventListener('htmx:afterSwap', initDocks);
+		})();
+	</script>
+}

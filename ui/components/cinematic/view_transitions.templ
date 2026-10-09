@@ -1,0 +1,138 @@
+package cinematic
+
+type MorphItem struct {
+	ID       string
+	Title    string
+	Category string
+	Desc     string
+	Price    string
+}
+
+templ ViewTransitions(title string, subtitle string, items []MorphItem) {
+	<section class="cinematic-view-transitions py-20 px-4 max-w-5xl mx-auto" data-view-transition-section>
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-12">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-5xl font-extrabold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+
+		<!-- Сетка карточек -->
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+			for _, item := range items {
+				<div
+					class="morph-card p-7 rounded-3xl bg-surface border border-surface-muted/80 shadow-md hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
+					data-morph-id={ item.ID }
+					data-morph-title={ item.Title }
+					data-morph-cat={ item.Category }
+					data-morph-desc={ item.Desc }
+					data-morph-price={ item.Price }
+					style={ "view-transition-name: card-" + item.ID + ";" }
+				>
+					<div>
+						<span class="text-xs font-mono font-bold text-accent mb-3 block">{ item.Category }</span>
+						<h3 class="text-2xl font-bold text-content mb-2">{ item.Title }</h3>
+						<p class="text-sm text-content-muted line-clamp-3 mb-6">{ item.Desc }</p>
+					</div>
+					<div class="flex items-center justify-between pt-4 border-t border-surface-muted/60">
+						<span class="text-lg font-extrabold text-content font-mono">{ item.Price }</span>
+						<span class="text-xs font-bold text-accent">Подробнее →</span>
+					</div>
+				</div>
+			}
+		</div>
+
+		<!-- Модальное окно с морфингом -->
+		<div
+			class="morph-modal-backdrop fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4"
+			data-morph-modal
+		>
+			<div
+				class="morph-modal-box max-w-lg w-full p-8 rounded-3xl bg-surface border border-surface-muted shadow-2xl relative"
+				style="view-transition-name: active-card;"
+			>
+				<button
+					class="absolute top-6 right-6 w-9 h-9 rounded-full bg-surface-muted/60 text-content flex items-center justify-center text-sm font-bold hover:bg-surface-muted"
+					data-morph-close
+				>
+					✕
+				</button>
+				<span class="text-xs font-mono font-bold text-accent mb-2 block" data-modal-cat></span>
+				<h3 class="text-3xl font-extrabold text-content mb-3" data-modal-title></h3>
+				<p class="text-base text-content-muted leading-relaxed mb-6" data-modal-desc></p>
+				<div class="flex items-center justify-between pt-6 border-t border-surface-muted/60">
+					<span class="text-2xl font-extrabold text-content font-mono" data-modal-price></span>
+					<button class="px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent-hover transition-colors shadow-lg">
+						Выбрать тариф
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script>
+		(function() {
+			function initMorphCards() {
+				var section = document.querySelector('[data-view-transition-section]');
+				if (!section) return;
+
+				var modal = section.querySelector('[data-morph-modal]');
+				var closeBtn = section.querySelector('[data-morph-close]');
+				var mTitle = section.querySelector('[data-modal-title]');
+				var mCat = section.querySelector('[data-modal-cat]');
+				var mDesc = section.querySelector('[data-modal-desc]');
+				var mPrice = section.querySelector('[data-modal-price]');
+
+				function openModal(card) {
+					function updateDOM() {
+						mTitle.textContent = card.dataset.morphTitle;
+						mCat.textContent = card.dataset.morphCat;
+						mDesc.textContent = card.dataset.morphDesc;
+						mPrice.textContent = card.dataset.morphPrice;
+						modal.classList.remove('hidden');
+						modal.classList.add('flex');
+					}
+
+					if (document.startViewTransition) {
+						document.startViewTransition(updateDOM);
+					} else {
+						updateDOM();
+					}
+				}
+
+				function closeModal() {
+					function updateDOM() {
+						modal.classList.add('hidden');
+						modal.classList.remove('flex');
+					}
+
+					if (document.startViewTransition) {
+						document.startViewTransition(updateDOM);
+					} else {
+						updateDOM();
+					}
+				}
+
+				section.querySelectorAll('[data-morph-id]').forEach(function(card) {
+					card.addEventListener('click', function() { openModal(card); });
+				});
+
+				if (closeBtn) closeBtn.addEventListener('click', closeModal);
+				modal.addEventListener('click', function(e) {
+					if (e.target === modal) closeModal();
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initMorphCards);
+			} else {
+				initMorphCards();
+			}
+			document.addEventListener('htmx:afterSwap', initMorphCards);
+		})();
+	</script>
+}

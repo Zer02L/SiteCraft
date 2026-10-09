@@ -1,0 +1,79 @@
+package cinematic
+
+templ CurtainReveal(leftTitle string, rightTitle string, revealHeading string, revealText string, ctaText string, ctaURL string) {
+	<div class="cinematic-curtain-container relative h-[240vh] w-full" data-curtain-container>
+		<div class="curtain-sticky sticky top-0 h-[100dvh] w-full overflow-hidden flex items-center justify-center">
+			<!-- Задний контент, который раскрывается под шторками -->
+			<div class="curtain-reveal-content absolute inset-0 z-10 flex flex-col items-center justify-center text-center p-8 bg-surface">
+				<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-4">Откройте будущее</span>
+				<h2 class="text-4xl sm:text-6xl font-extrabold text-content tracking-tight max-w-3xl mb-6">
+					{ revealHeading }
+				</h2>
+				<p class="text-lg text-content-muted max-w-xl mb-8 leading-relaxed">
+					{ revealText }
+				</p>
+				if ctaURL != "" {
+					<a
+						href={ templ.SafeURL(ctaURL) }
+						class="px-8 py-4 rounded-xl bg-accent text-white font-semibold text-base hover:bg-accent-hover transition-colors shadow-lg shadow-accent/25"
+					>
+						{ ctaText }
+					</a>
+				}
+			</div>
+
+			<!-- Левая створка шторки -->
+			<div
+				class="curtain-panel-left absolute top-0 bottom-0 left-0 w-1/2 bg-surface border-r border-surface-muted/60 z-20 flex items-center justify-end pr-8 sm:pr-16 shadow-2xl transition-transform duration-75 ease-out will-change-transform"
+			>
+				<h3 class="text-4xl sm:text-7xl font-extrabold text-content tracking-tighter text-right">
+					{ leftTitle }
+				</h3>
+			</div>
+
+			<!-- Правая створка шторки -->
+			<div
+				class="curtain-panel-right absolute top-0 bottom-0 right-0 w-1/2 bg-surface border-l border-surface-muted/60 z-20 flex items-center justify-start pl-8 sm:pr-16 shadow-2xl transition-transform duration-75 ease-out will-change-transform"
+			>
+				<h3 class="text-4xl sm:text-7xl font-extrabold text-accent tracking-tighter text-left">
+					{ rightTitle }
+				</h3>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			function initCurtains() {
+				var container = document.querySelector('[data-curtain-container]');
+				if (!container) return;
+
+				var left = container.querySelector('.curtain-panel-left');
+				var right = container.querySelector('.curtain-panel-right');
+				if (!left || !right) return;
+
+				function onScroll() {
+					var rect = container.getBoundingClientRect();
+					var winHeight = window.innerHeight;
+					var totalScroll = container.offsetHeight - winHeight;
+					var currentScroll = -rect.top;
+					var progress = Math.max(0, Math.min(currentScroll / totalScroll, 1));
+
+					var translatePercent = progress * 102; // слегка больше 100%, чтобы полностью убрать за экран
+					left.style.transform = 'translateX(-' + translatePercent.toFixed(1) + '%)';
+					right.style.transform = 'translateX(' + translatePercent.toFixed(1) + '%)';
+				}
+
+				window.addEventListener('scroll', onScroll, { passive: true });
+				onScroll();
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initCurtains);
+			} else {
+				initCurtains();
+			}
+			document.addEventListener('htmx:afterSwap', initCurtains);
+		})();
+	</script>
+}

@@ -5,6 +5,8 @@
     "theme": "beauty",
     "enable_a11y": false,
     "enable_alpine": false,
+    "enable_cart": true,
+    "enable_floating_contact": true,
     "map_mode": "lazy",
     "booking_mode": "slots"
   },
@@ -25,14 +27,16 @@
   },
   "blocks": [
     { "type": "hero", "title": "Атмосфера и первое знакомство", "order": 1, "active": true },
-    { "type": "gallery", "title": "Наши работы и преображения", "order": 2, "active": true },
-    { "type": "services", "title": "Бьюти-меню и процедуры", "order": 3, "active": true },
-    { "type": "features", "title": "Почему выбирают «Эстетику»", "order": 4, "active": true },
-    { "type": "team", "title": "Наши стилисты и мастера", "order": 5, "active": true },
-    { "type": "reviews", "title": "Впечатления гостей студии", "order": 6, "active": true },
-    { "type": "booking", "title": "Онлайн-запись к мастеру", "order": 7, "active": true },
-    { "type": "faq", "title": "Вопросы о процедурах и уходе", "order": 8, "active": true },
-    { "type": "map", "title": "Как добраться до студии", "order": 9, "active": true }
+    { "type": "quiz", "title": "Бьюти-калькулятор и подарок", "order": 2, "active": true },
+    { "type": "before_after", "title": "Преображение клиентов: До и После", "order": 3, "active": true },
+    { "type": "gallery", "title": "Наши работы и преображения", "order": 4, "active": true },
+    { "type": "services", "title": "Бьюти-меню и процедуры", "order": 5, "active": true },
+    { "type": "features", "title": "Почему выбирают «Эстетику»", "order": 6, "active": true },
+    { "type": "team", "title": "Наши стилисты и мастера", "order": 7, "active": true },
+    { "type": "reviews", "title": "Впечатления гостей студии", "order": 8, "active": true },
+    { "type": "booking", "title": "Онлайн-запись к мастеру", "order": 9, "active": true },
+    { "type": "faq", "title": "Вопросы о процедурах и уходе", "order": 10, "active": true },
+    { "type": "map", "title": "Как добраться до студии", "order": 11, "active": true }
   ],
   "services": [
     {

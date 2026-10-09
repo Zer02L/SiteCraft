@@ -1,0 +1,89 @@
+package cinematic
+
+type PanCard struct {
+	X        int
+	Y        int
+	Title    string
+	Category string
+	Color    string
+}
+
+templ DragPanGrid(title string, subtitle string, cards []PanCard) {
+	<section class="cinematic-drag-pan relative w-full h-[600px] overflow-hidden rounded-3xl border border-surface-muted bg-surface/50 select-none cursor-grab active:cursor-grabbing" data-drag-pan-container>
+		<!-- Информационная плашка сверху -->
+		<div class="absolute top-6 left-6 z-20 pointer-events-none">
+			if subtitle != "" {
+				<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-1 block">{ subtitle }</span>
+			}
+			if title != "" {
+				<h3 class="text-2xl font-bold text-content tracking-tight">{ title }</h3>
+			}
+			<p class="text-xs text-content-muted mt-1">Зажмите и тяните в любую сторону для перемещения по холсту</p>
+		</div>
+
+		<!-- Холст, который двигается -->
+		<div
+			class="pan-canvas absolute inset-0 w-full h-full will-change-transform"
+			data-pan-canvas
+		>
+			for _, c := range cards {
+				<div
+					class="absolute w-60 p-6 rounded-2xl bg-surface border border-surface-muted shadow-xl hover:shadow-2xl transition-shadow"
+					style={ "left: calc(50% + " + templ.EscapeString(string(rune(c.X))) + "px); top: calc(50% + " + templ.EscapeString(string(rune(c.Y))) + "px);" }
+				>
+					<span class="text-xs font-mono font-bold text-accent mb-2 block">{ c.Category }</span>
+					<h4 class="text-lg font-bold text-content mb-1">{ c.Title }</h4>
+					<div class="w-8 h-1 rounded-full bg-accent/40 mt-3"></div>
+				</div>
+			}
+		</div>
+	</section>
+
+	<script>
+		(function() {
+			function initDragPan() {
+				document.querySelectorAll('[data-drag-pan-container]').forEach(function(container) {
+					if (container.dataset.panInit) return;
+					container.dataset.panInit = 'true';
+
+					var canvas = container.querySelector('[data-pan-canvas]');
+					if (!canvas) return;
+
+					var isDragging = false;
+					var startX = 0, startY = 0;
+					var currentX = 0, currentY = 0;
+
+					container.addEventListener('pointerdown', function(e) {
+						isDragging = true;
+						startX = e.clientX - currentX;
+						startY = e.clientY - currentY;
+						container.setPointerCapture(e.pointerId);
+					});
+
+					container.addEventListener('pointermove', function(e) {
+						if (!isDragging) return;
+						currentX = e.clientX - startX;
+						currentY = e.clientY - startY;
+						canvas.style.transform = 'translate(' + currentX + 'px, ' + currentY + 'px)';
+					});
+
+					function stopDrag(e) {
+						if (!isDragging) return;
+						isDragging = false;
+						try { container.releasePointerCapture(e.pointerId); } catch(err) {}
+					}
+
+					container.addEventListener('pointerup', stopDrag);
+					container.addEventListener('pointercancel', stopDrag);
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initDragPan);
+			} else {
+				initDragPan();
+			}
+			document.addEventListener('htmx:afterSwap', initDragPan);
+		})();
+	</script>
+}

@@ -1,0 +1,99 @@
+package cinematic
+
+type SpotlightCardItem struct {
+	Tag         string
+	Title       string
+	Description string
+	Icon        string
+	Link        string
+	LinkText    string
+}
+
+templ SpotlightBorder(title string, subtitle string, items []SpotlightCardItem) {
+	<section class="cinematic-spotlight-section py-16 px-4 max-w-7xl mx-auto">
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-12">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-4xl font-bold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+		<div class="spotlight-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-spotlight-group>
+			for _, item := range items {
+				<div class="spotlight-card group relative rounded-2xl p-[1px] overflow-hidden bg-surface-muted/40 hover:bg-surface-muted/80 transition-colors duration-300">
+					<!-- Подсветка границы, следующая за курсором -->
+					<div
+						class="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+						style="background: radial-gradient(400px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(var(--color-primary), 0.4), transparent 60%);"
+					></div>
+					
+					<!-- Внутреннее тело карточки -->
+					<div class="relative z-10 h-full w-full rounded-2xl bg-surface p-7 flex flex-col justify-between overflow-hidden">
+						<!-- Радиальный внутренний блик -->
+						<div
+							class="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+							style="background: radial-gradient(350px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(var(--color-accent), 0.08), transparent 70%);"
+						></div>
+
+						<div class="relative z-10">
+							<div class="flex items-center justify-between mb-4">
+								if item.Icon != "" {
+									<div class="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center font-bold text-lg">
+										{ item.Icon }
+									</div>
+								}
+								if item.Tag != "" {
+									<span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-surface-muted text-content-muted border border-surface-muted">
+										{ item.Tag }
+									</span>
+								}
+							</div>
+							<h3 class="text-xl font-semibold text-content mb-2 group-hover:text-accent transition-colors">
+								{ item.Title }
+							</h3>
+							<p class="text-sm text-content-muted leading-relaxed">
+								{ item.Description }
+							</p>
+						</div>
+
+						if item.Link != "" {
+							<div class="relative z-10 mt-6 pt-4 border-t border-surface-muted/60 flex items-center justify-between text-sm font-medium text-accent">
+								<span>{ item.LinkText }</span>
+								<svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+								</svg>
+							</div>
+						}
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+
+	<script>
+		(function() {
+			function initSpotlight() {
+				document.querySelectorAll('[data-spotlight-group]').forEach(function(group) {
+					group.querySelectorAll('.spotlight-card').forEach(function(card) {
+						card.addEventListener('mousemove', function(e) {
+							var rect = card.getBoundingClientRect();
+							var x = e.clientX - rect.left;
+							var y = e.clientY - rect.top;
+							card.style.setProperty('--mouse-x', x + 'px');
+							card.style.setProperty('--mouse-y', y + 'px');
+						});
+					});
+				});
+			}
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initSpotlight);
+			} else {
+				initSpotlight();
+			}
+			document.addEventListener('htmx:afterSwap', initSpotlight);
+		})();
+	</script>
+}

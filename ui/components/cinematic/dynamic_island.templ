@@ -1,0 +1,57 @@
+package cinematic
+
+type IslandNotification struct {
+	Badge   string
+	Message string
+	Action  string
+	URL     string
+}
+
+templ DynamicIsland(notif IslandNotification) {
+	<div
+		class="cinematic-dynamic-island fixed top-4 left-1/2 -translate-x-1/2 z-50 select-none"
+		x-data="{ expanded: false }"
+	>
+		<div
+			class="relative flex items-center justify-between transition-all duration-300 ease-out bg-black/90 text-white rounded-full px-4 py-2 shadow-2xl border border-white/10 backdrop-blur-xl cursor-pointer"
+			:class="expanded ? 'w-[360px] sm:w-[420px] rounded-3xl p-5' : 'w-auto hover:scale-105'"
+			@click="expanded = !expanded"
+		>
+			<!-- Свёрнутое состояние (Pill) -->
+			<div x-show="!expanded" class="flex items-center gap-3">
+				<span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+				<span class="text-xs font-semibold tracking-wide">{ notif.Badge }</span>
+				<span class="text-xs text-zinc-400 max-w-[200px] truncate">{ notif.Message }</span>
+				<span class="text-[10px] text-zinc-500 font-mono">✦</span>
+			</div>
+
+			<!-- Развёрнутое состояние (Expanded card) -->
+			<div x-show="expanded" x-cloak class="w-full flex flex-col gap-3">
+				<div class="flex items-center justify-between border-b border-white/10 pb-2.5">
+					<div class="flex items-center gap-2">
+						<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+						<span class="text-xs font-bold uppercase tracking-wider text-emerald-400">{ notif.Badge }</span>
+					</div>
+					<button
+						class="text-zinc-400 hover:text-white text-xs font-mono px-2 py-0.5 rounded-full bg-white/10"
+						@click.stop="expanded = false"
+					>
+						✕
+					</button>
+				</div>
+				<p class="text-sm text-zinc-200 leading-relaxed">
+					{ notif.Message }
+				</p>
+				if notif.URL != "" {
+					<a
+						href={ templ.SafeURL(notif.URL) }
+						class="inline-flex items-center justify-center w-full px-4 py-2 rounded-xl bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-colors mt-1"
+						@click.stop
+					>
+						{ notif.Action }
+					</a>
+				}
+			</div>
+		</div>
+	</div>
+}

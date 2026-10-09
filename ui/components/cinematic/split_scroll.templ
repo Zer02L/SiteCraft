@@ -1,0 +1,85 @@
+package cinematic
+
+type SplitColumnItem struct {
+	Title string
+	Desc  string
+	Tag   string
+}
+
+templ SplitScreenScroll(leftItems []SplitColumnItem, rightItems []SplitColumnItem) {
+	<div class="cinematic-split-section relative h-[300vh] w-full" data-split-section>
+		<div class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col md:flex-row bg-surface">
+			<!-- Левая колонка (скроллится вниз) -->
+			<div class="split-col flex-1 h-full overflow-hidden relative border-r border-surface-muted/60">
+				<div class="split-col-left absolute inset-x-0 top-0 flex flex-col will-change-transform">
+					for _, itm := range leftItems {
+						<div class="h-[100dvh] flex flex-col justify-center p-8 sm:p-16">
+							if itm.Tag != "" {
+								<span class="text-xs font-mono font-bold text-accent mb-3 block">{ itm.Tag }</span>
+							}
+							<h3 class="text-3xl sm:text-5xl font-extrabold text-content mb-4 tracking-tight">{ itm.Title }</h3>
+							<p class="text-base text-content-muted max-w-md leading-relaxed">{ itm.Desc }</p>
+						</div>
+					}
+				</div>
+			</div>
+
+			<!-- Правая колонка (скроллится в обратном направлении) -->
+			<div class="split-col flex-1 h-full overflow-hidden relative bg-surface-muted/30">
+				<div class="split-col-right absolute inset-x-0 bottom-0 flex flex-col will-change-transform">
+					for _, itm := range rightItems {
+						<div class="h-[100dvh] flex flex-col justify-center p-8 sm:p-16">
+							if itm.Tag != "" {
+								<span class="text-xs font-mono font-bold text-primary mb-3 block">{ itm.Tag }</span>
+							}
+							<h3 class="text-3xl sm:text-5xl font-extrabold text-content mb-4 tracking-tight">{ itm.Title }</h3>
+							<p class="text-base text-content-muted max-w-md leading-relaxed">{ itm.Desc }</p>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			function initSplitScroll() {
+				var container = document.querySelector('[data-split-section]');
+				if (!container) return;
+
+				var leftCol = container.querySelector('.split-col-left');
+				var rightCol = container.querySelector('.split-col-right');
+				if (!leftCol || !rightCol) return;
+
+				function onScroll() {
+					var rect = container.getBoundingClientRect();
+					var winHeight = window.innerHeight;
+					var totalScroll = container.offsetHeight - winHeight;
+					var currentScroll = -rect.top;
+					var progress = Math.max(0, Math.min(currentScroll / totalScroll, 1));
+
+					var leftMax = leftCol.scrollHeight - winHeight;
+					var rightMax = rightCol.scrollHeight - winHeight;
+
+					if (leftMax > 0) {
+						leftCol.style.transform = 'translateY(-' + (progress * leftMax).toFixed(1) + 'px)';
+					}
+					if (rightMax > 0) {
+						// Правая колонка едет в обратную сторону
+						rightCol.style.transform = 'translateY(' + ((1 - progress) * rightMax).toFixed(1) + 'px)';
+					}
+				}
+
+				window.addEventListener('scroll', onScroll, { passive: true });
+				onScroll();
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initSplitScroll);
+			} else {
+				initSplitScroll();
+			}
+			document.addEventListener('htmx:afterSwap', initSplitScroll);
+		})();
+	</script>
+}

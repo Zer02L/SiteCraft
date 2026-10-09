@@ -1,0 +1,91 @@
+package cinematic
+
+import "encoding/json"
+
+func phrasesToJSON(phrases []string) string {
+	b, err := json.Marshal(phrases)
+	if err != nil {
+		return "[]"
+	}
+	return string(b)
+}
+
+templ Typewriter(prefix string, phrases []string, suffix string) {
+	<div class="cinematic-typewriter-wrapper inline-flex items-center gap-1 font-bold text-content text-2xl sm:text-4xl lg:text-5xl tracking-tight">
+		if prefix != "" {
+			<span class="text-content-muted">{ prefix }</span>
+		}
+		<span
+			class="text-accent underline decoration-accent/30 decoration-2 underline-offset-8"
+			data-typewriter
+			data-phrases={ phrasesToJSON(phrases) }
+		>
+			if len(phrases) > 0 {
+				{ phrases[0] }
+			}
+		</span>
+		<span class="inline-block w-0.5 sm:w-1 h-8 sm:h-12 bg-accent animate-pulse ml-0.5" aria-hidden="true"></span>
+		if suffix != "" {
+			<span class="text-content-muted ml-1">{ suffix }</span>
+		}
+	</div>
+
+	<script>
+		(function() {
+			function initTypewriters() {
+				document.querySelectorAll('[data-typewriter]').forEach(function(el) {
+					if (el.dataset.initialized) return;
+					el.dataset.initialized = 'true';
+
+					var phrases = [];
+					try {
+						phrases = JSON.parse(el.dataset.phrases || '[]');
+					} catch(e) {
+						return;
+					}
+					if (!phrases || phrases.length === 0) return;
+
+					var phraseIdx = 0;
+					var charIdx = phrases[0].length;
+					var isDeleting = true;
+					var typingSpeed = 100;
+					var deletingSpeed = 50;
+					var pauseDelay = 2000;
+
+					function tick() {
+						var current = phrases[phraseIdx];
+						if (isDeleting) {
+							charIdx--;
+							el.textContent = current.substring(0, charIdx);
+							if (charIdx <= 0) {
+								isDeleting = false;
+								phraseIdx = (phraseIdx + 1) % phrases.length;
+								setTimeout(tick, 300);
+								return;
+							}
+							setTimeout(tick, deletingSpeed);
+						} else {
+							charIdx++;
+							el.textContent = current.substring(0, charIdx);
+							if (charIdx >= current.length) {
+								isDeleting = true;
+								setTimeout(tick, pauseDelay);
+								return;
+							}
+							setTimeout(tick, typingSpeed);
+						}
+					}
+
+					setTimeout(tick, pauseDelay);
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initTypewriters);
+			} else {
+				initTypewriters();
+			}
+			document.addEventListener('htmx:afterSwap', initTypewriters);
+		})();
+	</script>
+}

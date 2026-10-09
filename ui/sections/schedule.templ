@@ -12,7 +12,7 @@ templ ScheduleBar(content models.SiteContent) {
 	<section id="schedule" class="bg-surface border-b border-content/10 py-8 px-4 shadow-sm">
 		<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
 			<!-- Часы работы -->
-			<div data-reveal data-reveal-delay="100" class="flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
+			<div data-reveal data-reveal-delay="100" class="flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
 				<div class="p-3 bg-primary/10 text-primary rounded-lg shrink-0">
 					@icons.Clock(templ.Attributes{"class": "w-6 h-6"})
 				</div>
@@ -25,7 +25,7 @@ templ ScheduleBar(content models.SiteContent) {
 			</div>
 
 			<!-- Телефоны -->
-			<div data-reveal data-reveal-delay="200" class="flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
+			<div data-reveal data-reveal-delay="200" class="flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
 				<div class="p-3 bg-primary/10 text-primary rounded-lg shrink-0">
 					@icons.PhoneCall(templ.Attributes{"class": "w-6 h-6"})
 				</div>
@@ -44,7 +44,7 @@ templ ScheduleBar(content models.SiteContent) {
 			</div>
 
 			<!-- Порядок приёма -->
-			<div data-reveal data-reveal-delay="300" class="flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
+			<div data-reveal data-reveal-delay="300" class="flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300">
 				<div class="p-3 bg-primary/10 text-primary rounded-lg shrink-0">
 					@icons.ShieldCheck(templ.Attributes{"class": "w-6 h-6"})
 				</div>

@@ -1,0 +1,320 @@
+package sections
+
+import (
+	"encoding/json"
+	"fmt"
+	"sitecraft/internal/i18n"
+	"sitecraft/internal/models"
+
+	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"github.com/axadrn/shadcn-templ/v2/components/button"
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
+func quizPayloadJSON(p models.QuizPayload) string {
+	b, err := json.Marshal(p)
+	if err != nil {
+		return "{}"
+	}
+	return string(b)
+}
+
+templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
+	<section id="quiz" class="py-16 px-4 max-w-4xl mx-auto" data-reveal>
+		<div class="text-center mb-8">
+			@badge.Badge(badge.Props{
+				Variant: badge.VariantSecondary,
+				Class:   "section-badge mb-3",
+			}) {
+				if payload.Badge != "" {
+					{ payload.Badge }
+				} else {
+					{ i18n.T(ctx, "quiz.badge") }
+				}
+			}
+			<h2 class="section-title">
+				if payload.Title != "" {
+					{ payload.Title }
+				} else {
+					"Онлайн-калькулятор стоимости"
+				}
+			</h2>
+			<p class="section-subtitle">
+				if payload.Subtitle != "" {
+					{ payload.Subtitle }
+				} else {
+					"Ответьте на 3 простых вопроса и получите предварительный расчет стоимости с персональной скидкой"
+				}
+			</p>
+		</div>
+
+		<div
+			id="quiz-form-container"
+			class="bg-surface border border-content/10 rounded-card p-6 sm:p-10 shadow-xl relative overflow-hidden"
+			x-data={ fmt.Sprintf(`{
+				step: 0,
+				totalSteps: %d,
+				basePrice: %f,
+				currency: '%s',
+				selectedOptions: {},
+				totalPrice: %f,
+				preferredContact: 'whatsapp',
+				calcPrice() {
+					let p = this.basePrice;
+					for (let s in this.selectedOptions) {
+						let opt = this.selectedOptions[s];
+						if (Array.isArray(opt)) {
+							opt.forEach(o => p += (o.price || 0));
+						} else if (opt && opt.price) {
+							p += opt.price;
+						}
+					}
+					this.totalPrice = Math.max(0, p);
+				},
+				selectRadio(stepIdx, optId, title, price) {
+					this.selectedOptions[stepIdx] = { id: optId, title: title, price: price };
+					this.calcPrice();
+				},
+				isRadioSelected(stepIdx, optId) {
+					return this.selectedOptions[stepIdx] && this.selectedOptions[stepIdx].id === optId;
+				},
+				canProceed(stepIdx) {
+					return !!this.selectedOptions[stepIdx];
+				},
+				getSummaryPayload() {
+					let summary = {
+						estimated_price: this.totalPrice,
+						preferred_contact: this.preferredContact,
+						steps: []
+					};
+					for (let s in this.selectedOptions) {
+						let val = this.selectedOptions[s];
+						summary.steps.push({
+							step: parseInt(s) + 1,
+							choice: val ? val.title : ''
+						});
+					}
+					return JSON.stringify(summary);
+				}
+			}`, len(payload.Steps), payload.BasePrice, payload.Currency, payload.BasePrice) }
+		>
+			<!-- Верхний индикатор шагов и суммы -->
+			<div class="mb-8 pb-6 border-b border-content/10 flex flex-wrap items-center justify-between gap-4">
+				<div class="flex items-center gap-3">
+					<div class="flex items-center gap-1.5">
+						<template x-for="i in totalSteps + 1" :key="i">
+							<div
+								class="h-2 rounded-full transition-all duration-300"
+								:class="i - 1 <= step ? 'w-8 bg-accent' : 'w-2.5 bg-content/15'"
+							></div>
+						</template>
+					</div>
+					<span class="text-xs font-semibold text-content-muted" x-text="'Шаг ' + (step + 1) + ' из ' + (totalSteps + 1)"></span>
+				</div>
+
+				<div class="flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-2xl border border-accent/20">
+					<span class="text-xs text-content-muted">Предварительно:</span>
+					<span class="text-base font-bold text-accent" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></span>
+				</div>
+			</div>
+
+			<!-- Шаги квиза -->
+			for stepIdx, s := range payload.Steps {
+				<div
+					x-show={ fmt.Sprintf("step === %d", stepIdx) }
+					x-transition:enter="transition ease-out duration-200"
+					x-transition:enter-start="opacity-0 translate-y-2"
+					x-transition:enter-end="opacity-100 translate-y-0"
+					class="space-y-6"
+				>
+					<div>
+						<h3 class="text-xl sm:text-2xl font-bold text-content mb-1">{ s.Question }</h3>
+						if s.Subtitle != "" {
+							<p class="text-sm text-content-muted">{ s.Subtitle }</p>
+						}
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						for _, opt := range s.Options {
+							<button
+								type="button"
+								x-on:click={ fmt.Sprintf("selectRadio(%d, '%s', '%s', %f)", stepIdx, opt.ID, opt.Title, opt.PriceModifier) }
+								:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-accent/5 ring-2 ring-accent/30' : 'border-content/10 hover:border-accent/40 bg-surface'", stepIdx, opt.ID) }
+								class="text-left p-4 rounded-card-sm border transition-all duration-200 flex items-start gap-4 cursor-pointer group"
+							>
+								<div
+									:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'bg-accent text-primary-dark border-accent' : 'border-content/30 group-hover:border-accent'", stepIdx, opt.ID) }
+									class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+								>
+									<span class="w-2 h-2 rounded-full bg-current"></span>
+								</div>
+								<div class="flex-1">
+									<div class="font-bold text-content text-sm sm:text-base group-hover:text-accent transition-colors flex items-center justify-between">
+										<span>{ opt.Title }</span>
+										if opt.PriceModifier > 0 {
+											<span class="text-xs font-semibold text-accent ml-2">+{ fmt.Sprintf("%.0f", opt.PriceModifier) } { payload.Currency }</span>
+										}
+									</div>
+									if opt.Description != "" {
+										<p class="text-xs text-content-muted mt-1 leading-relaxed">{ opt.Description }</p>
+									}
+								</div>
+							</button>
+						}
+					</div>
+
+					<div class="pt-6 flex items-center justify-between">
+						<div>
+							if stepIdx > 0 {
+								<button
+									type="button"
+									x-on:click="step--"
+									class="px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition"
+								>
+									← Назад
+								</button>
+							}
+						</div>
+						<button
+							type="button"
+							x-on:click={ fmt.Sprintf("if (canProceed(%d)) { step++; }", stepIdx) }
+							:disabled={ fmt.Sprintf("!canProceed(%d)", stepIdx) }
+							:class={ fmt.Sprintf("canProceed(%d) ? 'bg-accent text-primary-dark hover:brightness-105 shadow-md' : 'bg-content/10 text-content-muted cursor-not-allowed'", stepIdx) }
+							class="px-6 py-2.5 rounded-btn text-sm font-bold transition flex items-center gap-2"
+						>
+							<span>Далее</span>
+							@icons.ArrowRight(templ.Attributes{"class": "w-4 h-4"})
+						</button>
+					</div>
+				</div>
+			}
+
+			<!-- Финальный шаг: Контактные данные -->
+			<div
+				x-show={ fmt.Sprintf("step === %d", len(payload.Steps)) }
+				x-transition:enter="transition ease-out duration-200"
+				x-transition:enter-start="opacity-0 translate-y-2"
+				x-transition:enter-end="opacity-100 translate-y-0"
+			>
+				<form
+					hx-post="/api/leads"
+					hx-target="#quiz-form-container"
+					hx-swap="innerHTML transition:true"
+					class="space-y-6"
+				>
+					<div>
+						<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold mb-2">
+							@icons.CheckCircle2(templ.Attributes{"class": "w-3.5 h-3.5"})
+							<span>Расчет сформирован!</span>
+						</div>
+						<h3 class="text-2xl font-bold text-content">Куда отправить расчет и промокод?</h3>
+						<p class="text-sm text-content-muted mt-1">
+							if payload.BonusText != "" {
+								{ payload.BonusText }
+							} else {
+								"Мы зафиксируем за вашим номером скидку 10% и отправим готовую смету в течение 5 минут."
+							}
+						</p>
+					</div>
+
+					<!-- Итог расчета плашка -->
+					<div class="p-4 rounded-card-sm bg-accent/10 border border-accent/20 flex items-center justify-between">
+						<div>
+							<div class="text-xs text-content-muted">Итоговая расчетная стоимость:</div>
+							<div class="text-xl sm:text-2xl font-bold text-accent" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></div>
+						</div>
+						<div class="text-right">
+							<span class="inline-block px-2.5 py-1 rounded-btn bg-accent text-primary-dark font-bold text-xs shadow-sm">
+								Скидка -10% включена
+							</span>
+						</div>
+					</div>
+
+					<!-- Скрытые поля -->
+					<input type="hidden" name="source" value="quiz_calculator"/>
+					<input type="hidden" name="action_type" value="Расчет стоимости из онлайн-квиза"/>
+					<input type="hidden" name="comment" :value="'Предварительный расчет: ' + totalPrice + ' ' + currency"/>
+					<input type="hidden" name="company_website_url" value=""/> <!-- Honeypot -->
+					<input type="hidden" name="consent" value="on"/>
+					<input type="hidden" name="quiz_payload" :value="getSummaryPayload()"/>
+
+					<!-- Канал связи -->
+					<div>
+						<label class="form-label mb-2">Куда прислать расчет?</label>
+						<div class="grid grid-cols-3 gap-3">
+							<button
+								type="button"
+								x-on:click="preferredContact = 'whatsapp'"
+								:class="preferredContact === 'whatsapp' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+							>
+								@icons.MessageSquare(templ.Attributes{"class": "w-4 h-4 text-emerald-500"})
+								<span>WhatsApp</span>
+							</button>
+							<button
+								type="button"
+								x-on:click="preferredContact = 'telegram'"
+								:class="preferredContact === 'telegram' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+							>
+								@icons.Send(templ.Attributes{"class": "w-4 h-4 text-sky-500"})
+								<span>Telegram</span>
+							</button>
+							<button
+								type="button"
+								x-on:click="preferredContact = 'phone'"
+								:class="preferredContact === 'phone' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+							>
+								@icons.Phone(templ.Attributes{"class": "w-4 h-4 text-accent"})
+								<span>Звонок</span>
+							</button>
+						</div>
+					</div>
+
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						<div>
+							<label class="form-label mb-1.5">Ваше имя</label>
+							<input
+								type="text"
+								name="name"
+								required
+								placeholder="Иван"
+								class="form-input"
+							/>
+						</div>
+						<div>
+							<label class="form-label mb-1.5">Телефон для связи</label>
+							<input
+								type="tel"
+								name="phone"
+								required
+								x-mask="+7 (999) 999-99-99"
+								placeholder="+7 (___) ___-__-__"
+								class="form-input"
+							/>
+						</div>
+					</div>
+
+					<div class="pt-4 flex items-center justify-between gap-4">
+						<button
+							type="button"
+							x-on:click="step--"
+							class="px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition"
+						>
+							← Назад
+						</button>
+						@button.Button(button.Props{
+							Variant: button.VariantDefault,
+							Type:    "submit",
+							Class:   "bg-accent text-primary-dark hover:brightness-105 font-bold px-8 py-3 rounded-btn shadow-lg transition flex items-center gap-2",
+						}) {
+							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
+							<span>Получить расчет и скидку</span>
+						}
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+}

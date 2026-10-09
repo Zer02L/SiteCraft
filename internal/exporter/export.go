@@ -5,10 +5,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 
 	"sitecraft/internal/data"
+	"sitecraft/ui"
 	"sitecraft/ui/pages"
 
 	"github.com/pocketbase/pocketbase/core"
@@ -59,40 +61,39 @@ func ExportStaticSite(app core.App, outputDir string) error {
 		}
 	}
 
-	// 3. Copy static assets (ui/assets -> outputDir/assets)
-	assetsSrc := "ui/assets"
+	// 3. Copy static assets (ui.AssetsFS() -> outputDir/assets)
 	assetsDst := filepath.Join(outputDir, "assets")
-	if _, err := os.Stat(assetsSrc); err == nil {
-		if err := copyDir(assetsSrc, assetsDst); err != nil {
-			return fmt.Errorf("failed to copy assets: %w", err)
-		}
+	if err := copyFS(ui.AssetsFS(), assetsDst); err != nil {
+		return fmt.Errorf("failed to copy assets: %w", err)
 	}
 
 	return nil
 }
 
-func copyDir(src, dst string) error {
-	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+func copyFS(srcFS fs.FS, dst string) error {
+	return fs.WalkDir(srcFS, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		relPath, err := filepath.Rel(src, path)
-		if err != nil {
-			return err
+		if path == "." {
+			return nil
 		}
-		targetPath := filepath.Join(dst, relPath)
-
-		if info.IsDir() {
-			return os.MkdirAll(targetPath, info.Mode())
+		targetPath := filepath.Join(dst, path)
+		if d.IsDir() {
+			return os.MkdirAll(targetPath, 0755)
 		}
 
-		srcFile, err := os.Open(path)
+		srcFile, err := srcFS.Open(path)
 		if err != nil {
 			return err
 		}
 		defer srcFile.Close()
 
-		dstFile, err := os.OpenFile(targetPath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, info.Mode())
+		if err := os.MkdirAll(filepath.Dir(targetPath), 0755); err != nil {
+			return err
+		}
+
+		dstFile, err := os.OpenFile(targetPath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
 		if err != nil {
 			return err
 		}

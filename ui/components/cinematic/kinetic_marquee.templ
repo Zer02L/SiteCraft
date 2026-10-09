@@ -1,0 +1,55 @@
+package cinematic
+
+templ KineticMarquee(items []string, speedSeconds int, reverse bool) {
+	<div class="cinematic-marquee-wrapper relative w-full overflow-hidden py-4 select-none group border-y border-surface-muted/50 bg-surface/50 backdrop-blur-sm">
+		<!-- Размытые края (Fade masks) -->
+		<div class="pointer-events-none absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-surface to-transparent z-10"></div>
+		<div class="pointer-events-none absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-surface to-transparent z-10"></div>
+
+		<div
+			class={
+				"flex w-max gap-8 group-hover:[animation-play-state:paused]",
+				templ.KV("animate-marquee-reverse", reverse),
+				templ.KV("animate-marquee", !reverse),
+			}
+			style={ "animation-duration: " + templ.EscapeString(string(rune(speedSeconds))) + "s;" }
+		>
+			<!-- Первый набор элементов -->
+			<div class="flex shrink-0 items-center gap-8">
+				for _, itm := range items {
+					<div class="flex items-center gap-4 text-xl sm:text-2xl font-bold tracking-tight text-content/80 hover:text-accent transition-colors">
+						<span>{ itm }</span>
+						<span class="text-accent/40 font-mono text-sm">✦</span>
+					</div>
+				}
+			</div>
+
+			<!-- Дубликат для бесшовного зацикливания -->
+			<div class="flex shrink-0 items-center gap-8" aria-hidden="true">
+				for _, itm := range items {
+					<div class="flex items-center gap-4 text-xl sm:text-2xl font-bold tracking-tight text-content/80 hover:text-accent transition-colors">
+						<span>{ itm }</span>
+						<span class="text-accent/40 font-mono text-sm">✦</span>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+	<style>
+		@keyframes marquee {
+			from { transform: translateX(0); }
+			to { transform: translateX(-50%); }
+		}
+		@keyframes marquee-reverse {
+			from { transform: translateX(-50%); }
+			to { transform: translateX(0); }
+		}
+		.animate-marquee {
+			animation: marquee 25s linear infinite;
+		}
+		.animate-marquee-reverse {
+			animation: marquee-reverse 25s linear infinite;
+		}
+	</style>
+}

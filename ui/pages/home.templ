@@ -4,6 +4,7 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+	"sitecraft/ui/registry"
 	"sitecraft/ui/sections"
 	"sitecraft/ui/sections/hero"
 )
@@ -18,7 +19,7 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 		<!-- Динамический модульный рендеринг секций через BlockRegistry (Factory Pattern) -->
 		if len(blocks) > 0 {
 			for _, b := range blocks {
-				@RenderBlock(b, RenderContext{
+				@registry.RenderBlock(b, registry.RenderContext{
 					Settings:    settings,
 					Content:     content,
 					Services:    services,
@@ -29,6 +30,8 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 			<!-- Дефолтный порядок, если блоки еще не настроены -->
 			if settings.Theme == "cyber" {
 				@hero.CyberHero(content, settings)
+			} else if settings.Theme == "legal" {
+				@hero.LegalHero(content, settings)
 			} else {
 				@hero.Hero(content)
 			}
@@ -42,5 +45,12 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 		}
 
 		@components.Footer(content, settings)
+
+		if settings.EnableFloatingContact {
+			@components.FloatingContact(content, settings)
+		}
+		if settings.EnableCart {
+			@components.CartDrawer(settings)
+		}
 	}
 }

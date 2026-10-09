@@ -5,6 +5,8 @@
     "theme": "auto",
     "enable_a11y": false,
     "enable_alpine": false,
+    "enable_cart": true,
+    "enable_floating_contact": true,
     "header_variant": "minimal",
     "footer_variant": "columns",
     "map_mode": "lazy",
@@ -27,14 +29,16 @@
   },
   "blocks": [
     { "type": "split_hero", "title": "Конверсионный экран СТО", "order": 1, "active": true },
-    { "type": "services", "title": "Виды ремонта и стоимость", "order": 2, "active": true },
-    { "type": "booking", "title": "Быстрый расчет стоимости и запись", "order": 3, "active": true },
-    { "type": "features", "title": "Наши преимущества и гарантия", "order": 4, "active": true },
-    { "type": "steps", "title": "4 шага обслуживания авто", "order": 5, "active": true },
-    { "type": "reviews", "title": "Отзывы автолюбителей", "order": 6, "active": true },
-    { "type": "faq", "title": "Вопросы о гарантии и запчастях", "order": 7, "active": true },
-    { "type": "map", "title": "Как заехать на территорию", "order": 8, "active": true },
-    { "type": "schedule", "title": "График дежурных мастеров", "order": 9, "active": true }
+    { "type": "quiz", "title": "Онлайн-калькулятор ТО и ремонта", "order": 2, "active": true },
+    { "type": "services", "title": "Виды ремонта и стоимость", "order": 3, "active": true },
+    { "type": "before_after", "title": "Примеры работ СТО: До и После", "order": 4, "active": true },
+    { "type": "booking", "title": "Быстрый расчет стоимости и запись", "order": 5, "active": true },
+    { "type": "features", "title": "Наши преимущества и гарантия", "order": 6, "active": true },
+    { "type": "steps", "title": "4 шага обслуживания авто", "order": 7, "active": true },
+    { "type": "reviews", "title": "Отзывы автолюбителей", "order": 8, "active": true },
+    { "type": "faq", "title": "Вопросы о гарантии и запчастях", "order": 9, "active": true },
+    { "type": "map", "title": "Как заехать на территорию", "order": 10, "active": true },
+    { "type": "schedule", "title": "График дежурных мастеров", "order": 11, "active": true }
   ],
   "services": [
     {

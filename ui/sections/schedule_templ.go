@@ -36,7 +36,7 @@ func ScheduleBar(content models.SiteContent) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Info Bar (График работы) --><section id=\"schedule\" class=\"bg-surface border-b border-content/10 py-8 px-4 shadow-sm\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6\"><!-- Часы работы --><div data-reveal data-reveal-delay=\"100\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Info Bar (График работы) --><section id=\"schedule\" class=\"bg-surface border-b border-content/10 py-8 px-4 shadow-sm\"><div class=\"max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6\"><!-- Часы работы --><div data-reveal data-reveal-delay=\"100\" class=\"flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -109,7 +109,7 @@ func ScheduleBar(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div></div><!-- Телефоны --><div data-reveal data-reveal-delay=\"200\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div></div><!-- Телефоны --><div data-reveal data-reveal-delay=\"200\" class=\"flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -211,7 +211,7 @@ func ScheduleBar(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</p></div></div><!-- Порядок приёма --><div data-reveal data-reveal-delay=\"300\" class=\"flex items-start gap-4 p-4 rounded-xl bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</p></div></div><!-- Порядок приёма --><div data-reveal data-reveal-delay=\"300\" class=\"flex items-start gap-4 p-4 rounded-card-sm bg-surface-muted border border-content/10 hover:border-accent/40 hover:-translate-y-0.5 hover:shadow-md transition duration-300\"><div class=\"p-3 bg-primary/10 text-primary rounded-lg shrink-0\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

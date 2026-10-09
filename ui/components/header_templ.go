@@ -285,7 +285,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<!-- Переключатель сезонов и день/ночь --><div x-data=\"{ \n\t\t\t\t\t\topen: false, \n\t\t\t\t\t\tseason: 'main', \n\t\t\t\t\t\tisNight: false,\n\t\t\t\t\t\tinit() {\n\t\t\t\t\t\t\tconst st = window.getThemeState ? window.getThemeState() : { base: 'main', isNight: false };\n\t\t\t\t\t\t\tthis.season = st.base;\n\t\t\t\t\t\t\tthis.isNight = st.isNight;\n\t\t\t\t\t\t\twindow.addEventListener('themechanged', (e) => {\n\t\t\t\t\t\t\t\tthis.season = e.detail.season;\n\t\t\t\t\t\t\t\tthis.isNight = e.detail.isNight;\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t},\n\t\t\t\t\t\tchangeSeason(s) {\n\t\t\t\t\t\t\tthis.season = s;\n\t\t\t\t\t\t\tthis.open = false;\n\t\t\t\t\t\t\twindow.setSiteTheme(s);\n\t\t\t\t\t\t},\n\t\t\t\t\t\ttoggleNight() {\n\t\t\t\t\t\t\twindow.toggleNightMode();\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"flex items-center space-x-1 relative\"><button type=\"button\" @click=\"open = !open\" class=\"flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Выбрать тему оформления\"><span x-show=\"season === 'main'\">🏛️</span> <span x-show=\"season === 'harmonic'\">🎨</span> <span x-show=\"season === 'spring'\">🌱</span> <span x-show=\"season === 'summer'\">☀️</span> <span x-show=\"season === 'autumn'\">🍁</span> <span x-show=\"season === 'winter'\">❄️</span> <span class=\"capitalize\" x-text=\"season === 'main' ? 'Основная' : (season === 'harmonic' ? 'Гармония' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима'))))\"></span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<!-- Переключатель сезонов и день/ночь --><div x-data=\"{ \n\t\t\t\t\t\topen: false, \n\t\t\t\t\t\tseason: 'main', \n\t\t\t\t\t\tisNight: false,\n\t\t\t\t\t\tinit() {\n\t\t\t\t\t\t\tconst st = window.getThemeState ? window.getThemeState() : { base: 'main', isNight: false };\n\t\t\t\t\t\t\tthis.season = st.base;\n\t\t\t\t\t\t\tthis.isNight = st.isNight;\n\t\t\t\t\t\t\twindow.addEventListener('themechanged', (e) => {\n\t\t\t\t\t\t\t\tthis.season = e.detail.season;\n\t\t\t\t\t\t\t\tthis.isNight = e.detail.isNight;\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t},\n\t\t\t\t\t\tchangeSeason(s) {\n\t\t\t\t\t\t\tthis.season = s;\n\t\t\t\t\t\t\tthis.open = false;\n\t\t\t\t\t\t\twindow.setSiteTheme(s);\n\t\t\t\t\t\t},\n\t\t\t\t\t\ttoggleNight() {\n\t\t\t\t\t\t\twindow.toggleNightMode();\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"flex items-center space-x-1 relative\"><button type=\"button\" @click=\"open = !open\" class=\"flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Выбрать тему оформления\"><span x-show=\"season === 'legal' || season === 'legal-swiss'\">⚖️</span> <span x-show=\"season === 'legal-british'\">🌲</span> <span x-show=\"season === 'legal-corporate'\">💼</span> <span x-show=\"season === 'legal-milano'\">🏛️</span> <span x-show=\"season === 'legal-classic'\">📜</span> <span x-show=\"season === 'main'\">🏛️</span> <span x-show=\"season === 'harmonic'\">🎨</span> <span x-show=\"season === 'spring'\">🌱</span> <span x-show=\"season === 'summer'\">☀️</span> <span x-show=\"season === 'autumn'\">🍁</span> <span x-show=\"season === 'winter'\">❄️</span> <span class=\"capitalize\" x-text=\"season === 'legal' || season === 'legal-swiss' ? 'Швейцария' : (season === 'legal-british' ? 'Британия' : (season === 'legal-corporate' ? 'Корпорат' : (season === 'legal-milano' ? 'Милан' : (season === 'legal-classic' ? 'Оксфорд' : (season === 'main' ? 'Основная' : (season === 'harmonic' ? 'Гармония' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима')))))))))\"></span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -293,7 +293,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</button><!-- Выпадающий список сезонов --><div x-show=\"open\" x-cloak @click.outside=\"open = false\" class=\"absolute top-full left-0 mt-1.5 w-44 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs animate-fade-in\"><button type=\"button\" @click=\"changeSeason('main')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Основная</button> <button type=\"button\" @click=\"changeSeason('harmonic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center justify-between cursor-pointer font-medium text-accent\"><span class=\"flex items-center gap-2\"><span>🎨</span> Гармония (Авто)</span> <span class=\"text-[10px] opacity-70\">HSL</span></button> <button type=\"button\" @click=\"changeSeason('spring')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌱</span> Весна</button> <button type=\"button\" @click=\"changeSeason('summer')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>☀️</span> Лето</button> <button type=\"button\" @click=\"changeSeason('autumn')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🍁</span> Осень</button> <button type=\"button\" @click=\"changeSeason('winter')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>❄️</span> Зима</button></div><!-- Переключатель День / Ночь --><button type=\"button\" @click=\"toggleNight()\" class=\"p-1.5 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" :title=\"isNight ? 'Переключить на дневной режим' : 'Переключить на ночной режим'\"><span x-show=\"!isNight\" title=\"Ночной режим\">🌙</span> <span x-show=\"isNight\" title=\"Дневной режим\">☀️</span></button></div><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</button><!-- Выпадающий список сезонов и юридических тем --><div x-show=\"open\" x-cloak @click.outside=\"open = false\" class=\"absolute top-full left-0 mt-1.5 w-52 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs animate-fade-in max-h-80 overflow-y-auto\"><div class=\"px-3 py-1 text-[10px] font-bold text-accent uppercase tracking-wider border-b border-content/10\">Темы Advokat-Pro</div><button type=\"button\" @click=\"changeSeason('legal-swiss')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>⚖️</span> Швейцарский Navy</button> <button type=\"button\" @click=\"changeSeason('legal-british')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌲</span> Британский Изумруд</button> <button type=\"button\" @click=\"changeSeason('legal-corporate')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>💼</span> Корпоративный Сапфир</button> <button type=\"button\" @click=\"changeSeason('legal-milano')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Миланский Графит</button> <button type=\"button\" @click=\"changeSeason('legal-classic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium opacity-70\"><span>📜</span> Оксфорд (Классик)</button><div class=\"px-3 py-1 text-[10px] font-bold text-content-muted uppercase tracking-wider border-t border-b border-content/10 mt-1\">Другие темы</div><button type=\"button\" @click=\"changeSeason('main')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Основная</button> <button type=\"button\" @click=\"changeSeason('harmonic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center justify-between cursor-pointer font-medium text-accent\"><span class=\"flex items-center gap-2\"><span>🎨</span> Гармония (Авто)</span> <span class=\"text-[10px] opacity-70\">HSL</span></button> <button type=\"button\" @click=\"changeSeason('spring')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌱</span> Весна</button> <button type=\"button\" @click=\"changeSeason('summer')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>☀️</span> Лето</button> <button type=\"button\" @click=\"changeSeason('autumn')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🍁</span> Осень</button> <button type=\"button\" @click=\"changeSeason('winter')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>❄️</span> Зима</button></div><!-- Переключатель День / Ночь --><button type=\"button\" @click=\"toggleNight()\" class=\"p-1.5 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" :title=\"isNight ? 'Переключить на дневной режим' : 'Переключить на ночной режим'\"><span x-show=\"!isNight\" title=\"Ночной режим\">🌙</span> <span x-show=\"isNight\" title=\"Дневной режим\">☀️</span></button></div><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -305,7 +305,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.T(ctx, "a11y.version"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 163, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 186, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 			if templ_7745c5c3_Err != nil {
@@ -326,7 +326,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.toggle"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 166, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 189, Col: 40}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 			if templ_7745c5c3_Err != nil {
@@ -352,7 +352,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.admin"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 177, Col: 31}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 200, Col: 31}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 			if templ_7745c5c3_Err != nil {
@@ -386,7 +386,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.T(ctx, "a11y.version"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 189, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 212, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 			if templ_7745c5c3_Err != nil {
@@ -420,7 +420,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 200, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 223, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
@@ -460,7 +460,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 233, Col: 155}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 256, Col: 155}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -473,7 +473,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 234, Col: 166}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 257, Col: 166}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
@@ -486,7 +486,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var26 string
 		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 235, Col: 166}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 258, Col: 166}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
@@ -499,7 +499,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var27 string
 		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 236, Col: 164}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 259, Col: 164}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
@@ -512,7 +512,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var28 string
 		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 237, Col: 161}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 260, Col: 161}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
@@ -525,7 +525,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 238, Col: 157}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 261, Col: 157}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
@@ -538,7 +538,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 239, Col: 161}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 262, Col: 161}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -551,7 +551,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.admin_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 240, Col: 158}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 263, Col: 158}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
@@ -601,7 +601,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 260, Col: 148}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 283, Col: 148}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -614,7 +614,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var34 string
 		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 261, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 284, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
@@ -632,7 +632,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var35 templ.SafeURL
 			templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinURLErrs(templ.URL("tel:" + content.Phone1))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 269, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 292, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 			if templ_7745c5c3_Err != nil {
@@ -653,7 +653,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var36 string
 			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 273, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 296, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 			if templ_7745c5c3_Err != nil {
@@ -680,7 +680,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var37 string
 			templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.T(ctx, "a11y.version"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 294, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 317, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var37)
 			if templ_7745c5c3_Err != nil {
@@ -722,7 +722,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var39 string
 			templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "btn.book"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 307, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 330, Col: 30}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 			if templ_7745c5c3_Err != nil {
@@ -783,7 +783,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var41 string
 		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 329, Col: 158}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 352, Col: 158}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {
@@ -796,7 +796,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var42 string
 		templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 330, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 353, Col: 83}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 		if templ_7745c5c3_Err != nil {
@@ -809,7 +809,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var43 string
 		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 338, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 361, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 		if templ_7745c5c3_Err != nil {
@@ -822,7 +822,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var44 string
 		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 339, Col: 91}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 362, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
 		if templ_7745c5c3_Err != nil {
@@ -835,7 +835,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var45 string
 		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 340, Col: 91}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 363, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
 		if templ_7745c5c3_Err != nil {
@@ -848,7 +848,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var46 string
 		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 341, Col: 115}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 364, Col: 115}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
 		if templ_7745c5c3_Err != nil {
@@ -861,7 +861,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var47 string
 		templ_7745c5c3_Var47, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 342, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 365, Col: 86}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var47))
 		if templ_7745c5c3_Err != nil {
@@ -874,7 +874,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var48 string
 		templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 343, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 366, Col: 82}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
 		if templ_7745c5c3_Err != nil {
@@ -887,7 +887,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var49 string
 		templ_7745c5c3_Var49, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 344, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 367, Col: 86}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var49))
 		if templ_7745c5c3_Err != nil {
@@ -909,7 +909,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 			var templ_7745c5c3_Var50 string
 			templ_7745c5c3_Var50, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.T(ctx, "a11y.version"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 355, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 378, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var50)
 			if templ_7745c5c3_Err != nil {
@@ -943,7 +943,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var51 string
 		templ_7745c5c3_Var51, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 374, Col: 104}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 397, Col: 104}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var51))
 		if templ_7745c5c3_Err != nil {
@@ -972,7 +972,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var52 string
 		templ_7745c5c3_Var52, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 394, Col: 129}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 417, Col: 129}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var52))
 		if templ_7745c5c3_Err != nil {
@@ -985,7 +985,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var53 string
 		templ_7745c5c3_Var53, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 395, Col: 140}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 418, Col: 140}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var53))
 		if templ_7745c5c3_Err != nil {
@@ -998,7 +998,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var54 string
 		templ_7745c5c3_Var54, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 396, Col: 140}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 419, Col: 140}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var54))
 		if templ_7745c5c3_Err != nil {
@@ -1011,7 +1011,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var55 string
 		templ_7745c5c3_Var55, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 397, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 420, Col: 135}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var55))
 		if templ_7745c5c3_Err != nil {
@@ -1024,7 +1024,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var56 string
 		templ_7745c5c3_Var56, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 398, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 421, Col: 135}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var56))
 		if templ_7745c5c3_Err != nil {
@@ -1037,7 +1037,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var57 string
 		templ_7745c5c3_Var57, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 399, Col: 131}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 422, Col: 131}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var57))
 		if templ_7745c5c3_Err != nil {
@@ -1050,7 +1050,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		var templ_7745c5c3_Var58 string
 		templ_7745c5c3_Var58, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 400, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 423, Col: 135}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var58))
 		if templ_7745c5c3_Err != nil {

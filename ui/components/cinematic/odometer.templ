@@ -1,0 +1,86 @@
+package cinematic
+
+import "strconv"
+
+type StatMetric struct {
+	Value       int
+	Prefix      string
+	Suffix      string
+	Label       string
+	Description string
+}
+
+templ OdometerStats(metrics []StatMetric) {
+	<div class="cinematic-odometer-section grid grid-cols-2 md:grid-cols-4 gap-6 py-12 px-4 max-w-6xl mx-auto">
+		for _, m := range metrics {
+			<div class="stat-card p-6 rounded-2xl bg-surface border border-surface-muted/60 text-center shadow-sm hover:shadow-md transition-shadow">
+				<div class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-content tracking-tight mb-1 flex items-center justify-center">
+					if m.Prefix != "" {
+						<span class="text-accent">{ m.Prefix }</span>
+					}
+					<span
+						class="font-mono text-content"
+						data-odometer-target={ strconv.Itoa(m.Value) }
+					>
+						0
+					</span>
+					if m.Suffix != "" {
+						<span class="text-accent">{ m.Suffix }</span>
+					}
+				</div>
+				<div class="text-sm font-semibold text-content mb-1">
+					{ m.Label }
+				</div>
+				if m.Description != "" {
+					<div class="text-xs text-content-muted">
+						{ m.Description }
+					</div>
+				}
+			</div>
+		}
+	</div>
+
+	<script>
+		(function() {
+			function initOdometers() {
+				var elements = document.querySelectorAll('[data-odometer-target]');
+				var observer = new IntersectionObserver(function(entries) {
+					entries.forEach(function(entry) {
+						if (entry.isIntersecting) {
+							var el = entry.target;
+							var target = parseInt(el.dataset.odometerTarget, 10) || 0;
+							var duration = 1800; // мс
+							var startTime = null;
+
+							function animate(currentTime) {
+								if (!startTime) startTime = currentTime;
+								var progress = Math.min((currentTime - startTime) / duration, 1);
+								// Ease out cubic
+								var ease = 1 - Math.pow(1 - progress, 3);
+								el.textContent = Math.floor(ease * target).toLocaleString('ru-RU');
+								if (progress < 1) {
+									requestAnimationFrame(animate);
+								} else {
+									el.textContent = target.toLocaleString('ru-RU');
+								}
+							}
+							requestAnimationFrame(animate);
+							observer.unobserve(el);
+						}
+					});
+				}, { threshold: 0.2 });
+
+				elements.forEach(function(el) {
+					observer.observe(el);
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initOdometers);
+			} else {
+				initOdometers();
+			}
+			document.addEventListener('htmx:afterSwap', initOdometers);
+		})();
+	</script>
+}

@@ -15,14 +15,13 @@ templ Reviews(theme string) {
 				}) {
 					Отзывы клиентов
 				}
-				<h2 class="font-serif-title text-3xl font-bold text-content">Что говорят наши клиенты</h2>
-
-				<p class="text-content-muted mt-2 max-w-xl mx-auto text-sm">Реальные отзывы доверителей и посетителей с независимых площадок</p>
+				<h2 class="section-title">Что говорят наши клиенты</h2>
+				<p class="section-subtitle">Реальные отзывы доверителей и посетителей с независимых площадок</p>
 			</div>
 
 			if theme == "medical" {
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="100" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Прекрасная клиника! Проходила УЗИ и сдавала анализы. Никаких очередей, всё точно по времени. Врач подробно объяснил каждый показатель и успокоил.»</p>
@@ -35,7 +34,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="200" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Терапевт очень внимательно изучил все симптомы, назначил только нужные анализы без навязывания лишних услуг. Результаты пришли на почту в тот же вечер!»</p>
@@ -48,7 +47,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="300" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Современное оборудование, чистота и вежливый персонал. Записалась через сайт за минуту, сразу перезвонили и подтвердили запись. Очень рекомендую!»</p>
@@ -64,7 +63,7 @@ templ Reviews(theme string) {
 				</div>
 			} else if theme == "auto" {
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="100" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Делал плановое ТО и замену тормозных дисков. Сделали за 2 часа, старые детали положили в багажник в коробках. Честный подход без развода на допы.»</p>
@@ -77,7 +76,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="200" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Нашли причину стука в передней подвеске, которую два других сервиса не могли диагностировать. Запчасти были на складе, починили в тот же день.»</p>
@@ -90,7 +89,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="300" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Отличная зона ожидания с монитором ремонта и вкусным кофе. Мастер подробно показал на подъемнике все изношенные узлы. Дали гарантию на год.»</p>
@@ -106,7 +105,7 @@ templ Reviews(theme string) {
 				</div>
 			} else if theme == "beauty" {
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="100" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Делала сложное окрашивание Airtouch у топ-колориста. Цвет получился волшебный, волосы мягкие и блестящие. Атмосфера в салоне просто королевская!»</p>
@@ -119,7 +118,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="200" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Идеальный Smart-педикюр и маникюр! Инструменты вскрывали при мне из стерильного пакета, всё аккуратно и безболезненно. Покрытие держится месяц.»</p>
@@ -132,7 +131,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="300" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Прекрасный спа-уход перед важным мероприятием. Укладка продержалась весь вечер даже при ветреной погоде. Угостили вкусным кофе и десертом.»</p>
@@ -148,7 +147,7 @@ templ Reviews(theme string) {
 				</div>
 			} else {
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-					<div data-reveal data-reveal-delay="100" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="100" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Оформляли сделку купли-продажи квартиры. Всё прошло спокойно, чётко и строго по закону. Нотариус подробно разъяснил каждый пункт договора.»</p>
@@ -161,7 +160,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="200" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Быстро заверили генеральную доверенность для юридического лица. Записались заранее онлайн, приняли ровно в назначенное время без ожидания.»</p>
@@ -174,7 +173,7 @@ templ Reviews(theme string) {
 							</div>
 						</div>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="bg-surface p-6 rounded-2xl border border-content/10 shadow-sm flex flex-col justify-between">
+					<div data-reveal data-reveal-delay="300" class="card-base flex flex-col justify-between">
 						<div>
 							<div class="text-amber-500 text-sm mb-3">★★★★★</div>
 							<p class="text-content/80 text-sm italic leading-relaxed">«Ведение наследственного дела прошло без стресса. Помогли оперативно запросить архивные справки и оформить свидетельство о праве на наследство.»</p>

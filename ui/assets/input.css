@@ -26,6 +26,13 @@
   --color-content: var(--color-content);
   --color-content-muted: var(--color-content-muted);
 
+  /* Smart Hybrid Geometry & Radius tokens */
+  --radius-card: var(--radius-card);
+  --radius-card-sm: var(--radius-card-sm);
+  --radius-btn: var(--radius-btn);
+  --radius-input: var(--radius-input);
+  --radius-badge: var(--radius-badge);
+
   --font-condensed: "Bebas Neue", "Barlow Condensed", Impact, sans-serif;
   --font-serif-title: "Playfair Display", Georgia, serif;
 }

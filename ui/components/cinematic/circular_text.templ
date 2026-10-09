@@ -1,0 +1,52 @@
+package cinematic
+
+templ CircularTextBadge(text string, centerIcon string, sizePx int) {
+	<div
+		class="cinematic-circular-badge relative inline-flex items-center justify-center select-none group"
+		style={ "width: " + templ.EscapeString(string(rune(sizePx))) + "px; height: " + templ.EscapeString(string(rune(sizePx))) + "px;" }
+	>
+		<!-- Вращающийся SVG текст -->
+		<svg
+			class="absolute inset-0 w-full h-full animate-spin-slow group-hover:[animation-play-state:paused]"
+			viewBox="0 0 160 160"
+		>
+			<defs>
+				<path
+					id="circleTextPath"
+					d="M 80, 80 m -60, 0 a 60,60 0 1,1 120,0 a 60,60 0 1,1 -120,0"
+				></path>
+			</defs>
+			<text class="text-[11.5px] uppercase font-bold tracking-[0.22em] fill-content/80 group-hover:fill-accent transition-colors">
+				<textPath href="#circleTextPath" startOffset="0%">
+					{ text }
+				</textPath>
+			</text>
+		</svg>
+
+		<!-- Центральный элемент (иконка или стрелка) -->
+		<div class="relative z-10 w-12 h-12 rounded-full bg-surface border border-surface-muted flex items-center justify-center text-accent shadow-md group-hover:scale-110 transition-transform">
+			if centerIcon != "" {
+				<span class="text-lg font-bold">{ centerIcon }</span>
+			} else {
+				<svg class="w-5 h-5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M7 17L17 7M17 7H7M17 7V17"></path>
+				</svg>
+			}
+		</div>
+	</div>
+
+	<style>
+		@keyframes spin-slow {
+			from { transform: rotate(0deg); }
+			to { transform: rotate(360deg); }
+		}
+		.animate-spin-slow {
+			animation: spin-slow 20s linear infinite;
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.animate-spin-slow {
+				animation: none !important;
+			}
+		}
+	</style>
+}

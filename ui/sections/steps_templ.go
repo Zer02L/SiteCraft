@@ -68,7 +68,7 @@ func Steps(theme string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if theme == "auto" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,7 +76,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Приём и осмотр</h3><p class=\"card-desc text-xs\">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Приём и осмотр</h3><p class=\"card-desc text-xs\">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -84,7 +84,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Диагностика</h3><p class=\"card-desc text-xs\">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Диагностика</h3><p class=\"card-desc text-xs\">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -92,7 +92,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Согласование сметы</h3><p class=\"card-desc text-xs\">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Согласование сметы</h3><p class=\"card-desc text-xs\">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -105,7 +105,7 @@ func Steps(theme string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -113,7 +113,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " Запись на сайте</h3><p class=\"card-desc text-xs\">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " Запись на сайте</h3><p class=\"card-desc text-xs\">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -121,7 +121,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " Подтверждение</h3><p class=\"card-desc text-xs\">Мы связываемся с вами и уточняем список необходимых для визита документов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " Подтверждение</h3><p class=\"card-desc text-xs\">Мы связываемся с вами и уточняем список необходимых для визита документов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -129,7 +129,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " Визит без очередей</h3><p class=\"card-desc text-xs\">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " Визит без очередей</h3><p class=\"card-desc text-xs\">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -2,6 +2,8 @@ package sections
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 
@@ -9,6 +11,20 @@ import (
 	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
+
+func parsePriceNumber(raw string) float64 {
+	digits := strings.Map(func(r rune) rune {
+		if r >= '0' && r <= '9' {
+			return r
+		}
+		return -1
+	}, raw)
+	val, err := strconv.ParseFloat(digits, 64)
+	if err != nil {
+		return 0
+	}
+	return val
+}
 
 templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 	<!-- Services Section -->
@@ -43,21 +59,34 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 							<span class="text-xs text-content-muted block">{ i18n.T(ctx, "services.cost_label") }</span>
 							<span class="font-bold text-accent text-sm">{ s.Price }</span>
 						</div>
-						if settings.EnablePayment {
-							@button.Button(button.Props{
-								Variant: button.VariantSecondary,
-								Size:    button.SizeSm,
-								Attributes: templ.Attributes{
-									"hx-get":    "/api/payment/modal?service_id" + "=" + s.ID,
-									"hx-target": "#payment-modal-container",
-									"hx-swap":   "innerHTML transition:true",
-								},
-								Class: "text-primary hover:bg-primary hover:text-white transition gap-1 font-semibold",
-							}) {
-								@icons.CreditCard(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
-								{ i18n.T(ctx, "services.pay_online") }
+						<div class="flex items-center gap-2">
+							if settings.EnableCart {
+								<button
+									type="button"
+									x-on:click={ fmt.Sprintf("$store.cart.add({ id: '%s', title: '%s', price: %f, price_str: '%s' })", s.ID, s.Title, parsePriceNumber(s.Price), s.Price) }
+									class="px-2.5 py-1.5 rounded-lg bg-accent/15 text-accent hover:bg-accent hover:text-primary-dark font-bold text-xs transition flex items-center gap-1 cursor-pointer"
+									title="Добавить в корзину"
+								>
+									@icons.Plus(templ.Attributes{"class": "w-3.5 h-3.5"})
+									<span>В корзину</span>
+								</button>
 							}
-						}
+							if settings.EnablePayment {
+								@button.Button(button.Props{
+									Variant: button.VariantSecondary,
+									Size:    button.SizeSm,
+									Attributes: templ.Attributes{
+										"hx-get":    "/api/payment/modal?service_id" + "=" + s.ID,
+										"hx-target": "#payment-modal-container",
+										"hx-swap":   "innerHTML transition:true",
+									},
+									Class: "text-primary hover:bg-primary hover:text-white transition gap-1 font-semibold",
+								}) {
+									@icons.CreditCard(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
+									{ i18n.T(ctx, "services.pay_online") }
+								}
+							}
+						</div>
 					</div>
 				</div>
 			}

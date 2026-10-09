@@ -28,7 +28,7 @@
    * **`tailwind-animations`** — плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
 6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
 7. **Модуль локализации i18n (RU / EN):** Полноценная многоязычность (`internal/i18n`) из коробки: определение языка через URL-параметр `?lang=`, Cookie или заголовок `Accept-Language`, Zero-JS переключатель языков, динамический `<html lang="...">`, `hreflang`, `og:locale` для SEO и локализованные сообщения валидации форм.
-8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/pages/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
+8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/registry/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
 9. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
 10. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
 11. **Бизнес-модули "из коробки":**
@@ -58,7 +58,7 @@ flowchart TD
     subgraph Binary["Единый автономный бинарник SiteCraft (~25 МБ)"]
         direction TB
         
-        Router["Echo HTTP Router & Middleware\n(Honeypot, BlueMonday Sanitize, Static Embed)"]
+        Router["PocketBase Native Router & Middleware\n(Honeypot, BlueMonday Sanitize, Static Embed)"]
         
         subgraph BusinessHandlers["Бизнес-хэндлеры (internal/handlers)"]
             H_Web["Web Handler (/ /blog /shop)"]
@@ -200,16 +200,16 @@ flowchart LR
 
 ## 🧩 Реестр компонентов (Block Registry)
 
-Архитектура рендеринга секций построена на паттерне Factory / Registry в [ui/pages/registry.go](ui/pages/registry.go):
+Архитектура рендеринга секций построена на паттерне Factory / Registry в [ui/registry/registry.go](ui/registry/registry.go):
 
 ```go
 // Регистрация кастомного блока (плагина)
-pages.RegisterBlock("video_banner", func(b models.PageBlock, ctx pages.RenderContext) templ.Component {
+registry.RegisterBlock("video_banner", func(b models.PageBlock, ctx registry.RenderContext) templ.Component {
     return components.VideoBanner(b.Payload)
 })
 
 // Готовый блок витрины UI компонентов shadcn-templ + Lucide
-pages.RegisterBlock("showcase", func(b models.PageBlock, ctx pages.RenderContext) templ.Component {
+registry.RegisterBlock("showcase", func(b models.PageBlock, ctx registry.RenderContext) templ.Component {
     return components.UIShowcase()
 })
 ```
@@ -284,6 +284,10 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 | Ниша / Пресет | Стратегия воронки | Последовательность секций и компонентов |
 | :--- | :--- | :--- |
 | **Юридический / Нотариус**<br>`presets/legal.json` | **Легитимность и регламент:** официальный статус, расписание и правовые стандарты. | `Hero` → `Schedule` → `Features` → `Services` → `Steps` → `Booking` → `FAQ` → `Map` |
+| **Юридический (Швейцарский стиль)**<br>`presets/legal-swiss.json` | **Строгий минимализм:** кинематографический счетчик `cinematic_odometer`, бегущая строка, сетка практик. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
+| **Юридический (Британский стиль)**<br>`presets/legal-british.json` | **Консервативная респектабельность:** глубокий бордовый тон, строгая типографика, классические кейсы. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
+| **Юридический (Миланский стиль)**<br>`presets/legal-milano.json` | **Итальянская элегантность:** теплая палитра, кинематографические карточки со световой границей. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
+| **Юридический (Корпоративный стиль)**<br>`presets/legal-corporate.json` | **B2B Арбитраж & M&A:** строгий темно-синий акцент, интерактивные дорожные карты защиты бизнеса. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
 | **Медицинский центр**<br>`presets/medical.json` | **Доверие к врачам:** оборудование, профильные врачи и подготовка к анализам. | `Hero` → `Features` → `Services` → `Team` → `Booking` → `Reviews` → `FAQ` → `Schedule` → `Map` |
 | **Автосервис / СТО**<br>`presets/auto.json`, `presets/repair.json` | **Прайс-лист, быстрый лидген и B2B-трекер:** прозрачные цены на ТО, гарантия 12 месяцев. | `Hero` → `Services` → `Booking` → `Features` → `Steps` → `Reviews` → `FAQ` → `Map` → `Schedule` |
 | **Салон красоты & SPA**<br>`presets/beauty.json` | **Visual First (Эстетика):** портфолио работ, бьюти-меню и карточки топ-мастеров. | `Hero` → `Gallery` → `Services` → `Features` → `Team` → `Reviews` → `Booking` → `FAQ` → `Map` |
@@ -336,9 +340,9 @@ docker compose up -d --build
 
 ---
 
-## 📚 Документация
+## 📚 Документация проекта
 
-* **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)** — Архитектура мультисайтового парка инстансов (Fleet of Binaries), интеграция с Caddy/Nginx.
-* **[123.md](123.md)** — Спецификация и статус внедрения модулей движка.
-* **[GUIDELINES.md](GUIDELINES.md)** — Руководство разработчика, кэширование, платежи и безопасность.
-* **[SITECRAFT_ARCHITECTURE_PLAN.md](SITECRAFT_ARCHITECTURE_PLAN.md)** — Архитектурный RFC и первоначальный план проекта.
+* **[PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md)** — Генеральная техническая документация проекта (архитектура, роуты, БД, модели, i18n, кэш, Theming Engine, модули, руководство разработчика).
+* **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)** — Архитектура мультисайтового парка инстансов (Fleet of Binaries), интеграция с Caddy/Nginx и экспорт статики.
+* **[ui/components/cinematic/README.md](ui/components/cinematic/README.md)** — Каталог и спецификация 31 кинематографического компонента (Zero-GSAP).
+* **[public/README.md](public/README.md)** — Спецификация медиа-ассетов документации.

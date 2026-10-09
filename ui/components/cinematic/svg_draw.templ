@@ -1,0 +1,107 @@
+package cinematic
+
+type SvgMilestone struct {
+	Step        string
+	Title       string
+	Description string
+}
+
+templ ScrollSvgDraw(title string, subtitle string, milestones []SvgMilestone) {
+	<section class="cinematic-svg-draw py-20 px-4 max-w-4xl mx-auto" data-svg-draw-section>
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-16">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-5xl font-extrabold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+
+		<div class="relative flex flex-col items-center">
+			<!-- Вертикальная SVG линия по центру -->
+			<div class="absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-8 pointer-events-none z-0">
+				<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 20 1000">
+					<!-- Фоновая блеклая линия -->
+					<line x1="10" y1="0" x2="10" y2="1000" stroke="currentColor" stroke-opacity="0.15" stroke-width="3" stroke-dasharray="6 6" class="text-content"></line>
+					<!-- Анимируемая линия -->
+					<path
+						id="drawSvgLine"
+						d="M 10 0 L 10 1000"
+						stroke="currentColor"
+						stroke-width="4"
+						stroke-linecap="round"
+						fill="none"
+						class="text-accent transition-[stroke-dashoffset] duration-150 ease-out"
+					></path>
+				</svg>
+			</div>
+
+			<!-- Список этапов / майлстоунов -->
+			<div class="relative z-10 w-full flex flex-col gap-24 py-10">
+				for idx, m := range milestones {
+					<div
+						class={
+							"milestone-item flex items-center w-full gap-8 transition-all duration-500",
+							templ.KV("flex-row-reverse md:flex-row-reverse text-right md:text-right", idx%2 != 0),
+							templ.KV("flex-row text-left", idx%2 == 0),
+						}
+						data-milestone-step
+					>
+						<!-- Контент этапа (слева или справа) -->
+						<div class="flex-1">
+							<div class="inline-block p-6 rounded-2xl bg-surface border border-surface-muted shadow-lg max-w-md">
+								<span class="text-xs font-mono font-bold text-accent mb-2 block">{ m.Step }</span>
+								<h3 class="text-xl font-bold text-content mb-2">{ m.Title }</h3>
+								<p class="text-sm text-content-muted leading-relaxed">{ m.Description }</p>
+							</div>
+						</div>
+
+						<!-- Центральная точка на линии -->
+						<div class="w-10 h-10 rounded-full bg-surface border-4 border-accent flex items-center justify-center font-bold text-xs text-accent shadow-md shrink-0 z-10">
+							{ m.Step }
+						</div>
+
+						<!-- Заглушка для балансировки сетки -->
+						<div class="flex-1 hidden md:block"></div>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+
+	<script>
+		(function() {
+			function initSvgDraw() {
+				var section = document.querySelector('[data-svg-draw-section]');
+				var path = document.getElementById('drawSvgLine');
+				if (!section || !path) return;
+
+				var pathLength = 1000;
+				path.style.strokeDasharray = pathLength;
+				path.style.strokeDashoffset = pathLength;
+
+				function updateProgress() {
+					var rect = section.getBoundingClientRect();
+					var winHeight = window.innerHeight;
+					var start = rect.top - winHeight * 0.7;
+					var total = rect.height;
+					var progress = Math.max(0, Math.min(-start / total, 1));
+
+					path.style.strokeDashoffset = pathLength - (progress * pathLength);
+				}
+
+				window.addEventListener('scroll', updateProgress, { passive: true });
+				updateProgress();
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initSvgDraw);
+			} else {
+				initSvgDraw();
+			}
+			document.addEventListener('htmx:afterSwap', initSvgDraw);
+		})();
+	</script>
+}

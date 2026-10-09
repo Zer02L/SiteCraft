@@ -39,13 +39,15 @@
 
 ## 🛠 Управление через `fleet.sh`
 
-В репозиторий встроен CLI-инструмент [fleet.sh](file:///home/zerg/Projects/web/SiteCreator/fleet.sh).
+В репозиторий встроен CLI-инструмент [fleet.sh](fleet.sh).
 
 ### 1. Создание нового сайта клиента
 ```bash
 ./fleet.sh create auto-express --preset=auto --theme=auto --port=8091
 ./fleet.sh create dental-clinic --preset=medical --theme=medical --port=8092
+./fleet.sh create law-firm      --preset=legal-swiss --theme=legal --port=8093
 ```
+*Доступные пресеты:* `legal`, `legal-swiss`, `legal-british`, `legal-milano`, `legal-corporate`, `medical`, `auto`, `repair`, `beauty`, `cyber`, `delivery`, `academy`.
 
 ### 2. Запуск и управление
 ```bash
@@ -62,7 +64,13 @@
 ./fleet.sh restart auto-express
 ```
 
-### 3. Резервное копирование и передача клиенту («под ключ»)
+### 3. Экспорт в статический сайт (SSG)
+```bash
+# Генерация плоского HTML/CSS для размещения на GitHub Pages, Cloudflare Pages или S3
+./fleet.sh export auto-express ./dist-auto
+```
+
+### 4. Резервное копирование и передача клиенту («под ключ»)
 ```bash
 ./fleet.sh backup auto-express
 ```

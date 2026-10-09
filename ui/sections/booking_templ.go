@@ -72,7 +72,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<h2 class=\"font-serif-title text-3xl font-bold text-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<h2 class=\"section-title\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -97,7 +97,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h2><p class=\"text-content-muted mt-2 text-sm max-w-2xl mx-auto\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h2><p class=\"section-subtitle\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -127,14 +127,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			return templ_7745c5c3_Err
 		}
 		if settings.BookingMode == "simple" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Режим 1: Простая лидген-форма --> <div x-data=\"{\n\t\t\t\t\t\tphone: '',\n\t\t\t\t\t\tformatPhone(val) {\n\t\t\t\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\t\t\t\tif (!digits) return '';\n\t\t\t\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\t\t\t\tlet res = '+7';\n\t\t\t\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\t\t\t\treturn res;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tonPhoneInput(e) {\n\t\t\t\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"max-w-xl mx-auto bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка (скрыта от людей) --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Режим 1: Простая лидген-форма --> <div x-data=\"{\n\t\t\t\t\t\tphone: '',\n\t\t\t\t\t\tformatPhone(val) {\n\t\t\t\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\t\t\t\tif (!digits) return '';\n\t\t\t\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\t\t\t\tlet res = '+7';\n\t\t\t\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\t\t\t\treturn res;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tonPhoneInput(e) {\n\t\t\t\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"max-w-xl mx-auto card-base p-6 sm:p-8\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка (скрыта от людей) --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.name_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 74, Col: 106}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 74, Col: 68}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
@@ -153,14 +153,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition\"></div><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-input\"></div><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.phone_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 88, Col: 107}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 88, Col: 69}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -179,14 +179,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition\"></div><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"form-input\"></div><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.comment_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 102, Col: 109}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 102, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -205,7 +205,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" class=\"form-input\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -290,7 +290,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Календарь и сетка времени (левая колонка) --><div class=\"lg:col-span-7 bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10\"><div class=\"flex items-center justify-between mb-4 pb-3 border-b border-content/10\"><h3 class=\"font-bold text-content text-base flex items-center gap-2\"><svg class=\"w-5 h-5 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> 1. ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Календарь и сетка времени (левая колонка) --><div class=\"lg:col-span-7 card-base sm:p-8\"><div class=\"flex items-center justify-between mb-4 pb-3 border-b border-content/10\"><h3 class=\"font-bold text-content text-base flex items-center gap-2\"><svg class=\"w-5 h-5 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> 1. ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -329,7 +329,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</span></div></div><!-- Выбор дней недели --><div class=\"grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6\"><template x-for=\"day in dates\" :key=\"day.date\"><button type=\"button\" @click=\"selectedDate = day.date; selectedTime = ''\" :class=\"selectedDate === day.date\n\t\t\t\t\t\t\t\t\t\t? 'bg-primary text-white border-primary shadow-sm'\n\t\t\t\t\t\t\t\t\t\t: 'bg-surface-muted text-content/80 border-content/10 hover:bg-surface-muted'\" class=\"p-2.5 rounded-xl border text-center transition flex flex-col items-center justify-center cursor-pointer\"><span class=\"text-xs font-semibold\" x-text=\"day.label\"></span></button></template></div><!-- Сетка слотов времени --><div class=\"mb-4\"><h4 class=\"font-semibold text-content text-sm mb-3\">2. ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</span></div></div><!-- Выбор дней недели --><div class=\"grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6\"><template x-for=\"day in dates\" :key=\"day.date\"><button type=\"button\" @click=\"selectedDate = day.date; selectedTime = ''\" :class=\"selectedDate === day.date\n\t\t\t\t\t\t\t\t\t\t? 'bg-primary text-white border-primary shadow-sm'\n\t\t\t\t\t\t\t\t\t\t: 'bg-surface-muted text-content/80 border-content/10 hover:bg-surface-muted'\" class=\"p-2.5 rounded-card-sm border text-center transition flex flex-col items-center justify-center cursor-pointer\"><span class=\"text-xs font-semibold\" x-text=\"day.label\"></span></button></template></div><!-- Сетка слотов времени --><div class=\"mb-4\"><h4 class=\"font-semibold text-content text-sm mb-3\">2. ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -342,7 +342,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</h4><div class=\"grid grid-cols-3 sm:grid-cols-4 gap-2.5\"><template x-for=\"slot in currentSlots()\" :key=\"slot.time\"><button type=\"button\" :disabled=\"!slot.free\" @click=\"selectSlot(slot.time, slot.free)\" :class=\"!slot.free\n\t\t\t\t\t\t\t\t\t\t\t? 'bg-surface-muted text-content-muted border-content/10 cursor-not-allowed line-through'\n\t\t\t\t\t\t\t\t\t\t\t: (selectedTime === slot.time\n\t\t\t\t\t\t\t\t\t\t\t\t? 'bg-emerald-600 text-white border-emerald-700 shadow-md ring-2 ring-emerald-300'\n\t\t\t\t\t\t\t\t\t\t\t\t: 'bg-emerald-50/80 text-emerald-800 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 cursor-pointer font-medium')\" class=\"py-2.5 px-3 rounded-lg border text-sm transition flex items-center justify-center gap-1.5\"><span x-text=\"slot.time\"></span></button></template></div></div><div class=\"p-3 bg-amber-50/80 rounded-lg border border-amber-200/80 text-xs text-amber-800 flex items-center gap-2\"><svg class=\"w-4 h-4 text-amber-600 flex-shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</h4><div class=\"grid grid-cols-3 sm:grid-cols-4 gap-2.5\"><template x-for=\"slot in currentSlots()\" :key=\"slot.time\"><button type=\"button\" :disabled=\"!slot.free\" @click=\"selectSlot(slot.time, slot.free)\" :class=\"!slot.free\n\t\t\t\t\t\t\t\t\t\t\t? 'bg-surface-muted text-content-muted border-content/10 cursor-not-allowed line-through'\n\t\t\t\t\t\t\t\t\t\t\t: (selectedTime === slot.time\n\t\t\t\t\t\t\t\t\t\t\t\t? 'bg-emerald-600 text-white border-emerald-700 shadow-md ring-2 ring-emerald-300'\n\t\t\t\t\t\t\t\t\t\t\t\t: 'bg-emerald-50/80 text-emerald-800 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 cursor-pointer font-medium')\" class=\"py-2.5 px-3 rounded-btn border text-sm transition flex items-center justify-center gap-1.5\"><span x-text=\"slot.time\"></span></button></template></div></div><div class=\"p-3 bg-amber-50/80 rounded-card-sm border border-amber-200/80 text-xs text-amber-800 flex items-center gap-2\"><svg class=\"w-4 h-4 text-amber-600 flex-shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -368,7 +368,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, ".</span></div></div><!-- Форма подтверждения (правая колонка) --><div class=\"lg:col-span-5 bg-surface p-6 sm:p-8 rounded-2xl shadow-sm border border-content/10\"><h3 class=\"font-serif-title text-xl font-bold text-content mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, ".</span></div></div><!-- Форма подтверждения (правая колонка) --><div class=\"lg:col-span-5 card-base sm:p-8\"><h3 class=\"font-serif-title text-xl font-bold text-content mb-1\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -394,7 +394,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</p><!-- Индикатор выбранного времени --><div :class=\"errors.time ? 'border-rose-300 bg-rose-50/50' : (selectedTime ? 'border-emerald-300 bg-emerald-50/30' : 'border-content/10 bg-surface-muted')\" class=\"mb-4 p-3 rounded-xl border text-xs flex items-center justify-between transition\"><span class=\"text-content-muted\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</p><!-- Индикатор выбранного времени --><div :class=\"errors.time ? 'border-rose-300 bg-rose-50/50' : (selectedTime ? 'border-emerald-300 bg-emerald-50/30' : 'border-content/10 bg-surface-muted')\" class=\"mb-4 p-3 rounded-card-sm border text-xs flex items-center justify-between transition\"><span class=\"text-content-muted\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -407,14 +407,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, ":</span> <span :class=\"selectedTime ? 'text-emerald-700' : 'text-content-muted'\" class=\"font-bold\" x-text=\"selectedTime ? (selectedDate + ' ' + selectedTime) : '—'\"></span></div><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @submit=\"handleSubmit($event)\" @htmx:after:request=\"if ($event.detail.successful) handleSuccess()\" @htmx:after-request=\"if ($event.detail.successful) handleSuccess()\" class=\"space-y-4\" novalidate><!-- Honeypot --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><input type=\"hidden\" name=\"booking_date\" :value=\"selectedDate\"> <input type=\"hidden\" name=\"booking_time\" :value=\"selectedTime\"><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, ":</span> <span :class=\"selectedTime ? 'text-emerald-700' : 'text-content-muted'\" class=\"font-bold\" x-text=\"selectedTime ? (selectedDate + ' ' + selectedTime) : '—'\"></span></div><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @submit=\"handleSubmit($event)\" @htmx:after:request=\"if ($event.detail.successful) handleSuccess()\" @htmx:after-request=\"if ($event.detail.successful) handleSuccess()\" class=\"space-y-4\" novalidate><!-- Honeypot --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><input type=\"hidden\" name=\"booking_date\" :value=\"selectedDate\"> <input type=\"hidden\" name=\"booking_time\" :value=\"selectedTime\"><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var26 string
 			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.name_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 387, Col: 107}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 387, Col: 69}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 			if templ_7745c5c3_Err != nil {
@@ -433,14 +433,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" class=\"w-full px-3.5 py-2.5 border rounded-lg focus:ring-2 focus:outline-none text-sm border-content/20 focus:ring-accent transition\"><template x-if=\"errors.name\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.name\"></p></template></div><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" class=\"form-input\"><template x-if=\"errors.name\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.name\"></p></template></div><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var28 string
 			templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.phone_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 403, Col: 108}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 403, Col: 70}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 			if templ_7745c5c3_Err != nil {
@@ -459,14 +459,14 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" class=\"w-full px-3.5 py-2.5 border rounded-lg focus:ring-2 focus:outline-none text-sm border-content/20 focus:ring-accent transition\"><template x-if=\"errors.phone\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.phone\"></p></template></div><div><label class=\"block text-xs font-semibold text-content/80 mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" class=\"form-input\"><template x-if=\"errors.phone\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.phone\"></p></template></div><div><label class=\"form-label\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var30 string
 			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.comment_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 419, Col: 110}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking.templ`, Line: 419, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 			if templ_7745c5c3_Err != nil {
@@ -485,7 +485,7 @@ func Booking(content models.SiteContent, bookedSlots map[string][]string, settin
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" class=\"w-full px-3.5 py-2.5 border border-content/20 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm transition\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" x-model=\"agreeConsent\" class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" class=\"form-input\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" x-model=\"agreeConsent\" class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

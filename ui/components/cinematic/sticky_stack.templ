@@ -1,0 +1,144 @@
+package cinematic
+
+type StickyFeatureItem struct {
+	Number      string
+	Title       string
+	Description string
+	VisualHTML  string // Содержимое или превью мокапа для этого шага
+}
+
+templ StickyStack(title string, subtitle string, features []StickyFeatureItem) {
+	<section class="cinematic-sticky-stack py-20 px-4 max-w-7xl mx-auto" data-sticky-stack>
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-16">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-5xl font-extrabold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+
+		<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start relative">
+			<!-- Левая колонка: Прилипающий визуал (Sticky Mockup) -->
+			<div class="lg:sticky lg:top-28 z-10 w-full">
+				<div class="relative w-full aspect-[4/3] rounded-3xl bg-surface border border-surface-muted/80 p-6 sm:p-8 shadow-2xl overflow-hidden flex flex-col justify-between">
+					<!-- Фоновая сетка / градиент -->
+					<div class="absolute inset-0 bg-radial from-accent/5 to-transparent opacity-60 pointer-events-none"></div>
+
+					<div class="relative z-10 flex items-center justify-between border-b border-surface-muted/60 pb-4">
+						<div class="flex items-center gap-2">
+							<span class="w-3 h-3 rounded-full bg-red-400/80"></span>
+							<span class="w-3 h-3 rounded-full bg-yellow-400/80"></span>
+							<span class="w-3 h-3 rounded-full bg-emerald-400/80"></span>
+						</div>
+						<span class="text-xs font-mono text-content-muted">Live Preview</span>
+					</div>
+
+					<!-- Динамические экраны (сменяются по дата-атрибуту) -->
+					<div class="relative z-10 flex-1 my-6 flex items-center justify-center">
+						for idx, feat := range features {
+							<div
+								class={
+									"sticky-visual-state absolute inset-0 transition-all duration-500 flex flex-col items-center justify-center text-center p-4",
+									templ.KV("opacity-100 scale-100", idx == 0),
+									templ.KV("opacity-0 scale-95 pointer-events-none", idx > 0),
+								}
+								data-visual-index={ templ.EscapeString(string(rune(idx))) }
+							>
+								<div class="w-16 h-16 rounded-2xl bg-accent/10 text-accent flex items-center justify-center text-2xl font-bold mb-4 shadow-sm">
+									{ feat.Number }
+								</div>
+								<h4 class="text-xl sm:text-2xl font-bold text-content mb-2">{ feat.Title }</h4>
+								<p class="text-sm text-content-muted max-w-xs">{ feat.Description }</p>
+							</div>
+						}
+					</div>
+
+					<div class="relative z-10 flex items-center justify-between text-xs text-content-muted pt-4 border-t border-surface-muted/60">
+						<span>Интерактивная демонстрация</span>
+						<span class="text-accent font-semibold font-mono">0 КБ GSAP</span>
+					</div>
+				</div>
+			</div>
+
+			<!-- Правая колонка: Скроллящиеся фичи -->
+			<div class="flex flex-col gap-16 lg:py-12">
+				for idx, feat := range features {
+					<div
+						class={
+							"sticky-feature-card p-8 rounded-3xl border transition-all duration-300",
+							templ.KV("border-accent/40 bg-surface shadow-lg", idx == 0),
+							templ.KV("border-surface-muted/60 bg-surface/40 hover:bg-surface/80 opacity-70", idx > 0),
+						}
+						data-feature-index={ templ.EscapeString(string(rune(idx))) }
+					>
+						<div class="text-xs font-mono font-bold text-accent mb-3 tracking-widest">
+							{ feat.Number }
+						</div>
+						<h3 class="text-2xl font-bold text-content mb-3">
+							{ feat.Title }
+						</h3>
+						<p class="text-base text-content-muted leading-relaxed">
+							{ feat.Description }
+						</p>
+					</div>
+				}
+			</div>
+		</div>
+	</section>
+
+	<script>
+		(function() {
+			function initStickyStack() {
+				document.querySelectorAll('[data-sticky-stack]').forEach(function(section) {
+					var cards = section.querySelectorAll('[data-feature-index]');
+					var visuals = section.querySelectorAll('[data-visual-index]');
+					if (cards.length === 0 || visuals.length === 0) return;
+
+					function setActive(targetIdx) {
+						cards.forEach(function(c) {
+							var active = c.dataset.featureIndex === targetIdx;
+							c.classList.toggle('border-accent/40', active);
+							c.classList.toggle('bg-surface', active);
+							c.classList.toggle('shadow-lg', active);
+							c.classList.toggle('opacity-70', !active);
+						});
+						visuals.forEach(function(v) {
+							var active = v.dataset.visualIndex === targetIdx;
+							v.classList.toggle('opacity-100', active);
+							v.classList.toggle('scale-100', active);
+							v.classList.toggle('opacity-0', !active);
+							v.classList.toggle('scale-95', !active);
+							v.classList.toggle('pointer-events-none', !active);
+						});
+					}
+
+					var observer = new IntersectionObserver(function(entries) {
+						entries.forEach(function(entry) {
+							if (entry.isIntersecting) {
+								setActive(entry.target.dataset.featureIndex);
+							}
+						});
+					}, {
+						root: null,
+						rootMargin: '-30% 0px -40% 0px',
+						threshold: 0
+					});
+
+					cards.forEach(function(card) {
+						observer.observe(card);
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initStickyStack);
+			} else {
+				initStickyStack();
+			}
+			document.addEventListener('htmx:afterSwap', initStickyStack);
+		})();
+	</script>
+}

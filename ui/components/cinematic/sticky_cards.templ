@@ -1,0 +1,72 @@
+package cinematic
+
+import "strconv"
+
+type StackCardItem struct {
+	Badge       string
+	Title       string
+	Description string
+	Tags        []string
+	StatNumber  string
+	StatLabel   string
+}
+
+templ StickyCards(title string, subtitle string, cards []StackCardItem) {
+	<section class="cinematic-sticky-cards py-20 px-4 max-w-5xl mx-auto">
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-16">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-5xl font-extrabold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+
+		<div class="relative flex flex-col gap-8 pb-32">
+			for idx, card := range cards {
+				<div
+					class="sticky-card-item sticky rounded-3xl p-8 sm:p-12 bg-surface border border-surface-muted shadow-2xl transition-transform"
+					style={ "top: calc(100px + " + strconv.Itoa(idx*28) + "px); z-index: " + strconv.Itoa(idx+1) + ";" }
+				>
+					<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+						<div class="max-w-xl">
+							if card.Badge != "" {
+								<span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent mb-4">
+									{ card.Badge }
+								</span>
+							}
+							<h3 class="text-2xl sm:text-3xl font-bold text-content tracking-tight mb-3">
+								{ card.Title }
+							</h3>
+							<p class="text-base text-content-muted leading-relaxed mb-6">
+								{ card.Description }
+							</p>
+							if len(card.Tags) > 0 {
+								<div class="flex flex-wrap gap-2">
+									for _, tag := range card.Tags {
+										<span class="px-2.5 py-1 rounded-lg text-xs font-medium bg-surface-muted text-content-muted">
+											{ tag }
+										</span>
+									}
+								</div>
+							}
+						</div>
+
+						if card.StatNumber != "" {
+							<div class="shrink-0 p-6 rounded-2xl bg-surface-muted/50 border border-surface-muted text-center min-w-[140px]">
+								<div class="text-3xl sm:text-4xl font-extrabold text-accent font-mono mb-1">
+									{ card.StatNumber }
+								</div>
+								<div class="text-xs text-content-muted font-medium">
+									{ card.StatLabel }
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+}

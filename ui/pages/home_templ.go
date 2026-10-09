@@ -12,6 +12,7 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/layouts"
+	"sitecraft/ui/registry"
 	"sitecraft/ui/sections"
 	"sitecraft/ui/sections/hero"
 )
@@ -69,7 +70,7 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 			}
 			if len(blocks) > 0 {
 				for _, b := range blocks {
-					templ_7745c5c3_Err = RenderBlock(b, RenderContext{
+					templ_7745c5c3_Err = registry.RenderBlock(b, registry.RenderContext{
 						Settings:    settings,
 						Content:     content,
 						Services:    services,
@@ -86,6 +87,11 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 				}
 				if settings.Theme == "cyber" {
 					templ_7745c5c3_Err = hero.CyberHero(content, settings).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else if settings.Theme == "legal" {
+					templ_7745c5c3_Err = hero.LegalHero(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -135,6 +141,22 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 			templ_7745c5c3_Err = components.Footer(content, settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
+			}
+			if settings.EnableFloatingContact {
+				templ_7745c5c3_Err = components.FloatingContact(content, settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if settings.EnableCart {
+				templ_7745c5c3_Err = components.CartDrawer(settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
 			return nil
 		})

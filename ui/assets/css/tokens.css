@@ -8,6 +8,26 @@
 html[data-theme="default"],
 html[data-theme="main"],
 html[data-theme="main-day"] {
+  /* =========================================
+     SMART HYBRID GEOMETRY & ELEVATION TOKENS
+     Единая система управления радиусами и формами
+     ========================================= */
+  --radius-xs: 0.125rem;   /* 2px */
+  --radius-sm: 0.25rem;    /* 4px */
+  --radius-md: 0.5rem;     /* 8px */
+  --radius-lg: 0.75rem;    /* 12px */
+  --radius-xl: 1rem;       /* 16px */
+  --radius-2xl: 1.5rem;    /* 24px */
+  --radius-3xl: 2rem;      /* 32px */
+  --radius-full: 9999px;
+
+  /* Семантические радиусы по умолчанию */
+  --radius-card: var(--radius-2xl);
+  --radius-card-sm: var(--radius-xl);
+  --radius-btn: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-badge: var(--radius-full);
+
   /* ОСНОВНАЯ ТЕМА — ДЕНЬ (MAIN / DAY) */
   --color-primary: #1e293b;            /* slate-800 */
   --color-primary-dark: color-mix(in srgb, var(--color-primary), black 30%);
@@ -158,6 +178,13 @@ html[data-theme="winter-night"] {
 
 /* Дополнительные алиасы ниш */
 html[data-theme="cyber"] {
+  /* Кибер-геометрия: ультра-технологичные острые грани */
+  --radius-card: var(--radius-xs);
+  --radius-card-sm: var(--radius-xs);
+  --radius-btn: var(--radius-xs);
+  --radius-input: var(--radius-xs);
+  --radius-badge: var(--radius-xs);
+
   --color-primary: #1a1717;
   --color-primary-dark: #141212;
   --color-primary-light: #2a2626;
@@ -165,9 +192,249 @@ html[data-theme="cyber"] {
   --color-accent-hover: #ff6a4d;
   --color-accent-light: #261c1c;
   --color-surface: #141212;
-  --color-surface-muted: #1c1919;
+  --color-surface-muted: #1f1b1b;
   --color-content: #f5f3ef;
   --color-content-muted: #9c9692;
+}
+
+/* МЕДИЦИНСКАЯ ТЕМА (КЛИНИКИ, ДИАГНОСТИКА, СТОМАТОЛОГИЯ) */
+html[data-theme="medical"],
+html[data-theme="medical-day"] {
+  --radius-card: var(--radius-xl);
+  --radius-card-sm: var(--radius-lg);
+  --radius-btn: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-badge: var(--radius-full);
+
+  --color-primary: #0284c7;            /* sky-600 */
+  --color-primary-dark: #0369a1;       /* sky-700 */
+  --color-primary-light: #38bdf8;      /* sky-400 */
+  --color-accent: #0ea5e9;             /* sky-500 */
+  --color-accent-hover: #0284c7;
+  --color-accent-light: #e0f2fe;       /* sky-100 */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f0f9ff;
+  --color-content: #0f172a;
+  --color-content-muted: #64748b;
+}
+
+/* САЛОНЫ КРАСОТЫ И СПА (BEAUTY / WELLNESS) */
+html[data-theme="beauty"],
+html[data-theme="beauty-day"] {
+  --radius-card: var(--radius-3xl);
+  --radius-card-sm: var(--radius-2xl);
+  --radius-btn: var(--radius-full);
+  --radius-input: var(--radius-full);
+  --radius-badge: var(--radius-full);
+
+  --color-primary: #831843;            /* rose-900 */
+  --color-primary-dark: #500724;       /* rose-950 */
+  --color-primary-light: #9d174d;      /* rose-800 */
+  --color-accent: #db2777;             /* pink-600 */
+  --color-accent-hover: #be185d;
+  --color-accent-light: #fdf2f8;       /* pink-50 */
+  --color-surface: #ffffff;
+  --color-surface-muted: #fff1f2;      /* rose-50 */
+  --color-content: #1e1b4b;
+  --color-content-muted: #881337;
+}
+
+/* АВТОСЕРВИСЫ И ДЕТЕЙЛИНГ (AUTO / REPAIR) */
+html[data-theme="auto"],
+html[data-theme="auto-day"] {
+  --radius-card: var(--radius-lg);
+  --radius-card-sm: var(--radius-md);
+  --radius-btn: var(--radius-sm);
+  --radius-input: var(--radius-sm);
+  --radius-badge: var(--radius-sm);
+
+  --color-primary: #18181b;            /* zinc-900 */
+  --color-primary-dark: #09090b;       /* zinc-950 */
+  --color-primary-light: #27272a;      /* zinc-800 */
+  --color-accent: #ea580c;             /* orange-600 */
+  --color-accent-hover: #c2410c;
+  --color-accent-light: #fff7ed;       /* orange-50 */
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4f4f5;      /* zinc-100 */
+  --color-content: #09090b;
+  --color-content-muted: #71717a;
+}
+
+/* ТЁПЛАЯ / ДОСТАВКА / РЕСТОРАНЫ (WARM / DELIVERY) */
+html[data-theme="warm"],
+html[data-theme="warm-day"] {
+  --radius-card: var(--radius-xl);
+  --radius-card-sm: var(--radius-lg);
+  --radius-btn: var(--radius-md);
+  --radius-input: var(--radius-md);
+  --radius-badge: var(--radius-full);
+
+  --color-primary: #78350f;            /* amber-900 */
+  --color-primary-dark: #451a03;       /* amber-950 */
+  --color-primary-light: #92400e;      /* amber-800 */
+  --color-accent: #d97706;             /* amber-600 */
+  --color-accent-hover: #b45309;
+  --color-accent-light: #fef3c7;       /* amber-100 */
+  --color-surface: #ffffff;
+  --color-surface-muted: #fffbeb;      /* amber-50 */
+  --color-content: #1c1917;
+  --color-content-muted: #78716c;
+}
+
+/* Общая геометрия для юридических тем */
+html[data-theme^="legal"] {
+  --radius-card: var(--radius-lg);
+  --radius-card-sm: var(--radius-md);
+  --radius-btn: var(--radius-sm);
+  --radius-input: var(--radius-sm);
+  --radius-badge: var(--radius-sm);
+}
+
+/* ==========================================================================
+   ЮРИДИЧЕСКИЕ ТЕМЫ (ADVOKAT-PRO / LEGAL COLLECTION)
+   ========================================================================== */
+
+/* 1. ШВЕЙЦАРСКИЙ АРБИТРАЖ (LEGAL / LEGAL-SWISS) — Классический Navy & Шампань / Золотой янтарь */
+html[data-theme="legal"],
+html[data-theme="legal-day"],
+html[data-theme="legal-swiss"],
+html[data-theme="legal-swiss-day"] {
+  --color-primary: #0f172a;            /* deep slate navy */
+  --color-primary-dark: #020617;
+  --color-primary-light: #1e293b;
+  --color-accent: #c99738;             /* pure amber gold / champagne */
+  --color-accent-hover: #b3822a;
+  --color-accent-light: #fdfaf3;
+  --color-surface: #ffffff;            /* clean white */
+  --color-surface-muted: #f8fafc;      /* soft cool slate */
+  --color-content: #0f172a;
+  --color-content-muted: #64748b;
+}
+
+html[data-theme="legal-night"],
+html[data-theme="legal-swiss-night"] {
+  --color-primary: #0f172a;
+  --color-primary-dark: #020617;
+  --color-primary-light: #1e293b;
+  --color-accent: #e5b352;
+  --color-accent-hover: #f3c76d;
+  --color-accent-light: #241c0e;
+  --color-surface: #0b1120;
+  --color-surface-muted: #151e32;
+  --color-content: #f8fafc;
+  --color-content-muted: #94a3b8;
+}
+
+/* 2. БРИТАНСКИЙ КЛУБ (LEGAL-BRITISH) — Глубокий изумруд & Бронзовое золото */
+html[data-theme="legal-british"],
+html[data-theme="legal-british-day"] {
+  --color-primary: #062c26;            /* british racing green / dark emerald */
+  --color-primary-dark: #021a16;
+  --color-primary-light: #0f443c;
+  --color-accent: #c8963e;             /* antique bronze gold */
+  --color-accent-hover: #ad7d2a;
+  --color-accent-light: #faf6ef;
+  --color-surface: #fafaf9;            /* warm fine porcelain */
+  --color-surface-muted: #f2f4f2;
+  --color-content: #0c1f1c;
+  --color-content-muted: #4d6560;
+}
+
+html[data-theme="legal-british-night"] {
+  --color-primary: #06241f;
+  --color-primary-dark: #021411;
+  --color-primary-light: #0d3831;
+  --color-accent: #dfad52;
+  --color-accent-hover: #edc272;
+  --color-accent-light: #241c0c;
+  --color-surface: #071714;
+  --color-surface-muted: #0f2722;
+  --color-content: #f5fcf9;
+  --color-content-muted: #8caaa2;
+}
+
+/* 3. КОРПОРАТИВНЫЙ M&A / TECH LAW (LEGAL-CORPORATE) — Полуночный сапфир & Королевский ультрамарин */
+html[data-theme="legal-corporate"],
+html[data-theme="legal-corporate-day"] {
+  --color-primary: #0a192f;            /* midnight sapphire */
+  --color-primary-dark: #020c1b;
+  --color-primary-light: #172a45;
+  --color-accent: #2563eb;             /* royal corporate blue */
+  --color-accent-hover: #1d4ed8;
+  --color-accent-light: #eff6ff;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f1f5f9;
+  --color-content: #0a1128;
+  --color-content-muted: #475569;
+}
+
+html[data-theme="legal-corporate-night"] {
+  --color-primary: #071324;
+  --color-primary-dark: #020812;
+  --color-primary-light: #11223b;
+  --color-accent: #3b82f6;
+  --color-accent-hover: #60a5fa;
+  --color-accent-light: #0d1e38;
+  --color-surface: #060e1a;
+  --color-surface-muted: #0d1b2f;
+  --color-content: #f0f7ff;
+  --color-content-muted: #8fa6c5;
+}
+
+/* 4. МИЛАНСКИЙ СТИЛЬ (LEGAL-MILANO) — Тёплый графит & Песочное шампанское */
+html[data-theme="legal-milano"],
+html[data-theme="legal-milano-day"] {
+  --color-primary: #1c1917;            /* warm charcoal stone-900 */
+  --color-primary-dark: #0c0a09;
+  --color-primary-light: #292524;
+  --color-accent: #d9a04a;             /* sand champagne */
+  --color-accent-hover: #b88232;
+  --color-accent-light: #fefcf7;
+  --color-surface: #fcfbf9;            /* warm marble */
+  --color-surface-muted: #f5f2ec;
+  --color-content: #1c1917;
+  --color-content-muted: #78716c;
+}
+
+html[data-theme="legal-milano-night"] {
+  --color-primary: #171413;
+  --color-primary-dark: #0d0a09;
+  --color-primary-light: #26211f;
+  --color-accent: #ebb565;
+  --color-accent-hover: #f5ca85;
+  --color-accent-light: #2c2011;
+  --color-surface: #12100f;
+  --color-surface-muted: #1c1817;
+  --color-content: #faf8f5;
+  --color-content-muted: #a8a29e;
+}
+
+/* 5. ВИНТАЖНЫЙ ОКСФОРД (LEGAL-CLASSIC) — Классический темно-синий & Состаренный пергамент */
+html[data-theme="legal-classic"],
+html[data-theme="legal-classic-day"] {
+  --color-primary: #0f1e36;
+  --color-primary-dark: #07101e;
+  --color-primary-light: #1b2f52;
+  --color-accent: #c59b27;
+  --color-accent-hover: #ad861e;
+  --color-accent-light: #fdfbf7;
+  --color-surface: #fcfbfa;
+  --color-surface-muted: #f4f1ea;
+  --color-content: #0d1522;
+  --color-content-muted: #5e6878;
+}
+
+html[data-theme="legal-classic-night"] {
+  --color-primary: #0b1320;
+  --color-primary-dark: #050a12;
+  --color-primary-light: #152238;
+  --color-accent: #d4ab3a;
+  --color-accent-hover: #e0be5a;
+  --color-accent-light: #28200d;
+  --color-surface: #0b121e;
+  --color-surface-muted: #131d2e;
+  --color-content: #f8fafc;
+  --color-content-muted: #94a3b8;
 }
 
 /* =========================================

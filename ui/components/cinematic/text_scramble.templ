@@ -1,0 +1,72 @@
+package cinematic
+
+templ TextScramble(text string, classNames string) {
+	<span
+		class={ "cinematic-scramble font-mono cursor-pointer select-none " + classNames }
+		data-scramble-text={ text }
+		title="Наведите для эффекта декодирования"
+	>
+		{ text }
+	</span>
+
+	<script>
+		(function() {
+			var chars = '!<>-_\\/[]{}—=+*^?#________ABCDEF0123456789';
+
+			function initScramble() {
+				document.querySelectorAll('[data-scramble-text]').forEach(function(el) {
+					if (el.dataset.scrambleInit) return;
+					el.dataset.scrambleInit = 'true';
+
+					var originalText = el.dataset.scrambleText;
+					var frameRequest = null;
+
+					function runScramble() {
+						if (frameRequest) cancelAnimationFrame(frameRequest);
+						var iteration = 0;
+						var maxIterations = originalText.length * 3;
+
+						function frame() {
+							var output = '';
+							for (var i = 0; i < originalText.length; i++) {
+								if (i < iteration / 3) {
+									output += originalText[i];
+								} else {
+									output += chars[Math.floor(Math.random() * chars.length)];
+								}
+							}
+							el.textContent = output;
+
+							if (iteration < maxIterations) {
+								iteration++;
+								frameRequest = requestAnimationFrame(frame);
+							} else {
+								el.textContent = originalText;
+							}
+						}
+						frame();
+					}
+
+					el.addEventListener('mouseenter', runScramble);
+					// Запустить один раз при попадании во вьюпорт
+					var observer = new IntersectionObserver(function(entries) {
+						entries.forEach(function(entry) {
+							if (entry.isIntersecting) {
+								runScramble();
+								observer.unobserve(el);
+							}
+						});
+					}, { threshold: 0.5 });
+					observer.observe(el);
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initScramble);
+			} else {
+				initScramble();
+			}
+			document.addEventListener('htmx:afterSwap', initScramble);
+		})();
+	</script>
+}

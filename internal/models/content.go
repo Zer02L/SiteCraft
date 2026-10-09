@@ -28,6 +28,12 @@ type SiteSettings struct {
 	PaymentSecret  string `json:"payment_secret"`
 	PaymentSandbox bool   `json:"payment_sandbox"`
 
+	// Модули взаимодействия и конверсии (Квиз, Мульти-мессенджер, Веб-корзина)
+	EnableFloatingContact bool   `json:"enable_floating_contact"`
+	WhatsappPhone         string `json:"whatsapp_phone"`
+	TelegramContact       string `json:"telegram_contact"`
+	EnableCart            bool   `json:"enable_cart"`
+
 	// Новые модули (Этап 1: Блог и TMA: Telegram Mini App, Этап 2: Трекер заказов, Локализация)
 	EnableBlog    bool   `json:"enable_blog"`
 	EnableTMA     bool   `json:"enable_tma"`
@@ -115,6 +121,75 @@ type StepsPayload struct {
 	Title    string     `json:"title"`
 	Subtitle string     `json:"subtitle"`
 	Items    []StepItem `json:"items"`
+}
+
+// QuizOption represents a selectable answer in a quiz step
+type QuizOption struct {
+	ID            string  `json:"id"`
+	Title         string  `json:"title"`
+	Description   string  `json:"description,omitempty"`
+	PriceModifier float64 `json:"price_modifier"`
+	Icon          string  `json:"icon,omitempty"`
+}
+
+// QuizStep represents an individual question in the interactive quiz
+type QuizStep struct {
+	ID          string       `json:"id"`
+	Question    string       `json:"question"`
+	Subtitle    string       `json:"subtitle,omitempty"`
+	MultiSelect bool         `json:"multi_select"`
+	Options     []QuizOption `json:"options"`
+}
+
+// QuizPayload represents the configuration for the interactive quiz/calculator block
+type QuizPayload struct {
+	Badge     string     `json:"badge"`
+	Title     string     `json:"title"`
+	Subtitle  string     `json:"subtitle"`
+	BasePrice float64    `json:"base_price"`
+	Currency  string     `json:"currency"`
+	BonusText string     `json:"bonus_text,omitempty"`
+	Steps     []QuizStep `json:"steps"`
+}
+
+// BeforeAfterItem represents a single case comparison item
+type BeforeAfterItem struct {
+	Title       string `json:"title"`
+	Description string `json:"description,omitempty"`
+	BeforeImage string `json:"before_image"`
+	AfterImage  string `json:"after_image"`
+	BeforeLabel string `json:"before_label,omitempty"`
+	AfterLabel  string `json:"after_label,omitempty"`
+}
+
+// BeforeAfterPayload represents the data-driven Before/After block
+type BeforeAfterPayload struct {
+	Badge    string            `json:"badge"`
+	Title    string            `json:"title"`
+	Subtitle string            `json:"subtitle"`
+	Items    []BeforeAfterItem `json:"items"`
+}
+
+// CartItem represents an item placed in the client's web cart
+type CartItem struct {
+	ID       string  `json:"id"`
+	Title    string  `json:"title"`
+	Price    float64 `json:"price"`
+	PriceStr string  `json:"price_str,omitempty"`
+	Qty      int     `json:"qty"`
+	Image    string  `json:"image,omitempty"`
+}
+
+// CartCheckoutRequest represents the payload when customer places an order from cart
+type CartCheckoutRequest struct {
+	Name        string     `json:"name"`
+	Phone       string     `json:"phone"`
+	Email       string     `json:"email,omitempty"`
+	Address     string     `json:"address,omitempty"`
+	Comment     string     `json:"comment,omitempty"`
+	PayOnline   bool       `json:"pay_online"`
+	Items       []CartItem `json:"items"`
+	TotalAmount float64    `json:"total_amount"`
 }
 
 // ServiceItem represents a service or pricing item

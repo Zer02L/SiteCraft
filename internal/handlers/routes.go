@@ -1,11 +1,10 @@
 package handlers
 
 import (
-	"os"
-
 	"sitecraft/internal/events"
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/notifications"
+	"sitecraft/ui"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/apis"
@@ -26,10 +25,10 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	paymentHandler := NewPaymentHandler(app, WithPaymentEventBus(bus))
 	tmaHandler := NewTMAHandler(app)
 	trackerHandler := NewTrackerHandler(app)
+	cartHandler := NewCartHandler(app, bus)
 
-	// Статические файлы (скомпилированные CSS, ассеты)
-	r.GET("/assets/{path...}", apis.Static(os.DirFS("./ui/assets"), false))
-	r.GET("/public/{path...}", apis.Static(os.DirFS("./public"), false))
+	// Статические файлы (встроенные ассеты / live-reload в dev-режиме)
+	r.GET("/assets/{path...}", apis.Static(ui.AssetsFS(), false))
 
 	// Главная страница (SSR с помощью Templ + In-Memory Cache)
 	r.GET("/", webHandler.HandleHome)
@@ -58,6 +57,7 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 
 	// API Бизнес-действия
 	r.POST("/api/leads", leadHandler.HandleCreateLead)
+	r.POST("/api/cart/checkout", cartHandler.HandleCheckout)
 	r.POST("/api/payment/create", paymentHandler.HandleCreatePayment)
 	r.GET("/api/lang/{code}", i18n.HandleSetLang)
 }

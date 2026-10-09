@@ -147,7 +147,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -196,7 +196,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if theme == "medical" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Нужно ли готовиться к сдаче анализов крови?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Нужно ли готовиться к сдаче анализов крови?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -204,7 +204,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Большинство биохимических анализов и исследований крови сдаются строго натощак (8-12 часов после приема пищи). Разрешается пить чистую негазированную воду. За сутки исключите жирную пищу и алкоголь.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как быстро приходят результаты УЗИ и обследований?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Большинство биохимических анализов и исследований крови сдаются строго натощак (8-12 часов после приема пищи). Разрешается пить чистую негазированную воду. За сутки исключите жирную пищу и алкоголь.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как быстро приходят результаты УЗИ и обследований?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -212,7 +212,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Протокол ультразвукового исследования и снимки экспертного класса выдаются врачом сразу же после завершения процедуры (в течение 10–15 минут).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Принимают ли врачи по полису ОМС или ДМС?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Протокол ультразвукового исследования и снимки экспертного класса выдаются врачом сразу же после завершения процедуры (в течение 10–15 минут).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Принимают ли врачи по полису ОМС или ДМС?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -225,7 +225,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "auto" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Сколько времени занимает комплексная диагностика?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Сколько времени занимает комплексная диагностика?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -233,7 +233,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Полная компьютерная диагностика сканером и осмотр ходовой части на подъемнике занимают от 40 до 60 минут. Вы получите подробный диагностический лист с рекомендациями.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли привезти свои запчасти и моторное масло?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Полная компьютерная диагностика сканером и осмотр ходовой части на подъемнике занимают от 40 до 60 минут. Вы получите подробный диагностический лист с рекомендациями.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли привезти свои запчасти и моторное масло?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -241,7 +241,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, вы можете привезти собственные расходные материалы. При этом гарантия автосервиса будет распространяться на качество выполненных монтажных работ.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Есть ли гарантия на выполненный ремонт?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Да, вы можете привезти собственные расходные материалы. При этом гарантия автосервиса будет распространяться на качество выполненных монтажных работ.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Есть ли гарантия на выполненный ремонт?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -254,7 +254,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else if theme == "beauty" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>За сколько дней необходимо записываться к топ-стилистам?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>За сколько дней необходимо записываться к топ-стилистам?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -262,7 +262,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">К ведущим мастерам рекомендуем записываться за 3–5 дней. Однако мы всегда оставляем горячие «окна» день-в-день — уточняйте у администратора.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как проводится стерилизация инструментов?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">К ведущим мастерам рекомендуем записываться за 3–5 дней. Однако мы всегда оставляем горячие «окна» день-в-день — уточняйте у администратора.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Как проводится стерилизация инструментов?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -270,7 +270,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">В 4 этапа: ультразвуковая дезинфекция, предстерилизационная очистка, сушка и стерилизация в сухожаровом шкафу ГП-20. Индивидуальный крафт-пакет вскрывается строго при вас.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какую косметику и красители вы используете?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">В 4 этапа: ультразвуковая дезинфекция, предстерилизационная очистка, сушка и стерилизация в сухожаровом шкафу ГП-20. Индивидуальный крафт-пакет вскрывается строго при вас.</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какую косметику и красители вы используете?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -283,7 +283,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какие документы необходимы для оформления доверенности?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"space-y-4\"><details data-reveal class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какие документы необходимы для оформления доверенности?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -291,7 +291,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Оригинал паспорта гражданина РФ доверителя, полные паспортные данные поверенного лица (копия или четкое фото паспорта). При автодоверенности — ПТС или СТС.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какой срок для открытия наследственного дела?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Оригинал паспорта гражданина РФ доверителя, полные паспортные данные поверенного лица (копия или четкое фото паспорта). При автодоверенности — ПТС или СТС.</p></details> <details data-reveal data-reveal-delay=\"100\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Какой срок для открытия наследственного дела?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -299,7 +299,7 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Заявление о принятии наследства должно быть подано нотариусу в течение 6 месяцев со дня открытия наследства (дня смерти наследодателя).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-xl border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли подать документы удаленно или направить представителя?</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</summary><p class=\"mt-3 text-xs text-content-muted leading-relaxed pt-2 border-t border-content/10\">Заявление о принятии наследства должно быть подано нотариусу в течение 6 месяцев со дня открытия наследства (дня смерти наследодателя).</p></details> <details data-reveal data-reveal-delay=\"200\" class=\"group bg-surface rounded-card-sm border border-content/10 text-content p-5 open:shadow-md transition\"><summary class=\"flex justify-between items-center font-bold text-content text-sm cursor-pointer list-none select-none\"><span>Можно ли подать документы удаленно или направить представителя?</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

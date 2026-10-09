@@ -23,7 +23,7 @@ templ Steps(theme string) {
 			if theme == "auto" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
 					<div data-reveal data-reveal-delay="100" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">01</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">01</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.Car(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Приём и осмотр
@@ -31,7 +31,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p>
 					</div>
 					<div data-reveal data-reveal-delay="200" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">02</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">02</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.Wrench(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Диагностика
@@ -39,7 +39,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p>
 					</div>
 					<div data-reveal data-reveal-delay="300" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">03</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">03</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.FileText(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Согласование сметы
@@ -47,7 +47,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p>
 					</div>
 					<div data-reveal data-reveal-delay="400" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">04</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">04</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.CheckCircle2(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Ремонт и выдача
@@ -58,7 +58,7 @@ templ Steps(theme string) {
 			} else {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
 					<div data-reveal data-reveal-delay="100" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">01</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">01</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.Calendar(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Запись на сайте
@@ -66,7 +66,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p>
 					</div>
 					<div data-reveal data-reveal-delay="200" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">02</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">02</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.PhoneCall(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Подтверждение
@@ -74,7 +74,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Мы связываемся с вами и уточняем список необходимых для визита документов.</p>
 					</div>
 					<div data-reveal data-reveal-delay="300" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">03</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">03</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.Clock(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Визит без очередей
@@ -82,7 +82,7 @@ templ Steps(theme string) {
 						<p class="card-desc text-xs">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p>
 					</div>
 					<div data-reveal data-reveal-delay="400" class="card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300">
-						<div class="w-10 h-10 rounded-xl bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">04</div>
+						<div class="w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow">04</div>
 						<h3 class="card-title text-base mb-1 flex items-center gap-1.5">
 							@icons.CheckCircle2(templ.Attributes{"class": "w-4 h-4 text-accent"})
 							Готовый результат

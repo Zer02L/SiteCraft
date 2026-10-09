@@ -1,0 +1,80 @@
+package cinematic
+
+type AccordionStrip struct {
+	ID          string
+	Number      string
+	Title       string
+	Subtitle    string
+	Description string
+	ImageURL    string
+	LinkURL     string
+}
+
+templ AccordionSlider(title string, subtitle string, strips []AccordionStrip) {
+	<section class="cinematic-accordion-slider py-16 px-4 max-w-7xl mx-auto">
+		if title != "" || subtitle != "" {
+			<div class="text-center mb-12">
+				if subtitle != "" {
+					<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-2 block">{ subtitle }</span>
+				}
+				if title != "" {
+					<h2 class="text-3xl sm:text-4xl font-bold text-content tracking-tight">{ title }</h2>
+				}
+			</div>
+		}
+
+		<!-- Контейнер аккордеона -->
+		<div class="flex flex-col md:flex-row h-[600px] md:h-[480px] w-full gap-3 overflow-hidden">
+			for idx, item := range strips {
+				<div
+					class={
+						"group relative flex-1 hover:flex-[3.5] active:flex-[3.5] transition-[flex] duration-500 ease-out rounded-2xl overflow-hidden cursor-pointer border border-surface-muted/60 bg-surface shadow-md",
+						templ.KV("md:flex-[2]", idx == 0),
+					}
+					tabindex="0"
+				>
+					<!-- Фоновое изображение или градиент -->
+					<div
+						class="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+						style={ "background-image: url('" + item.ImageURL + "');" }
+					></div>
+					<div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 group-hover:via-black/30 transition-colors"></div>
+
+					<!-- Контент полосы -->
+					<div class="relative z-10 h-full w-full p-6 sm:p-8 flex flex-col justify-between text-white">
+						<div class="flex items-center justify-between">
+							<span class="text-xs font-mono font-bold tracking-wider px-2.5 py-1 rounded bg-white/10 backdrop-blur-md">
+								{ item.Number }
+							</span>
+							<span class="text-xs uppercase tracking-wider text-white/70 font-medium">
+								{ item.Subtitle }
+							</span>
+						</div>
+
+						<div class="transform transition-transform duration-300">
+							<h3 class="text-2xl sm:text-3xl font-bold tracking-tight mb-2 text-white">
+								{ item.Title }
+							</h3>
+							
+							<!-- Развернутое описание (появляется при наведении/раскрытии) -->
+							<div class="max-h-0 opacity-0 group-hover:max-h-36 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
+								<p class="text-sm text-white/80 leading-relaxed mb-4 pt-2">
+									{ item.Description }
+								</p>
+								if item.LinkURL != "" {
+									<a
+										href={ templ.SafeURL(item.LinkURL) }
+										class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent hover:underline"
+									>
+										<span>Подробнее</span>
+										<span>→</span>
+									</a>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+}

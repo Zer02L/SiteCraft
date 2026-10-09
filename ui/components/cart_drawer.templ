@@ -1,0 +1,289 @@
+package components
+
+import (
+	"sitecraft/internal/models"
+
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
+templ CartDrawer(settings models.SiteSettings) {
+	<!-- Alpine Store Cart Initialization -->
+	<script>
+		document.addEventListener('alpine:init', () => {
+			Alpine.store('cart', {
+				isOpen: false,
+				items: JSON.parse(localStorage.getItem('sitecraft_cart') || '[]'),
+				save() {
+					localStorage.setItem('sitecraft_cart', JSON.stringify(this.items));
+				},
+				add(item) {
+					const existing = this.items.find(i => i.id === item.id);
+					if (existing) {
+						existing.qty += 1;
+					} else {
+						this.items.push({
+							id: item.id,
+							title: item.title,
+							price: parseFloat(item.price) || 0,
+							price_str: item.price_str || '',
+							qty: 1,
+							image: item.image || ''
+						});
+					}
+					this.save();
+					this.isOpen = true;
+				},
+				updateQty(id, delta) {
+					const item = this.items.find(i => i.id === id);
+					if (item) {
+						item.qty += delta;
+						if (item.qty <= 0) {
+							this.remove(id);
+							return;
+						}
+					}
+					this.save();
+				},
+				remove(id) {
+					this.items = this.items.filter(i => i.id !== id);
+					this.save();
+				},
+				clear() {
+					this.items = [];
+					this.save();
+				},
+				count() {
+					return this.items.reduce((sum, i) => sum + i.qty, 0);
+				},
+				total() {
+					return this.items.reduce((sum, i) => sum + (i.price * i.qty), 0);
+				},
+				getItemsJSON() {
+					return JSON.stringify(this.items);
+				}
+			});
+
+			// Слушаем событие очистки корзины после успешного чекаута
+			document.body.addEventListener('cart-cleared', () => {
+				Alpine.store('cart').clear();
+			});
+		});
+	</script>
+
+	<!-- Плавающая кнопка корзины (в нижнем левом углу) -->
+	<div
+		x-data
+		x-show="$store.cart && $store.cart.count() > 0"
+		x-transition:enter="transition ease-out duration-300"
+		x-transition:enter-start="opacity-0 translate-y-6 scale-90"
+		x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+		class="fixed bottom-6 left-6 z-40 print:hidden font-sans"
+		style="display: none;"
+	>
+		<button
+			type="button"
+			x-on:click="$store.cart.isOpen = true"
+			class="bg-accent text-primary-dark font-bold px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-3 border-2 border-white/20 hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer focus:outline-none ring-4 ring-accent/20"
+		>
+			<div class="relative">
+				@icons.ShoppingBag(templ.Attributes{"class": "w-6 h-6"})
+				<span
+					x-text="$store.cart.count()"
+					class="absolute -top-2 -right-2 w-5 h-5 bg-rose-600 text-white rounded-full text-xs font-bold flex items-center justify-center shadow"
+				></span>
+			</div>
+			<div class="text-left hidden sm:block">
+				<div class="text-[11px] leading-tight opacity-80">Корзина</div>
+				<div class="text-sm font-extrabold" x-text="$store.cart.total().toLocaleString('ru-RU') + ' ₽'"></div>
+			</div>
+		</button>
+	</div>
+
+	<!-- Выдвижная боковая шторка корзины (Drawer) -->
+	<div
+		x-data
+		x-show="$store.cart && $store.cart.isOpen"
+		x-transition:enter="transition ease-out duration-300"
+		x-transition:enter-start="opacity-0"
+		x-transition:enter-end="opacity-100"
+		x-transition:leave="transition ease-in duration-200"
+		x-transition:leave-start="opacity-100"
+		x-transition:leave-end="opacity-0"
+		class="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm"
+		style="display: none;"
+	>
+		<div class="absolute inset-0" x-on:click="$store.cart.isOpen = false"></div>
+
+		<div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+			<div
+				x-show="$store.cart && $store.cart.isOpen"
+				x-transition:enter="transform transition ease-out duration-300"
+				x-transition:enter-start="translate-x-full"
+				x-transition:enter-end="translate-x-0"
+				x-transition:leave="transform transition ease-in duration-200"
+				x-transition:leave-start="translate-x-0"
+				x-transition:leave-end="translate-x-full"
+				class="w-screen max-w-md bg-surface text-content shadow-2xl flex flex-col border-l border-content/10"
+			>
+				<!-- Заголовок шторки -->
+				<div class="p-6 border-b border-content/10 flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 rounded-xl bg-accent/15 text-accent flex items-center justify-center">
+							@icons.ShoppingBag(templ.Attributes{"class": "w-5 h-5"})
+						</div>
+						<div>
+							<h2 class="text-lg font-bold text-content">Корзина заказа</h2>
+							<p class="text-xs text-content-muted" x-text="'Позиций: ' + $store.cart.count()"></p>
+						</div>
+					</div>
+
+					<button
+						type="button"
+						x-on:click="$store.cart.isOpen = false"
+						class="p-2 rounded-xl text-content-muted hover:text-content hover:bg-content/5 transition"
+					>
+						@icons.X(templ.Attributes{"class": "w-5 h-5"})
+					</button>
+				</div>
+
+				<!-- Тело корзины (с возможностью HTMX-свопа результата) -->
+				<div id="cart-drawer-content" class="flex-1 overflow-y-auto p-6 space-y-6">
+					<!-- Если корзина пуста -->
+					<div x-show="$store.cart.items.length === 0" class="py-16 text-center">
+						<div class="w-16 h-16 rounded-full bg-content/5 text-content-muted mx-auto flex items-center justify-center mb-4">
+							@icons.ShoppingBag(templ.Attributes{"class": "w-8 h-8 opacity-40"})
+						</div>
+						<h3 class="font-bold text-base text-content">Ваша корзина пуста</h3>
+						<p class="text-xs text-content-muted mt-1 max-w-xs mx-auto">
+							Выберите интересующие услуги или товары в каталоге и добавьте их в один клик.
+						</p>
+					</div>
+
+					<!-- Список товаров -->
+					<div x-show="$store.cart.items.length > 0" class="space-y-3">
+						<template x-for="item in $store.cart.items" :key="item.id">
+							<div class="p-3.5 rounded-2xl border border-content/10 bg-surface-muted/50 flex items-center justify-between gap-3">
+								<div class="flex-1 min-w-0">
+									<h4 class="font-bold text-sm text-content truncate" x-text="item.title"></h4>
+									<div class="text-xs text-accent font-semibold mt-0.5" x-text="(item.price > 0 ? (item.price * item.qty).toLocaleString('ru-RU') + ' ₽' : item.price_str)"></div>
+								</div>
+
+								<!-- Счетчик кол-ва -->
+								<div class="flex items-center gap-1.5 bg-surface border border-content/15 rounded-xl px-2 py-1">
+									<button
+										type="button"
+										x-on:click="$store.cart.updateQty(item.id, -1)"
+										class="w-6 h-6 flex items-center justify-center text-content-muted hover:text-content text-sm font-bold"
+									>
+										-
+									</button>
+									<span class="text-xs font-bold w-5 text-center" x-text="item.qty"></span>
+									<button
+										type="button"
+										x-on:click="$store.cart.updateQty(item.id, 1)"
+										class="w-6 h-6 flex items-center justify-center text-content-muted hover:text-content text-sm font-bold"
+									>
+										+
+									</button>
+								</div>
+
+								<!-- Удаление -->
+								<button
+									type="button"
+									x-on:click="$store.cart.remove(item.id)"
+									class="text-content-muted hover:text-rose-500 p-1 transition"
+									title="Удалить"
+								>
+									@icons.Trash2(templ.Attributes{"class": "w-4 h-4"})
+								</button>
+							</div>
+						</template>
+					</div>
+
+					<!-- Форма оформления заказа -->
+					<div x-show="$store.cart.items.length > 0" class="pt-4 border-t border-content/10">
+						<form
+							hx-post="/api/cart/checkout"
+							hx-target="#cart-drawer-content"
+							hx-swap="innerHTML transition:true"
+							class="space-y-4"
+						>
+							<input type="hidden" name="cart_payload" :value="$store.cart.getItemsJSON()"/>
+							<input type="hidden" name="company_website_url" value=""/> <!-- Honeypot -->
+
+							<h3 class="font-bold text-sm text-content">Данные для оформления</h3>
+
+							<div>
+								<label class="block text-xs font-semibold text-content-muted mb-1">Ваше имя</label>
+								<input
+									type="text"
+									name="name"
+									required
+									placeholder="Константин"
+									class="w-full px-3.5 py-2.5 rounded-xl border border-content/15 bg-surface text-content text-sm focus:outline-none focus:border-accent"
+								/>
+							</div>
+
+							<div>
+								<label class="block text-xs font-semibold text-content-muted mb-1">Номер телефона</label>
+								<input
+									type="tel"
+									name="phone"
+									required
+									x-mask="+7 (999) 999-99-99"
+									placeholder="+7 (___) ___-__-__"
+									class="w-full px-3.5 py-2.5 rounded-xl border border-content/15 bg-surface text-content text-sm focus:outline-none focus:border-accent"
+								/>
+							</div>
+
+							<div>
+								<label class="block text-xs font-semibold text-content-muted mb-1">Адрес доставки или комментарий</label>
+								<textarea
+									name="comment"
+									rows="2"
+									placeholder="Адрес, время или пожелания к заказу..."
+									class="w-full px-3.5 py-2 rounded-xl border border-content/15 bg-surface text-content text-xs focus:outline-none focus:border-accent"
+								></textarea>
+							</div>
+
+							<!-- Способ оплаты -->
+							if settings.EnablePayment {
+								<div>
+									<label class="block text-xs font-semibold text-content-muted mb-1.5">Способ оплаты</label>
+									<div class="grid grid-cols-2 gap-2 text-xs">
+										<label class="border border-content/15 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:border-accent transition">
+											<input type="radio" name="pay_online" value="false" checked class="text-accent"/>
+											<span>При получении</span>
+										</label>
+										<label class="border border-content/15 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer hover:border-accent transition">
+											<input type="radio" name="pay_online" value="true" class="text-accent"/>
+											<span class="font-semibold text-accent">Онлайн картой</span>
+										</label>
+									</div>
+								</div>
+							} else {
+								<input type="hidden" name="pay_online" value="false"/>
+							}
+
+							<!-- Итого и кнопка заказа -->
+							<div class="pt-4 border-t border-content/10">
+								<div class="flex items-center justify-between mb-4">
+									<span class="text-sm font-semibold text-content-muted">Итого к оплате:</span>
+									<span class="text-xl font-extrabold text-accent" x-text="$store.cart.total().toLocaleString('ru-RU') + ' ₽'"></span>
+								</div>
+
+								<button
+									type="submit"
+									class="w-full py-3.5 rounded-2xl bg-accent text-primary-dark font-extrabold text-sm shadow-xl hover:brightness-105 active:scale-[0.99] transition flex items-center justify-center gap-2 cursor-pointer"
+								>
+									@icons.CheckCircle(templ.Attributes{"class": "w-4 h-4"})
+									<span>Подтвердить и заказать</span>
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}

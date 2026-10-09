@@ -1,0 +1,123 @@
+package cinematic
+
+import "encoding/json"
+
+func imagesToJSON(urls []string) string {
+	b, err := json.Marshal(urls)
+	if err != nil {
+		return "[]"
+	}
+	return string(b)
+}
+
+templ ImageTrail(title string, subtitle string, imageURLs []string) {
+	<div
+		class="cinematic-image-trail relative min-h-[70vh] flex flex-col items-center justify-center text-center p-8 overflow-hidden select-none cursor-default bg-surface"
+		data-image-trail
+		data-trail-images={ imagesToJSON(imageURLs) }
+	>
+		<div class="relative z-10 pointer-events-none max-w-2xl">
+			if subtitle != "" {
+				<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-3 block">{ subtitle }</span>
+			}
+			<h2 class="text-4xl sm:text-6xl font-extrabold text-content tracking-tight mb-4">
+				{ title }
+			</h2>
+			<p class="text-base text-content-muted">
+				Двигайте курсором мыши по области для появления шлейфа изображений
+			</p>
+		</div>
+	</div>
+
+	<style>
+		.trail-img-item {
+			position: absolute;
+			width: 140px;
+			height: 180px;
+			border-radius: 16px;
+			background-size: cover;
+			background-position: center;
+			pointer-events: none;
+			transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+			opacity: 0;
+			transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+			z-index: 5;
+			box-shadow: 0 16px 32px rgba(0,0,0,0.25);
+			border: 2px solid rgba(255,255,255,0.2);
+		}
+		.trail-img-item.active {
+			opacity: 1;
+			transform: translate(-50%, -50%) scale(1) rotate(var(--rot, 0deg));
+		}
+	</style>
+
+	<script>
+		(function() {
+			function initImageTrails() {
+				document.querySelectorAll('[data-image-trail]').forEach(function(area) {
+					if (area.dataset.trailInit) return;
+					area.dataset.trailInit = 'true';
+
+					var urls = [];
+					try {
+						urls = JSON.parse(area.dataset.trailImages || '[]');
+					} catch(e) {}
+					if (urls.length === 0) return;
+
+					var pool = [];
+					var poolSize = 12;
+					for (var i = 0; i < poolSize; i++) {
+						var el = document.createElement('div');
+						el.className = 'trail-img-item';
+						area.appendChild(el);
+						pool.push({ el: el, active: false, timer: null });
+					}
+
+					var lastX = 0, lastY = 0;
+					var threshold = 75; // пикселей перемещения
+					var imgIndex = 0;
+					var poolIndex = 0;
+
+					area.addEventListener('mousemove', function(e) {
+						var rect = area.getBoundingClientRect();
+						var x = e.clientX - rect.left;
+						var y = e.clientY - rect.top;
+
+						var dist = Math.hypot(x - lastX, y - lastY);
+						if (dist < threshold) return;
+
+						lastX = x;
+						lastY = y;
+
+						var item = pool[poolIndex];
+						poolIndex = (poolIndex + 1) % poolSize;
+
+						item.el.style.left = x + 'px';
+						item.el.style.top = y + 'px';
+						item.el.style.backgroundImage = 'url(' + urls[imgIndex % urls.length] + ')';
+						var rot = (Math.random() - 0.5) * 24;
+						item.el.style.setProperty('--rot', rot.toFixed(1) + 'deg');
+
+						item.el.classList.remove('active');
+						void item.el.offsetWidth; // trigger reflow
+						item.el.classList.add('active');
+
+						imgIndex++;
+
+						if (item.timer) clearTimeout(item.timer);
+						item.timer = setTimeout(function() {
+							item.el.classList.remove('active');
+						}, 700);
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initImageTrails);
+			} else {
+				initImageTrails();
+			}
+			document.addEventListener('htmx:afterSwap', initImageTrails);
+		})();
+	</script>
+}

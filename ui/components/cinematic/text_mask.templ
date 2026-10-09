@@ -1,0 +1,91 @@
+package cinematic
+
+templ TextMaskReveal(eyebrow string, text string) {
+	<section class="cinematic-text-mask-section min-h-[100vh] flex flex-col items-center justify-center text-center px-6 py-24 max-w-6xl mx-auto" data-text-mask-section>
+		if eyebrow != "" {
+			<span class="text-xs uppercase tracking-widest text-accent font-semibold mb-6 block">
+				{ eyebrow }
+			</span>
+		}
+		<h2
+			class="text-mask-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1] select-none will-change-[background-position]"
+			data-text-mask
+		>
+			{ text }
+		</h2>
+	</section>
+
+	<style>
+		.text-mask-heading {
+			background: linear-gradient(
+				to right,
+				var(--color-accent) 0%,
+				var(--color-primary) var(--mask-progress, 0%),
+				rgba(var(--color-content), 0.18) var(--mask-progress, 0%),
+				rgba(var(--color-content), 0.18) 100%
+			);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			color: transparent;
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.text-mask-heading {
+				background: none;
+				-webkit-text-fill-color: currentColor;
+				color: inherit;
+			}
+		}
+	</style>
+
+	<script>
+		(function() {
+			function loadMotion(cb) {
+				if (window.Motion) return cb(window.Motion);
+				var s = document.querySelector('script[data-motion-cdn]');
+				if (!s) {
+					s = document.createElement('script');
+					s.src = 'https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.min.js';
+					s.dataset.motionCdn = 'true';
+					document.head.appendChild(s);
+				}
+				s.addEventListener('load', function() { cb(window.Motion); });
+			}
+
+			function initTextMaskMotion() {
+				if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+				var sections = document.querySelectorAll('[data-text-mask-section]');
+				if (sections.length === 0) return;
+
+				loadMotion(function(Motion) {
+					sections.forEach(function(section) {
+						if (section.dataset.motionBound) return;
+						section.dataset.motionBound = 'true';
+
+						var heading = section.querySelector('[data-text-mask]');
+						if (!heading) return;
+
+						// Непрерывный субпиксельный скраббинг заливки букв через Motion One
+						Motion.scroll(function(info) {
+							var p = typeof info === 'number' ? info : (info && info.y ? info.y.progress : 0);
+							var percent = (p * 100).toFixed(1);
+							heading.style.setProperty('--mask-progress', percent + '%');
+						}, {
+							target: section,
+							offset: ["start end", "end start"]
+						});
+					});
+				});
+			}
+
+			if (document.readyState === 'loading') {
+				document.addEventListener('DOMContentLoaded', initTextMaskMotion);
+			} else {
+				initTextMaskMotion();
+			}
+			document.addEventListener('htmx:afterSwap', initTextMaskMotion);
+		})();
+	</script>
+}

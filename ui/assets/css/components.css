@@ -6,7 +6,7 @@
 @layer components {
   /* Заголовки и бейджи секций */
   .section-badge {
-    @apply inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded-full border border-accent/20 uppercase tracking-wider mb-2;
+    @apply inline-block px-3 py-1 bg-accent/10 text-accent text-xs font-semibold rounded-badge border border-accent/20 uppercase tracking-wider mb-2;
   }
   .section-title {
     @apply font-serif-title text-3xl font-bold text-content tracking-tight;
@@ -15,12 +15,15 @@
     @apply text-content-muted mt-2 max-w-xl mx-auto text-sm leading-relaxed;
   }
 
-  /* Базовые карточки контента */
+  /* Базовые карточки контента (Smart Hybrid tokens) */
   .card-base {
-    @apply bg-surface text-content p-6 rounded-2xl border border-content/10 shadow-sm transition-all duration-300;
+    @apply bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300;
   }
   .card-interactive {
-    @apply bg-surface text-content p-6 rounded-2xl border border-content/10 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/60 hover:-translate-y-1;
+    @apply bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/60 hover:-translate-y-1;
+  }
+  .card-sm {
+    @apply bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition-all duration-300;
   }
   .card-title {
     @apply text-lg font-bold text-content;
@@ -31,7 +34,7 @@
 
   /* Формы и поля ввода */
   .form-input {
-    @apply w-full px-3.5 py-2.5 bg-surface text-content border border-content/20 rounded-lg text-sm transition focus:ring-2 focus:ring-accent focus:border-accent focus:outline-none;
+    @apply w-full px-3.5 py-2.5 bg-surface text-content border border-content/20 rounded-input text-sm transition focus:ring-2 focus:ring-accent focus:border-accent focus:outline-none;
   }
   .form-label {
     @apply block text-xs font-semibold text-content/80 mb-1;
@@ -39,10 +42,10 @@
 
   /* Кнопки */
   .btn-accent {
-    @apply px-4 py-2 bg-accent hover:bg-accent-hover text-surface font-semibold rounded-lg shadow-sm transition-colors cursor-pointer text-sm;
+    @apply px-4 py-2 bg-accent hover:bg-accent-hover text-surface font-semibold rounded-btn shadow-sm transition-colors cursor-pointer text-sm;
   }
   .btn-primary-ghost {
-    @apply px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer text-xs;
+    @apply px-3 py-1.5 rounded-btn bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer text-xs;
   }
 
   /* shadcn-templ styling bridge */
@@ -50,19 +53,19 @@
     @apply inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer disabled:pointer-events-none disabled:opacity-50 select-none;
   }
   .cn-button-size-default {
-    @apply px-4 py-2 text-sm rounded-lg;
+    @apply px-4 py-2 text-sm rounded-btn;
   }
   .cn-button-size-xs {
-    @apply px-2 py-1 text-[11px] rounded-md;
+    @apply px-2 py-1 text-[11px] rounded-btn;
   }
   .cn-button-size-sm {
-    @apply px-3 py-1.5 text-xs rounded-lg;
+    @apply px-3 py-1.5 text-xs rounded-btn;
   }
   .cn-button-size-lg {
-    @apply px-6 py-3 text-base rounded-xl font-bold;
+    @apply px-6 py-3 text-base rounded-btn font-bold;
   }
   .cn-button-size-icon {
-    @apply p-2 rounded-lg;
+    @apply p-2 rounded-btn;
   }
   .cn-button-variant-default {
     @apply bg-primary hover:bg-primary-dark text-white shadow-sm hover:shadow active:scale-[0.98];
@@ -81,7 +84,7 @@
   }
 
   .cn-badge {
-    @apply inline-flex items-center justify-center font-semibold rounded-full text-xs px-2.5 py-0.5 transition-colors;
+    @apply inline-flex items-center justify-center font-semibold rounded-badge text-xs px-2.5 py-0.5 transition-colors;
   }
   .cn-badge-variant-default {
     @apply bg-primary text-white;
