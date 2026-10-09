@@ -1,0 +1,65 @@
+package pages
+
+import (
+	"encoding/json"
+	"fmt"
+	"strings"
+
+	"sitecraft/internal/models"
+)
+
+// tagsToJSON serializes string slice to JSON array string for Alpine.js.
+func tagsToJSON(tags []string) string {
+	if len(tags) == 0 {
+		return "[]"
+	}
+	b, err := json.Marshal(tags)
+	if err != nil {
+		return "[]"
+	}
+	return string(b)
+}
+
+// escapeJSONString serializes string to JSON string literal for Alpine.js.
+func escapeJSONString(s string) string {
+	b, err := json.Marshal(s)
+	if err != nil {
+		return `""`
+	}
+	return string(b)
+}
+
+// countLeadsByStatus counts leads that are new and in-progress.
+func countLeadsByStatus(leads []models.Lead) (newCount int, inProgressCount int) {
+	for _, l := range leads {
+		if l.Status == "новая" || l.Status == "" {
+			newCount++
+		} else if l.Status == "в обработке" {
+			inProgressCount++
+		}
+	}
+	return newCount, inProgressCount
+}
+
+// extractDigits returns only numeric digits from a string.
+func extractDigits(s string) string {
+	var b strings.Builder
+	for _, r := range s {
+		if r >= '0' && r <= '9' {
+			b.WriteRune(r)
+		}
+	}
+	return b.String()
+}
+
+// formatPhoneMask formats an arbitrary phone number into +7 (XXX) XXX-XX-XX format for display with x-mask.
+func formatPhoneMask(phone string) string {
+	d := extractDigits(phone)
+	if len(d) == 11 && (d[0] == '7' || d[0] == '8') {
+		return fmt.Sprintf("+7 (%s) %s-%s-%s", d[1:4], d[4:7], d[7:9], d[9:11])
+	}
+	if len(d) == 10 {
+		return fmt.Sprintf("+7 (%s) %s-%s-%s", d[0:3], d[3:6], d[6:8], d[8:10])
+	}
+	return phone
+}

@@ -47,6 +47,7 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.BoolField{Name: "enable_cart"},
 			&core.TextField{Name: "header_variant"},
 			&core.TextField{Name: "footer_variant"},
+			&core.TextField{Name: "client_admin_password"},
 		)
 
 		if err := app.Save(col); err != nil {
@@ -97,6 +98,10 @@ func initSiteSettingsCollection(app core.App) error {
 		if col.Fields.GetByName("header_variant") == nil {
 			col.Fields.Add(&core.TextField{Name: "header_variant"})
 			col.Fields.Add(&core.TextField{Name: "footer_variant"})
+			changed = true
+		}
+		if col.Fields.GetByName("client_admin_password") == nil {
+			col.Fields.Add(&core.TextField{Name: "client_admin_password"})
 			changed = true
 		}
 		if changed {
@@ -342,12 +347,27 @@ func initLeadsCollection(app core.App) error {
 			&core.TextField{Name: "booking_time"},
 			&core.TextField{Name: "status"}, // например, "новая", "обработана", "отменена"
 			&core.JSONField{Name: "payload"}, // динамические поля: action_type, comment, vin, etc.
+			&core.AutodateField{Name: "created", OnCreate: true},
+			&core.AutodateField{Name: "updated", OnCreate: true, OnUpdate: true},
 		)
 
 		if err := app.Save(col); err != nil {
 			return err
 		}
 		log.Println("[Migration] Коллекция leads для онлайн-заявок успешно создана")
+	} else {
+		changed := false
+		if col.Fields.GetByName("created") == nil {
+			col.Fields.Add(&core.AutodateField{Name: "created", OnCreate: true})
+			changed = true
+		}
+		if col.Fields.GetByName("updated") == nil {
+			col.Fields.Add(&core.AutodateField{Name: "updated", OnCreate: true, OnUpdate: true})
+			changed = true
+		}
+		if changed {
+			_ = app.Save(col)
+		}
 	}
 	return nil
 }
@@ -365,16 +385,41 @@ func initArticlesCollection(app core.App) error {
 			&core.TextField{Name: "author_name"},
 			&core.TextField{Name: "published_at"},
 			&core.BoolField{Name: "is_published"},
+			&core.BoolField{Name: "is_deleted"},
+			&core.TextField{Name: "deleted_at"},
 			&core.NumberField{Name: "views_count", OnlyInt: true},
 			&core.TextField{Name: "seo_title"},
 			&core.TextField{Name: "seo_description"},
 			&core.TextField{Name: "tags"},
+			&core.AutodateField{Name: "created", OnCreate: true},
+			&core.AutodateField{Name: "updated", OnCreate: true, OnUpdate: true},
 		)
 
 		if err := app.Save(col); err != nil {
 			return err
 		}
 		log.Println("[Migration] Коллекция articles для SEO-блога успешно создана")
+	} else {
+		changed := false
+		if col.Fields.GetByName("is_deleted") == nil {
+			col.Fields.Add(&core.BoolField{Name: "is_deleted"})
+			changed = true
+		}
+		if col.Fields.GetByName("deleted_at") == nil {
+			col.Fields.Add(&core.TextField{Name: "deleted_at"})
+			changed = true
+		}
+		if col.Fields.GetByName("created") == nil {
+			col.Fields.Add(&core.AutodateField{Name: "created", OnCreate: true})
+			changed = true
+		}
+		if col.Fields.GetByName("updated") == nil {
+			col.Fields.Add(&core.AutodateField{Name: "updated", OnCreate: true, OnUpdate: true})
+			changed = true
+		}
+		if changed {
+			_ = app.Save(col)
+		}
 	}
 
 	count, _ := app.CountRecords("articles")

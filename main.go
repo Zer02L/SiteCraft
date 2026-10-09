@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 
+	"sitecraft/internal/cache"
 	"sitecraft/internal/data"
 	"sitecraft/internal/exporter"
 	"sitecraft/internal/handlers"
@@ -144,6 +145,11 @@ func main() {
 				}
 			}
 		}
+
+		// Регулярная проверка отложенных публикаций блога (инвалидация кэша статей)
+		app.Cron().MustAdd("check_scheduled_articles", "* * * * *", func() {
+			cache.GetStore().InvalidateArticles()
+		})
 
 		handlers.RegisterRoutes(app, se.Router)
 		return se.Next()

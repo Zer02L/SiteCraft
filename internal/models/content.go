@@ -1,5 +1,10 @@
 package models
 
+import (
+	"strings"
+	"time"
+)
+
 // SiteSettings represents general site configuration and meta
 type SiteSettings struct {
 	ID                 string `json:"id"`
@@ -44,6 +49,9 @@ type SiteSettings struct {
 	// Варианты шапки и подвала (Layout Variants: classic, minimal, centered / columns)
 	HeaderVariant string `json:"header_variant"`
 	FooterVariant string `json:"footer_variant"`
+
+	// Пароль для входа в клиентский кабинет (/client)
+	ClientAdminPassword string `json:"client_admin_password"`
 }
 
 // SiteContent holds content blocks displayed on the website
@@ -244,10 +252,88 @@ type ArticleItem struct {
 	AuthorName     string   `json:"author_name"`
 	PublishedAt    string   `json:"published_at"`
 	IsPublished    bool     `json:"is_published"`
+	IsDeleted      bool     `json:"is_deleted"`
+	DeletedAt      string   `json:"deleted_at,omitempty"`
 	ViewsCount     int      `json:"views_count"`
 	SEOTitle       string   `json:"seo_title"`
 	SEODescription string   `json:"seo_description"`
 	Tags           []string `json:"tags"`
+}
+
+// ParsePublishDate parses a date or datetime string in common formats
+func ParsePublishDate(s string) time.Time {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return time.Time{}
+	}
+	formats := []string{
+		"2006-01-02 15:04:05",
+		"2006-01-02 15:04",
+		"2006-01-02T15:04:05",
+		"2006-01-02T15:04",
+		time.RFC3339,
+		"2006-01-02",
+	}
+	for _, f := range formats {
+		if t, err := time.ParseInLocation(f, s, time.Local); err == nil {
+			return t
+		}
+	}
+	return time.Time{}
+}
+
+// IsScheduled returns true if article is published but publish time is in the future
+func (a ArticleItem) IsScheduled() bool {
+	if !a.IsPublished || a.IsDeleted || a.PublishedAt == "" {
+		return false
+	}
+	t := ParsePublishDate(a.PublishedAt)
+	if t.IsZero() {
+		return false
+	}
+	return t.After(time.Now())
+}
+
+// IsLive returns true if article is published and published_at is reached or empty, and not deleted
+func (a ArticleItem) IsLive() bool {
+	if !a.IsPublished || a.IsDeleted {
+		return false
+	}
+	if a.PublishedAt == "" {
+		return true
+	}
+	t := ParsePublishDate(a.PublishedAt)
+	if t.IsZero() {
+		return true
+	}
+	return !t.After(time.Now())
+}
+
+// FormatPublishedAt returns human-readable date/time representation
+func (a ArticleItem) FormatPublishedAt() string {
+	if a.PublishedAt == "" {
+		return "—"
+	}
+	t := ParsePublishDate(a.PublishedAt)
+	if t.IsZero() {
+		return a.PublishedAt
+	}
+	if t.Hour() == 0 && t.Minute() == 0 && len(a.PublishedAt) <= 10 {
+		return t.Format("02.01.2006")
+	}
+	return t.Format("02.01.2006 15:04")
+}
+
+// PublishedAtInput returns HTML5 datetime-local compatible format (YYYY-MM-DDTHH:MM)
+func (a ArticleItem) PublishedAtInput() string {
+	if a.PublishedAt == "" {
+		return time.Now().Format("2006-01-02T15:04")
+	}
+	t := ParsePublishDate(a.PublishedAt)
+	if t.IsZero() {
+		return a.PublishedAt
+	}
+	return t.Format("2006-01-02T15:04")
 }
 
 // TMAUser represents authenticated Telegram WebApp user (TMA для Ниш А и В)
