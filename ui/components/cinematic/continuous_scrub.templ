@@ -75,11 +75,11 @@ templ ContinuousScrub(title string, subtitle string, items []ScrubTimelineItem) 
 		(function() {
 			function loadMotion(cb) {
 				if (window.Motion) return cb(window.Motion);
-				var s = document.querySelector('script[data-motion-cdn]');
+				var s = document.querySelector('script[data-motion-script]');
 				if (!s) {
 					s = document.createElement('script');
-					s.src = 'https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.min.js';
-					s.dataset.motionCdn = 'true';
+					s.src = '/assets/js/motion.min.js';
+					s.dataset.motionScript = 'true';
 					document.head.appendChild(s);
 				}
 				s.addEventListener('load', function() { cb(window.Motion); });

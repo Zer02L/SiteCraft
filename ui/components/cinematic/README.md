@@ -60,6 +60,7 @@
 | 29 | **Glitch Effect** | [`glitch_text.templ`](glitch_text.templ) | Киберпанк RGB-сплит текста на чистом CSS |
 | 30 | **Typewriter Effect** | [`typewriter.templ`](typewriter.templ) | Печатающийся текст с мигающей кареткой |
 | 31 | **Gradient Stroke Text** | [`gradient_stroke.templ`](gradient_stroke.templ) | Контурный текст с бегущим градиентом на CSS |
+| 32 | **OGL 3D Waves Background** | [`ogl_waves.templ`](ogl_waves.templ) | **OGL WebGL (~39 KB gzip)** • Интерактивные 3D-волны с шейдерами и привязкой к теме |
 
 ---
 
