@@ -12,6 +12,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/core"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var htmlSanitizer = bluemonday.UGCPolicy()
@@ -96,6 +97,18 @@ func GetSiteSettings(app core.App) models.SiteSettings {
 		settings.HeaderVariant = rec.GetString("header_variant")
 		settings.FooterVariant = rec.GetString("footer_variant")
 		settings.ClientAdminPassword = rec.GetString("client_admin_password")
+		if rec.Collection().Fields.GetByName("client_admin_password_hash") != nil {
+			settings.ClientAdminPasswordHash = rec.GetString("client_admin_password_hash")
+		}
+		// Авто-миграция legacy пароля в bcrypt хэш при необходимости
+		if settings.ClientAdminPasswordHash == "" && settings.ClientAdminPassword != "" && settings.ClientAdminPassword != "admin" {
+			if hashed, err := bcrypt.GenerateFromPassword([]byte(settings.ClientAdminPassword), bcrypt.DefaultCost); err == nil {
+				settings.ClientAdminPasswordHash = string(hashed)
+				rec.Set("client_admin_password_hash", string(hashed))
+				rec.Set("client_admin_password", "")
+				_ = app.Save(rec)
+			}
+		}
 	}
 
 	c.SetSettings(settings)

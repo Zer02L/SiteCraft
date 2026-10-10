@@ -10,8 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"sitecraft/internal/i18n"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -209,9 +209,9 @@ func A11yBar() templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantDestructive,
-			Size:    button.SizeSm,
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnDestructive,
+			Size:    base.BtnSizeSm,
 			Attributes: templ.Attributes{
 				"onclick": "window.A11Y.toggle()",
 			},

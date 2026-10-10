@@ -11,9 +11,9 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -90,9 +90,9 @@ func ShopCatalog(settings models.SiteSettings, content models.SiteContent, servi
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "text-xs font-bold gap-1 py-1 px-3 text-content bg-accent/20",
+			templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "text-xs font-bold gap-1 py-1 px-3",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

@@ -48,6 +48,7 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.TextField{Name: "header_variant"},
 			&core.TextField{Name: "footer_variant"},
 			&core.TextField{Name: "client_admin_password"},
+			&core.TextField{Name: "client_admin_password_hash"},
 		)
 
 		if err := app.Save(col); err != nil {
@@ -102,6 +103,10 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		if col.Fields.GetByName("client_admin_password") == nil {
 			col.Fields.Add(&core.TextField{Name: "client_admin_password"})
+			changed = true
+		}
+		if col.Fields.GetByName("client_admin_password_hash") == nil {
+			col.Fields.Add(&core.TextField{Name: "client_admin_password_hash"})
 			changed = true
 		}
 		if changed {

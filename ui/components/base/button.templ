@@ -1,0 +1,130 @@
+package base
+
+import (
+	"github.com/Oudwins/tailwind-merge-go"
+)
+
+type ButtonVariant uint8
+
+const (
+	BtnPrimary ButtonVariant = iota
+	BtnSecondary
+	BtnAccent
+	BtnOutline
+	BtnGhost
+	BtnDestructive
+)
+
+// Aliases for compatibility
+const (
+	BtnVariantDefault     = BtnPrimary
+	BtnVariantSecondary   = BtnSecondary
+	BtnVariantOutline     = BtnOutline
+	BtnVariantGhost       = BtnGhost
+	BtnVariantDestructive = BtnDestructive
+)
+
+type ButtonSize uint8
+
+const (
+	BtnSizeDefault ButtonSize = iota
+	BtnSizeXs
+	BtnSizeSm
+	BtnSizeLg
+	BtnSizeIcon
+)
+
+type ButtonProps struct {
+	Variant    ButtonVariant
+	Size       ButtonSize
+	Type       string // "button", "submit", "reset"
+	Href       string // If non-empty, renders <a>
+	Target     string
+	Class      string
+	Attrs      templ.Attributes
+	Attributes templ.Attributes // Alias for compatibility with shadcn-templ props
+}
+
+func (p ButtonProps) combinedAttrs() templ.Attributes {
+	if len(p.Attributes) == 0 {
+		return p.Attrs
+	}
+	if len(p.Attrs) == 0 {
+		return p.Attributes
+	}
+	res := make(templ.Attributes, len(p.Attrs)+len(p.Attributes))
+	for k, v := range p.Attrs {
+		res[k] = v
+	}
+	for k, v := range p.Attributes {
+		res[k] = v
+	}
+	return res
+}
+
+func (p ButtonProps) Classes() string {
+	const base = "inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer disabled:pointer-events-none disabled:opacity-50 select-none rounded-btn active:scale-[0.98]"
+
+	var variant string
+	switch p.Variant {
+	case BtnSecondary:
+		variant = "bg-surface-muted hover:bg-surface text-content border border-content/10 shadow-xs hover:border-accent/40"
+	case BtnAccent:
+		variant = "bg-accent hover:bg-accent-hover text-surface font-semibold shadow-sm hover:shadow"
+	case BtnOutline:
+		variant = "border border-content/20 bg-transparent hover:bg-surface-muted text-content"
+	case BtnGhost:
+		variant = "bg-transparent hover:bg-surface-muted text-content"
+	case BtnDestructive:
+		variant = "bg-rose-600 hover:bg-rose-700 text-white shadow-sm"
+	default: // BtnPrimary
+		variant = "bg-primary hover:bg-primary-dark text-white shadow-sm hover:shadow"
+	}
+
+	var size string
+	switch p.Size {
+	case BtnSizeXs:
+		size = "px-2 py-1 text-[11px]"
+	case BtnSizeSm:
+		size = "px-3 py-1.5 text-xs"
+	case BtnSizeLg:
+		size = "px-6 py-3 text-base font-bold"
+	case BtnSizeIcon:
+		size = "p-2"
+	default: // BtnSizeDefault
+		size = "px-4 py-2 text-sm"
+	}
+
+	// Zero-allocation path when no custom classes are passed
+	if p.Class == "" {
+		return base + " " + variant + " " + size
+	}
+	return twmerge.Merge(base, variant, size, p.Class)
+}
+
+templ Button(props ButtonProps) {
+	if props.Href != "" {
+		<a
+			href={ templ.SafeURL(props.Href) }
+			if props.Target != "" {
+				target={ props.Target }
+			}
+			class={ props.Classes() }
+			{ props.combinedAttrs()... }
+		>
+			{ children... }
+		</a>
+	} else {
+		<button
+			if props.Type != "" {
+				type={ templ.EscapeString(props.Type) }
+			} else {
+				type="button"
+			}
+			class={ props.Classes() }
+			{ props.combinedAttrs()... }
+		>
+			{ children... }
+		</button>
+	}
+}

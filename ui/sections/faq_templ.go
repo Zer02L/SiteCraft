@@ -11,8 +11,8 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -74,9 +74,9 @@ func Faq(theme string, payload *models.FAQPayload) templ.Component {
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = badge.Badge(badge.Props{
-					Variant: badge.VariantSecondary,
-					Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3 text-primary bg-primary/10",
+				templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+					Variant: base.BadgeAccent,
+					Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3",
 				}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err

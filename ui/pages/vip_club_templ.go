@@ -11,10 +11,9 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -91,9 +90,9 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "text-xs font-bold gap-1 py-1 px-3 text-amber-900 bg-amber-500/20",
+			templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "text-xs font-bold gap-1 py-1 px-3",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -118,7 +117,7 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.FirstName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 55, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 54, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -131,7 +130,7 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs("@" + user.Username)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 58, Col: 66}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/vip_club.templ`, Line: 57, Col: 66}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -220,10 +219,11 @@ func VIPClub(settings models.SiteSettings, content models.SiteContent, user *mod
 					}
 					return nil
 				})
-				templ_7745c5c3_Err = button.Button(button.Props{
+				templ_7745c5c3_Err = base.Button(base.ButtonProps{
 					Type:    "button",
-					Variant: button.VariantDefault,
-					Class:   "w-full py-3.5 font-bold text-sm rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2",
+					Variant: base.BtnPrimary,
+					Size:    base.BtnSizeLg,
+					Class:   "w-full py-3.5 font-bold text-sm rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2",
 					Attributes: templ.Attributes{
 						"@click": "openPayment()",
 					},

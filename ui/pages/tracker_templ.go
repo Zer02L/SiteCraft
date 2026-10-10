@@ -13,10 +13,9 @@ import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -94,7 +93,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "tracker.badge"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 32, Col: 43}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 31, Col: 43}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -106,9 +105,9 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "text-xs font-bold gap-1 py-1 px-3 text-primary bg-primary/10",
+			templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "text-xs font-bold gap-1 py-1 px-3",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -120,7 +119,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "tracker.title"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 36, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 35, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -133,7 +132,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "tracker.subtitle"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 39, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 38, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -146,7 +145,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.ResolveAttributeValue(searchCode)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 47, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 46, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 			if templ_7745c5c3_Err != nil {
@@ -159,7 +158,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.ResolveAttributeValue(i18n.T(ctx, "tracker.input_placeholder"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 49, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 48, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
@@ -204,10 +203,11 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = button.Button(button.Props{
+			templ_7745c5c3_Err = base.Button(base.ButtonProps{
 				Type:    "submit",
-				Variant: button.VariantDefault,
-				Class:   "px-6 py-3 rounded-xl font-bold cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2",
+				Variant: base.BtnPrimary,
+				Size:    base.BtnSizeLg,
+				Class:   "px-6 rounded-xl font-bold whitespace-nowrap shadow-md hover:shadow-lg flex items-center gap-2",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

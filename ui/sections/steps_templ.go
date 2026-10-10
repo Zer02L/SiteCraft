@@ -9,7 +9,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
+	"sitecraft/ui/components/base"
+
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -56,9 +57,9 @@ func Steps(theme string) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = badge.Badge(badge.Props{
-			Variant: badge.VariantSecondary,
-			Class:   "section-badge mb-2",
+		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+			Variant: base.BadgeAccent,
+			Class:   "mb-2 uppercase tracking-wider",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err

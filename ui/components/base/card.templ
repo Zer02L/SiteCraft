@@ -1,0 +1,69 @@
+package base
+
+import (
+	"github.com/Oudwins/tailwind-merge-go"
+)
+
+type CardVariant uint8
+
+const (
+	CardBase CardVariant = iota
+	CardInteractive
+	CardSm
+	CardMuted
+)
+
+type CardProps struct {
+	Variant CardVariant
+	Class   string
+	Attrs   templ.Attributes
+}
+
+func (p CardProps) Classes() string {
+	var variant string
+	switch p.Variant {
+	case CardInteractive:
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/60 hover:-translate-y-1"
+	case CardSm:
+		variant = "bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition-all duration-300"
+	case CardMuted:
+		variant = "bg-surface-muted text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-300"
+	default: // CardBase
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300"
+	}
+
+	if p.Class == "" {
+		return variant
+	}
+	return twmerge.Merge(variant, p.Class)
+}
+
+templ Card(props CardProps) {
+	<div class={ props.Classes() } { props.Attrs... }>
+		{ children... }
+	</div>
+}
+
+templ CardTitle(class ...string) {
+	{{
+		cls := "text-lg font-bold text-content"
+		if len(class) > 0 && class[0] != "" {
+			cls = twmerge.Merge(cls, class[0])
+		}
+	}}
+	<h3 class={ cls }>
+		{ children... }
+	</h3>
+}
+
+templ CardDescription(class ...string) {
+	{{
+		cls := "text-content-muted text-sm leading-relaxed"
+		if len(class) > 0 && class[0] != "" {
+			cls = twmerge.Merge(cls, class[0])
+		}
+	}}
+	<p class={ cls }>
+		{ children... }
+	</p>
+}

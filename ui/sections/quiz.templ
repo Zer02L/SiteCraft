@@ -5,9 +5,8 @@ import (
 	"fmt"
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -22,9 +21,9 @@ func quizPayloadJSON(p models.QuizPayload) string {
 templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 	<section id="quiz" class="py-16 px-4 max-w-4xl mx-auto" data-reveal>
 		<div class="text-center mb-8">
-			@badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "section-badge mb-3",
+			@base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "mb-3 uppercase tracking-wider",
 			}) {
 				if payload.Badge != "" {
 					{ payload.Badge }
@@ -304,10 +303,11 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 						>
 							← Назад
 						</button>
-						@button.Button(button.Props{
-							Variant: button.VariantDefault,
+						@base.Button(base.ButtonProps{
+							Variant: base.BtnAccent,
+							Size:    base.BtnSizeLg,
 							Type:    "submit",
-							Class:   "bg-accent text-primary-dark hover:brightness-105 font-bold px-8 py-3 rounded-btn shadow-lg transition flex items-center gap-2",
+							Class:   "text-primary-dark font-bold px-8 shadow-lg flex items-center gap-2",
 						}) {
 							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
 							<span>Получить расчет и скидку</span>

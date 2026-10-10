@@ -47,49 +47,122 @@ func TestClientAdminWorkflow(t *testing.T) {
 		t.Errorf("Expected redirect to /client/login, got %s", loc)
 	}
 
-	// 2. Ввод неверного пароля
+	// 2. Доступ к странице логина до настройки пароля должен отображать экран первоначальной настройки
+	recSetupPage := httptest.NewRecorder()
+	reqSetupPage := httptest.NewRequest(http.MethodGet, "/client/login", nil)
+	reSetupPage := &core.RequestEvent{App: app, Request: reqSetupPage, Response: recSetupPage}
+	if err := handler.HandleLoginPage(reSetupPage); err != nil {
+		t.Fatalf("HandleLoginPage setup error: %v", err)
+	}
+	if !strings.Contains(recSetupPage.Body.String(), "Настройка безопасности") {
+		t.Errorf("Expected initial security setup page, got: %s", recSetupPage.Body.String())
+	}
+
+	// 3. Попытка входа до настройки должна редиректить на /client/login
+	recLoginBeforeSetup := httptest.NewRecorder()
+	reqLoginBeforeSetup := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader("password=admin"))
+	reqLoginBeforeSetup.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reLoginBeforeSetup := &core.RequestEvent{App: app, Request: reqLoginBeforeSetup, Response: recLoginBeforeSetup}
+	if err := handler.HandleLogin(reLoginBeforeSetup); err != nil {
+		t.Fatalf("HandleLogin before setup error: %v", err)
+	}
+	if recLoginBeforeSetup.Code != http.StatusFound || recLoginBeforeSetup.Header().Get("Location") != "/client/login" {
+		t.Errorf("Expected redirect to /client/login before setup, got code %d and loc %s", recLoginBeforeSetup.Code, recLoginBeforeSetup.Header().Get("Location"))
+	}
+
+	// 4. Первоначальная настройка: валидация пароля (слишком короткий)
+	recSetupShort := httptest.NewRecorder()
+	formSetupShort := url.Values{"password": {"short"}, "password_confirm": {"short"}}
+	reqSetupShort := httptest.NewRequest(http.MethodPost, "/client/setup", strings.NewReader(formSetupShort.Encode()))
+	reqSetupShort.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reSetupShort := &core.RequestEvent{App: app, Request: reqSetupShort, Response: recSetupShort}
+	if err := handler.HandleInitialSetup(reSetupShort); err != nil {
+		t.Fatalf("HandleInitialSetup short error: %v", err)
+	}
+	if !strings.Contains(recSetupShort.Body.String(), "не менее 8 символов") {
+		t.Errorf("Expected min length error in body, got: %s", recSetupShort.Body.String())
+	}
+
+	// 5. Первоначальная настройка: несовпадение паролей
+	recSetupMismatch := httptest.NewRecorder()
+	formSetupMismatch := url.Values{"password": {"Password123!"}, "password_confirm": {"Different123!"}}
+	reqSetupMismatch := httptest.NewRequest(http.MethodPost, "/client/setup", strings.NewReader(formSetupMismatch.Encode()))
+	reqSetupMismatch.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reSetupMismatch := &core.RequestEvent{App: app, Request: reqSetupMismatch, Response: recSetupMismatch}
+	if err := handler.HandleInitialSetup(reSetupMismatch); err != nil {
+		t.Fatalf("HandleInitialSetup mismatch error: %v", err)
+	}
+	if !strings.Contains(recSetupMismatch.Body.String(), "не совпадают") {
+		t.Errorf("Expected mismatch error in body, got: %s", recSetupMismatch.Body.String())
+	}
+
+	// 6. Успешная первоначальная установка мастер-пароля
+	masterPassword := "SuperSecurePass123!"
+	recSetupOK := httptest.NewRecorder()
+	formSetupOK := url.Values{"password": {masterPassword}, "password_confirm": {masterPassword}}
+	reqSetupOK := httptest.NewRequest(http.MethodPost, "/client/setup", strings.NewReader(formSetupOK.Encode()))
+	reqSetupOK.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reSetupOK := &core.RequestEvent{App: app, Request: reqSetupOK, Response: recSetupOK}
+	if err := handler.HandleInitialSetup(reSetupOK); err != nil {
+		t.Fatalf("HandleInitialSetup success error: %v", err)
+	}
+	if recSetupOK.Code != http.StatusFound || recSetupOK.Header().Get("Location") != "/client" {
+		t.Errorf("Expected redirect to /client after setup, got code %d, loc %s", recSetupOK.Code, recSetupOK.Header().Get("Location"))
+	}
+
+	// Извлекаем сессионную куку
+	var authCookie *http.Cookie
+	for _, c := range recSetupOK.Result().Cookies() {
+		if c.Name == ClientAuthCookieName {
+			authCookie = c
+			break
+		}
+	}
+	if authCookie == nil || authCookie.Value == "" || authCookie.Value == masterPassword {
+		t.Fatalf("Expected valid session token cookie (not plaintext password), got: %v", authCookie)
+	}
+
+	// 7. Попытка входа с неверным паролем
 	recLoginFail := httptest.NewRecorder()
-	formDataFail := url.Values{"password": {"wrong_pass"}}
+	formDataFail := url.Values{"password": {"wrong_password_here"}}
 	reqLoginFail := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader(formDataFail.Encode()))
 	reqLoginFail.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reLoginFail := &core.RequestEvent{App: app}
-	reLoginFail.Request = reqLoginFail
-	reLoginFail.Response = recLoginFail
+	reLoginFail := &core.RequestEvent{App: app, Request: reqLoginFail, Response: recLoginFail}
 	if err := handler.HandleLogin(reLoginFail); err != nil {
 		t.Fatalf("HandleLogin error: %v", err)
 	}
 	if !strings.Contains(recLoginFail.Body.String(), "Неверный пароль доступа") {
-		t.Errorf("Expected invalid password message in body")
+		t.Errorf("Expected invalid password message in body, got: %s", recLoginFail.Body.String())
 	}
 
-	// 3. Успешный вход с дефолтным паролем 'admin'
-	recLoginOK := httptest.NewRecorder()
-	formDataOK := url.Values{"password": {"admin"}}
-	reqLoginOK := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader(formDataOK.Encode()))
-	reqLoginOK.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reLoginOK := &core.RequestEvent{App: app}
-	reLoginOK.Request = reqLoginOK
-	reLoginOK.Response = recLoginOK
-	if err := handler.HandleLogin(reLoginOK); err != nil {
-		t.Fatalf("HandleLogin error: %v", err)
+	// 8. Проверка Rate Limiter: 4 дополнительные неверные попытки должны заблокировать IP
+	for i := 0; i < 4; i++ {
+		recFail := httptest.NewRecorder()
+		reqFail := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader(formDataFail.Encode()))
+		reqFail.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		reFail := &core.RequestEvent{App: app, Request: reqFail, Response: recFail}
+		_ = handler.HandleLogin(reFail)
 	}
-	if recLoginOK.Code != http.StatusFound {
-		t.Errorf("Expected 302 redirect after login, got %d", recLoginOK.Code)
-	}
-	if loc := recLoginOK.Header().Get("Location"); loc != "/client" {
-		t.Errorf("Expected redirect to /client, got %s", loc)
+	// 5-я попытка заблокирована
+	recBlocked := httptest.NewRecorder()
+	reqBlocked := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader(formDataFail.Encode()))
+	reqBlocked.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reBlocked := &core.RequestEvent{App: app, Request: reqBlocked, Response: recBlocked}
+	_ = handler.HandleLogin(reBlocked)
+	if recBlocked.Code != http.StatusTooManyRequests {
+		t.Errorf("Expected HTTP 429 TooManyRequests on rate limit block, got %d", recBlocked.Code)
 	}
 
-	// 4. Доступ к дашборду с авторизационной кукой
+	// Сбрасываем rate limiter для последующих тестов
+	handler.RateLimiter().Reset(reqBlocked.RemoteAddr)
+	handler.RateLimiter().Reset("192.0.2.1")
+	handler.RateLimiter().Reset("")
+
+	// 9. Доступ к дашборду с авторизационной сессионной кукой
 	recDash := httptest.NewRecorder()
 	reqDash := httptest.NewRequest(http.MethodGet, "/client", nil)
-	reqDash.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
-	reDash := &core.RequestEvent{App: app}
-	reDash.Request = reqDash
-	reDash.Response = recDash
+	reqDash.AddCookie(authCookie)
+	reDash := &core.RequestEvent{App: app, Request: reqDash, Response: recDash}
 	if err := handler.HandleDashboard(reDash); err != nil {
 		t.Fatalf("HandleDashboard error: %v", err)
 	}
@@ -111,10 +184,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	}
 	reqContacts := httptest.NewRequest(http.MethodPost, "/client/contacts", strings.NewReader(contactForm.Encode()))
 	reqContacts.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reqContacts.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqContacts.AddCookie(authCookie)
 	reContacts := &core.RequestEvent{App: app}
 	reContacts.Request = reqContacts
 	reContacts.Response = recContacts
@@ -128,10 +198,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	// 6. Проверка экспорта заявок в CSV
 	recCSV := httptest.NewRecorder()
 	reqCSV := httptest.NewRequest(http.MethodGet, "/client/export/leads.csv", nil)
-	reqCSV.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqCSV.AddCookie(authCookie)
 	reCSV := &core.RequestEvent{App: app}
 	reCSV.Request = reqCSV
 	reCSV.Response = recCSV
@@ -154,10 +221,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	}
 	reqInvalid := httptest.NewRequest(http.MethodPost, "/client/contacts", strings.NewReader(invalidForm.Encode()))
 	reqInvalid.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reqInvalid.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqInvalid.AddCookie(authCookie)
 	reInvalid := &core.RequestEvent{App: app}
 	reInvalid.Request = reqInvalid
 	reInvalid.Response = recInvalid
@@ -178,10 +242,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	// 8. Проверка подсветки активной вкладки при переходе по ?tab=contacts
 	recTab := httptest.NewRecorder()
 	reqTab := httptest.NewRequest(http.MethodGet, "/client?tab=contacts", nil)
-	reqTab.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqTab.AddCookie(authCookie)
 	reTab := &core.RequestEvent{App: app}
 	reTab.Request = reqTab
 	reTab.Response = recTab
@@ -211,10 +272,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	reqStatus := httptest.NewRequest(http.MethodPost, "/client/leads/"+leadRec.Id+"/status", strings.NewReader(statusForm.Encode()))
 	reqStatus.SetPathValue("id", leadRec.Id)
 	reqStatus.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reqStatus.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqStatus.AddCookie(authCookie)
 	reStatus := &core.RequestEvent{App: app}
 	reStatus.Request = reqStatus
 	reStatus.Response = recStatus
@@ -242,10 +300,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	}
 	reqArtSave := httptest.NewRequest(http.MethodPost, "/client/articles/save", strings.NewReader(artForm.Encode()))
 	reqArtSave.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reqArtSave.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqArtSave.AddCookie(authCookie)
 	reArtSave := &core.RequestEvent{App: app}
 	reArtSave.Request = reqArtSave
 	reArtSave.Response = recArtSave
@@ -275,10 +330,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	recArtEdit := httptest.NewRecorder()
 	reqArtEdit := httptest.NewRequest(http.MethodGet, "/client/articles/edit/"+createdArticle.ID, nil)
 	reqArtEdit.SetPathValue("id", createdArticle.ID)
-	reqArtEdit.AddCookie(&http.Cookie{
-		Name:  ClientAuthCookieName,
-		Value: "admin",
-	})
+	reqArtEdit.AddCookie(authCookie)
 	reArtEdit := &core.RequestEvent{App: app}
 	reArtEdit.Request = reqArtEdit
 	reArtEdit.Response = recArtEdit
@@ -294,6 +346,68 @@ func TestClientAdminWorkflow(t *testing.T) {
 	}
 	if !strings.Contains(artEditBody, "Недвижимость") {
 		t.Errorf("Expected tags in edit form")
+	}
+
+	// 12. Проверка вкладки «Безопасность» и функционала смены пароля
+	recSecTab := httptest.NewRecorder()
+	reqSecTab := httptest.NewRequest(http.MethodGet, "/client/tab/security", nil)
+	reqSecTab.AddCookie(authCookie)
+	reSecTab := &core.RequestEvent{App: app, Request: reqSecTab, Response: recSecTab}
+	if err := handler.HandleTabSecurity(reSecTab); err != nil {
+		t.Fatalf("HandleTabSecurity error: %v", err)
+	}
+	if !strings.Contains(recSecTab.Body.String(), "Безопасность и доступ") {
+		t.Errorf("Expected security tab content, got: %s", recSecTab.Body.String())
+	}
+
+	// 13. Смена пароля: ошибка при неверном текущем пароле
+	recPassWrongOld := httptest.NewRecorder()
+	formWrongOld := url.Values{
+		"current_password": {"WrongCurrentPass"},
+		"new_password":     {"NewSecurePassword123!"},
+		"confirm_password": {"NewSecurePassword123!"},
+	}
+	reqPassWrongOld := httptest.NewRequest(http.MethodPost, "/client/security/password", strings.NewReader(formWrongOld.Encode()))
+	reqPassWrongOld.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reqPassWrongOld.AddCookie(authCookie)
+	rePassWrongOld := &core.RequestEvent{App: app, Request: reqPassWrongOld, Response: recPassWrongOld}
+	if err := handler.HandleChangePassword(rePassWrongOld); err != nil {
+		t.Fatalf("HandleChangePassword wrong old error: %v", err)
+	}
+	if !strings.Contains(recPassWrongOld.Body.String(), "Неверный текущий пароль") {
+		t.Errorf("Expected wrong old password error, got: %s", recPassWrongOld.Body.String())
+	}
+
+	// 14. Смена пароля: успешное обновление
+	newPassword := "BrandNewMasterPass2026!"
+	recPassSuccess := httptest.NewRecorder()
+	formPassSuccess := url.Values{
+		"current_password": {masterPassword},
+		"new_password":     {newPassword},
+		"confirm_password": {newPassword},
+	}
+	reqPassSuccess := httptest.NewRequest(http.MethodPost, "/client/security/password", strings.NewReader(formPassSuccess.Encode()))
+	reqPassSuccess.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reqPassSuccess.AddCookie(authCookie)
+	rePassSuccess := &core.RequestEvent{App: app, Request: reqPassSuccess, Response: recPassSuccess}
+	if err := handler.HandleChangePassword(rePassSuccess); err != nil {
+		t.Fatalf("HandleChangePassword success error: %v", err)
+	}
+	if !strings.Contains(recPassSuccess.Body.String(), "успешно изменен") {
+		t.Errorf("Expected password change success message, got: %s", recPassSuccess.Body.String())
+	}
+
+	// 15. Проверка входа с новым паролем
+	recLoginNew := httptest.NewRecorder()
+	formLoginNew := url.Values{"password": {newPassword}}
+	reqLoginNew := httptest.NewRequest(http.MethodPost, "/client/login", strings.NewReader(formLoginNew.Encode()))
+	reqLoginNew.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	reLoginNew := &core.RequestEvent{App: app, Request: reqLoginNew, Response: recLoginNew}
+	if err := handler.HandleLogin(reLoginNew); err != nil {
+		t.Fatalf("HandleLogin new password error: %v", err)
+	}
+	if recLoginNew.Code != http.StatusFound || recLoginNew.Header().Get("Location") != "/client" {
+		t.Errorf("Expected redirect to /client with new password, got code %d loc %s", recLoginNew.Code, recLoginNew.Header().Get("Location"))
 	}
 }
 
@@ -311,6 +425,11 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	}
 
 	handler := NewClientAdminHandler(app)
+	sessionToken, err := handler.SessionStore().CreateSession()
+	if err != nil {
+		t.Fatalf("CreateSession error: %v", err)
+	}
+	authCookie := &http.Cookie{Name: ClientAuthCookieName, Value: sessionToken}
 
 	// 1. Создаем статью с отложенной публикацией (в будущем: 2099-01-01 10:00)
 	futureDate := "2099-01-01 10:00"
@@ -324,7 +443,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recSave := httptest.NewRecorder()
 	reqSave := httptest.NewRequest(http.MethodPost, "/client/articles/save", strings.NewReader(artForm.Encode()))
 	reqSave.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reqSave.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqSave.AddCookie(authCookie)
 	reSave := &core.RequestEvent{App: app, Request: reqSave, Response: recSave}
 
 	if err := handler.HandleSaveArticle(reSave); err != nil {
@@ -362,7 +481,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recToggle := httptest.NewRecorder()
 	reqToggle := httptest.NewRequest(http.MethodPost, "/client/articles/toggle/"+scheduledArticle.ID, nil)
 	reqToggle.SetPathValue("id", scheduledArticle.ID)
-	reqToggle.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqToggle.AddCookie(authCookie)
 	reToggle := &core.RequestEvent{App: app, Request: reqToggle, Response: recToggle}
 
 	if err := handler.HandleToggleArticlePublish(reToggle); err != nil {
@@ -378,7 +497,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recToggle2 := httptest.NewRecorder()
 	reqToggle2 := httptest.NewRequest(http.MethodPost, "/client/articles/toggle/"+scheduledArticle.ID, nil)
 	reqToggle2.SetPathValue("id", scheduledArticle.ID)
-	reqToggle2.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqToggle2.AddCookie(authCookie)
 	reToggle2 := &core.RequestEvent{App: app, Request: reqToggle2, Response: recToggle2}
 	_ = handler.HandleToggleArticlePublish(reToggle2)
 
@@ -391,7 +510,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recTrash := httptest.NewRecorder()
 	reqTrash := httptest.NewRequest(http.MethodPost, "/client/articles/trash/"+scheduledArticle.ID, nil)
 	reqTrash.SetPathValue("id", scheduledArticle.ID)
-	reqTrash.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqTrash.AddCookie(authCookie)
 	reTrash := &core.RequestEvent{App: app, Request: reqTrash, Response: recTrash}
 
 	if err := handler.HandleTrashArticle(reTrash); err != nil {
@@ -426,7 +545,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recRestore := httptest.NewRecorder()
 	reqRestore := httptest.NewRequest(http.MethodPost, "/client/articles/restore/"+scheduledArticle.ID, nil)
 	reqRestore.SetPathValue("id", scheduledArticle.ID)
-	reqRestore.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqRestore.AddCookie(authCookie)
 	reRestore := &core.RequestEvent{App: app, Request: reqRestore, Response: recRestore}
 
 	if err := handler.HandleRestoreArticle(reRestore); err != nil {
@@ -451,7 +570,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	recPerm := httptest.NewRecorder()
 	reqPerm := httptest.NewRequest(http.MethodDelete, "/client/articles/permanent/"+scheduledArticle.ID, nil)
 	reqPerm.SetPathValue("id", scheduledArticle.ID)
-	reqPerm.AddCookie(&http.Cookie{Name: ClientAuthCookieName, Value: "admin"})
+	reqPerm.AddCookie(authCookie)
 	rePerm := &core.RequestEvent{App: app, Request: reqPerm, Response: recPerm}
 
 	if err := handler.HandlePermanentDeleteArticle(rePerm); err != nil {

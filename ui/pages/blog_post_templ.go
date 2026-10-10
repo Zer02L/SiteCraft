@@ -12,9 +12,9 @@ import (
 	"fmt"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -255,11 +255,11 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = button.Button(button.Props{
-				Variant: button.VariantDefault,
-				Size:    button.SizeLg,
+			templ_7745c5c3_Err = base.Button(base.ButtonProps{
+				Variant: base.BtnPrimary,
+				Size:    base.BtnSizeLg,
 				Href:    "/#booking",
-				Class:   "rounded-xl font-bold cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98]",
+				Class:   "rounded-xl font-bold whitespace-nowrap shadow-md hover:shadow-lg hover:scale-[1.02]",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var11), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

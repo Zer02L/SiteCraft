@@ -2,8 +2,8 @@ package sections
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -11,9 +11,9 @@ templ Team(theme string, content models.SiteContent) {
 	<!-- Structural section: Specialists / Team Members -->
 	<section id="team" class="py-16 px-4 max-w-6xl mx-auto">
 		<div class="text-center mb-12" data-reveal>
-			@badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "section-badge mb-2",
+			@base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "mb-2 uppercase tracking-wider",
 			}) {
 				Наши специалисты
 			}

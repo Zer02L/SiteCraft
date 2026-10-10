@@ -119,9 +119,9 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 				</div>
 			</div>
 
-			<!-- Колонка 4: Служебные опции -->
+			<!-- Колонка 4: Сервис и доступность -->
 			<div>
-				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "nav.admin") }</div>
+				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "a11y.version") }</div>
 				<div class="space-y-2.5">
 					if settings.EnableA11y {
 						<button
@@ -132,16 +132,9 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 							<span>👁️</span> { i18n.T(ctx, "a11y.toggle") }
 						</button>
 					}
-					<div>
-						<a href="/client" target="_blank" class="hover:text-accent transition text-stone-300">
-							Кабинет управления
-						</a>
-					</div>
-					<div>
-						<a href="/_/" target="_blank" class="hover:text-accent transition text-stone-400 text-xs">
-							{ i18n.T(ctx, "nav.admin_full") }
-						</a>
-					</div>
+					<p class="text-stone-400 text-[11px] leading-relaxed">
+						{ i18n.T(ctx, "footer.disclaimer") }
+					</p>
 					<div class="pt-2">
 						<button
 							type="button"

@@ -6,7 +6,7 @@
 ![Binary Size](https://img.shields.io/badge/Single%20Binary-~25MB-blue?style=flat-square)
 ![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--35MB-orange?style=flat-square)
 ![Tailwind v4](https://img.shields.io/badge/Tailwind%20CSS-v4.3%20(Oxide)-38bdf8?style=flat-square)
-![UI](https://img.shields.io/badge/UI-shadcn--templ%20%2B%20Lucide-000000?style=flat-square)
+![UI](https://img.shields.io/badge/UI-Go%20Variants%20(CVA)%20%2B%20Tailwind%20v4-000000?style=flat-square)
 ![Interactive UI](https://img.shields.io/badge/Stack-HTMX%20%2B%20Alpine.js%20(Compat)-purple?style=flat-square)
 ![Localization](https://img.shields.io/badge/i18n-RU%20%2F%20EN%20(Zero--JS)-blueviolet?style=flat-square)
 ![Multi-Tenant](https://img.shields.io/badge/Multi--Tenant-Fleet%20of%20Binaries-emerald?style=flat-square)
@@ -22,10 +22,11 @@
    * **`hx-alpine-compat`** — нативная совместимость HTMX и Alpine.js при динамических DOM-свопах (автоматическая переинициализация реактивного состояния, модалок и форм без утечек памяти).
    * **Alpine.js + @alpinejs/mask** — мгновенные клиентские микро-интеракции (мобильное бургер-меню, маски номеров телефонов, корзина, календарь).
    * **HTMX** — серверные AJAX-действия без перезагрузки страниц (отправка заявок, lazy-loading карты, проверка занятых слотов, живой поиск).
-5. **Дизайн-система `shadcn-templ` + `lucide-icons`:**
-   * **`shadcn-templ/v2`** — типобезопасные компоненты кнопок (`@button.Button`) и бейджей (`@badge.Badge`) с вариантами (`Default`, `Secondary`, `Outline`, `Destructive`, `Ghost`), размерами и мостовыми токенами темы.
-   * **`go-templ-lucide-icons`** — 100% типобезопасные векторные иконки без сырого SVG-кода.
-   * **`tailwind-animations`** — плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
+5. **Дизайн-система Go Variants (CVA) + Tailwind v4 CSS Data-Variants + `lucide-icons`:**
+   * **Zero-Cost Go Variants (`ui/components/base/`):** 100% типобезопасные примитивы кнопок (`@base.Button`), бейджей (`@base.Badge`) и карточек (`@base.Card`) со строгими Go-типами вариантов и размеров. Нулевые аллокации памяти (GC) при стандартном рендере и безопасное разрешение конфликтов классов через `tailwind-merge-go` при оверрайдах.
+   * **Нативные CSS Data-Variants Tailwind v4:** управление состояниями модалок, аккордеонов и дропдаунов (`data-open:`, `data-closed:`, `data-active:`) напрямую через data-атрибуты Alpine.js без манипуляций со строками классов в JavaScript.
+   * **`go-templ-lucide-icons`:** 100% типобезопасные векторные иконки без сырого SVG-кода.
+   * **`tailwind-animations`:** плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
 6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
 7. **Модуль локализации i18n (RU / EN):** Полноценная многоязычность (`internal/i18n`) из коробки: определение языка через URL-параметр `?lang=`, Cookie или заголовок `Accept-Language`, Zero-JS переключатель языков, динамический `<html lang="...">`, `hreflang`, `og:locale` для SEO и локализованные сообщения валидации форм.
 8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/registry/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
@@ -190,11 +191,23 @@ flowchart LR
 ### 3. Управление палитрой из админки PocketBase (`site_settings`)
 При указании базового `primary_color` или `accent_color` в панели управления, движок **автоматически вычисляет** через `color-mix()` всю цветовую шкалу бренда (hover-состояния, темные и светлые оттенки кнопок, тонированные фоны карточек) без пересборки CSS!
 
-### 4. Дизайн-система shadcn-templ, Lucide и Tailwind Animations
-Интерфейс построен на модульных и доступных примитивах:
-* **UI-компоненты `shadcn-templ` ([ui/assets/css/shadcn.css](ui/assets/css/shadcn.css)):** Внедрены кнопки (`@button.Button`) и бейджи (`@badge.Badge`) с мостовыми классами `.cn-button`, `.cn-badge`, связанными с дизайн-токенами сайта и темами оформления (Dark, Light, Cyber, Harmonic).
+### 4. Дизайн-система Go Variants (CVA), Tailwind v4 CSS и Lucide
+Интерфейс построен на модульных, типобезопасных и доступных примитивах:
+
+* **Zero-Cost Go Variants (`ui/components/base/`):**
+  * `@base.Button`: варианты (`BtnPrimary`, `BtnSecondary`, `BtnAccent`, `BtnOutline`, `BtnGhost`, `BtnDestructive`) и размеры (`BtnSizeXs`, `BtnSizeSm`, `BtnSizeDefault`, `BtnSizeLg`, `BtnSizeIcon`).
+  * `@base.Badge`: варианты (`BadgeDefault`, `BadgeSecondary`, `BadgeAccent`, `BadgeOutline`, `BadgeDestructive`) и размеры (`BadgeSizeSm`, `BadgeSizeDefault`, `BadgeSizeLg`).
+  * `@base.Card`: структурные компоненты (`@base.Card`, `@base.CardTitle`, `@base.CardDescription`) с вариантами (`CardBase`, `CardInteractive`, `CardSm`, `CardMuted`).
+  * **Zero-Allocation при рендере:** при пустом `Class` конкатенация строк в Go возвращает готовые литералы без вызова `twmerge.Merge()`. Оверрайд с дедупликацией классов через `tailwind-merge-go` вызывается только при передаче кастомных стилей.
+
+* **Нативные CSS Data-Variants Tailwind v4 ([shadcn.css](ui/assets/css/shadcn.css)):**
+  Декларативное оформление состояний через директивы `@custom-variant`:
+  * `data-open:` / `data-closed:` — скрытие, раскрытие и анимация модалок, аккордеонов и дропдаунов по атрибуту `:data-state="isOpen ? 'open' : 'closed'"`.
+  * `data-active:` — подсветка активных табов и кнопок фильтрации (`:data-active="isActive ? 'true' : 'false'"`).
+  * Полное отсутствие ручной манипуляции со строками классов (`classList.add/remove`) в JavaScript.
+
 * **Иконки `go-templ-lucide-icons`:** Единая типобезопасная коллекция векторных иконок для всех компонентов интерфейса. Никаких inline SVG-дубликатов.
-* **Микровзаимодействия `tailwind-animations` ([ui/assets/css/animations.css](ui/assets/css/animations.css), [ui/assets/css/tw-animate.css](ui/assets/css/tw-animate.css)):** Плавные переходы, свечение бейджей `animate-pulse-glow`, всплытие списков `animate-fade-in-up`, модальные окна `animate-scale-in`, микро-лифт карточек (`hover:-translate-y-1 hover:shadow-md`) и тактильный отклик кнопок (`active:scale-[0.98]`).
+* **Микровзаимодействия `tailwind-animations` ([animations.css](ui/assets/css/animations.css), [tw-animate.css](ui/assets/css/tw-animate.css)):** Плавные переходы, свечение бейджей `animate-pulse-glow`, всплытие списков `animate-fade-in-up`, модальные окна `animate-scale-in`, микро-лифт карточек (`hover:-translate-y-1 hover:shadow-md`) и тактильный отклик кнопок (`active:scale-[0.98]`).
 * **Доступность из коробки:** Все тяжелые анимации автоматически отключаются при включении режима для слабовидящих (`body.a11y-mode`) или пользовательской настройки ОС `prefers-reduced-motion: reduce`.
 
 ---
@@ -209,7 +222,7 @@ registry.RegisterBlock("video_banner", func(b models.PageBlock, ctx registry.Ren
     return components.VideoBanner(b.Payload)
 })
 
-// Готовый блок витрины UI компонентов shadcn-templ + Lucide
+// Готовый блок витрины Go Variants + Tailwind v4 CSS
 registry.RegisterBlock("showcase", func(b models.PageBlock, ctx registry.RenderContext) templ.Component {
     return components.UIShowcase()
 })
@@ -246,6 +259,35 @@ internal/i18n/
    * OpenGraph мета-тег `<meta property="og:locale" content="ru_RU" / "en_US">`.
 4. **Локализованная валидация форм:** Ошибки отправки заявок (имя, телефон, капча/honeypot) возвращаются на языке текущего пользователя.
 5. **Управление из админки:** Флаг `enable_i18n` (включение/отключение отображения переключателя) и `default_lang` в коллекции `site_settings`.
+
+---
+
+## 🎛 Клиентская панель управления (`/client`) и безопасность
+
+Для владельца сайта и контент-менеджера реализован автономный кабинет `/client`, изолированный от технической админки PocketBase (`/_/`):
+
+### 1. Архитектура безопасности и авторизации:
+* **Изолированный доступ:** Публичные страницы сайта не содержат ссылок на админку. Кабинет открывается напрямую по адресу `/client`.
+* **Мастер первичной настройки (Setup Wizard, `/client/setup`):** При первом старте инстанса, если пароль еще не установлен, система требует задать безопасный пароль (не менее 8 символов) с подтверждением.
+* **Bcrypt-хэширование:** Пароль хранится в базе исключительно в виде bcrypt-хэша (`client_admin_password_hash`). Для старых инстансов предусмотрена бесшовная автомиграция legacy-паролей при первом чтении или входе.
+* **Криптографические сессии (`SessionStore`):** Кука `sitecraft_client_auth` (`HttpOnly`, `SameSite=Lax`, 30 дней) хранит 32-байтный криптографически стойкий токен (`crypto/rand`). Никаких открытых паролей в браузере. При выходе сессия немедленно отзывается из памяти.
+* **Защита от подбора паролей (`LoginRateLimiter`):** Встроенный ограничитель блокирует IP-адрес на 15 минут после 5 неудачных попыток входа с кодом HTTP 429 Too Many Requests и обратным таймером.
+* **Смена пароля (`/client/tab/security`):** Безопасная смена мастер-пароля с проверкой текущего пароля прямо из панели.
+
+### 2. Управление лидами и заявками:
+* Таблица входящих заявок с фильтрацией по статусам (`новая`, `в работе`, `завершена`).
+* Быстрая смена статуса в 1 клик через HTMX без перезагрузки.
+* Экспорт базы заявок в CSV (`/client/export/leads.csv`) для импорта в Excel / Google Таблицы.
+
+### 3. Редактирование контактов:
+* Мгновенное обновление телефонов, адресов, часов работы, соцсетей (Telegram, WhatsApp) и реквизитов компании без правок исходного кода.
+
+### 4. Управление блогом и базой знаний:
+* **Визуальный редактор:** Полноценный WYSIWYG-редактор Quill.js в едином темном стиле сайта.
+* **Обложки статей:** Drag & Drop загрузка с мгновенным предпросмотром на Alpine.js.
+* **Отложенная публикация (Scheduled Publishing):** Выбор даты/времени (`published_at`) и быстрые пресеты («Сейчас», «Завтра в 09:00», «Через 3 дня», «Через неделю»). PocketBase Cron автоматически делает запланированные статьи видимыми на сайте и сбрасывает кэш.
+* **Быстрый тоггл (1 клик):** Мгновенная публикация или скрытие материала в таблице статей.
+* **Корзина (Soft Delete):** Защита от случайного удаления: восстановление из корзины в 1 клик, окончательное удаление и полная очистка корзины.
 
 ---
 

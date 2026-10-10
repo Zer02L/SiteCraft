@@ -48,55 +48,5 @@
     @apply px-3 py-1.5 rounded-btn bg-primary/10 text-primary hover:bg-primary hover:text-white font-semibold transition cursor-pointer text-xs;
   }
 
-  /* shadcn-templ styling bridge */
-  .cn-button {
-    @apply inline-flex items-center justify-center font-medium transition-all duration-200 cursor-pointer disabled:pointer-events-none disabled:opacity-50 select-none;
-  }
-  .cn-button-size-default {
-    @apply px-4 py-2 text-sm rounded-btn;
-  }
-  .cn-button-size-xs {
-    @apply px-2 py-1 text-[11px] rounded-btn;
-  }
-  .cn-button-size-sm {
-    @apply px-3 py-1.5 text-xs rounded-btn;
-  }
-  .cn-button-size-lg {
-    @apply px-6 py-3 text-base rounded-btn font-bold;
-  }
-  .cn-button-size-icon {
-    @apply p-2 rounded-btn;
-  }
-  .cn-button-variant-default {
-    @apply bg-primary hover:bg-primary-dark text-white shadow-sm hover:shadow active:scale-[0.98];
-  }
-  .cn-button-variant-secondary {
-    @apply bg-surface-muted hover:bg-surface text-content border border-content/10 shadow-xs hover:border-accent/40 active:scale-[0.98];
-  }
-  .cn-button-variant-outline {
-    @apply border border-content/20 bg-transparent hover:bg-surface-muted text-content active:scale-[0.98];
-  }
-  .cn-button-variant-ghost {
-    @apply bg-transparent hover:bg-surface-muted text-content;
-  }
-  .cn-button-variant-destructive {
-    @apply bg-rose-600 hover:bg-rose-700 text-white shadow-sm active:scale-[0.98];
-  }
-
-  .cn-badge {
-    @apply inline-flex items-center justify-center font-semibold rounded-badge text-xs px-2.5 py-0.5 transition-colors;
-  }
-  .cn-badge-variant-default {
-    @apply bg-primary text-white;
-  }
-  .cn-badge-variant-secondary {
-    @apply bg-primary/10 text-primary border border-primary/20;
-  }
-  .cn-badge-variant-outline {
-    @apply border border-content/20 text-content bg-surface/5;
-  }
-  .cn-badge-variant-destructive {
-    @apply bg-rose-100 text-rose-800 border border-rose-200;
-  }
 }
 

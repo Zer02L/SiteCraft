@@ -3,9 +3,8 @@ package components
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -30,9 +29,9 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 					@icons.CreditCard(templ.Attributes{"class": "w-6 h-6"})
 				</div>
 				if orderCode != "" {
-					@badge.Badge(badge.Props{
-						Variant: badge.VariantSecondary,
-						Class:   "bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider mb-2",
+					@base.Badge(base.BadgeProps{
+						Variant: base.BadgeAccent,
+						Class:   "text-xs font-bold uppercase tracking-wider mb-2",
 					}) {
 						Квитанция № { orderCode }
 					}
@@ -139,10 +138,11 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 					</div>
 				}
 
-				@button.Button(button.Props{
-					Variant: button.VariantDefault,
-					Type:    button.TypeSubmit,
-					Class:   "w-full text-surface bg-accent hover:bg-accent-hover font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]",
+				@base.Button(base.ButtonProps{
+					Variant: base.BtnAccent,
+					Size:    base.BtnSizeLg,
+					Type:    "submit",
+					Class:   "w-full text-surface font-bold shadow gap-2",
 				}) {
 					<span class="htmx-indicator">
 						@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
@@ -168,12 +168,12 @@ templ PaymentSuccessMessage(res models.PaymentResponse) {
 		</div>
 		<p class="text-xs text-emerald-700 mt-1">Заказ #{ res.PaymentID } зарегистрирован.</p>
 		<div class="mt-3">
-			@button.Button(button.Props{
-				Variant: button.VariantDefault,
-				Size:    button.SizeSm,
+			@base.Button(base.ButtonProps{
+				Variant: base.BtnPrimary,
+				Size:    base.BtnSizeSm,
 				Href:    res.PaymentURL,
 				Target:  "_blank",
-				Class:   "bg-primary text-white font-bold text-xs hover:bg-primary-dark transition shadow-xs",
+				Class:   "font-bold shadow-xs",
 			}) {
 				Оплатить онлайн →
 			}

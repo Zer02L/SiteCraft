@@ -9,13 +9,14 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/Oudwins/tailwind-merge-go"
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
+	"sitecraft/ui/components/base"
+
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
-// UIShowcase demonstrates seamless integration of shadcn-templ, lucide-icons, tailwind-merge-go, and animations.
+// UIShowcase demonstrates seamless integration of:
+// 1. Zero-cost Go Variants (CVA pattern in Go) for base UI primitives (Button, Badge, Card).
+// 2. Native Tailwind v4 CSS Variants (@custom-variant data-open, data-closed, data-active) with Alpine.js.
 func UIShowcase() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -37,7 +38,7 @@ func UIShowcase() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"p-6 bg-surface rounded-2xl border border-content/10 shadow-sm space-y-4 animate-fade-in-up\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-3\"><span class=\"p-2 rounded-xl bg-primary/10 text-primary animate-pulse-glow\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"p-6 bg-surface rounded-card border border-content/10 shadow-sm space-y-6 animate-fade-in-up\"><!-- Header --><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-3\"><span class=\"p-2 rounded-xl bg-primary/10 text-primary animate-pulse-glow\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -45,7 +46,7 @@ func UIShowcase() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span><div><h3 class=\"text-base font-bold text-content\">Интеграция shadcn-templ + Lucide</h3><p class=\"text-xs text-content-muted\">Типобезопасные компоненты и иконки без Node.js рантайма</p></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span><div><h3 class=\"text-base font-bold text-content\">Zero-Cost Go Variants + Tailwind v4 CSS</h3><p class=\"text-xs text-content-muted\">Типобезопасные примитивы Go + нативные CSS data-варианты браузера</p></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -61,20 +62,21 @@ func UIShowcase() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Ready")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "Architecture V2")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = badge.Badge(badge.Props{
-			Variant: badge.VariantSecondary,
-			Class:   twmerge.Merge("text-xs uppercase tracking-wide font-semibold"),
+		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+			Variant: base.BadgeAccent,
+			Size:    base.BadgeSizeSm,
+			Class:   "uppercase tracking-wide font-semibold",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div class=\"flex flex-wrap items-center gap-3 pt-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><!-- 1. Go Variants Showcase: Button & Badge --><div class=\"space-y-2\"><span class=\"text-xs font-semibold text-content/70 uppercase tracking-wider block\">Go Variant Button Matrix</span><div class=\"flex flex-wrap items-center gap-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -90,19 +92,19 @@ func UIShowcase() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = icons.Phone(templ.Attributes{"class": "w-4 h-4 mr-2"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.Check(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Позвонить")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Primary")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantDefault,
-			Class:   twmerge.Merge("shadow-sm font-medium transition hover:scale-105 active:scale-95"),
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnPrimary,
+			Size:    base.BtnSizeSm,
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -119,19 +121,19 @@ func UIShowcase() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = icons.Calendar(templ.Attributes{"class": "w-4 h-4 mr-2"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.Sparkles(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Онлайн-запись")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Accent")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantOutline,
-			Class:   twmerge.Merge("border-content/20 hover:bg-surface-muted transition"),
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnAccent,
+			Size:    base.BtnSizeSm,
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var4), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -148,24 +150,103 @@ func UIShowcase() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = icons.ArrowRight(templ.Attributes{"class": "w-4 h-4 ml-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.Calendar(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Подробнее")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Outline")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantGhost,
-			Class:   twmerge.Merge("text-content-muted hover:text-content"),
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnOutline,
+			Size:    base.BtnSizeSm,
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var5), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div>")
+		templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = icons.Phone(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " Ghost")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnGhost,
+			Size:    base.BtnSizeSm,
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = icons.Trash(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " Destructive")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnDestructive,
+			Size:    base.BtnSizeSm,
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div><!-- 2. Tailwind v4 CSS Data-Variant + Alpine.js Showcase --><div class=\"pt-2 border-t border-content/10\" x-data=\"{ expanded: false }\"><div class=\"flex items-center justify-between\"><div class=\"text-xs text-content-muted\">Демонстрация Tailwind v4: <code class=\"text-accent font-mono text-[11px]\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 string
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs("@custom-variant data-open / data-closed")
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/ui_showcase.templ`, Line: 84, Col: 134}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</code></div><button type=\"button\" x-on:click=\"expanded = !expanded\" :data-active=\"expanded ? 'true' : 'false'\" class=\"px-2.5 py-1 text-xs font-medium rounded-btn border border-content/20 transition-all cursor-pointer flex items-center gap-1.5 data-active:bg-accent/15 data-active:border-accent data-active:text-accent text-content-muted hover:text-content\"><span x-text=\"expanded ? 'Скрыть интерактивный блок' : 'Раскрыть интерактивный блок'\">Раскрыть</span> <span :class=\"expanded ? 'rotate-180' : ''\" class=\"transition-transform duration-200 inline-block\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = icons.ChevronDown(templ.Attributes{"class": "w-3.5 h-3.5"}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span></button></div><!-- Collapsible panel powered purely by Tailwind v4 data-state styling --><div :data-state=\"expanded ? 'open' : 'closed'\" class=\"overflow-hidden transition-all duration-300 data-closed:max-h-0 data-closed:opacity-0 data-open:max-h-60 data-open:opacity-100 data-open:mt-4\"><div class=\"p-4 rounded-xl bg-surface-muted border border-content/10 text-xs space-y-2\"><p class=\"font-semibold text-content\">🚀 Zero JavaScript Class Swapping!</p><p class=\"text-content-muted leading-relaxed\">Alpine меняет только состояние <code class=\"font-mono text-accent\">data-state=\"open|closed\"</code>. Вся анимация и стили рассчитываются напрямую CSS-движком Tailwind v4 Oxide через директивы <code class=\"font-mono text-accent\">data-open:</code> и <code class=\"font-mono text-accent\">data-closed:</code> без аллокаций в Go и без тяжелых JS-библиотек.</p></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -54,7 +54,7 @@ ensure_engine() {
             tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
             go build -ldflags="-s -w" -o bin/sitecraft .
         elif command -v devenv &> /dev/null; then
-            devenv shell "templ generate && tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify && go build -ldflags='-s -w' -o bin/sitecraft ."
+            devenv shell -- bash -c "templ generate && tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify && go build -ldflags='-s -w' -o bin/sitecraft ."
         else
             echo -e "${RED}❌ Не найден templ/tailwindcss для локальной сборки. Соберите бинарник через Docker или devenv.${RESET}"
             exit 1

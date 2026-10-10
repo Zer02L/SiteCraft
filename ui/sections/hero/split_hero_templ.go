@@ -10,9 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -61,7 +60,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroBadge)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 27, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 26, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -69,9 +68,9 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "bg-white/10 text-accent border border-accent/40 font-semibold uppercase tracking-wider text-xs px-3.5 py-1.5 shadow-sm inline-flex items-center",
+			templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "bg-white/10 uppercase tracking-wider text-xs px-3.5 py-1.5 shadow-sm inline-flex items-center",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -84,7 +83,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 32, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 31, Col: 24}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -102,7 +101,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 35, Col: 111}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 34, Col: 111}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -120,7 +119,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroSubtitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 40, Col: 27}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 39, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -152,11 +151,11 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantDefault,
-			Size:    button.SizeLg,
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnAccent,
+			Size:    base.BtnSizeLg,
 			Href:    "#booking",
-			Class:   "bg-accent hover:bg-accent-hover text-primary-dark font-bold shadow-xl hover:-translate-y-0.5 transition duration-200",
+			Class:   "text-primary-dark font-bold shadow-xl hover:-translate-y-0.5 transition duration-200",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -185,7 +184,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 82, Col: 23}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 81, Col: 23}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -193,9 +192,9 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = button.Button(button.Props{
-				Variant: button.VariantOutline,
-				Size:    button.SizeLg,
+			templ_7745c5c3_Err = base.Button(base.ButtonProps{
+				Variant: base.BtnOutline,
+				Size:    base.BtnSizeLg,
 				Href:    "tel:" + content.Phone1,
 				Class:   "bg-white/10 hover:bg-white/20 text-white font-medium border-white/25 hover:-translate-y-0.5 transition duration-200",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
@@ -223,7 +222,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(content.WorkHours)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 110, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 109, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -241,7 +240,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(content.LunchBreak)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 112, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 111, Col: 87}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -273,7 +272,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(content.Address)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 125, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 124, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -291,7 +290,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(content.AddressSub)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 127, Col: 77}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 126, Col: 77}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -323,7 +322,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			var templ_7745c5c3_Var14 templ.SafeURL
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinURLErrs(templ.URL("tel:" + content.Phone1))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 140, Col: 53}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 139, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -336,7 +335,7 @@ func SplitHero(content models.SiteContent, settings models.SiteSettings) templ.C
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 140, Col: 132}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/hero/split_hero.templ`, Line: 139, Col: 132}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {

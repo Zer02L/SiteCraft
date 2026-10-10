@@ -5,9 +5,9 @@ import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -30,9 +30,9 @@ templ BlogList(settings models.SiteSettings, content models.SiteContent, article
 				<!-- Заголовок страницы -->
 				<div class="text-center max-w-2xl mx-auto mb-10">
 					<div class="inline-flex justify-center mb-3">
-						@badge.Badge(badge.Props{
-							Variant: badge.VariantSecondary,
-							Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3 text-primary bg-primary/10",
+						@base.Badge(base.BadgeProps{
+							Variant: base.BadgeAccent,
+							Class:   "text-xs font-bold uppercase tracking-wider py-1 px-3",
 						}) {
 							{ i18n.T(ctx, "blog.badge") }
 						}

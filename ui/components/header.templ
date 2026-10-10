@@ -3,8 +3,8 @@ package components
 import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -189,16 +189,6 @@ templ HeaderClassic(content models.SiteContent, settings models.SiteSettings) {
 						<span>{ i18n.T(ctx, "a11y.toggle") }</span>
 					</button>
 				}
-
-				@button.Button(button.Props{
-					Variant: button.VariantOutline,
-					Size:    button.SizeXs,
-					Href:    "/_/",
-					Target:  "_blank",
-					Class:   "text-accent border-accent/50 hover:bg-accent hover:text-primary-dark font-semibold transition",
-				}) {
-					{ i18n.T(ctx, "nav.admin") }
-				}
 			</nav>
 
 			<!-- Mobile Controls -->
@@ -214,11 +204,11 @@ templ HeaderClassic(content models.SiteContent, settings models.SiteSettings) {
 						@icons.Eye(templ.Attributes{"class": "w-4 h-4"})
 					</button>
 				}
-				@button.Button(button.Props{
-					Variant: button.VariantDefault,
-					Size:    button.SizeSm,
+				@base.Button(base.ButtonProps{
+					Variant: base.BtnAccent,
+					Size:    base.BtnSizeSm,
 					Href:    "#booking",
-					Class:   "bg-accent text-primary-dark text-xs font-semibold px-3 py-1.5 rounded shadow",
+					Class:   "text-primary-dark text-xs font-semibold px-3 py-1.5 shadow",
 				}) {
 					{ i18n.T(ctx, "nav.booking") }
 				}
@@ -260,7 +250,6 @@ templ HeaderClassic(content models.SiteContent, settings models.SiteSettings) {
 				<a href="/track" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">{ i18n.T(ctx, "nav.tracker_full") }</a>
 				<a href="/blog" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">{ i18n.T(ctx, "nav.blog_full") }</a>
 				<a href="/#map" @click="mobileMenuOpen = false" class="py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition">{ i18n.T(ctx, "nav.contacts_full") }</a>
-				<a href="/_/" target="_blank" class="py-2 px-3 rounded text-accent border border-accent/40 font-semibold text-center mt-2">{ i18n.T(ctx, "nav.admin_full") }</a>
 			</nav>
 		</div>
 	</header>
@@ -320,11 +309,11 @@ templ HeaderMinimal(content models.SiteContent, settings models.SiteSettings) {
 					</button>
 				}
 
-				@button.Button(button.Props{
-					Variant: button.VariantDefault,
-					Size:    button.SizeSm,
+				@base.Button(base.ButtonProps{
+					Variant: base.BtnAccent,
+					Size:    base.BtnSizeSm,
 					Href:    "/#booking",
-					Class:   "bg-accent hover:bg-accent-hover text-primary-dark text-xs font-bold px-3.5 py-1.5 rounded-lg shadow transition",
+					Class:   "text-primary-dark text-xs font-bold px-3.5 shadow transition",
 				}) {
 					@icons.Calendar(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"})
 					{ i18n.T(ctx, "btn.book") }

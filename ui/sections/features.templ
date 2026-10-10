@@ -3,8 +3,8 @@ package sections
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -15,9 +15,9 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 			<!-- Режим 1: Полностью Data-Driven из JSON Payload -->
 			<div class="text-center mb-12" data-reveal>
 				if payload.Badge != "" {
-					@badge.Badge(badge.Props{
-						Variant: badge.VariantSecondary,
-						Class:   "section-badge mb-2",
+					@base.Badge(base.BadgeProps{
+						Variant: base.BadgeAccent,
+						Class:   "mb-2 uppercase tracking-wider",
 					}) {
 						{ payload.Badge }
 					}
@@ -52,8 +52,8 @@ templ Features(theme string, payload *models.FeaturesPayload) {
 		} else {
 			<!-- Режим 2: Встроенный fallback по темам -->
 			<div class="text-center mb-12" data-reveal>
-				@badge.Badge(badge.Props{
-					Variant: badge.VariantSecondary,
+				@base.Badge(base.BadgeProps{
+					Variant: base.BadgeSecondary,
 					Class:   "section-badge mb-2",
 				}) {
 					Наши стандарты

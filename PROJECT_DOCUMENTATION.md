@@ -40,7 +40,7 @@
 | **PageSpeed Insights** | **95–100 / 100** | Полное отсутствие тяжелой клиентской гидратации; CSS < 20 КБ; ленивая загрузка виджетов |
 | **Рантайм в продакшене** | **0 КБ Node.js / Python** | Стили и шаблоны компилируются заранее (`templ generate`, `tailwindcss --minify`) |
 | **Доступность** | **ГОСТ Р 52872-2019** | Встроенный микро-модуль для слабовидящих на нативном Vanilla JS (< 1.5 КБ) |
-| **UI-примитивы** | `shadcn-templ/v2` + `Lucide` | 100% типобезопасные кнопки, бейджи и векторные иконки без сырого SVG |
+| **UI-примитивы** | Zero-Cost Go Variants (CVA) + Tailwind v4 Data-Variants + `Lucide` | 100% типобезопасные кнопки (`@base.Button`), бейджи (`@base.Badge`), карточки (`@base.Card`) без аллокаций памяти и сырого SVG |
 | **Интерактивность** | HTMX + Alpine.js | Нативная связка `hx-alpine-compat` для бесконфликтных динамических AJAX-свопов |
 
 ---
@@ -184,6 +184,11 @@ flowchart TD
     │   ├── styles.css            # Скомпилированный минифицированный CSS (~15 КБ)
     │   └── css/                  # Модульные стили (tokens, shadcn, animations, a11y)
     ├── components/               # Примитивы интерфейса
+    │   ├── base/                 # Zero-cost Go Variants (CVA UI-примитивы: Button, Badge, Card)
+    │   │   ├── button.templ      # Кнопка с типизированными вариантами и размерами
+    │   │   ├── badge.templ       # Бейджи со статусами и стилями
+    │   │   ├── card.templ        # Карточки, заголовки и описания
+    │   │   └── variants_test.go  # Модульные тесты генератора классов
     │   ├── a11y_bar.templ        # Панель для слабовидящих по ГОСТ (Vanilla JS)
     │   ├── cart_drawer.templ     # Выдвижная корзина покупок (Alpine.js)
     │   ├── dynamic_block.templ   # Рендерер rich_text/html с санитизацией bluemonday
@@ -191,7 +196,7 @@ flowchart TD
     │   ├── footer.templ          # Настраиваемый подвал
     │   ├── header.templ          # Шапка с переключателем тем, i18n и a11y
     │   ├── payment.templ         # Модалка онлайн-оплаты
-    │   ├── ui_showcase.templ     # Витрина компонентов shadcn-templ + Lucide
+    │   ├── ui_showcase.templ     # Витрина Go Variants + Tailwind v4 CSS Data-Variants
     │   └── cinematic/            # 31 кинематографический модуль (Zero-GSAP)
     ├── layouts/
     │   ├── base.templ            # Корневой HTML-шаблон, инъекция тем, a11y, скрипты
@@ -230,6 +235,8 @@ PocketBase использует встраиваемую SQLite в режиме 
 * `enable_floating_contact` (bool), `whatsapp_phone`, `telegram_contact` — плавающий мессенджер
 * `enable_cart` (bool) — выдвижная корзина заказов
 * `header_variant`, `footer_variant` — варианты раскладки шапки и подвала
+* `client_admin_password` (text) — устаревший открытый пароль клиентского кабинета (автомигрируется в хэш)
+* `client_admin_password_hash` (text) — bcrypt-хэш пароля доступа в клиентский кабинет (`/client`)
 
 ### 2. `site_content` (Тексты и контакты)
 * `hero_badge`, `hero_title`, `hero_subtitle`
@@ -322,6 +329,25 @@ PocketBase использует встраиваемую SQLite в режиме 
 | `POST` | `/api/cart/checkout` | `cartHandler.HandleCheckout` | Оформление заказа из корзины (Alpine.js) | JSON / HTML |
 | `POST` | `/api/payment/create` | `paymentHandler.HandleCreatePayment` | Инициализация платежа ЮKassa / Mock Sandbox | JSON |
 | `GET` | `/api/lang/{code}` | `i18n.HandleSetLang` | Переключение языка с установкой cookie и редиректом | HTTP 302 Redirect |
+| `GET` | `/client/login` | `clientAdminHandler.HandleLoginPage` | Форма входа в клиентский кабинет | HTML |
+| `POST` | `/client/login` | `clientAdminHandler.HandleLogin` | Аутентификация с bcrypt и защитой от брутфорса (Rate Limiting) | HTTP 302 Redirect / HTML |
+| `POST` | `/client/setup` | `clientAdminHandler.HandleInitialSetup` | Первичная установка мастер-пароля (Setup Wizard >= 8 знаков) | HTTP 302 Redirect / HTML |
+| `GET` | `/client/logout` | `clientAdminHandler.HandleLogout` | Выход из системы и аннулирование сессии | HTTP 302 Redirect |
+| `GET` | `/client` | `clientAdminHandler.HandleDashboard` | Главный дашборд клиентского кабинета | HTML |
+| `GET` | `/client/tab/leads` | `clientAdminHandler.HandleTabLeads` | HTMX-парциал вкладки лидов с фильтрацией | HTML Partial |
+| `GET` | `/client/tab/contacts` | `clientAdminHandler.HandleTabContacts` | HTMX-парциал вкладки контактов и реквизитов | HTML Partial |
+| `GET` | `/client/tab/articles` | `clientAdminHandler.HandleTabArticles` | HTMX-парциал вкладки управления блогом | HTML Partial |
+| `GET` | `/client/tab/security` | `clientAdminHandler.HandleTabSecurity` | HTMX-парциал вкладки смены пароля доступа | HTML Partial |
+| `POST` | `/client/security/password` | `clientAdminHandler.HandleChangePassword` | Смена пароля с проверкой старого и подтверждения нового | HTML Partial |
+| `POST` | `/client/contacts` | `clientAdminHandler.HandleSaveContacts` | Сохранение контактных данных сайта | HTML Partial |
+| `POST` | `/client/leads/{id}/status` | `clientAdminHandler.HandleUpdateLeadStatus` | Мгновенная смена статуса заявки в 1 клик | HTML Partial |
+| `GET` | `/client/export/leads.csv` | `clientAdminHandler.HandleExportLeadsCSV` | Экспорт базы входящих заявок в CSV | CSV (text/csv) |
+| `POST` | `/client/articles/save` | `clientAdminHandler.HandleSaveArticle` | Сохранение статьи с обложкой и датой публикации | HTML Partial |
+| `POST` | `/client/articles/toggle/{id}` | `clientAdminHandler.HandleToggleArticlePublish` | Переключение публикации статьи в 1 клик | HTML Partial |
+| `POST` | `/client/articles/trash/{id}` | `clientAdminHandler.HandleTrashArticle` | Мягкое перемещение статьи в Корзину | HTML Partial |
+| `POST` | `/client/articles/restore/{id}` | `clientAdminHandler.HandleRestoreArticle` | Восстановление статьи из Корзины | HTML Partial |
+| `DELETE` | `/client/articles/permanent/{id}` | `clientAdminHandler.HandlePermanentDeleteArticle` | Окончательное безвозвратное удаление статьи | HTML Partial |
+| `POST` | `/client/articles/trash/empty` | `clientAdminHandler.HandleEmptyTrash` | Полная очистка Корзины удаленных статей | HTML Partial |
 
 ---
 
@@ -388,22 +414,55 @@ PocketBase использует встраиваемую SQLite в режиме 
 
 ## 10. Динамический Theming Engine и CSS-архитектура
 
-### 1. Архитектура Tailwind CSS v4 (Oxide)
-* **Чистый CSS-first конфиг:** Все директивы и токены задаются в `ui/assets/input.css` через `@theme`. Файл `tailwind.config.js` полностью устранен.
-* **Автоматическое сканирование:** `@source "../**/*.templ"` обеспечивает сборку только используемых утилит.
+### 1. Архитектура Tailwind CSS v4 (Oxide) & CSS-first конфиг
+* **Чистый CSS-first конфиг:** Все директивы и токены задаются в [input.css](ui/assets/input.css) через `@theme`. Файл `tailwind.config.js` полностью устранен.
+* **Автоматическое сканирование:** `@source "../**/*.templ"` обеспечивает сборку только используемых утилит напрямую компилятором Oxide без JavaScript-рантайма.
 * **CSS Color Level 4:** Использование нативной функции браузера `color-mix()` для расчета теней, hover-состояний и приглушенных поверхностей.
+* **Ликвидация устаревшего `@apply`:** Избыточные служебные классы-мосты (`.cn-button*`, `.cn-badge*`) удалены из [components.css](ui/assets/css/components.css). Стилизация примитивов перенесена непосредственно в скомпилированные Go-шаблоны.
 
-### 2. Управление из админки PocketBase
+### 2. Паттерн Zero-Cost Go Variants (CVA-архитектура в Go)
+Для базовых компонентов пользовательского интерфейса реализован легковесный паттерн Variants (аналог CVA / Class Variance Authority из экосистемы React) в пакете `ui/components/base/`:
+
+* **Строгая типизация вариантов и размеров:**
+  * Кнопки (`base.ButtonProps`): `Variant` (`BtnPrimary`, `BtnSecondary`, `BtnAccent`, `BtnOutline`, `BtnGhost`, `BtnDestructive`), `Size` (`BtnSizeDefault`, `BtnSizeXs`, `BtnSizeSm`, `BtnSizeLg`, `BtnSizeIcon`), полиморфный рендеринг (`<button>` или `<a>` при наличии `Href`).
+  * Бейджи (`base.BadgeProps`): `Variant` (`BadgeDefault`, `BadgeSecondary`, `BadgeAccent`, `BadgeOutline`, `BadgeDestructive`), `Size` (`BadgeSizeDefault`, `BadgeSizeSm`, `BadgeSizeLg`).
+  * Карточки (`base.CardProps`): `Variant` (`CardBase`, `CardInteractive`, `CardSm`, `CardMuted`), подкомпоненты `CardTitle` и `CardDescription`.
+* **Стратегия нулевых аллокаций (Zero Heap Allocations):**
+  Метод `Classes()` использует скомпилированный `switch-case` с полными строковыми литералами (что гарантирует обнаружение классов JIT-сканером Tailwind Oxide). Если кастомный оверрайд `Class == ""` (в 90% сценариев), функция конкатенирует константные строки напрямую без вызова парсера классов:
+  ```go
+  // Zero-allocation путь
+  if p.Class == "" {
+      return base + " " + variant + " " + size
+  }
+  // Вызов twmerge только при необходимости переопределения
+  return twmerge.Merge(base, variant, size, p.Class)
+  ```
+* **Безопасное переопределение через `tailwind-merge-go`:** Передача классов вида `Class: "mt-4 w-full"` корректно заменяет конфликтующие паддинги и ширину базового компонента без поломки остальной верстки.
+
+### 3. Нативные Tailwind v4 CSS Data-Variants (`@custom-variant`) & Alpine.js
+Для управления динамическими состояниями страницы (открытие/закрытие модалок, табов, дропдаунов) вместо тяжелых JavaScript-библиотек или подмены классов (`classList.add/remove`) задействованы нативные директивы Tailwind v4 в [shadcn.css](ui/assets/css/shadcn.css):
+
+```css
+@custom-variant data-open (&:where([data-state="open"]));
+@custom-variant data-closed (&:where([data-state="closed"]));
+@custom-variant data-active (&:where([data-active="true"]), &:where([data-state="active"]));
+@custom-variant data-checked (&:where([data-state="checked"]));
+```
+
+* **Бесшовная интеграция с Alpine.js:** Alpine мутирует только атрибуты `:data-state="isOpen ? 'open' : 'closed'` или `:data-active="isActive ? 'true' : 'false'`.
+* **Аппаратные CSS-переходы:** Вся анимация и трансформация (`data-closed:opacity-0 data-open:opacity-100`, `data-active:bg-accent/15`) рассчитываются CSS-движком браузера с аппаратным GPU-ускорением.
+
+### 4. Управление из админки PocketBase (`site_settings`)
 При изменении `primary_color`, `accent_color`, `background_color` или `font_family` в `site_settings`, движок генерирует inline `:root` стили в `<head>`, мгновенно меняя бренд сайта без перекомпиляции CSS.
 
-### 3. Сезонные темы и режим День / Ночь
+### 5. Сезонные темы и режим День / Ночь
 Интерактивный переключатель в шапке сайта поддерживает:
 * Базовые темы: `main`, `spring`, `summer`, `autumn`, `winter`.
 * Вычисляемая математическая гармония: `harmonic` / `harmonic-night`.
 * Светлый и темный режимы для каждой темы (`-day` / `-night`).
 * Специальный режим для людей с особенностями цветовосприятия (`colorblind`).
 
-### 4. Панель доступности (ГОСТ Р 52872-2019)
+### 6. Панель доступности (ГОСТ Р 52872-2019)
 Микро-модуль на нативном Vanilla JS (< 1.5 КБ) в `ui/components/a11y_bar.templ`:
 * 3 размера шрифта (`normal`, `large`, `xlarge`).
 * 3 контрастные схемы (`black-on-white`, `white-on-black`, `blue-on-cyan`).
@@ -440,7 +499,7 @@ registry.RegisterBlock("custom_block", func(b models.PageBlock, ctx registry.Ren
 * `map` — Интерактивная карта (Яндекс Карты) с ленивой подгрузкой при прокрутке.
 * `quiz` / `calculator` — Интерактивный опросник с расчетом сметы.
 * `before_after` / `comparison` — Слайдер визуального сравнения результатов.
-* `showcase` — Витрина примитивов `shadcn-templ`.
+* `showcase` — Витрина Go Variants + Tailwind v4 CSS Data-Variants.
 * `cinematic_*` — Модули кинематографической коллекции.
 * `rich_text` / `html` — Произвольный HTML с очисткой через `bluemonday.UGCPolicy()`.
 
@@ -512,7 +571,13 @@ registry.RegisterBlock("custom_block", func(b models.PageBlock, ctx registry.Ren
 * Автоматическая генерация XML Sitemap по протоколу поисковых систем (включает только опубликованные актуальные статьи).
 
 ### 4. Клиентская панель управления (`/client`)
-* **Авторизация:** Простой защищенный доступ для клиента с авторизацией по сессионной куке `sitecraft_client_auth` (пароль настраивается в `site_settings.client_admin_password`, по умолчанию `admin`).
+* **Архитектура авторизации и безопасность:**
+  * **Изоляция от посетителей:** Административные ссылки на `/client` и `/_/` исключены из публичной шапки и подвала; панель доступна владельцу сайта по прямому URL `/client`.
+  * **Мастер первичной настройки (Setup Wizard, `/client/setup`):** При первом старте инстанса, если пароль еще не задан или равен дефолтному значению, пользователь автоматически направляется на мастер инициализации с обязательной валидацией (длина пароля не менее 8 символов и совпадение подтверждения).
+  * **Bcrypt-хэширование (`golang.org/x/crypto/bcrypt`):** Пароль сохраняется в БД исключительно в виде bcrypt-хэша (`client_admin_password_hash`). Для обратной совместимости реализована автоматическая бесшовная миграция: при первом чтении или успешном входе с legacy открытым паролем (`client_admin_password`) генерируется безопасный хэш, а открытое поле очищается.
+  * **Криптографические сессии (In-Memory `SessionStore`):** Сессионная кука `sitecraft_client_auth` (`HttpOnly`, `SameSite=Lax`, TTL 30 дней) содержит 32-байтный случайный токен, сгенерированный через `crypto/rand` (`hex.EncodeToString`), исключая хранение паролей в браузере. Хранилище сессий потокобезопасно (`sync.RWMutex`) и мгновенно отзывает токены при логауте (`/client/logout`).
+  * **Защита от подбора паролей (`LoginRateLimiter`):** Встроенный ограничитель попыток отслеживает IP-адреса (`e.RealIP()`). После 5 неудачных попыток IP временно блокируется на 15 минут с отдачей HTTP 429 Too Many Requests и таймером обратного отсчета. При успешной авторизации счетчик попыток очищается.
+  * **Вкладка «Безопасность» (`/client/tab/security`):** Полноценный интерфейс для самостоятельной смены пароля доступа владельцем сайта с проверкой текущего пароля и валидацией сложности нового.
 * **Управление лидами:** Таблица входящих заявок, фильтрация по статусам (`новая`, `в работе`, `завершена`), смена статуса в 1 клик через HTMX, экспорт базы лидов в CSV (`/client/export/leads.csv`).
 * **Редактирование контактов:** Управление телефонами, адресом, временем работы, соцсетями и реквизитами без правок кода.
 * **Управление статьями и новостями блога:**
@@ -752,6 +817,10 @@ dental-premium.ru {
 6. **❌ Запрет создания утечек памяти при HTMX DOM-swaps:**
    * *Причина:* При удалении элементов через `hx-swap` таймеры (`setInterval`), циклы `requestAnimationFrame` и WebGL-контексты не очищаются сборщиком мусора автоматически.
    * *Правило:* Обязательная подписка на `htmx:beforeCleanupElement` для освобождения ресурсов (`gl.getExtension('WEBGL_lose_context')?.loseContext()`, `cancelAnimationFrame`).
+
+7. **❌ Запрет сырых строковых классов и дублирования стилей кнопок/карточек в секциях:**
+   * *Причина:* Размазывание ручных utility-строк (`px-4 py-2 bg-accent...`) по секциям приводит к рассинхронизации дизайн-системы между 12 пресетами ниш и усложняет глобальный ребрендинг.
+   * *Правило:* Для всех кнопок, бейджей и карточек использовать базовые типизированные компоненты из `ui/components/base/` (`@base.Button`, `@base.Badge`, `@base.Card`), а для динамических состояний — нативные Tailwind v4 CSS Data-Variants (`data-open:`, `data-closed:`, `data-active:`).
 
 ---
 

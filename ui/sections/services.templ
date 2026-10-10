@@ -6,9 +6,8 @@ import (
 	"strings"
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -30,9 +29,9 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 	<!-- Services Section -->
 	<section id="services" class="py-16 px-4 max-w-6xl mx-auto">
 		<div class="text-center mb-12" data-reveal>
-			@badge.Badge(badge.Props{
-				Variant: badge.VariantSecondary,
-				Class:   "section-badge mb-3",
+			@base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "mb-3 uppercase tracking-wider text-xs px-3 py-1",
 			}) {
 				{ i18n.T(ctx, "services.badge") }
 			}
@@ -42,17 +41,24 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 			for idx, s := range services {
-				<div
-					data-reveal
-					data-reveal-delay={ fmt.Sprintf("%d", ((idx % 3) + 1) * 100) }
-					class="card-interactive flex flex-col justify-between hover:scale-[1.01]"
-				>
+				@base.Card(base.CardProps{
+					Variant: base.CardInteractive,
+					Class:   "flex flex-col justify-between hover:scale-[1.01]",
+					Attrs: templ.Attributes{
+						"data-reveal":       "",
+						"data-reveal-delay": fmt.Sprintf("%d", ((idx % 3) + 1) * 100),
+					},
+				}) {
 					<div>
 						<div class="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center mb-3">
 							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
 						</div>
-						<h3 class="card-title mb-2">{ s.Title }</h3>
-						<p class="card-desc mb-4">{ s.Description }</p>
+						@base.CardTitle("mb-2") {
+							{ s.Title }
+						}
+						@base.CardDescription("mb-4") {
+							{ s.Description }
+						}
 					</div>
 					<div class="pt-4 border-t border-content/10 flex items-center justify-between">
 						<div>
@@ -61,26 +67,30 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 						</div>
 						<div class="flex items-center gap-2">
 							if settings.EnableCart {
-								<button
-									type="button"
-									x-on:click={ fmt.Sprintf("$store.cart.add({ id: '%s', title: '%s', price: %f, price_str: '%s' })", s.ID, s.Title, parsePriceNumber(s.Price), s.Price) }
-									class="px-2.5 py-1.5 rounded-lg bg-accent/15 text-accent hover:bg-accent hover:text-primary-dark font-bold text-xs transition flex items-center gap-1 cursor-pointer"
-									title="Добавить в корзину"
-								>
+								@base.Button(base.ButtonProps{
+									Variant: base.BtnAccent,
+									Size:    base.BtnSizeSm,
+									Class:   "gap-1 font-bold",
+									Attrs: templ.Attributes{
+										"type":        "button",
+										"x-on:click":  fmt.Sprintf("$store.cart.add({ id: '%s', title: '%s', price: %f, price_str: '%s' })", s.ID, s.Title, parsePriceNumber(s.Price), s.Price),
+										"title":       "Добавить в корзину",
+									},
+								}) {
 									@icons.Plus(templ.Attributes{"class": "w-3.5 h-3.5"})
 									<span>В корзину</span>
-								</button>
+								}
 							}
 							if settings.EnablePayment {
-								@button.Button(button.Props{
-									Variant: button.VariantSecondary,
-									Size:    button.SizeSm,
-									Attributes: templ.Attributes{
-										"hx-get":    "/api/payment/modal?service_id" + "=" + s.ID,
+								@base.Button(base.ButtonProps{
+									Variant: base.BtnSecondary,
+									Size:    base.BtnSizeSm,
+									Class:   "gap-1 font-semibold",
+									Attrs: templ.Attributes{
+										"hx-get":    "/api/payment/modal?service_id=" + s.ID,
 										"hx-target": "#payment-modal-container",
 										"hx-swap":   "innerHTML transition:true",
 									},
-									Class: "text-primary hover:bg-primary hover:text-white transition gap-1 font-semibold",
 								}) {
 									@icons.CreditCard(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
 									{ i18n.T(ctx, "services.pay_online") }
@@ -88,7 +98,7 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 							}
 						</div>
 					</div>
-				</div>
+				}
 			}
 		</div>
 		<div id="payment-modal-container"></div>

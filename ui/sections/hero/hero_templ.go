@@ -10,9 +10,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -68,9 +67,10 @@ func Hero(content models.SiteContent) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = badge.Badge(badge.Props{
-			Variant: badge.VariantSecondary,
-			Class:   "bg-surface/15 text-accent border-accent/40 font-semibold uppercase tracking-wider text-xs px-3.5 py-1.5 shadow-sm animate-pulse-glow",
+		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
+			Variant: base.BadgeAccent,
+			Size:    base.BadgeSizeLg,
+			Class:   "bg-surface/15 uppercase tracking-wider shadow-sm animate-pulse-glow",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -140,11 +140,11 @@ func Hero(content models.SiteContent) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = button.Button(button.Props{
-			Variant: button.VariantDefault,
-			Size:    button.SizeLg,
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnAccent,
+			Size:    base.BtnSizeLg,
 			Href:    "#booking",
-			Class:   "bg-accent hover:bg-accent-hover text-primary-dark font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-200",
+			Class:   "text-primary-dark font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -181,11 +181,11 @@ func Hero(content models.SiteContent) templ.Component {
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = button.Button(button.Props{
-				Variant: button.VariantOutline,
-				Size:    button.SizeLg,
+			templ_7745c5c3_Err = base.Button(base.ButtonProps{
+				Variant: base.BtnOutline,
+				Size:    base.BtnSizeLg,
 				Href:    "tel:" + content.Phone1,
-				Class:   "bg-surface/10 hover:bg-surface/20 text-white font-medium border-white/20 hover:-translate-y-0.5 transition duration-200",
+				Class:   "bg-surface/10 hover:bg-surface/20 text-white border-white/20 hover:-translate-y-0.5",
 			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var8), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

@@ -2,8 +2,8 @@ package components
 
 import (
 	"sitecraft/internal/i18n"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -100,9 +100,9 @@ templ A11yBar() {
 
 			<!-- Закрыть режим -->
 			<div>
-				@button.Button(button.Props{
-					Variant: button.VariantDestructive,
-					Size:    button.SizeSm,
+				@base.Button(base.ButtonProps{
+					Variant: base.BtnDestructive,
+					Size:    base.BtnSizeSm,
 					Attributes: templ.Attributes{
 						"onclick": "window.A11Y.toggle()",
 					},

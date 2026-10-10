@@ -2,9 +2,8 @@ package hero
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -13,9 +12,10 @@ templ Hero(content models.SiteContent) {
 	<section class="relative bg-gradient-to-b from-primary-dark via-primary to-primary-dark text-white py-16 md:py-20 px-4 overflow-hidden border-b-4 border-accent">
 		<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 			<div class="lg:col-span-7 space-y-5 text-center lg:text-left" data-reveal="left">
-				@badge.Badge(badge.Props{
-					Variant: badge.VariantSecondary,
-					Class:   "bg-surface/15 text-accent border-accent/40 font-semibold uppercase tracking-wider text-xs px-3.5 py-1.5 shadow-sm animate-pulse-glow",
+				@base.Badge(base.BadgeProps{
+					Variant: base.BadgeAccent,
+					Size:    base.BadgeSizeLg,
+					Class:   "bg-surface/15 uppercase tracking-wider shadow-sm animate-pulse-glow",
 				}) {
 					<span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
 					{ content.HeroBadge }
@@ -32,21 +32,21 @@ templ Hero(content models.SiteContent) {
 
 				<!-- Контакты и быстрые кнопки -->
 				<div class="pt-2 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-					@button.Button(button.Props{
-						Variant: button.VariantDefault,
-						Size:    button.SizeLg,
+					@base.Button(base.ButtonProps{
+						Variant: base.BtnAccent,
+						Size:    base.BtnSizeLg,
 						Href:    "#booking",
-						Class:   "bg-accent hover:bg-accent-hover text-primary-dark font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition duration-200",
+						Class:   "text-primary-dark font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5",
 					}) {
 						@icons.Calendar(templ.Attributes{"class": "w-5 h-5 mr-2"})
 						Записаться онлайн
 					}
 					if content.Phone1 != "" {
-						@button.Button(button.Props{
-							Variant: button.VariantOutline,
-							Size:    button.SizeLg,
+						@base.Button(base.ButtonProps{
+							Variant: base.BtnOutline,
+							Size:    base.BtnSizeLg,
 							Href:    "tel:" + content.Phone1,
-							Class:   "bg-surface/10 hover:bg-surface/20 text-white font-medium border-white/20 hover:-translate-y-0.5 transition duration-200",
+							Class:   "bg-surface/10 hover:bg-surface/20 text-white border-white/20 hover:-translate-y-0.5",
 						}) {
 							@icons.Phone(templ.Attributes{"class": "w-5 h-5 text-accent mr-2"})
 							{ content.Phone1 }

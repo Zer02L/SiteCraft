@@ -1,0 +1,96 @@
+package base
+
+import (
+	"github.com/Oudwins/tailwind-merge-go"
+)
+
+type BadgeVariant uint8
+
+const (
+	BadgeDefault BadgeVariant = iota
+	BadgeSecondary
+	BadgeAccent
+	BadgeOutline
+	BadgeDestructive
+)
+
+// Aliases for compatibility
+const (
+	BadgeVariantDefault     = BadgeDefault
+	BadgeVariantSecondary   = BadgeSecondary
+	BadgeVariantAccent      = BadgeAccent
+	BadgeVariantOutline     = BadgeOutline
+	BadgeVariantDestructive = BadgeDestructive
+)
+
+type BadgeSize uint8
+
+const (
+	BadgeSizeDefault BadgeSize = iota
+	BadgeSizeSm
+	BadgeSizeLg
+)
+
+type BadgeProps struct {
+	Variant    BadgeVariant
+	Size       BadgeSize
+	Class      string
+	Attrs      templ.Attributes
+	Attributes templ.Attributes // Alias for compatibility with shadcn-templ props
+}
+
+func (p BadgeProps) combinedAttrs() templ.Attributes {
+	if len(p.Attributes) == 0 {
+		return p.Attrs
+	}
+	if len(p.Attrs) == 0 {
+		return p.Attributes
+	}
+	res := make(templ.Attributes, len(p.Attrs)+len(p.Attributes))
+	for k, v := range p.Attrs {
+		res[k] = v
+	}
+	for k, v := range p.Attributes {
+		res[k] = v
+	}
+	return res
+}
+
+func (p BadgeProps) Classes() string {
+	const base = "inline-flex items-center justify-center font-semibold rounded-badge transition-colors"
+
+	var variant string
+	switch p.Variant {
+	case BadgeSecondary:
+		variant = "bg-primary/10 text-primary border border-primary/20"
+	case BadgeAccent:
+		variant = "bg-accent/10 text-accent border border-accent/20"
+	case BadgeOutline:
+		variant = "border border-content/20 text-content bg-surface/5"
+	case BadgeDestructive:
+		variant = "bg-rose-100 text-rose-800 border border-rose-200"
+	default: // BadgeDefault
+		variant = "bg-primary text-white"
+	}
+
+	var size string
+	switch p.Size {
+	case BadgeSizeSm:
+		size = "text-[10px] px-2 py-0.5"
+	case BadgeSizeLg:
+		size = "text-sm px-3.5 py-1"
+	default: // BadgeSizeDefault
+		size = "text-xs px-2.5 py-0.5"
+	}
+
+	if p.Class == "" {
+		return base + " " + variant + " " + size
+	}
+	return twmerge.Merge(base, variant, size, p.Class)
+}
+
+templ Badge(props BadgeProps) {
+	<span class={ props.Classes() } { props.combinedAttrs()... }>
+		{ children... }
+	</span>
+}

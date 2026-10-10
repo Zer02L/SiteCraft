@@ -51,7 +51,8 @@ type SiteSettings struct {
 	FooterVariant string `json:"footer_variant"`
 
 	// Пароль для входа в клиентский кабинет (/client)
-	ClientAdminPassword string `json:"client_admin_password"`
+	ClientAdminPassword     string `json:"client_admin_password"` // Legacy plain password for auto-migration
+	ClientAdminPasswordHash string `json:"client_admin_password_hash"`
 }
 
 // SiteContent holds content blocks displayed on the website

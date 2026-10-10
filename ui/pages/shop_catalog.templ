@@ -3,9 +3,9 @@ package pages
 import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -25,9 +25,9 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<!-- Шапка магазина -->
 				<div class="text-center mb-8">
 					<div class="inline-flex justify-center mb-2">
-						@badge.Badge(badge.Props{
-							Variant: badge.VariantSecondary,
-							Class:   "text-xs font-bold gap-1 py-1 px-3 text-content bg-accent/20",
+						@base.Badge(base.BadgeProps{
+							Variant: base.BadgeAccent,
+							Class:   "text-xs font-bold gap-1 py-1 px-3",
 						}) {
 							@icons.Zap(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-500 fill-amber-500"})
 							<span>Telegram Mini App • Быстрый заказ</span>

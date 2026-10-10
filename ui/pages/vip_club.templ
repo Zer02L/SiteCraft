@@ -3,10 +3,9 @@ package pages
 import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -26,9 +25,9 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 				<!-- Шапка клуба -->
 				<div class="text-center mb-8">
 					<div class="inline-flex justify-center mb-3">
-						@badge.Badge(badge.Props{
-							Variant: badge.VariantSecondary,
-							Class:   "text-xs font-bold gap-1 py-1 px-3 text-amber-900 bg-amber-500/20",
+						@base.Badge(base.BadgeProps{
+							Variant: base.BadgeAccent,
+							Class:   "text-xs font-bold gap-1 py-1 px-3",
 						}) {
 							@icons.Crown(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-600"})
 							<span>Закрытый клуб и база знаний • Ниша В</span>
@@ -160,10 +159,11 @@ templ VIPClub(settings models.SiteSettings, content models.SiteContent, user *mo
 								<span class="text-xs text-content-muted"> / месяц</span>
 							</div>
 
-							@button.Button(button.Props{
+							@base.Button(base.ButtonProps{
 								Type:    "button",
-								Variant: button.VariantDefault,
-								Class:   "w-full py-3.5 font-bold text-sm rounded-xl cursor-pointer shadow-lg hover:shadow-xl transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2",
+								Variant: base.BtnPrimary,
+								Size:    base.BtnSizeLg,
+								Class:   "w-full py-3.5 font-bold text-sm rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2",
 								Attributes: templ.Attributes{
 									"@click": "openPayment()",
 								},

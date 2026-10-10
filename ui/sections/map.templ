@@ -2,9 +2,8 @@ package sections
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -12,9 +11,9 @@ templ MapSection(content models.SiteContent, settings models.SiteSettings) {
 	<!-- Interactive Location Map Section -->
 	<section id="map" class="py-16 px-4 max-w-6xl mx-auto">
 		<div class="text-center mb-8" data-reveal>
-			@badge.Badge(badge.Props{
-				Variant: badge.VariantOutline,
-				Class:   "section-badge mb-2",
+			@base.Badge(base.BadgeProps{
+				Variant: base.BadgeAccent,
+				Class:   "mb-2 uppercase tracking-wider",
 			}) {
 				Локация
 			}
@@ -63,10 +62,11 @@ templ MapSection(content models.SiteContent, settings models.SiteSettings) {
 				</div>
 
 				<div class="mt-8 pt-4 border-t border-content/10">
-					@button.Button(button.Props{
-						Variant: button.VariantDefault,
+					@base.Button(base.ButtonProps{
+						Variant: base.BtnAccent,
+						Size:    base.BtnSizeSm,
 						Href:    "#booking",
-						Class:   "w-full bg-accent hover:bg-accent-hover text-primary-dark font-bold text-xs shadow-sm hover:shadow transition",
+						Class:   "w-full text-primary-dark font-bold shadow-sm hover:shadow transition",
 					}) {
 						@icons.Calendar(templ.Attributes{"class": "w-3.5 h-3.5 mr-1.5"})
 						Забронировать время онлайн

@@ -120,7 +120,7 @@ RUN_PREFIX=""
 if ! command -v templ &> /dev/null || ! command -v tailwindcss &> /dev/null; then
     if command -v devenv &> /dev/null; then
         echo -e "${PURPLE}ℹ️ Утилиты сборки будут запущены через devenv shell...${RESET}"
-        RUN_PREFIX="devenv shell"
+        RUN_PREFIX="devenv shell --"
     fi
 fi
 

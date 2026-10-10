@@ -5,10 +5,9 @@ import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/layouts"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -24,9 +23,9 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 				<!-- Заголовок страницы -->
 				<div class="text-center mb-8">
 					<div class="inline-flex items-center gap-2 mb-2">
-						@badge.Badge(badge.Props{
-							Variant: badge.VariantSecondary,
-							Class:   "text-xs font-bold gap-1 py-1 px-3 text-primary bg-primary/10",
+						@base.Badge(base.BadgeProps{
+							Variant: base.BadgeAccent,
+							Class:   "text-xs font-bold gap-1 py-1 px-3",
 						}) {
 							@icons.Zap(templ.Attributes{"class": "w-3.5 h-3.5 text-amber-500 fill-amber-500"})
 							<span>{ i18n.T(ctx, "tracker.badge") }</span>
@@ -49,10 +48,11 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 							placeholder={ i18n.T(ctx, "tracker.input_placeholder") }
 							class="flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
 						/>
-						@button.Button(button.Props{
+						@base.Button(base.ButtonProps{
 							Type:    "submit",
-							Variant: button.VariantDefault,
-							Class:   "px-6 py-3 rounded-xl font-bold cursor-pointer whitespace-nowrap shadow-md hover:shadow-lg transition-transform hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2",
+							Variant: base.BtnPrimary,
+							Size:    base.BtnSizeLg,
+							Class:   "px-6 rounded-xl font-bold whitespace-nowrap shadow-md hover:shadow-lg flex items-center gap-2",
 						}) {
 							@icons.Search(templ.Attributes{"class": "w-4 h-4"})
 							<span>{ i18n.T(ctx, "btn.search") }</span>

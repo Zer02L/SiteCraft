@@ -3,9 +3,8 @@ package sections
 import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 
-	"github.com/axadrn/shadcn-templ/v2/components/badge"
-	"github.com/axadrn/shadcn-templ/v2/components/button"
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
@@ -14,9 +13,9 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 	<section id="booking" class="py-16 px-4 bg-surface-muted border-t border-content/10">
 		<div class="max-w-6xl mx-auto" data-reveal>
 			<div class="text-center mb-10">
-				@badge.Badge(badge.Props{
-					Variant: badge.VariantSecondary,
-					Class:   "section-badge mb-2",
+				@base.Badge(base.BadgeProps{
+					Variant: base.BadgeAccent,
+					Class:   "mb-2 uppercase tracking-wider",
 				}) {
 					{ i18n.T(ctx, "booking.badge") }
 				}
@@ -125,10 +124,11 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 							</label>
 						</div>
 
-						@button.Button(button.Props{
-							Variant: button.VariantDefault,
-							Type:    button.TypeSubmit,
-							Class:   "w-full text-white font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:scale-[0.99] cursor-pointer",
+						@base.Button(base.ButtonProps{
+							Variant: base.BtnPrimary,
+							Size:    base.BtnSizeLg,
+							Type:    "submit",
+							Class:   "w-full font-bold shadow gap-2",
 						}) {
 							<span class="htmx-indicator">
 								@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
@@ -443,10 +443,11 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 								</template>
 							</div>
 
-							@button.Button(button.Props{
-								Variant: button.VariantDefault,
-								Type:    button.TypeSubmit,
-								Class:   "w-full text-white font-bold py-3 px-4 rounded-lg transition text-sm shadow flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:scale-[0.99] cursor-pointer",
+							@base.Button(base.ButtonProps{
+								Variant: base.BtnPrimary,
+								Size:    base.BtnSizeLg,
+								Type:    "submit",
+								Class:   "w-full font-bold shadow gap-2",
 							}) {
 								<span class="htmx-indicator">
 									@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
