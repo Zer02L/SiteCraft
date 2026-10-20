@@ -1,0 +1,351 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+	"sitecraft/ui/layouts"
+
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
+templ FleetDashboardPage(settings models.SiteSettings, sites []models.FleetSite, stats models.FleetStats) {
+	@layouts.Base("Fleet Master Dashboard — SiteCraft", "Управление пулом изолированных сайтов", settings, models.SEOData{Title: "Fleet Master Dashboard"}) {
+		<div class="min-h-screen bg-slate-950 text-slate-100 font-sans">
+			<!-- Шапка Fleet Dashboard -->
+			<header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur sticky top-0 z-30">
+				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+					<div class="flex items-center gap-3">
+						<div class="w-10 h-10 rounded-2xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center font-bold">
+							@icons.Server(templ.Attributes{"class": "w-5 h-5"})
+						</div>
+						<div>
+							<h1 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+								<span>Fleet Master Dashboard</span>
+								<span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-400/20 text-amber-300 font-mono">Agency Pro</span>
+							</h1>
+							<p class="text-xs text-slate-400">Управление парком изолированных бинарников (Zero-SMS & Zero-Node.js)</p>
+						</div>
+					</div>
+
+					<div class="flex items-center gap-3">
+						<a
+							href="/client"
+							class="px-3.5 py-2 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-xs font-semibold transition flex items-center gap-2 border border-slate-700/60"
+						>
+							@icons.ArrowLeft(templ.Attributes{"class": "w-4 h-4"})
+							<span>В клиентский кабинет</span>
+						</a>
+						<a
+							href="/client/logout"
+							class="px-3 py-2 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 text-xs font-semibold transition"
+						>
+							Выход
+						</a>
+					</div>
+				</div>
+			</header>
+
+			<!-- Основной контент -->
+			<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+				@FleetTabContent(sites, stats)
+			</main>
+		</div>
+	}
+}
+
+templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
+	<div
+		x-data="{
+			createModal: false
+		}"
+		class="space-y-6"
+	>
+		<!-- Метрики пула сайтов -->
+		<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+			<div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+				<div>
+					<p class="text-xs text-slate-400 font-medium">Всего экземпляров</p>
+					<h3 class="text-2xl font-black text-white mt-1">{ fmt.Sprintf("%d", stats.TotalSites) }</h3>
+				</div>
+				<div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+					@icons.Layers(templ.Attributes{"class": "w-6 h-6"})
+				</div>
+			</div>
+
+			<div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+				<div>
+					<p class="text-xs text-slate-400 font-medium">Активны (В сети)</p>
+					<h3 class="text-2xl font-black text-emerald-400 mt-1">{ fmt.Sprintf("%d", stats.RunningSites) }</h3>
+				</div>
+				<div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+					@icons.PlayCircle(templ.Attributes{"class": "w-6 h-6"})
+				</div>
+			</div>
+
+			<div class="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+				<div>
+					<p class="text-xs text-slate-400 font-medium">Остановлены</p>
+					<h3 class="text-2xl font-black text-slate-400 mt-1">{ fmt.Sprintf("%d", stats.StoppedSites) }</h3>
+				</div>
+				<div class="w-12 h-12 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center">
+					@icons.StopCircle(templ.Attributes{"class": "w-6 h-6"})
+				</div>
+			</div>
+		</div>
+
+		<!-- Панель управления списком -->
+		<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+			<div>
+				<h2 class="text-lg font-bold text-white">Список инстансов клиентов</h2>
+				<p class="text-xs text-slate-400">Каждый сайт работает в изолированном процессе SQLite WAL без пересечений памяти</p>
+			</div>
+
+			<button
+				type="button"
+				x-on:click="createModal = true"
+				class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition flex items-center gap-2 cursor-pointer active:scale-95"
+			>
+				@icons.PlusCircle(templ.Attributes{"class": "w-4 h-4"})
+				<span>Создать новый сайт</span>
+			</button>
+		</div>
+
+		<!-- Таблица сайтов -->
+		<div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+			<div class="overflow-x-auto">
+				<table class="w-full text-left text-xs">
+					<thead class="bg-slate-800/60 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800">
+						<tr>
+							<th class="px-5 py-3.5">ID Сайта / Проект</th>
+							<th class="px-5 py-3.5">Пресет / Ниша</th>
+							<th class="px-5 py-3.5">Порт & Ссылки</th>
+							<th class="px-5 py-3.5">Статус / PID</th>
+							<th class="px-5 py-3.5 text-right">Действия</th>
+						</tr>
+					</thead>
+					<tbody id="fleet-sites-table" class="divide-y divide-slate-800 text-slate-300">
+						if len(sites) == 0 {
+							<tr>
+								<td colspan="5" class="px-5 py-12 text-center text-slate-500">
+									<div class="max-w-xs mx-auto space-y-2">
+										<p class="font-medium text-slate-400">Инстансы еще не созданы</p>
+										<p class="text-[11px]">Нажмите «Создать новый сайт», чтобы инициализировать первый клиентский инстанс.</p>
+									</div>
+								</td>
+							</tr>
+						} else {
+							for _, site := range sites {
+								@FleetSiteRow(site)
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<!-- Модальное окно создания сайта -->
+		<div
+			x-show="createModal"
+			x-transition:enter="transition ease-out duration-200"
+			x-transition:enter-start="opacity-0"
+			x-transition:enter-end="opacity-100"
+			x-transition:leave="transition ease-in duration-150"
+			x-transition:leave-start="opacity-100"
+			x-transition:leave-end="opacity-0"
+			class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+			style="display: none;"
+		>
+			<div
+				x-on:click.outside="createModal = false"
+				class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative"
+			>
+				<button
+					type="button"
+					x-on:click="createModal = false"
+					class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg"
+				>
+					@icons.X(templ.Attributes{"class": "w-5 h-5"})
+				</button>
+
+				<div class="flex items-center gap-3 mb-5">
+					<div class="w-10 h-10 rounded-2xl bg-amber-400/10 text-amber-400 flex items-center justify-center">
+						@icons.Rocket(templ.Attributes{"class": "w-5 h-5"})
+					</div>
+					<div>
+						<h3 class="font-bold text-base text-white">Создать клиентский инстанс</h3>
+						<p class="text-xs text-slate-400">Инициализация базы данных и пресета</p>
+					</div>
+				</div>
+
+				<div id="fleet-create-result" class="mb-4"></div>
+
+				<form
+					hx-post="/api/fleet/create"
+					hx-target="#fleet-create-result"
+					hx-swap="innerHTML"
+					@fleet-updated.window="setTimeout(() => { window.location.reload(); }, 1200)"
+					class="space-y-4"
+				>
+					<div>
+						<label class="block text-xs font-semibold text-slate-400 mb-1">Идентификатор сайта (латиница)</label>
+						<input
+							type="text"
+							name="site_id"
+							required
+							pattern="[a-z0-9_-]+"
+							placeholder="auto-master"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+						/>
+						<p class="text-[10px] text-slate-500 mt-0.5">Только строчные латинские буквы, цифры и дефис</p>
+					</div>
+
+					<div class="grid grid-cols-2 gap-3">
+						<div>
+							<label class="block text-xs font-semibold text-slate-400 mb-1">Нишевый пресет</label>
+							<select
+								name="preset"
+								class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+							>
+								<option value="legal">Юрист / Нотариус</option>
+								<option value="medical">Медицина / Стоматология</option>
+								<option value="auto">Автосервис / Детейлинг</option>
+								<option value="beauty">Салон красоты / SPA</option>
+							</select>
+						</div>
+
+						<div>
+							<label class="block text-xs font-semibold text-slate-400 mb-1">HTTP-порт</label>
+							<input
+								type="text"
+								name="port"
+								value="8091"
+								required
+								class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+							/>
+						</div>
+					</div>
+
+					<div class="pt-2">
+						<button
+							type="submit"
+							class="w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition flex items-center justify-center gap-2 cursor-pointer"
+						>
+							@icons.CheckCircle(templ.Attributes{"class": "w-4 h-4"})
+							<span>Развернуть инстанс</span>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+}
+
+templ FleetSiteRow(site models.FleetSite) {
+	<tr id={ "fleet-row-" + site.SiteID } class="hover:bg-slate-800/30 transition">
+		<td class="px-5 py-4">
+			<div class="font-bold text-white text-xs">{ site.SiteID }</div>
+			if site.CreatedAt != "" {
+				<div class="text-[10px] text-slate-500 font-mono mt-0.5">{ site.CreatedAt }</div>
+			}
+		</td>
+
+		<td class="px-5 py-4">
+			<span class="inline-block px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-mono text-[11px]">
+				{ site.Preset }
+			</span>
+		</td>
+
+		<td class="px-5 py-4">
+			<div class="flex items-center gap-2">
+				<span class="font-mono text-slate-400 text-xs">{ site.Port }</span>
+				if site.Status == "running" && site.URL != "" {
+					<a
+						href={ templ.SafeURL(site.URL) }
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-amber-400 hover:underline inline-flex items-center gap-1 text-[11px]"
+					>
+						<span>Открыть</span>
+						@icons.ExternalLink(templ.Attributes{"class": "w-3 h-3"})
+					</a>
+					<span class="text-slate-600">•</span>
+					<a
+						href={ templ.SafeURL(site.AdminURL) }
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-slate-400 hover:text-white inline-flex items-center gap-1 text-[11px]"
+					>
+						<span>Админка</span>
+					</a>
+				}
+			</div>
+		</td>
+
+		<td class="px-5 py-4">
+			if site.Status == "running" {
+				<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-semibold">
+					<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+					<span>В сети (PID: { site.PID })</span>
+				</div>
+			} else {
+				<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-[11px]">
+					<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+					<span>Остановлен</span>
+				</div>
+			}
+		</td>
+
+		<td class="px-5 py-4 text-right">
+			<div class="inline-flex items-center gap-1.5">
+				if site.Status == "running" {
+					<form hx-post="/api/fleet/action" hx-target={ "#fleet-row-" + site.SiteID } hx-swap="outerHTML">
+						<input type="hidden" name="site_id" value={ site.SiteID }/>
+						<input type="hidden" name="action" value="stop"/>
+						<button
+							type="submit"
+							class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer"
+							title="Остановить"
+						>
+							@icons.Square(templ.Attributes{"class": "w-4 h-4"})
+						</button>
+					</form>
+					<form hx-post="/api/fleet/action" hx-target={ "#fleet-row-" + site.SiteID } hx-swap="outerHTML">
+						<input type="hidden" name="site_id" value={ site.SiteID }/>
+						<input type="hidden" name="action" value="restart"/>
+						<button
+							type="submit"
+							class="p-1.5 rounded-lg bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 transition cursor-pointer"
+							title="Перезапустить"
+						>
+							@icons.RefreshCw(templ.Attributes{"class": "w-4 h-4"})
+						</button>
+					</form>
+				} else {
+					<form hx-post="/api/fleet/action" hx-target={ "#fleet-row-" + site.SiteID } hx-swap="outerHTML">
+						<input type="hidden" name="site_id" value={ site.SiteID }/>
+						<input type="hidden" name="action" value="start"/>
+						<button
+							type="submit"
+							class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer"
+							title="Запустить"
+						>
+							@icons.Play(templ.Attributes{"class": "w-4 h-4"})
+						</button>
+					</form>
+				}
+
+				<form hx-post="/api/fleet/action" hx-target={ "#fleet-row-" + site.SiteID } hx-swap="outerHTML">
+					<input type="hidden" name="site_id" value={ site.SiteID }/>
+					<input type="hidden" name="action" value="backup"/>
+					<button
+						type="submit"
+						class="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer"
+						title="Сделать бэкап"
+					>
+						@icons.Archive(templ.Attributes{"class": "w-4 h-4"})
+					</button>
+				</form>
+			</div>
+		</td>
+	</tr>
+}

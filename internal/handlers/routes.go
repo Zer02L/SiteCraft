@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+
 	"sitecraft/internal/events"
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/notifications"
@@ -14,8 +16,16 @@ import (
 
 // RegisterRoutes registers all website and API routes onto the PocketBase router.
 func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEvent]) {
+	// Middleware: структурированное логирование запросов (slog)
+	r.BindFunc(RequestLoggerMiddleware())
+	// Middleware: гранулярные HTTP заголовки Cache-Control (статика, BFCache, SSE, админка)
+	r.BindFunc(CacheControlMiddleware())
 	// Middleware: локализация (ru/en определение из cookie, query, Accept-Language)
 	r.BindFunc(i18n.Middleware())
+	// Middleware: сквозная UTM-атрибуция (захват utm_* и yclid в 30-дневную cookie)
+	r.BindFunc(UTMMiddleware())
+	// Middleware: серверное A/B сплит-тестирование (50/50 cookie sitecraft_ab)
+	r.BindFunc(ABTestingMiddleware())
 
 	bus := events.Default()
 	notifications.RegisterSubscribers(bus)
@@ -27,6 +37,11 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	trackerHandler := NewTrackerHandler(app)
 	cartHandler := NewCartHandler(app, bus)
 	clientAdminHandler := NewClientAdminHandler(app)
+	chatHandler := NewChatHandler(app)
+	chatHandler.StartBackgroundPoller(context.Background())
+	fleetHandler := NewFleetHandler(app, clientAdminHandler.SessionStore())
+	bookingHandler := NewBookingHandler(app)
+	reviewHandler := NewReviewHandler(app)
 
 	// Статические файлы (встроенные ассеты / live-reload в dev-режиме)
 	r.GET("/assets/{path...}", apis.Static(ui.AssetsFS(), false))
@@ -69,6 +84,13 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	r.GET("/api/track/status/{code}", trackerHandler.HandleTrackStatusPartial)
 	r.GET("/api/track/sse/{code}", trackerHandler.HandleTrackSSE)
 
+	// Блок 4: Отраслевые модули, B2B, Вакансии и 152-ФЗ
+	r.GET("/privacy", webHandler.HandlePrivacy)
+	r.GET("/terms", webHandler.HandleTerms)
+	r.GET("/careers", webHandler.HandleCareers)
+	r.GET("/invoice", webHandler.HandleInvoice)
+	r.GET("/invoice/{code}", webHandler.HandleInvoice)
+
 	// TMA (Telegram Mini App): Ниша А (E-commerce / Shop) и Ниша В (Paywall / VIP Club)
 	r.GET("/shop", tmaHandler.HandleShop)
 	r.GET("/vip", tmaHandler.HandleVIPClub)
@@ -78,11 +100,37 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	// API HTMX компоненты
 	r.GET("/api/map-frame", webHandler.HandleMapFrame)
 	r.GET("/api/slots", webHandler.HandleSlots)
+	r.GET("/api/resources", webHandler.HandleResources)
+	r.GET("/api/branches", webHandler.HandleBranches)
+	r.GET("/api/booking/calendar.ics", bookingHandler.HandleDownloadICS)
+	r.GET("/api/booking/action", bookingHandler.HandleBookingAction)
 	r.GET("/api/payment/modal", webHandler.HandlePaymentModal)
+	r.GET("/api/recent-activity", webHandler.HandleRecentActivity)
 
 	// API Бизнес-действия
 	r.POST("/api/leads", leadHandler.HandleCreateLead)
+	r.POST("/api/careers/apply", leadHandler.HandleApplyVacancy)
+	r.POST("/api/reviews", reviewHandler.HandleSubmitReview)
 	r.POST("/api/cart/checkout", cartHandler.HandleCheckout)
+	r.POST("/api/cart/validate-coupon", cartHandler.HandleValidateCoupon)
 	r.POST("/api/payment/create", paymentHandler.HandleCreatePayment)
 	r.GET("/api/lang/{code}", i18n.HandleSetLang)
+
+	// Модерация отзывов в кабинете управления
+	r.GET("/client/tab/reviews", clientAdminHandler.HandleTabReviews)
+	r.POST("/client/reviews/{id}/toggle", reviewHandler.HandleTogglePublish)
+	r.POST("/client/reviews/{id}/delete", reviewHandler.HandleDeleteReview)
+	r.DELETE("/client/reviews/{id}", reviewHandler.HandleDeleteReview)
+
+	// Модуль 6: Live Web-to-TG Chat
+	r.GET("/api/chat/sse", chatHandler.HandleChatSSE)
+	r.GET("/api/chat/history", chatHandler.HandleChatHistory)
+	r.POST("/api/chat/send", chatHandler.HandleSendMessage)
+	r.POST("/api/chat/telegram-webhook", chatHandler.HandleTelegramWebhook)
+
+	// Модуль 20: Fleet Master Dashboard
+	r.GET("/fleet", fleetHandler.HandleDashboard)
+	r.GET("/client/tab/fleet", fleetHandler.HandleTabFleet)
+	r.POST("/api/fleet/action", fleetHandler.HandleFleetAction)
+	r.POST("/api/fleet/create", fleetHandler.HandleFleetCreate)
 }

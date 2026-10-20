@@ -1,0 +1,26 @@
+[Unit]
+Description=SiteCraft Engine & PocketBase Service
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/sitecraft
+ExecStart=/var/www/sitecraft/sitecraft serve --http=127.0.0.1:8090
+Restart=always
+RestartSec=5s
+
+# Переменные окружения: production режим включает JSON-логи в slog
+Environment="ENV=production"
+Environment="PROD=1"
+
+# Ограничения и безопасность Linux systemd sandbox
+LimitNOFILE=65535
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

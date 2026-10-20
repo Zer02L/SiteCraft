@@ -9,6 +9,7 @@ import (
 )
 
 templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings) {
+	<!-- Case Studies & Before/After Portfolio Section (Блок 4: Кейсы со сметой) -->
 	<section id="before-after" class="py-16 px-4 max-w-5xl mx-auto" data-reveal>
 		<div class="text-center mb-10">
 			@base.Badge(base.BadgeProps{
@@ -32,7 +33,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 				if payload.Subtitle != "" {
 					{ payload.Subtitle }
 				} else {
-					"Потяните за разделитель, чтобы в деталях оценить качество выполненной работы"
+					"Потяните за разделитель, чтобы в деталях оценить качество выполненной работы и прозрачную смету"
 				}
 			</p>
 		</div>
@@ -89,7 +90,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 							x-on:touchend="isDragging = false"
 							class="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-card overflow-hidden shadow-2xl border border-content/10 select-none cursor-ew-resize bg-surface-muted"
 						>
-							<!-- Слой "ПОСЛЕ" (Фоновое базовое изображение) -->
+							<!-- Слой 'ПОСЛЕ' (Фоновое базовое изображение) -->
 							<img
 								src={ item.AfterImage }
 								alt={ item.Title + " — После" }
@@ -104,7 +105,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 								}
 							</div>
 
-							<!-- Слой "ДО" (Обрезаемый слой поверх) -->
+							<!-- Слой 'ДО' (Обрезаемый слой поверх) -->
 							<div
 								class="absolute inset-0 h-full overflow-hidden pointer-events-none"
 								:style="'width: ' + sliderPos + '%'"
@@ -138,7 +139,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 							</div>
 						</div>
 
-						<!-- Описание кейса -->
+						<!-- Описание кейса и подсказка -->
 						<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-card-sm bg-surface border border-content/10">
 							<div>
 								<h3 class="font-bold text-content text-base sm:text-lg">{ item.Title }</h3>
@@ -151,6 +152,66 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 								<span>Потяните влево-вправо</span>
 							</div>
 						</div>
+
+						<!-- Развернутая B2B-смета и таймлайн этапов работ (Модуль #17: Case Studies) -->
+						if item.Cost != "" || item.Duration != "" || len(item.Stages) > 0 {
+							<div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-5 rounded-2xl bg-surface-muted border border-content/10">
+								<!-- Смета и срок -->
+								<div class="md:col-span-5 space-y-3">
+									<div class="flex items-center gap-2 text-xs font-bold text-primary uppercase tracking-wider">
+										@icons.Receipt(templ.Attributes{"class": "w-4 h-4 text-primary"})
+										<span>Паспорт кейса и смета</span>
+									</div>
+
+									if item.Duration != "" {
+										<div class="flex items-center justify-between text-xs bg-surface p-2.5 rounded-xl border border-content/10">
+											<span class="text-content-muted flex items-center gap-1.5">
+												@icons.Clock(templ.Attributes{"class": "w-3.5 h-3.5 text-content-muted"})
+												Срок выполнения:
+											</span>
+											<span class="font-bold text-content">{ item.Duration }</span>
+										</div>
+									}
+
+									if item.Cost != "" {
+										<div class="bg-surface p-3 rounded-xl border border-content/10 space-y-1.5">
+											<div class="flex items-center justify-between text-xs">
+												<span class="font-semibold text-content-muted">Итоговая смета:</span>
+												<span class="font-bold text-sm text-primary">{ item.Cost }</span>
+											</div>
+											if item.MaterialsCost != "" || item.WorksCost != "" {
+												<div class="pt-1.5 border-t border-content/10 text-[11px] text-content-muted flex justify-between">
+													if item.MaterialsCost != "" {
+														<span>Запчасти: { item.MaterialsCost }</span>
+													}
+													if item.WorksCost != "" {
+														<span>Работы: { item.WorksCost }</span>
+													}
+												</div>
+											}
+										</div>
+									}
+								</div>
+
+								<!-- Этапы выполнения проекта -->
+								if len(item.Stages) > 0 {
+									<div class="md:col-span-7 space-y-2">
+										<div class="flex items-center gap-2 text-xs font-bold text-content-muted uppercase tracking-wider mb-2">
+											@icons.ListChecks(templ.Attributes{"class": "w-4 h-4 text-emerald-600"})
+											<span>Выполненные этапы</span>
+										</div>
+										<div class="space-y-1.5">
+											for _, stage := range item.Stages {
+												<div class="flex items-center gap-2 text-xs text-content/90 bg-surface px-3 py-2 rounded-xl border border-content/10">
+													@icons.CheckCircle2(templ.Attributes{"class": "w-4 h-4 text-emerald-500 flex-shrink-0"})
+													<span>{ stage }</span>
+												</div>
+											}
+										</div>
+									</div>
+								}
+							</div>
+						}
 					</div>
 				}
 			</div>

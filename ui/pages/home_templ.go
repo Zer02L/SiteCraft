@@ -17,7 +17,7 @@ import (
 	"sitecraft/ui/sections/hero"
 )
 
-func Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock) templ.Component {
+func Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock, resources []models.ResourceItem, reviews []models.ReviewItem, branches []models.BranchItem, vacancies []models.VacancyItem) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -75,6 +75,10 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 						Content:     content,
 						Services:    services,
 						BookedSlots: bookedSlots,
+						Resources:   resources,
+						Reviews:     reviews,
+						Branches:    branches,
+						Vacancies:   vacancies,
 					}).Render(ctx, templ_7745c5c3_Buffer)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
@@ -117,11 +121,11 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = sections.Reviews(settings.Theme).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.Reviews(settings.Theme, reviews).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = sections.Booking(content, bookedSlots, settings).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.Booking(content, bookedSlots, settings, resources).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -129,7 +133,7 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = sections.MapSection(content, settings).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = sections.MapSection(content, settings, branches).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -154,6 +158,40 @@ func Home(settings models.SiteSettings, content models.SiteContent, services []m
 			}
 			if settings.EnableCart {
 				templ_7745c5c3_Err = components.CartDrawer(settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if settings.EnableLiveChat {
+				templ_7745c5c3_Err = components.ChatWidget(settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if settings.EnableRecentActivity {
+				templ_7745c5c3_Err = components.RecentActivity(settings).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = components.ExitIntent(settings).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if settings.EnableCookieConsent {
+				templ_7745c5c3_Err = components.CookieConsent(settings).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

@@ -9,7 +9,7 @@ import (
 	"sitecraft/ui/sections/hero"
 )
 
-templ Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock) {
+templ Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock, resources []models.ResourceItem, reviews []models.ReviewItem, branches []models.BranchItem, vacancies []models.VacancyItem) {
 	@layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings, models.NewHomeSEO(settings, content, "")) {
 		if settings.EnableA11y {
 			@components.A11yBar()
@@ -24,6 +24,10 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 					Content:     content,
 					Services:    services,
 					BookedSlots: bookedSlots,
+					Resources:   resources,
+					Reviews:     reviews,
+					Branches:    branches,
+					Vacancies:   vacancies,
 				})
 			}
 		} else {
@@ -38,10 +42,10 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 			@sections.ScheduleBar(content)
 			@sections.Features(settings.Theme, nil)
 			@sections.Services(services, settings)
-			@sections.Reviews(settings.Theme)
-			@sections.Booking(content, bookedSlots, settings)
+			@sections.Reviews(settings.Theme, reviews)
+			@sections.Booking(content, bookedSlots, settings, resources)
 			@sections.Faq(settings.Theme, nil)
-			@sections.MapSection(content, settings)
+			@sections.MapSection(content, settings, branches)
 		}
 
 		@components.Footer(content, settings)
@@ -51,6 +55,16 @@ templ Home(settings models.SiteSettings, content models.SiteContent, services []
 		}
 		if settings.EnableCart {
 			@components.CartDrawer(settings)
+		}
+		if settings.EnableLiveChat {
+			@components.ChatWidget(settings)
+		}
+		if settings.EnableRecentActivity {
+			@components.RecentActivity(settings)
+		}
+		@components.ExitIntent(settings)
+		if settings.EnableCookieConsent {
+			@components.CookieConsent(settings)
 		}
 	}
 }

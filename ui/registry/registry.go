@@ -16,6 +16,10 @@ type RenderContext struct {
 	Content     models.SiteContent
 	Services    []models.ServiceItem
 	BookedSlots map[string][]string
+	Resources   []models.ResourceItem
+	Reviews     []models.ReviewItem
+	Branches    []models.BranchItem
+	Vacancies   []models.VacancyItem
 }
 
 // BlockRenderer defines the function signature for a pluggable section renderer
@@ -60,7 +64,7 @@ var BlockRegistry = map[string]BlockRenderer{
 		return sections.Services(ctx.Services, ctx.Settings)
 	},
 	"booking": func(b models.PageBlock, ctx RenderContext) templ.Component {
-		return sections.Booking(ctx.Content, ctx.BookedSlots, ctx.Settings)
+		return sections.Booking(ctx.Content, ctx.BookedSlots, ctx.Settings, ctx.Resources)
 	},
 	"features": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return sections.Features(ctx.Settings.Theme, ParseFeaturesPayload(b.Payload))
@@ -72,7 +76,7 @@ var BlockRegistry = map[string]BlockRenderer{
 		return sections.Steps(ctx.Settings.Theme)
 	},
 	"reviews": func(b models.PageBlock, ctx RenderContext) templ.Component {
-		return sections.Reviews(ctx.Settings.Theme)
+		return sections.Reviews(ctx.Settings.Theme, ctx.Reviews)
 	},
 	"faq": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return sections.Faq(ctx.Settings.Theme, ParseFAQPayload(b.Payload))
@@ -81,7 +85,16 @@ var BlockRegistry = map[string]BlockRenderer{
 		return sections.Gallery(ctx.Settings.Theme)
 	},
 	"map": func(b models.PageBlock, ctx RenderContext) templ.Component {
-		return sections.MapSection(ctx.Content, ctx.Settings)
+		return sections.MapSection(ctx.Content, ctx.Settings, ctx.Branches)
+	},
+	"branches": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return sections.MapSection(ctx.Content, ctx.Settings, ctx.Branches)
+	},
+	"careers": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return sections.CareersSection(ctx.Vacancies, ctx.Settings)
+	},
+	"vacancies": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return sections.CareersSection(ctx.Vacancies, ctx.Settings)
 	},
 	"quiz": func(b models.PageBlock, ctx RenderContext) templ.Component {
 		return sections.Quiz(ParseQuizPayload(b.Payload, ctx.Settings.Theme), ctx.Settings)

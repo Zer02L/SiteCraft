@@ -19,6 +19,7 @@ func TestClientAdminWorkflow(t *testing.T) {
 	app := pocketbase.NewWithConfig(pocketbase.Config{
 		DefaultDataDir: testDir,
 	})
+	defer app.ResetBootstrapState()
 
 	if err := app.Bootstrap(); err != nil {
 		t.Fatalf("Failed to bootstrap PB: %v", err)
@@ -416,6 +417,7 @@ func TestArticleScheduledAndTrashWorkflow(t *testing.T) {
 	app := pocketbase.NewWithConfig(pocketbase.Config{
 		DefaultDataDir: testDir,
 	})
+	defer app.ResetBootstrapState()
 
 	if err := app.Bootstrap(); err != nil {
 		t.Fatalf("Failed to bootstrap PB: %v", err)

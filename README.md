@@ -32,16 +32,18 @@
 8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/registry/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
 9. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
 10. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
-11. **Бизнес-модули "из коробки":**
-    * **Клиентская панель управления (`/client`):** Автономный кабинет для владельца сайта: управление входящими заявками (статусы, экспорт CSV), редактирование контактов и реквизитов, визуальный WYSIWYG-редактор статей блога (Quill.js), загрузка обложек (Drag & Drop), отложенная публикация (Scheduled Publishing), быстрое скрытие в 1 клик и безопасное удаление через Корзину.
-    * **B2B-трекер заказов в реальном времени (`/track`):** Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара и онлайн-оплатой через ЮKassa.
-    * **SEO-Блог и База знаний (`/blog`):** Экспертные статьи, живой поиск HTMX, автопубликация по расписанию через PocketBase Cron, динамический `sitemap.xml` и счетчик просмотров.
-    * **Telegram Mini Apps (TMA) E-commerce & Paywall:** Запуск магазина (`/shop`) с нативной кнопкой Telegram MainButton, беспарольная авторизация HMAC-SHA256 и закрытый VIP-клуб (`/vip`).
+11. **20 готовых бизнес-модулей "из коробки" (Zero-SMS & Zero-Node.js):**
+    * **E-Commerce & Склад:** Drawer-корзина (`cart_drawer`), расчет зон доставки и гео-тарифов, сопутствующие продажи (Cross-Sell / Up-Sell), складской учет остатков (Simple Inventory) с режимом «Под заказ», промокоды и купоны (Promo Engine), Telegram Mini Apps витрина (`/shop`) и VIP-клуб (`/vip`).
+    * **Лидогенерация & CRO:** Смарт-квиз со сметой (`quiz`), живой Web-to-Telegram чат с SSE и релеем в бота (`chat_widget`), модалка удержания уходящих (`exit_intent`), сквозная UTM-атрибуция (Zero-JS), виджет недавней активности (Social Proof / FOMO), серверное A/B тестирование (Zero-FOOC) и плавающий мульти-мессенджер (`floating_contact`).
+    * **Сервис & Бронирование:** Многоуровневая запись к мастерам и постам (`booking`), триггерные напоминания в Telegram + iCal calendar (.ics RFC 5545), B2B-трекер заказов в реальном времени (`/track`) с электронной сервисной книжкой, проверенные отзывы с фото (Verified UGC).
+    * **B2B & Комплаенс:** Генератор счетов и актов в стандарте HTML Print (`/invoice/{code}`) с ГОСТ QR-кодом для оплаты, интерактивная карта филиалов, кейсы «До/После» со сметой работ и материалов, карьерный портал и вакансии (`/careers`), документы по 152-ФЗ (`/privacy`, `/terms`) и баннер согласия с Cookies.
+    * **Агентский пульт & Управление:** Веб-панель Fleet Master Dashboard (`/fleet`, `/client/tab/fleet`) для оркестрации инстансов, автономный клиентский кабинет (`/client`) с защитой от брутфорса, bcrypt-хэшированием, управлением лидами (CSV экспорт), контактами, WYSIWYG-редактором блога (Quill.js), отложенным постингом и корзиной статей.
     * Онлайн-оплата **ЮKassa** со встроенным Sandbox.
     * Панель доступности для слабовидящих по **ГОСТ Р 52872-2019** (микро-скрипт Vanilla JS < 1.5 КБ).
-    * Интерактивная запись по слотам времени или простая лидген-форма.
     * Невидимый Honeypot для ботов и серверная XSS-санитизация через `bluemonday`.
     * Асинхронные уведомления в **Telegram Bot** и **CRM Webhooks** (amoCRM / Битрикс24).
+12. **Гранулярное HTTP-кэширование (`Cache-Control`):** Иммутабельный кэш статики на 1 год (`max-age=31536000`), поддержка BFCache для страниц (`private, no-cache`) без рассинхрона A/B тестов, и полная защита от кэширования персональных данных в `/client`.
+13. **Observability (`log/slog`) и Zero-RAM Watchdog:** Встроенные структурированные JSON-логи стандартной библиотеки Go 1.27 + готовый легковесный сторож сервера на Bash (`deploy/monitoring/watchdog.sh`) с проверкой диска, RAM, падения процесса и алертами в Telegram без постоянных демонов (0 МБ RAM).
 
 ---
 
@@ -326,7 +328,9 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 
 | Ниша / Пресет | Стратегия воронки | Последовательность секций и компонентов |
 | :--- | :--- | :--- |
-| **Юридический / Нотариус**<br>`presets/legal.json` | **Легитимность и регламент:** официальный статус, расписание и правовые стандарты. | `Hero` → `Schedule` → `Features` → `Services` → `Steps` → `Booking` → `FAQ` → `Map` |
+| **Тестовый стенд (Full Suite)**<br>`presets/test_all_modules.json`<br>(алиас `presets/test.json`) | **Комплексный тест 20 модулей:** E-commerce (доставка, промокоды, остатки), чат, квиз, трекер, вакансии, кейсы До/После, бронирование, A/B тест, CVA. | `Hero` → `Odometer` → `Spotlight` → `Marquee` → `Services` → `Quiz` → `BeforeAfter` → `Features` → `Steps` → `Team` → `Reviews` → `Booking` → `Careers` → `FAQ` → `Map` → `Showcase` |
+| **Частный нотариус**<br>`presets/notary.json` | **Официальный нотариальный регламент:** статус нотариуса, график, реестр тарифов и запись. | `Hero` → `Schedule` → `Services` → `Features` → `Booking` → `FAQ` → `Map` |
+| **Юридический / Бюро**<br>`presets/legal.json` | **Легитимность и регламент:** официальный статус, расписание и правовые стандарты. | `Hero` → `Schedule` → `Features` → `Services` → `Steps` → `Booking` → `FAQ` → `Map` |
 | **Юридический (Швейцарский стиль)**<br>`presets/legal-swiss.json` | **Строгий минимализм:** кинематографический счетчик `cinematic_odometer`, бегущая строка, сетка практик. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
 | **Юридический (Британский стиль)**<br>`presets/legal-british.json` | **Консервативная респектабельность:** глубокий бордовый тон, строгая типографика, классические кейсы. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
 | **Юридический (Миланский стиль)**<br>`presets/legal-milano.json` | **Итальянская элегантность:** теплая палитра, кинематографические карточки со световой границей. | `Hero` → `Schedule` → `Odometer` → `Spotlight` → `StickyStack` → `StickyCards` → `Marquee` → `Booking` → `FAQ` → `Map` |
@@ -375,7 +379,6 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 ---
 
 ## 🐳 Развертывание в Docker
-
 ```bash
 docker compose up -d --build
 ```
@@ -383,9 +386,20 @@ docker compose up -d --build
 
 ---
 
+## 🚀 Продакшен: Reverse-Proxy и Серверный Сторож
+
+* **Caddy (Рекомендуется):** готовый [Caddyfile](Caddyfile) с автоматическим HTTPS (Let's Encrypt), сжатием zstd/gzip и сквозным стримингом SSE без буферизации.
+* **Nginx:** конфигурация с отключением буферизации для SSE в [deploy/nginx/sitecraft.conf](deploy/nginx/sitecraft.conf).
+* **Systemd:** юнит службы с песочницей безопасности в [deploy/systemd/sitecraft.service](deploy/systemd/sitecraft.service).
+* **Zero-RAM Watchdog:** скрипт проверки диска, памяти и службы с алертами в Telegram в [deploy/monitoring/watchdog.sh](deploy/monitoring/watchdog.sh).
+
+---
+
 ## 📚 Документация проекта
 
 * **[PROJECT_DOCUMENTATION.md](PROJECT_DOCUMENTATION.md)** — Генеральная техническая документация проекта (архитектура, роуты, БД, модели, i18n, кэш, Theming Engine, модули, руководство разработчика).
-* **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)** — Архитектура мультисайтового парка инстансов (Fleet of Binaries), интеграция с Caddy/Nginx и экспорт статики.
+* **[BUSINESS_MODULES.md](BUSINESS_MODULES.md)** — Карта 20 коммерческих модулей SiteCraft (Zero-SMS & Zero-Node.js): спецификации, схемы данных, файлы реализации и риски.
+* **[FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)** — Архитектура мультисайтового парка инстансов (Fleet of Binaries), веб-панель Fleet Dashboard, интеграция с Caddy/Nginx и экспорт статики.
+* **[deploy/monitoring/README.md](deploy/monitoring/README.md)** — Инструкция по настройке и запуску фонового сторожа сервера в Telegram.
 * **[ui/components/cinematic/README.md](ui/components/cinematic/README.md)** — Каталог и спецификация 31 кинематографического компонента (Zero-GSAP).
 * **[public/README.md](public/README.md)** — Спецификация медиа-ассетов документации.

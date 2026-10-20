@@ -64,6 +64,20 @@ func ApplyPreset(app core.App, presetPath string) error {
 		rec.Set("enable_payment", preset.Settings.EnablePayment)
 		rec.Set("payment_sandbox", preset.Settings.PaymentSandbox)
 		rec.Set("enable_i18n", preset.Settings.EnableI18n)
+		rec.Set("enable_cart", preset.Settings.EnableCart)
+		rec.Set("enable_floating_contact", preset.Settings.EnableFloatingContact)
+		rec.Set("enable_live_chat", preset.Settings.EnableLiveChat)
+		rec.Set("enable_fleet", preset.Settings.EnableFleet)
+		rec.Set("enable_recent_activity", preset.Settings.EnableRecentActivity)
+		rec.Set("enable_cookie_consent", preset.Settings.EnableCookieConsent)
+		rec.Set("enable_careers", preset.Settings.EnableCareers)
+
+		if preset.Settings.WhatsappPhone != "" {
+			rec.Set("whatsapp_phone", preset.Settings.WhatsappPhone)
+		}
+		if preset.Settings.TelegramContact != "" {
+			rec.Set("telegram_contact", preset.Settings.TelegramContact)
+		}
 		if preset.Settings.DefaultLang != "" {
 			rec.Set("default_lang", preset.Settings.DefaultLang)
 		}
@@ -78,6 +92,36 @@ func ApplyPreset(app core.App, presetPath string) error {
 		}
 		if preset.Settings.FooterVariant != "" {
 			rec.Set("footer_variant", preset.Settings.FooterVariant)
+		}
+		if preset.Settings.LegalEntity != "" {
+			rec.Set("legal_entity", preset.Settings.LegalEntity)
+		}
+		if preset.Settings.LegalAddress != "" {
+			rec.Set("legal_address", preset.Settings.LegalAddress)
+		}
+		if preset.Settings.INN != "" {
+			rec.Set("inn", preset.Settings.INN)
+		}
+		if preset.Settings.KPP != "" {
+			rec.Set("kpp", preset.Settings.KPP)
+		}
+		if preset.Settings.OGRN != "" {
+			rec.Set("ogrn", preset.Settings.OGRN)
+		}
+		if preset.Settings.BankName != "" {
+			rec.Set("bank_name", preset.Settings.BankName)
+		}
+		if preset.Settings.BankBIK != "" {
+			rec.Set("bank_bik", preset.Settings.BankBIK)
+		}
+		if preset.Settings.BankAccount != "" {
+			rec.Set("bank_account", preset.Settings.BankAccount)
+		}
+		if preset.Settings.BankCorr != "" {
+			rec.Set("bank_corr", preset.Settings.BankCorr)
+		}
+		if preset.Settings.ContactEmail != "" {
+			rec.Set("contact_email", preset.Settings.ContactEmail)
 		}
 		if err := app.Save(rec); err != nil {
 			log.Printf("[Preset Error] Failed to save site_settings: %v\n", err)
@@ -94,6 +138,15 @@ func ApplyPreset(app core.App, presetPath string) error {
 		rec.Set("hero_badge", preset.Content.HeroBadge)
 		rec.Set("hero_title", preset.Content.HeroTitle)
 		rec.Set("hero_subtitle", preset.Content.HeroSubtitle)
+		if preset.Content.HeroTitleB != "" {
+			rec.Set("hero_title_b", preset.Content.HeroTitleB)
+		}
+		if preset.Content.HeroSubtitleB != "" {
+			rec.Set("hero_subtitle_b", preset.Content.HeroSubtitleB)
+		}
+		if preset.Content.HeroCTAB != "" {
+			rec.Set("hero_cta_b", preset.Content.HeroCTAB)
+		}
 		rec.Set("owner_name", preset.Content.OwnerName)
 		rec.Set("owner_title", preset.Content.OwnerTitle)
 		rec.Set("phone1", preset.Content.Phone1)
@@ -126,6 +179,8 @@ func ApplyPreset(app core.App, presetPath string) error {
 				rec.Set("price", s.Price)
 				rec.Set("order", s.Order)
 				rec.Set("active", true)
+				rec.Set("stock_count", s.StockCount)
+				rec.Set("is_preorder", s.IsPreorder)
 				_ = app.Save(rec)
 			}
 		}

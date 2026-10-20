@@ -96,21 +96,56 @@ func sendTelegram(token, chatID string, lead models.Lead) {
 		text += fmt.Sprintf("🗓 <b>Дата и время:</b> %s в %s\n", lead.BookingDate, lead.BookingTime)
 	}
 
+	if lead.Source != "" && lead.Source != "website" {
+		text += fmt.Sprintf("📍 <b>Источник:</b> %s\n", lead.Source)
+	}
+
 	if len(lead.Payload) > 0 {
+		// Отображаем рекламную кампанию (UTM)
+		if src, ok := lead.Payload["utm_source"].(string); ok && src != "" {
+			cmp, _ := lead.Payload["utm_campaign"].(string)
+			if cmp != "" {
+				text += fmt.Sprintf("🎯 <b>Реклама:</b> %s (кампания: %s)\n", src, cmp)
+			} else {
+				text += fmt.Sprintf("🎯 <b>Реклама:</b> %s\n", src)
+			}
+		}
+
+		// Отображаем расчет квиза, если есть
+		if qMap, ok := lead.Payload["quiz_summary"].(map[string]interface{}); ok {
+			if est, ok := qMap["estimated_price"]; ok {
+				pref, _ := qMap["preferred_contact"].(string)
+				text += fmt.Sprintf("💡 <b>Расчет квиза:</b> %v ₽ (контакт: %s)\n", est, pref)
+			}
+		}
+
+		// Отображаем вариант серверного A/B сплит-теста
+		if ab, ok := lead.Payload["ab_variant"].(string); ok && ab != "" {
+			text += fmt.Sprintf("🧪 <b>A/B тест:</b> Вариант %s\n", ab)
+		}
+
 		for k, v := range lead.Payload {
+			if k == "utm" || k == "utm_source" || k == "utm_campaign" || k == "quiz_summary" || k == "ab_variant" {
+				continue
+			}
 			if strVal := fmt.Sprintf("%v", v); strVal != "" {
 				text += fmt.Sprintf("📝 <b>%s:</b> %s\n", k, strVal)
 			}
 		}
 	}
 
-	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", token)
 	bodyData := map[string]interface{}{
 		"chat_id":    chatID,
 		"text":       text,
 		"parse_mode": "HTML",
 	}
 
+	SendTelegramMessage(token, bodyData)
+}
+
+// SendTelegramMessage dispatches generic telegram bot payloads.
+func SendTelegramMessage(token string, bodyData map[string]interface{}) {
+	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", token)
 	payloadBytes, err := json.Marshal(bodyData)
 	if err != nil {
 		log.Printf("[Notification Error] Failed to encode TG payload: %v\n", err)

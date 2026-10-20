@@ -99,6 +99,11 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 					<li><a href="/#booking" class="hover:text-accent transition">{ i18n.T(ctx, "nav.booking_full") }</a></li>
 					<li><a href="/track" class="hover:text-accent transition">{ i18n.T(ctx, "nav.tracker_full") }</a></li>
 					<li><a href="/blog" class="hover:text-accent transition">{ i18n.T(ctx, "nav.blog_full") }</a></li>
+					if settings.EnableCareers {
+						<li><a href="/careers" class="hover:text-accent transition">Вакансии и найм</a></li>
+					}
+					<li><a href="/privacy" class="hover:text-accent transition text-stone-400">Конфиденциальность (152-ФЗ)</a></li>
+					<li><a href="/terms" class="hover:text-accent transition text-stone-400">Оферта и соглашение</a></li>
 				</ul>
 			</div>
 
@@ -148,9 +153,15 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 			</div>
 		</div>
 
-		<!-- Нижняя полоса с копирайтом -->
+		<!-- Нижняя полоса с копирайтом и 152-ФЗ -->
 		<div class="max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-stone-400">
-			<div>{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</div>
+			<div class="flex items-center gap-3 flex-wrap">
+				<span>{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</span>
+				<span>•</span>
+				<a href="/privacy" class="hover:text-accent transition underline">152-ФЗ</a>
+				<span>•</span>
+				<a href="/terms" class="hover:text-accent transition underline">Оферта</a>
+			</div>
 			<div class="text-accent/80 font-mono">Powered by SiteCraft</div>
 		</div>
 	</footer>

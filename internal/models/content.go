@@ -39,16 +39,33 @@ type SiteSettings struct {
 	TelegramContact       string `json:"telegram_contact"`
 	EnableCart            bool   `json:"enable_cart"`
 
-	// Новые модули (Этап 1: Блог и TMA: Telegram Mini App, Этап 2: Трекер заказов, Локализация)
-	EnableBlog    bool   `json:"enable_blog"`
-	EnableTMA     bool   `json:"enable_tma"`
-	EnableTracker bool   `json:"enable_tracker"`
-	EnableI18n    bool   `json:"enable_i18n"`
-	DefaultLang   string `json:"default_lang"` // ru, en
+	// Новые модули (Этап 1: Блог и TMA: Telegram Mini App, Этап 2: Трекер заказов, Локализация, Чат, Fleet, Фаза 3: CRO)
+	EnableBlog           bool   `json:"enable_blog"`
+	EnableTMA            bool   `json:"enable_tma"`
+	EnableTracker        bool   `json:"enable_tracker"`
+	EnableI18n           bool   `json:"enable_i18n"`
+	EnableLiveChat       bool   `json:"enable_live_chat"`
+	EnableFleet          bool   `json:"enable_fleet"`
+	EnableRecentActivity bool   `json:"enable_recent_activity"`
+	DefaultLang          string `json:"default_lang"` // ru, en
 
 	// Варианты шапки и подвала (Layout Variants: classic, minimal, centered / columns)
 	HeaderVariant string `json:"header_variant"`
 	FooterVariant string `json:"footer_variant"`
+
+	// Реквизиты компании и юридические параметры (Блок 4: 152-ФЗ и B2B Invoicing)
+	LegalEntity         string `json:"legal_entity"`
+	LegalAddress        string `json:"legal_address"`
+	INN                 string `json:"inn"`
+	KPP                 string `json:"kpp"`
+	OGRN                string `json:"ogrn"`
+	BankName            string `json:"bank_name"`
+	BankBIK             string `json:"bank_bik"`
+	BankAccount         string `json:"bank_account"`
+	BankCorr            string `json:"bank_corr"`
+	ContactEmail        string `json:"contact_email"`
+	EnableCareers       bool   `json:"enable_careers"`
+	EnableCookieConsent bool   `json:"enable_cookie_consent"`
 
 	// Пароль для входа в клиентский кабинет (/client)
 	ClientAdminPassword     string `json:"client_admin_password"` // Legacy plain password for auto-migration
@@ -61,8 +78,12 @@ type SiteContent struct {
 	HeroBadge    string `json:"hero_badge"`
 	HeroTitle    string `json:"hero_title"`
 	HeroSubtitle string `json:"hero_subtitle"`
-	OwnerName    string `json:"owner_name"`
-	OwnerTitle   string `json:"owner_title"`
+	// A/B Testing Variant B overrides (Server-Side A/B testing)
+	HeroTitleB    string `json:"hero_title_b,omitempty"`
+	HeroSubtitleB string `json:"hero_subtitle_b,omitempty"`
+	HeroCTAB      string `json:"hero_cta_b,omitempty"`
+	OwnerName     string `json:"owner_name"`
+	OwnerTitle    string `json:"owner_title"`
 	// Aliases for template backwards compatibility
 	NotaryName   string `json:"notary_name"`
 	NotaryTitle  string `json:"notary_title"`
@@ -163,12 +184,17 @@ type QuizPayload struct {
 
 // BeforeAfterItem represents a single case comparison item
 type BeforeAfterItem struct {
-	Title       string `json:"title"`
-	Description string `json:"description,omitempty"`
-	BeforeImage string `json:"before_image"`
-	AfterImage  string `json:"after_image"`
-	BeforeLabel string `json:"before_label,omitempty"`
-	AfterLabel  string `json:"after_label,omitempty"`
+	Title         string   `json:"title"`
+	Description   string   `json:"description,omitempty"`
+	BeforeImage   string   `json:"before_image"`
+	AfterImage    string   `json:"after_image"`
+	BeforeLabel   string   `json:"before_label,omitempty"`
+	AfterLabel    string   `json:"after_label,omitempty"`
+	Duration      string   `json:"duration,omitempty"`       // e.g. "3 рабочих дня"
+	Cost          string   `json:"cost,omitempty"`           // e.g. "48 500 ₽"
+	MaterialsCost string   `json:"materials_cost,omitempty"` // e.g. "32 000 ₽"
+	WorksCost     string   `json:"works_cost,omitempty"`     // e.g. "16 500 ₽"
+	Stages        []string `json:"stages,omitempty"`         // e.g. ["1. Дефектовка", "2. Стапельные работы"]
 }
 
 // BeforeAfterPayload represents the data-driven Before/After block
@@ -187,6 +213,7 @@ type CartItem struct {
 	PriceStr string  `json:"price_str,omitempty"`
 	Qty      int     `json:"qty"`
 	Image    string  `json:"image,omitempty"`
+	IsUpsell bool    `json:"is_upsell,omitempty"`
 }
 
 // CartCheckoutRequest represents the payload when customer places an order from cart
@@ -209,6 +236,8 @@ type ServiceItem struct {
 	Price       string `json:"price"`
 	Order       int    `json:"order"`
 	Active      bool   `json:"active"`
+	StockCount  int    `json:"stock_count"` // -1 for unlimited, 0 for out of stock / preorder, >0 for limited stock
+	IsPreorder  bool   `json:"is_preorder"`
 }
 
 // Lead represents a form submission

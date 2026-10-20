@@ -9,6 +9,7 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/internal/exporter"
 	"sitecraft/internal/handlers"
+	"sitecraft/internal/notifications"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
@@ -16,6 +17,9 @@ import (
 )
 
 func main() {
+	// Инициализация структурированного логирования slog (JSON в проде, текст в dev)
+	handlers.InitLogger()
+
 	app := pocketbase.New()
 
 	var presetFlag string
@@ -149,6 +153,11 @@ func main() {
 		// Регулярная проверка отложенных публикаций блога (инвалидация кэша статей)
 		app.Cron().MustAdd("check_scheduled_articles", "* * * * *", func() {
 			cache.GetStore().InvalidateArticles()
+		})
+
+		// Модуль #12: Регулярная проверка напоминаний о визитах за 2 часа (раз в 10 минут)
+		app.Cron().MustAdd("check_booking_reminders", "*/10 * * * *", func() {
+			notifications.CheckBookingReminders(app)
 		})
 
 		handlers.RegisterRoutes(app, se.Router)

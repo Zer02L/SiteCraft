@@ -47,7 +47,7 @@
 ./fleet.sh create dental-clinic --preset=medical --theme=medical --port=8092
 ./fleet.sh create law-firm      --preset=legal-swiss --theme=legal --port=8093
 ```
-*Доступные пресеты:* `legal`, `legal-swiss`, `legal-british`, `legal-milano`, `legal-corporate`, `medical`, `auto`, `repair`, `beauty`, `cyber`, `delivery`, `academy`.
+*Доступные пресеты:* `notary`, `legal`, `legal-swiss`, `legal-british`, `legal-milano`, `legal-corporate`, `medical`, `auto`, `repair`, `beauty`, `cyber`, `delivery`, `academy`.
 
 ### 2. Запуск и управление
 ```bash
@@ -75,6 +75,20 @@
 ./fleet.sh backup auto-express
 ```
 Скрипт генерирует единый автономный архив `.tar.gz`, включающий всю SQLite базу и загруженный клиентом медиаконтент. Вы можете передать этот архив клиенту или перенести на любой VPS в одну команду.
+
+---
+
+## 🖥 Веб-панель Fleet Master Dashboard (`/fleet` и `/client/tab/fleet`)
+
+Помимо консольного скрипта `fleet.sh`, для веб-студий и агентств доступен наглядный веб-интерфейс:
+
+1. **Мониторинг в реальном времени:** Список всех инстансов сайтов, выделенные порты, текущий статус (🟢 Активен, 🔴 Остановлен), системный PID и объем потребляемой памяти RAM.
+2. **Управление в 1 клик:**
+   * Запуск (`start`), остановка (`stop`), перезапуск (`restart`) и бэкап (`backup`) без подключения по SSH через API `POST /api/fleet/action`.
+3. **Развертывание новых клиентов из браузера:**
+   * Форма создания инстанса (`POST /api/fleet/create`) с указанием ID сайта, выбором пресета ниши, темы оформления и автоматическим выделением свободного порта.
+4. **Интеграция с клиентским кабинетом:**
+   * Доступен как самостоятельный пульт `/fleet`, так и в виде отдельной вкладки `/client/tab/fleet` в панели управления владельца инстанса (при включенном флаге `enable_fleet` в `site_settings`).
 
 ---
 

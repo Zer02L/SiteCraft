@@ -1,0 +1,333 @@
+{
+  "settings": {
+    "site_name": "SiteCraft • Тестовый стенд всех модулей (Full Suite)",
+    "tagline": "Комплексное тестирование 20 коммерческих модулей, кинематографического UI и Zero-SMS архитектуры",
+    "theme": "main",
+    "primary_color": "#2563eb",
+    "accent_color": "#f97316",
+    "background_color": "#0f172a",
+    "font_family": "system-ui",
+    "enable_a11y": true,
+    "enable_alpine": true,
+    "enable_cart": true,
+    "enable_floating_contact": true,
+    "whatsapp_phone": "+79991234567",
+    "telegram_contact": "sitecraft_support",
+    "enable_live_chat": true,
+    "enable_tracker": true,
+    "enable_blog": true,
+    "enable_tma": true,
+    "enable_payment": true,
+    "payment_sandbox": true,
+    "enable_i18n": true,
+    "default_lang": "ru",
+    "enable_recent_activity": true,
+    "enable_fleet": true,
+    "enable_careers": true,
+    "enable_cookie_consent": true,
+    "booking_mode": "slots",
+    "map_mode": "lazy",
+    "header_variant": "classic",
+    "footer_variant": "columns",
+    "legal_entity": "ООО «СайтКрафт Инжиниринг»",
+    "legal_address": "123112, г. Москва, Пресненская наб., д. 12, офис 45",
+    "inn": "7701234567",
+    "kpp": "770101001",
+    "ogrn": "1237700123456",
+    "bank_name": "АО «Т-Банк»",
+    "bank_bik": "044525974",
+    "bank_account": "40702810900000123456",
+    "bank_corr": "30101810145250000974",
+    "contact_email": "test-suite@sitecraft.engine"
+  },
+  "content": {
+    "hero_badge": "Лаборатория SiteCraft Engine • 20 коммерческих модулей",
+    "hero_title": "Тестовый полигон всех возможностей SiteCraft",
+    "hero_subtitle": "Единый демонстрационный пресет, активирующий E-commerce с зонами доставки и промокодами, калькулятор сметы, онлайн-чат в Telegram, запись к мастерам, трекинг заказов, вакансии, кейсы До/После и 31 модуль Zero-GSAP.",
+    "hero_title_b": "Сверхбыстрый стек для коммерческих сайтов без сторонних SaaS (A/B Вариант B)",
+    "hero_subtitle_b": "Серверное A/B тестирование офферов с фиксацией в 30-дневной cookie без мигания экрана (Zero-FOOC).",
+    "hero_cta_b": "Проверить A/B заявку",
+    "owner_name": "Инженерная команда SiteCraft",
+    "owner_title": "Разработчики модульного движка SiteCraft",
+    "phone1": "+7 (495) 123-45-67",
+    "phone2": "+7 (800) 555-35-35",
+    "work_hours": "Круглосуточно: 24/7 (Тестовый стенд)",
+    "lunch_break": "Без перерывов",
+    "days_off": "Без выходных",
+    "address": "Москва-Сити, Башня Федерация, 45 этаж",
+    "address_sub": "г. Москва, Пресненская наб., д. 12 (м. Деловой центр / Выставочная)",
+    "map_iframe": "https://yandex.ru/map-widget/v1/?ll=37.537083%2C55.749511&z=16&pt=37.537083,55.749511,pm2rdm"
+  },
+  "services": [
+    {
+      "title": "Комплексный аудит и настройка системы",
+      "description": "Полная проверка всех 20 бизнес-модулей, интеграций с Telegram и ЮKassa Sandbox. Тестирование корзины и зон доставки.",
+      "price": "15 000 ₽",
+      "order": 1,
+      "stock_count": 8,
+      "is_preorder": false
+    },
+    {
+      "title": "Лицензия инстанса SiteCraft Pro (Ограниченный остаток)",
+      "description": "Единый автономный бинарник Go + PocketBase с In-Memory кэшем <10мс. Осталось всего 3 штуки — проверка FOMO бейджа!",
+      "price": "25 000 ₽",
+      "order": 2,
+      "stock_count": 3,
+      "is_preorder": false
+    },
+    {
+      "title": "Индивидуальный модуль интеграции (Под заказ)",
+      "description": "Разработка заказного плагина по стандарту Zero-Node.js. Товар с нулевым остатком — проверка статуса «Под заказ».",
+      "price": "50 000 ₽",
+      "order": 3,
+      "stock_count": 0,
+      "is_preorder": true
+    },
+    {
+      "title": "Тестовый товар для доставки курьером",
+      "description": "Тестовый товар для проверки выбора зоны доставки (город — 300 ₽, пригород — 650 ₽, область — 1200 ₽) и купона PROMO10.",
+      "price": "1 500 ₽",
+      "order": 4,
+      "stock_count": -1,
+      "is_preorder": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hero",
+      "title": "Главный экран",
+      "order": 1,
+      "active": true,
+      "payload": {
+        "variant": "split"
+      }
+    },
+    {
+      "type": "cinematic_odometer",
+      "title": "Показатели производительности",
+      "order": 2,
+      "active": true
+    },
+    {
+      "type": "cinematic_spotlight",
+      "title": "Ключевые возможности платформы",
+      "order": 3,
+      "active": true
+    },
+    {
+      "type": "cinematic_marquee",
+      "title": "Бегущая строка технологий",
+      "order": 4,
+      "active": true
+    },
+    {
+      "type": "services",
+      "title": "Витрина услуг и складской учет (E-Commerce)",
+      "order": 5,
+      "active": true
+    },
+    {
+      "type": "quiz",
+      "title": "Интерактивный смарт-квиз и калькулятор сметы",
+      "order": 6,
+      "active": true,
+      "payload": {
+        "badge": "Калькулятор проекта",
+        "title": "Рассчитайте стоимость развертывания за 1 минуту",
+        "subtitle": "Выберите конфигурацию стека и получите моментальный расчет стоимости с возможностью отправки в Telegram",
+        "base_price": 10000,
+        "currency": "₽",
+        "bonus_text": "При отправке сметы промокод PROMO10 применится автоматически ко всем выбранным опциям.",
+        "steps": [
+          {
+            "id": "deployment_type",
+            "question": "Какой тип развертывания вам требуется?",
+            "subtitle": "Выберите целевую инфраструктуру",
+            "multi_select": false,
+            "options": [
+              {
+                "id": "opt_standalone",
+                "title": "Одиночный бинарник (~25 МБ)",
+                "description": "Автономный сервер для одного сайта на VPS за $5",
+                "price_modifier": 0
+              },
+              {
+                "id": "opt_fleet",
+                "title": "Мультисайтовый Fleet (до 50 сайтов)",
+                "description": "Парк изолированных инстансов для веб-студии или агентства",
+                "price_modifier": 15000
+              },
+              {
+                "id": "opt_ssg",
+                "title": "Статический экспорт (SSG Flat HTML)",
+                "description": "Для бесплатного хостинга на GitHub / Cloudflare Pages",
+                "price_modifier": 5000
+              }
+            ]
+          },
+          {
+            "id": "modules_set",
+            "question": "Какие бизнес-модули необходимы?",
+            "subtitle": "Все модули работают со 100% изоляцией и $0 сторонних затрат",
+            "multi_select": true,
+            "options": [
+              {
+                "id": "opt_chat",
+                "title": "Live Web-to-TG чат с SSE",
+                "description": "Прямой диалог с посетителем через Telegram-бота без JivoSite",
+                "price_modifier": 4500
+              },
+              {
+                "id": "opt_booking",
+                "title": "Запись к мастерам + iCal RFC 5545",
+                "description": "Сетка слотов, генерация файлов встречи и автонапоминания",
+                "price_modifier": 6000
+              },
+              {
+                "id": "opt_tracker",
+                "title": "B2B-трекер заказов с сервисной книжкой",
+                "description": "Отслеживание статусов в реальном времени и печать счетов с ГОСТ QR",
+                "price_modifier": 8000
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "before_after",
+      "title": "Кейсы «До / После» со сметой работ",
+      "order": 7,
+      "active": true,
+      "payload": {
+        "badge": "Реализованные проекты",
+        "title": "Сравнение результатов: До и После",
+        "subtitle": "Интерактивный визуальный слайдер с прозрачной сметой затрат на материалы и работы",
+        "items": [
+          {
+            "title": "Оптимизация корпоративного портала и миграция с тяжелого Node.js",
+            "description": "Перевели интернет-каталог с Next.js на SiteCraft (Go + Templ). Снизили потребление RAM с 850 МБ до 28 МБ и достигли TTFB < 8 мс.",
+            "before_image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+            "after_image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+            "before_label": "Next.js (850 МБ RAM)",
+            "after_label": "SiteCraft (~25 МБ RAM)",
+            "duration": "3 рабочих дня",
+            "cost": "45 000 ₽",
+            "materials_cost": "0 ₽ (Zero-Runtime)",
+            "works_cost": "45 000 ₽",
+            "stages": [
+              "Аудит компонентов и конвертация в типизированные Templ шаблоны",
+              "Настройка In-Memory кэширования и автоинвалидации через хуки PocketBase",
+              "Интеграция Tailwind CSS v4 с нативным Oxide-компилятором",
+              "Финальное тестирование под нагрузкой 5 000 RPS"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "features",
+      "title": "Архитектурные преимущества стека",
+      "order": 8,
+      "active": true,
+      "payload": {
+        "badge": "Инженерные стандарты",
+        "title": "Почему SiteCraft превосходит классические CMS",
+        "subtitle": "Компактный стек без лишних уровней абстракций и зависимостей",
+        "items": [
+          {
+            "icon": "zap",
+            "title": "TTFB < 10 мс",
+            "description": "Потокобезопасный in-memory кэш sync.RWMutex обеспечивает отдачу страниц за доли миллисекунды."
+          },
+          {
+            "icon": "shield-check",
+            "title": "Zero-SMS & Безопасность",
+            "description": "$0 расходов на сторонние SMS-шлюзы: Telegram Bot API, Magic Links по SMTP и QR-коды для оплат."
+          },
+          {
+            "icon": "layers",
+            "title": "Zero-Cost Go Variants",
+            "description": "UI-примитивы с нулевыми аллокациями памяти и разрешением конфликтов через tailwind-merge-go."
+          },
+          {
+            "icon": "activity",
+            "title": "Реактивность без тяжелого JS",
+            "description": "Связка HTMX + Alpine.js через hx-alpine-compat для гладких AJAX-свопов без утечек памяти."
+          }
+        ]
+      }
+    },
+    {
+      "type": "steps",
+      "title": "Пошаговый регламент работы",
+      "order": 9,
+      "active": true
+    },
+    {
+      "type": "team",
+      "title": "Ведущие эксперты команды",
+      "order": 10,
+      "active": true
+    },
+    {
+      "type": "reviews",
+      "title": "Проверенные отзывы клиентов (Verified UGC)",
+      "order": 11,
+      "active": true
+    },
+    {
+      "type": "booking",
+      "title": "Онлайн-запись к специалистам и мастерам",
+      "order": 12,
+      "active": true
+    },
+    {
+      "type": "careers",
+      "title": "Карьера и вакансии (HR-модуль)",
+      "order": 13,
+      "active": true
+    },
+    {
+      "type": "faq",
+      "title": "Часто задаваемые вопросы",
+      "order": 14,
+      "active": true,
+      "payload": {
+        "badge": "FAQ",
+        "title": "Ответы на ключевые инженерные вопросы",
+        "subtitle": "Всё об архитектуре, производительности и развертывании",
+        "items": [
+          {
+            "question": "Как протестировать корзину и промокоды?",
+            "answer": "Добавьте товары в Drawer-корзину, введите промокод PROMO10 (скидка 10%) или WELCOME500 (скидка 500 ₽) и нажмите «Применить». Выберите зону доставки для пересчета суммы."
+          },
+          {
+            "question": "Как работает Live Web-to-Telegram чат?",
+            "answer": "Откройте виджет чата в правом нижнем углу и отправьте сообщение. Оно запишется в таблицу chat_messages, а бот перешлет его администратору в Telegram с кнопкой ответа через SSE."
+          },
+          {
+            "question": "Как проверить B2B-трекер заказов?",
+            "answer": "Перейдите на страницу /track и введите номер демо-заказа SRV-4182 или FIX-9021. Вы увидите интерактивный прогресс-бар, сервисную книжку и возможность онлайн-оплаты."
+          },
+          {
+            "question": "Где находится клиентская панель управления?",
+            "answer": "Панель доступна по адресу /client. Для первого входа система предложит задать безопасный пароль через Setup Wizard."
+          }
+        ]
+      }
+    },
+    {
+      "type": "map",
+      "title": "Сеть филиалов и интерактивная карта",
+      "order": 15,
+      "active": true
+    },
+    {
+      "type": "showcase",
+      "title": "Витрина дизайн-системы Go Variants + Tailwind v4",
+      "order": 16,
+      "active": true
+    }
+  ]
+}

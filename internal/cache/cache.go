@@ -2,22 +2,25 @@ package cache
 
 import (
 	"sync"
+	"time"
 
 	"sitecraft/internal/models"
 )
 
 type Store struct {
-	mu           sync.RWMutex
-	settings     models.SiteSettings
-	content      models.SiteContent
-	services     []models.ServiceItem
-	blocks       []models.PageBlock
-	articles     []models.ArticleItem
-	settingsSet  bool
-	contentSet   bool
-	servicesSet  bool
-	blocksSet    bool
-	articlesSet  bool
+	mu                     sync.RWMutex
+	settings               models.SiteSettings
+	content                models.SiteContent
+	services               []models.ServiceItem
+	blocks                 []models.PageBlock
+	articles               []models.ArticleItem
+	recentActivity         []models.RecentActivityItem
+	recentActivityExpires  time.Time
+	settingsSet            bool
+	contentSet             bool
+	servicesSet            bool
+	blocksSet              bool
+	articlesSet            bool
 }
 
 var defaultStore = &Store{}
@@ -139,6 +142,32 @@ func (s *Store) InvalidateArticles() {
 	s.articlesSet = false
 }
 
+func (s *Store) GetRecentActivity() ([]models.RecentActivityItem, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if time.Now().After(s.recentActivityExpires) || len(s.recentActivity) == 0 {
+		return nil, false
+	}
+	out := make([]models.RecentActivityItem, len(s.recentActivity))
+	copy(out, s.recentActivity)
+	return out, true
+}
+
+func (s *Store) SetRecentActivity(items []models.RecentActivityItem, ttl time.Duration) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.recentActivity = make([]models.RecentActivityItem, len(items))
+	copy(s.recentActivity, items)
+	s.recentActivityExpires = time.Now().Add(ttl)
+}
+
+func (s *Store) InvalidateRecentActivity() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.recentActivity = nil
+	s.recentActivityExpires = time.Time{}
+}
+
 func (s *Store) InvalidateAll() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -147,4 +176,6 @@ func (s *Store) InvalidateAll() {
 	s.servicesSet = false
 	s.blocksSet = false
 	s.articlesSet = false
+	s.recentActivity = nil
+	s.recentActivityExpires = time.Time{}
 }

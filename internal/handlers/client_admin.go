@@ -359,6 +359,7 @@ func (h *ClientAdminHandler) HandleDashboard(e *core.RequestEvent) error {
 	leads := data.GetAllLeads(h.app)
 	articles := data.GetAllArticlesAdmin(h.app)
 	trashArticles := data.GetTrashArticlesAdmin(h.app)
+	reviews := data.GetAllReviewsAdmin(h.app)
 
 	tab := e.Request.URL.Query().Get("tab")
 	if tab == "" {
@@ -366,7 +367,7 @@ func (h *ClientAdminHandler) HandleDashboard(e *core.RequestEvent) error {
 	}
 
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-	return pages.ClientDashboard(settings, content, leads, articles, trashArticles, tab).Render(e.Request.Context(), e.Response)
+	return pages.ClientDashboard(settings, content, leads, articles, trashArticles, reviews, tab).Render(e.Request.Context(), e.Response)
 }
 
 // HandleTabLeads renders leads tab fragment for HTMX.
@@ -377,6 +378,16 @@ func (h *ClientAdminHandler) HandleTabLeads(e *core.RequestEvent) error {
 	leads := data.GetAllLeads(h.app)
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	return pages.ClientLeadsTab(leads).Render(e.Request.Context(), e.Response)
+}
+
+// HandleTabReviews renders reviews moderation tab fragment for HTMX.
+func (h *ClientAdminHandler) HandleTabReviews(e *core.RequestEvent) error {
+	if !h.isAuthorized(e) {
+		return e.Redirect(http.StatusFound, "/client/login")
+	}
+	reviews := data.GetAllReviewsAdmin(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.ClientReviewsTab(reviews).Render(e.Request.Context(), e.Response)
 }
 
 // HandleTabContacts renders contacts tab fragment for HTMX.
@@ -674,13 +685,28 @@ func (h *ClientAdminHandler) HandleExportLeadsCSV(e *core.RequestEvent) error {
 	w := csv.NewWriter(b)
 	w.Comma = ';'
 
-	_ = w.Write([]string{"ID", "Имя", "Телефон", "Email", "Дата записи", "Время", "Статус", "Источник", "Комментарий"})
+	_ = w.Write([]string{"ID", "Имя", "Телефон", "Email", "Дата записи", "Время", "Статус", "Источник", "UTM Источник", "UTM Кампания", "Квиз / Смета", "Комментарий"})
 
 	for _, l := range leads {
 		comment := ""
+		utmSource := ""
+		utmCampaign := ""
+		quizInfo := ""
+
 		if l.Payload != nil {
 			if c, ok := l.Payload["comment"].(string); ok {
 				comment = c
+			}
+			if s, ok := l.Payload["utm_source"].(string); ok {
+				utmSource = s
+			}
+			if cmp, ok := l.Payload["utm_campaign"].(string); ok {
+				utmCampaign = cmp
+			}
+			if qMap, ok := l.Payload["quiz_summary"].(map[string]interface{}); ok {
+				if est, ok := qMap["estimated_price"]; ok {
+					quizInfo = fmt.Sprintf("%v руб.", est)
+				}
 			}
 		}
 		_ = w.Write([]string{
@@ -692,6 +718,9 @@ func (h *ClientAdminHandler) HandleExportLeadsCSV(e *core.RequestEvent) error {
 			l.BookingTime,
 			l.Status,
 			l.Source,
+			utmSource,
+			utmCampaign,
+			quizInfo,
 			comment,
 		})
 	}

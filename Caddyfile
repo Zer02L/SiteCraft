@@ -1,0 +1,48 @@
+# ==============================================================================
+# Caddyfile для SiteCraft Engine (Production)
+# Автоматический HTTPS (Let's Encrypt), zstd/gzip, поддержка SSE и HTTP-кэша
+# ==============================================================================
+
+# Замените yourdomain.com на ваш домен или используйте :80 / :443
+yourdomain.com {
+    # Сжатие ответов (zstd и gzip)
+    encode zstd gzip
+
+    # Защитные заголовки безопасности
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        # Удаляем лишний идентификатор сервера
+        -Server
+    }
+
+    # Логирование запросов в структурированном JSON формате
+    log {
+        output file /var/log/caddy/sitecraft_access.log {
+            roll_size 50mb
+            roll_keep 5
+        }
+        format json
+    }
+
+    # Проксирование всех запросов на бинарник SiteCraft / PocketBase
+    reverse_proxy 127.0.0.1:8090 {
+        # Критично для Live-чата (/api/chat/sse) и трекера заказов (/api/track/sse):
+        # отключает буферизацию для мгновенной доставки Server-Sent Events
+        flush_interval -1
+
+        # Передача реальных заголовков клиента для PocketBase (e.RealIP())
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+
+        # Ограничения по таймаутам
+        transport http {
+            dial_timeout 5s
+            response_header_timeout 60s
+        }
+    }
+}

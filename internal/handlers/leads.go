@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"html"
 	"log"
@@ -115,6 +116,11 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 		}
 	}
 
+	source := strings.TrimSpace(e.Request.FormValue("source"))
+	if source == "" {
+		source = "website"
+	}
+
 	// Подготовка JSON payload для гибких полей
 	payloadMap := map[string]interface{}{}
 	if actionType != "" {
@@ -124,12 +130,50 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 		payloadMap["comment"] = comment
 	}
 
+	// Обработка результатов онлайн-квиза/калькулятора
+	if quizRaw := strings.TrimSpace(e.Request.FormValue("quiz_payload")); quizRaw != "" {
+		var quizMap map[string]interface{}
+		if err := json.Unmarshal([]byte(quizRaw), &quizMap); err == nil {
+			payloadMap["quiz_summary"] = quizMap
+		} else {
+			payloadMap["quiz_summary"] = quizRaw
+		}
+	}
+
+	// Сквозная UTM-атрибуция (из контекста middleware или формы)
+	utm := GetUTM(ctx)
+	if utm.IsEmpty() {
+		utm.Source = strings.TrimSpace(e.Request.FormValue("utm_source"))
+		utm.Medium = strings.TrimSpace(e.Request.FormValue("utm_medium"))
+		utm.Campaign = strings.TrimSpace(e.Request.FormValue("utm_campaign"))
+		utm.Content = strings.TrimSpace(e.Request.FormValue("utm_content"))
+		utm.Term = strings.TrimSpace(e.Request.FormValue("utm_term"))
+	}
+	if !utm.IsEmpty() {
+		payloadMap["utm"] = utm
+		payloadMap["utm_source"] = utm.Source
+		payloadMap["utm_campaign"] = utm.Campaign
+	}
+
+	// Фиксация варианта A/B тестирования (A или B)
+	abVariant := GetABVariant(ctx)
+	if abParam := strings.ToUpper(strings.TrimSpace(e.Request.FormValue("ab_variant"))); abParam == "A" || abParam == "B" {
+		abVariant = abParam
+	}
+	payloadMap["ab_variant"] = abVariant
+
+	// Фиксация выбранного специалиста/поста (Resource Booking)
+	resourceID := strings.TrimSpace(e.Request.FormValue("resource_id"))
+	if resourceID != "" {
+		payloadMap["resource_id"] = resourceID
+	}
+
 	// Сохраняем в коллекцию leads в PocketBase
 	leadModel := models.Lead{
 		Name:        name,
 		Phone:       phone,
 		Status:      "новая",
-		Source:      "website",
+		Source:      source,
 		BookingDate: bookingDate,
 		BookingTime: bookingTime,
 		Payload:     payloadMap,
@@ -141,8 +185,9 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 		leadRecord.Set("phone", phone)
 		leadRecord.Set("booking_date", bookingDate)
 		leadRecord.Set("booking_time", bookingTime)
+		leadRecord.Set("resource_id", resourceID)
 		leadRecord.Set("status", "новая")
-		leadRecord.Set("source", "website")
+		leadRecord.Set("source", source)
 		leadRecord.Set("payload", payloadMap)
 
 		if err := h.app.Save(leadRecord); err != nil {
@@ -165,16 +210,29 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 		Lead:     leadModel,
 	})
 
-	log.Printf("Новая заявка: ФИО=%s, Тел=%s, Дата=%s %s, Инфо=%+v\n",
-		name, phone, bookingDate, bookingTime, payloadMap)
+	log.Printf("Новая заявка: ФИО=%s, Тел=%s, Дата=%s %s, Ресурс=%s, Инфо=%+v\n",
+		name, phone, bookingDate, bookingTime, resourceID, payloadMap)
 
 	// Возвращаем сообщение об успехе
 	var successMsg string
+	var calendarLinkHTML string
 	if bookingDate != "" && bookingTime != "" {
 		successMsg = fmt.Sprintf(i18n.T(ctx, "booking.success_slots"),
 			"<strong>"+html.EscapeString(bookingDate)+"</strong>",
 			"<strong>"+html.EscapeString(bookingTime)+"</strong>",
 			"<strong>"+html.EscapeString(phone)+"</strong>")
+
+		icsURL := fmt.Sprintf("/api/booking/calendar.ics?date=%s&time=%s&name=%s",
+			bookingDate, bookingTime, html.EscapeString(name))
+		calendarLinkHTML = fmt.Sprintf(`
+			<div class="mt-3 pt-3 border-t border-emerald-300 dark:border-emerald-800 flex items-center justify-between gap-2 flex-wrap">
+				<span class="text-xs text-emerald-800 dark:text-emerald-300 font-medium">Событие визита:</span>
+				<a href="%s" download="visit.ics" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs transition-colors shadow-xs">
+					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+					<span>Добавить в календарь (.ics)</span>
+				</a>
+			</div>
+		`, icsURL)
 	} else {
 		successMsg = fmt.Sprintf(i18n.T(ctx, "booking.success_simple"),
 			"<strong>"+html.EscapeString(phone)+"</strong>")
@@ -182,13 +240,67 @@ func (h *LeadHandler) HandleCreateLead(e *core.RequestEvent) error {
 
 	successTitle := i18n.T(ctx, "booking.success_title")
 	successHTML := fmt.Sprintf(`
-		<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-800 text-sm shadow-sm transition-all duration-200">
+		<div class="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xl text-emerald-800 dark:text-emerald-200 text-sm shadow-sm transition-all duration-200">
 			<div class="font-bold flex items-center gap-2">
 				<svg class="w-5 h-5 text-emerald-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
 				%s
 			</div>
-			<p class="mt-2 text-xs text-emerald-700">%s</p>
+			<p class="mt-2 text-xs text-emerald-700 dark:text-emerald-300">%s</p>
+			%s
 		</div>
-	`, html.EscapeString(successTitle), successMsg)
+	`, html.EscapeString(successTitle), successMsg, calendarLinkHTML)
 	return e.HTML(http.StatusOK, successHTML)
 }
+
+// HandleApplyVacancy processes HR job applications submitted from careers section/page (Блок 4: HR).
+func (h *LeadHandler) HandleApplyVacancy(e *core.RequestEvent) error {
+	name := strings.TrimSpace(e.Request.FormValue("name"))
+	phone := strings.TrimSpace(e.Request.FormValue("phone"))
+	vacancyTitle := strings.TrimSpace(e.Request.FormValue("vacancy_title"))
+	resumeLink := strings.TrimSpace(e.Request.FormValue("resume_link"))
+	honeypot := e.Request.FormValue("company_website_url")
+
+	if honeypot != "" {
+		return e.HTML(http.StatusOK, `<div class="p-4 bg-emerald-50 rounded-xl text-xs text-emerald-800">Спасибо! Заявка принята.</div>`)
+	}
+
+	if name == "" || phone == "" {
+		return e.HTML(http.StatusBadRequest, `<div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs font-semibold">Пожалуйста, укажите имя и телефон для связи.</div>`)
+	}
+
+	if vacancyTitle == "" {
+		vacancyTitle = "Специалист"
+	}
+
+	err := data.CreateVacancyLead(h.app, name, phone, "", vacancyTitle, resumeLink, "")
+	if err != nil {
+		return e.HTML(http.StatusInternalServerError, `<div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs font-semibold">Не удалось сохранить отклик. Пожалуйста, позвоните нам напрямую.</div>`)
+	}
+
+	settings := data.GetSiteSettings(h.app)
+	leadModel := models.Lead{
+		Name:    name,
+		Phone:   phone,
+		Source:  "vacancy",
+		Status:  "новая",
+		Payload: map[string]interface{}{
+			"action_type": "hr_application",
+			"vacancy":     vacancyTitle,
+			"resume":      resumeLink,
+		},
+	}
+	h.eventBus.Publish(context.Background(), events.LeadCreatedEvent{
+		Settings: settings,
+		Lead:     leadModel,
+	})
+
+	successHTML := fmt.Sprintf(`
+		<div class="p-4 bg-emerald-50 border border-emerald-300 rounded-xl text-emerald-900 text-xs shadow-xs">
+			<div class="font-bold text-sm mb-1">✓ Отклик успешно отправлен!</div>
+			<p class="text-emerald-700">Спасибо, %s! Наш HR-специалист свяжется с вами по указанному телефону для обсуждения вакансии «%s».</p>
+		</div>
+	`, html.EscapeString(name), html.EscapeString(vacancyTitle))
+
+	return e.HTML(http.StatusOK, successHTML)
+}
+

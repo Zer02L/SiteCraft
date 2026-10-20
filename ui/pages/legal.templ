@@ -1,0 +1,190 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/components/base"
+	"sitecraft/ui/layouts"
+
+	icons "github.com/bryanvaz/go-templ-lucide-icons"
+)
+
+templ LegalPage(settings models.SiteSettings, content models.SiteContent, docType string) {
+	@layouts.Base(getDocTitle(docType)+" — "+settings.SiteName, "Официальные правовые документы и соблюдение требований 152-ФЗ", settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
+
+		<main class="flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8">
+			<div class="max-w-4xl mx-auto">
+				<!-- Переключатель документов и кнопка печати -->
+				<div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8 pb-4 border-b border-content/10">
+					<div class="flex items-center gap-2">
+						<a
+							href="/privacy"
+							class={ fmt.Sprintf("px-4 py-2 rounded-xl text-xs font-bold transition %s", getActiveDocClass(docType == "privacy")) }
+						>
+							Политика конфиденциальности (152-ФЗ)
+						</a>
+						<a
+							href="/terms"
+							class={ fmt.Sprintf("px-4 py-2 rounded-xl text-xs font-bold transition %s", getActiveDocClass(docType == "terms")) }
+						>
+							Пользовательское соглашение и Оферта
+						</a>
+					</div>
+
+					<button
+						type="button"
+						onclick="window.print()"
+						class="text-xs font-semibold text-content-muted hover:text-primary transition flex items-center gap-1.5 cursor-pointer"
+					>
+						@icons.Printer(templ.Attributes{"class": "w-3.5 h-3.5"})
+						<span>Распечатать</span>
+					</button>
+				</div>
+
+				<!-- Тело юридического документа -->
+				<div class="bg-surface rounded-2xl p-6 sm:p-10 border border-content/10 shadow-sm text-xs sm:text-sm text-content/90 leading-relaxed space-y-6">
+					if docType == "terms" {
+						<!-- ПОЛЬЗОВАТЕЛЬСКОЕ СОГЛАШЕНИЕ И ОФЕРТА -->
+						<div class="border-b border-content/10 pb-4">
+							@base.Badge(base.BadgeProps{
+								Variant: base.BadgeAccent,
+								Class:   "mb-2 uppercase tracking-wider text-[10px]",
+							}) {
+								Публичная оферта
+							}
+							<h1 class="text-xl sm:text-2xl font-serif-title font-bold text-content">Пользовательское соглашение и условия предоставления услуг</h1>
+							<p class="text-xs text-content-muted mt-1">Редакция действует с 1 января 2026 года</p>
+						</div>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">1. Общие положения</h2>
+							<p>
+								Настоящее Пользовательское соглашение (далее — «Соглашение») регулирует отношения между <strong>{ settings.LegalEntity }</strong> (ОГРН { settings.OGRN }, ИНН { settings.INN }, адрес: { settings.LegalAddress }), именуемым в дальнейшем «Исполнитель», и любым дееспособным физическим или юридическим лицом, использующим настоящий сайт (далее — «Пользователь»).
+							</p>
+							<p>
+								Использование сайта, заполнение онлайн-форм, бронирование слотов, оформление заказов через электронную корзину означает безоговорочное согласие Пользователя с настоящим Соглашением.
+							</p>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">2. Предмет соглашения и порядок оформления услуг</h2>
+							<p>
+								Исполнитель предоставляет Пользователю доступ к информации об услугах, графику записи к специалистам, калькуляторам сметы и трекеру заказов в режиме реального времени.
+							</p>
+							<p>
+								Окончательная стоимость и перечень выполняемых работ определяются заказ-нарядом или договором, подписываемым сторонами при личном визите либо согласовании спецификации.
+							</p>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">3. Оплата и электронные платежи</h2>
+							<p>
+								Онлайн-платежи на сайте осуществляются через защищенные каналы эквайринга в соответствии со стандартами безопасности PCI DSS. Исполнитель не осуществляет сбор и хранение данных банковских карт Пользователя.
+							</p>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">4. Реквизиты Исполнителя</h2>
+							<div class="p-4 bg-surface-muted rounded-xl border border-content/10 font-mono text-xs space-y-1">
+								<div><strong>Организация:</strong> { settings.LegalEntity }</div>
+								<div><strong>ИНН / КПП:</strong> { settings.INN } / { settings.KPP }</div>
+								<div><strong>ОГРН:</strong> { settings.OGRN }</div>
+								<div><strong>Юридический адрес:</strong> { settings.LegalAddress }</div>
+								<div><strong>Банк:</strong> { settings.BankName } (БИК { settings.BankBIK })</div>
+								<div><strong>Р/с:</strong> { settings.BankAccount }</div>
+								<div><strong>К/с:</strong> { settings.BankCorr }</div>
+								<div><strong>Email:</strong> { settings.ContactEmail }</div>
+							</div>
+						</section>
+					} else {
+						<!-- ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ (152-ФЗ) -->
+						<div class="border-b border-content/10 pb-4">
+							@base.Badge(base.BadgeProps{
+								Variant: base.BadgeAccent,
+								Class:   "mb-2 uppercase tracking-wider text-[10px]",
+							}) {
+								152-ФЗ РФ
+							}
+							<h1 class="text-xl sm:text-2xl font-serif-title font-bold text-content">Политика в отношении обработки персональных данных</h1>
+							<p class="text-xs text-content-muted mt-1">В соответствии с требованиями Федерального закона № 152-ФЗ «О персональных данных»</p>
+						</div>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">1. Общие положения</h2>
+							<p>
+								Настоящая Политика обработки персональных данных составлена в соответствии с п. 2 ст. 18.1 Федерального закона от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки персональных данных и меры по обеспечению безопасности, предпринимаемые <strong>{ settings.LegalEntity }</strong> (далее — «Оператор»).
+							</p>
+							<p>
+								Оператор ставит своей важнейшей целью и условием осуществления своей деятельности соблюдение прав и свобод человека и гражданина при обработке его персональных данных, в том числе защиты прав на неприкосновенность частной жизни, личную и семейную тайну.
+							</p>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">2. Категории обрабатываемых данных</h2>
+							<p>Оператор обрабатывает следующие персональные данные Пользователей:</p>
+							<ul class="list-disc pl-5 space-y-1 text-content-muted">
+								<li>Фамилия, имя, отчество;</li>
+								<li>Номера контактных телефонов;</li>
+								<li>Адрес электронной почты (e-mail);</li>
+								<li>Адрес доставки / локации (при оформлении курьерской доставки);</li>
+								<li>Обезличенные технические данные о посетителях (файлы cookie, UTM-метки, IP-адрес) с помощью сервисов веб-аналитики без передачи третьим лицам.</li>
+							</ul>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">3. Цели обработки персональных данных</h2>
+							<p>Персональные данные собираются исключительно для следующих целей:</p>
+							<ul class="list-disc pl-5 space-y-1 text-content-muted">
+								<li>Обработка входящих онлайн-заявок, бронирование слотов визита к специалистам;</li>
+								<li>Оформление и доставка заказов, ведение электронной сервисной книжки;</li>
+								<li>Направление триггерных уведомлений и напоминаний о времени визита (Telegram / Email);</li>
+								<li>Рассмотрение резюме соискателей на открытые вакансии.</li>
+							</ul>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">4. Порядок сбора, хранения и уничтожения</h2>
+							<p>
+								Безопасность персональных данных обеспечивается реализацией правовых, организационных и технических мер, необходимых для выполнения в полном объеме требований действующего законодательства в области защиты персональных данных.
+							</p>
+							<p>
+								Срок обработки персональных данных является неограниченным до момента отзыва согласия субъектом. Пользователь может в любой момент отозвать свое согласие, направив уведомление на электронную почту Оператора: <strong>{ settings.ContactEmail }</strong> с пометкой «Отзыв согласия на обработку персональных данных».
+							</p>
+						</section>
+
+						<section class="space-y-3">
+							<h2 class="text-sm sm:text-base font-bold text-content">5. Реквизиты и контакты Оператора</h2>
+							<div class="p-4 bg-surface-muted rounded-xl border border-content/10 font-mono text-xs space-y-1">
+								<div><strong>Оператор:</strong> { settings.LegalEntity }</div>
+								<div><strong>ИНН:</strong> { settings.INN }, <strong>ОГРН:</strong> { settings.OGRN }</div>
+								<div><strong>Адрес:</strong> { settings.LegalAddress }</div>
+								<div><strong>Email:</strong> { settings.ContactEmail }</div>
+							</div>
+						</section>
+					}
+				</div>
+			</div>
+		</main>
+
+		@components.Footer(content, settings)
+	}
+}
+
+func getDocTitle(docType string) string {
+	if docType == "terms" {
+		return "Пользовательское соглашение и Оферта"
+	}
+	return "Политика конфиденциальности (152-ФЗ)"
+}
+
+func getActiveDocClass(active bool) string {
+	if active {
+		return "bg-primary text-white shadow-sm"
+	}
+	return "bg-surface-muted text-content-muted hover:text-content border border-content/10"
+}

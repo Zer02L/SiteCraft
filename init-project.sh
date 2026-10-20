@@ -63,13 +63,15 @@ if [ -z "$PRESET" ]; then
     echo -e "  ${GREEN}2)${RESET} 🏥 Медицинский центр / Клиника / УЗИ   (${CYAN}medical${RESET})"
     echo -e "  ${GREEN}3)${RESET} 🚗 Автосервис / СТО / Диагностика      (${CYAN}auto${RESET})"
     echo -e "  ${GREEN}4)${RESET} 🌸 Салон красоты / SPA / Стилисты      (${CYAN}beauty${RESET})"
+    echo -e "  ${GREEN}5)${RESET} 🧪 Тестовый полигон всех 20 модулей    (${CYAN}test${RESET})"
     echo ""
-    read -p "Введите номер [1-4] (по умолчанию 1): " PRESET_CHOICE
+    read -p "Введите номер [1-5] (по умолчанию 1): " PRESET_CHOICE
 
     case "$PRESET_CHOICE" in
         2) PRESET="medical" ;;
         3) PRESET="auto" ;;
         4) PRESET="beauty" ;;
+        5) PRESET="test" ;;
         *) PRESET="legal" ;;
     esac
 fi

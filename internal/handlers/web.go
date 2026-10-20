@@ -34,14 +34,45 @@ func (h *WebHandler) HandleHome(e *core.RequestEvent) error {
 	services := data.GetServices(h.app)
 	bookedSlots := data.GetBookedSlots(h.app)
 	blocks := data.GetPageBlocks(h.app)
+	resources := data.GetResources(h.app)
+	reviews := data.GetReviews(h.app)
+	branches := data.GetBranches(h.app)
+	vacancies := data.GetVacancies(h.app)
 
 	// Автоматическая локализация контента и сервисов при переключении на EN
 	ctx := e.Request.Context()
 	content = i18n.LocalizeContent(ctx, content)
 	services = i18n.LocalizeServices(ctx, services)
 
+	// Серверный A/B сплит-тестинг (Zero-FOOC, сохранение PageSpeed 100/100)
+	abVariant := GetABVariant(ctx)
+	if abVariant == "B" {
+		if content.HeroTitleB != "" {
+			content.HeroTitle = content.HeroTitleB
+		}
+		if content.HeroSubtitleB != "" {
+			content.HeroSubtitle = content.HeroSubtitleB
+		}
+		if content.HeroBadge != "" && content.HeroTitleB == "" {
+			// Органичный акцент для варианта B, если кастомный заголовок еще не задан в PB
+			content.HeroBadge = "⚡ Акция: Быстрый прием без очередей"
+		}
+	}
+
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-	return pages.Home(settings, content, services, bookedSlots, blocks).Render(ctx, e.Response)
+	return pages.Home(settings, content, services, bookedSlots, blocks, resources, reviews, branches, vacancies).Render(ctx, e.Response)
+}
+
+// HandleRecentActivity returns depersonalized recent marketing events as JSON for FOMO toast.
+func (h *WebHandler) HandleRecentActivity(e *core.RequestEvent) error {
+	items := data.GetRecentActivity(h.app)
+	return e.JSON(http.StatusOK, items)
+}
+
+// HandleResources returns list of active specialists/resources as JSON.
+func (h *WebHandler) HandleResources(e *core.RequestEvent) error {
+	items := data.GetResources(h.app)
+	return e.JSON(http.StatusOK, items)
 }
 
 // HandleMapFrame serves lazy-loaded interactive map iframe via HTMX.
@@ -51,9 +82,10 @@ func (h *WebHandler) HandleMapFrame(e *core.RequestEvent) error {
 	return sections.MapFrame(content.MapIframe, "Интерактивная карта — "+content.HeroTitle).Render(e.Request.Context(), e.Response)
 }
 
-// HandleSlots returns booked time slots as JSON.
+// HandleSlots returns booked time slots as JSON with optional resource filtering.
 func (h *WebHandler) HandleSlots(e *core.RequestEvent) error {
-	bookedSlots := data.GetBookedSlots(h.app)
+	resourceID := strings.TrimSpace(e.Request.URL.Query().Get("resource_id"))
+	bookedSlots := data.GetBookedSlots(h.app, resourceID)
 	return e.JSON(http.StatusOK, bookedSlots)
 }
 
@@ -197,4 +229,55 @@ func (h *WebHandler) HandleSitemap(e *core.RequestEvent) error {
 	_, err := e.Response.Write([]byte(sb.String()))
 	return err
 }
+
+// HandleBranches returns list of active branches as JSON (Блок 4: Сеть филиалов).
+func (h *WebHandler) HandleBranches(e *core.RequestEvent) error {
+	items := data.GetBranches(h.app)
+	return e.JSON(http.StatusOK, items)
+}
+
+// HandlePrivacy renders 152-FZ Privacy Policy document page (Блок 4: 152-ФЗ).
+func (h *WebHandler) HandlePrivacy(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	content := data.GetSiteContent(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.LegalPage(settings, content, "privacy").Render(e.Request.Context(), e.Response)
+}
+
+// HandleTerms renders Terms of Service and Public Offer document page (Блок 4: 152-ФЗ).
+func (h *WebHandler) HandleTerms(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	content := data.GetSiteContent(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.LegalPage(settings, content, "terms").Render(e.Request.Context(), e.Response)
+}
+
+// HandleCareers renders the Careers and HR job opportunities page (Блок 4: HR).
+func (h *WebHandler) HandleCareers(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	content := data.GetSiteContent(h.app)
+	vacancies := data.GetVacancies(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.CareersPage(settings, content, vacancies).Render(e.Request.Context(), e.Response)
+}
+
+// HandleInvoice renders print-ready B2B invoice and act (Блок 4: Invoicing).
+func (h *WebHandler) HandleInvoice(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	orderCode := strings.TrimSpace(e.Request.PathValue("code"))
+	if orderCode == "" {
+		orderCode = strings.TrimSpace(e.Request.URL.Query().Get("order_code"))
+	}
+
+	invoice, err := data.GetInvoiceData(h.app, orderCode)
+	if err != nil || invoice == nil {
+		e.Response.Header().Set("Location", "/")
+		e.Response.WriteHeader(http.StatusTemporaryRedirect)
+		return nil
+	}
+
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.InvoicePage(invoice, settings).Render(e.Request.Context(), e.Response)
+}
+
 

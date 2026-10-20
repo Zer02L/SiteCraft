@@ -27,10 +27,14 @@ func ExportStaticSite(app core.App, outputDir string) error {
 	services := data.GetServices(app)
 	bookedSlots := data.GetBookedSlots(app)
 	blocks := data.GetPageBlocks(app)
+	resources := data.GetResources(app)
+	reviews := data.GetReviews(app)
+	branches := data.GetBranches(app)
+	vacancies := data.GetVacancies(app)
 
 	// 1. Render index.html via Templ
 	var buf bytes.Buffer
-	component := pages.Home(settings, content, services, bookedSlots, blocks)
+	component := pages.Home(settings, content, services, bookedSlots, blocks, resources, reviews, branches, vacancies)
 	if err := component.Render(context.Background(), &buf); err != nil {
 		return fmt.Errorf("failed to render home page template: %w", err)
 	}

@@ -12,6 +12,8 @@ templ CartDrawer(settings models.SiteSettings) {
 		document.addEventListener('alpine:init', () => {
 			Alpine.store('cart', {
 				isOpen: false,
+				deliveryType: 'pickup', // 'pickup' or 'courier'
+				deliveryZone: 'city',   // 'city', 'suburb', 'region'
 				items: JSON.parse(localStorage.getItem('sitecraft_cart') || '[]'),
 				save() {
 					localStorage.setItem('sitecraft_cart', JSON.stringify(this.items));
@@ -27,7 +29,8 @@ templ CartDrawer(settings models.SiteSettings) {
 							price: parseFloat(item.price) || 0,
 							price_str: item.price_str || '',
 							qty: 1,
-							image: item.image || ''
+							image: item.image || '',
+							is_upsell: item.is_upsell || false
 						});
 					}
 					this.save();
@@ -52,11 +55,24 @@ templ CartDrawer(settings models.SiteSettings) {
 					this.items = [];
 					this.save();
 				},
+				hasItem(id) {
+					return this.items.some(i => i.id === id);
+				},
 				count() {
 					return this.items.reduce((sum, i) => sum + i.qty, 0);
 				},
 				total() {
 					return this.items.reduce((sum, i) => sum + (i.price * i.qty), 0);
+				},
+				deliveryPrice() {
+					if (this.deliveryType === 'pickup') return 0;
+					if (this.deliveryZone === 'suburb') return 650;
+					if (this.deliveryZone === 'region') return 1200;
+					// city: free over 2500 RUB
+					return this.total() >= 2500 ? 0 : 300;
+				},
+				grandTotal() {
+					return this.total() + this.deliveryPrice();
 				},
 				getItemsJSON() {
 					return JSON.stringify(this.items);
@@ -200,6 +216,47 @@ templ CartDrawer(settings models.SiteSettings) {
 						</template>
 					</div>
 
+					<!-- Модуль #2: Сопутствующие товары (Cross-Sell / Up-Sell) -->
+					<div x-show="$store.cart.items.length > 0" class="p-3.5 rounded-2xl bg-surface-muted/70 border border-content/10 space-y-2.5">
+						<div class="flex items-center justify-between">
+							<span class="text-xs font-bold text-content flex items-center gap-1.5">
+								@icons.Sparkles(templ.Attributes{"class": "w-3.5 h-3.5 text-accent"})
+								<span>Рекомендуем добавить:</span>
+							</span>
+							<span class="text-[10px] text-accent font-semibold">1 клик</span>
+						</div>
+						<div class="space-y-2">
+							<div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-surface border border-content/10 text-xs">
+								<div class="min-w-0">
+									<p class="font-bold text-content truncate">⚡ Экспресс-выезд / сборка</p>
+									<p class="text-[11px] text-content-muted">+390 ₽</p>
+								</div>
+								<button
+									type="button"
+									x-on:click="$store.cart.hasItem('upsell_express') ? $store.cart.remove('upsell_express') : $store.cart.add({ id: 'upsell_express', title: 'Экспресс-выезд / сборка', price: 390, is_upsell: true })"
+									:class="$store.cart.hasItem('upsell_express') ? 'bg-emerald-500 text-white' : 'bg-accent/20 text-accent hover:bg-accent hover:text-primary-dark'"
+									class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer"
+								>
+									<span x-text="$store.cart.hasItem('upsell_express') ? '✓ В заказе' : '+ Добавить'"></span>
+								</button>
+							</div>
+							<div class="flex items-center justify-between gap-2 p-2 rounded-xl bg-surface border border-content/10 text-xs">
+								<div class="min-w-0">
+									<p class="font-bold text-content truncate">🛡️ Расширенная гарантия 1 год</p>
+									<p class="text-[11px] text-content-muted">+590 ₽</p>
+								</div>
+								<button
+									type="button"
+									x-on:click="$store.cart.hasItem('upsell_warranty') ? $store.cart.remove('upsell_warranty') : $store.cart.add({ id: 'upsell_warranty', title: 'Расширенная гарантия 1 год', price: 590, is_upsell: true })"
+									:class="$store.cart.hasItem('upsell_warranty') ? 'bg-emerald-500 text-white' : 'bg-accent/20 text-accent hover:bg-accent hover:text-primary-dark'"
+									class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 cursor-pointer"
+								>
+									<span x-text="$store.cart.hasItem('upsell_warranty') ? '✓ В заказе' : '+ Добавить'"></span>
+								</button>
+							</div>
+						</div>
+					</div>
+
 					<!-- Форма оформления заказа -->
 					<div x-show="$store.cart.items.length > 0" class="pt-4 border-t border-content/10">
 						<form
@@ -236,14 +293,80 @@ templ CartDrawer(settings models.SiteSettings) {
 								/>
 							</div>
 
+							<!-- Модуль #1: Доставка и гео-зоны -->
+							<div>
+								<label class="block text-xs font-semibold text-content-muted mb-1.5">Способ получения</label>
+								<div class="grid grid-cols-2 gap-2 text-xs">
+									<label
+										:class="$store.cart.deliveryType === 'pickup' ? 'border-accent bg-accent/5' : 'border-content/15'"
+										class="border rounded-xl p-2.5 flex items-center gap-2 cursor-pointer transition"
+									>
+										<input type="radio" name="delivery_type" value="pickup" x-model="$store.cart.deliveryType" class="text-accent"/>
+										<div>
+											<span class="block font-semibold">Самовывоз</span>
+											<span class="text-[10px] text-content-muted">Бесплатно</span>
+										</div>
+									</label>
+									<label
+										:class="$store.cart.deliveryType === 'courier' ? 'border-accent bg-accent/5' : 'border-content/15'"
+										class="border rounded-xl p-2.5 flex items-center gap-2 cursor-pointer transition"
+									>
+										<input type="radio" name="delivery_type" value="courier" x-model="$store.cart.deliveryType" class="text-accent"/>
+										<div>
+											<span class="block font-semibold">Курьер</span>
+											<span class="text-[10px] text-accent font-semibold" x-text="$store.cart.deliveryPrice() === 0 ? 'Бесплатно' : $store.cart.deliveryPrice() + ' ₽'"></span>
+										</div>
+									</label>
+								</div>
+							</div>
+
+							<div x-show="$store.cart.deliveryType === 'courier'" class="space-y-1.5 pt-1">
+								<label class="block text-[11px] font-semibold text-content-muted">Тарифная зона доставки</label>
+								<select
+									name="delivery_zone"
+									x-model="$store.cart.deliveryZone"
+									class="w-full px-3 py-2 rounded-xl border border-content/15 bg-surface text-content text-xs focus:outline-none focus:border-accent"
+								>
+									<option value="city">По городу — 300 ₽ (бесплатно от 2 500 ₽)</option>
+									<option value="suburb">Пригород (до 15 км) — 650 ₽</option>
+									<option value="region">Область (до 30 км) — 1 200 ₽</option>
+								</select>
+							</div>
+
 							<div>
 								<label class="block text-xs font-semibold text-content-muted mb-1">Адрес доставки или комментарий</label>
 								<textarea
 									name="comment"
 									rows="2"
-									placeholder="Адрес, время или пожелания к заказу..."
+									placeholder="Адрес доставки, удобное время или пожелания..."
 									class="w-full px-3.5 py-2 rounded-xl border border-content/15 bg-surface text-content text-xs focus:outline-none focus:border-accent"
 								></textarea>
+							</div>
+
+							<!-- Модуль #4: Промокоды и купоны -->
+							<div class="space-y-1.5 pt-1">
+								<label class="block text-xs font-semibold text-content-muted">Промокод на скидку</label>
+								<div class="flex items-center gap-2">
+									<input
+										type="text"
+										name="code"
+										id="cart-coupon-input"
+										placeholder="PROMO10 или WELCOME500"
+										class="flex-1 px-3 py-2 rounded-xl border border-content/15 bg-surface text-content text-xs uppercase placeholder:normal-case focus:outline-none focus:border-accent"
+									/>
+									<button
+										type="button"
+										hx-post="/api/cart/validate-coupon"
+										hx-include="#cart-coupon-input"
+										:hx-vals="'{&quot;subtotal&quot;: ' + $store.cart.total() + '}'"
+										hx-target="#coupon-result"
+										hx-swap="innerHTML"
+										class="px-3.5 py-2 rounded-xl bg-surface-muted border border-content/15 hover:border-accent text-xs font-bold transition cursor-pointer"
+									>
+										Применить
+									</button>
+								</div>
+								<div id="coupon-result"></div>
 							</div>
 
 							<!-- Способ оплаты -->
@@ -265,20 +388,30 @@ templ CartDrawer(settings models.SiteSettings) {
 								<input type="hidden" name="pay_online" value="false"/>
 							}
 
-							<!-- Итого и кнопка заказа -->
-							<div class="pt-4 border-t border-content/10">
-								<div class="flex items-center justify-between mb-4">
-									<span class="text-sm font-semibold text-content-muted">Итого к оплате:</span>
-									<span class="text-xl font-extrabold text-accent" x-text="$store.cart.total().toLocaleString('ru-RU') + ' ₽'"></span>
+							<!-- Итоговый расчет и кнопка заказа -->
+							<div class="pt-4 border-t border-content/10 space-y-1.5 text-xs">
+								<div class="flex items-center justify-between text-content-muted">
+									<span>Товары:</span>
+									<span x-text="$store.cart.total().toLocaleString('ru-RU') + ' ₽'"></span>
+								</div>
+								<div x-show="$store.cart.deliveryType === 'courier'" class="flex items-center justify-between text-content-muted">
+									<span>Доставка:</span>
+									<span x-text="$store.cart.deliveryPrice() === 0 ? 'Бесплатно' : $store.cart.deliveryPrice() + ' ₽'"></span>
+								</div>
+								<div class="flex items-center justify-between pt-1 border-t border-content/10 font-bold text-sm">
+									<span class="text-content">Итого:</span>
+									<span class="text-xl font-extrabold text-accent" x-text="$store.cart.grandTotal().toLocaleString('ru-RU') + ' ₽'"></span>
 								</div>
 
-								<button
-									type="submit"
-									class="w-full py-3.5 rounded-2xl bg-accent text-primary-dark font-extrabold text-sm shadow-xl hover:brightness-105 active:scale-[0.99] transition flex items-center justify-center gap-2 cursor-pointer"
-								>
-									@icons.CheckCircle(templ.Attributes{"class": "w-4 h-4"})
-									<span>Подтвердить и заказать</span>
-								</button>
+								<div class="pt-2">
+									<button
+										type="submit"
+										class="w-full py-3.5 rounded-2xl bg-accent text-primary-dark font-extrabold text-sm shadow-xl hover:brightness-105 active:scale-[0.99] transition flex items-center justify-center gap-2 cursor-pointer"
+									>
+										@icons.CheckCircle(templ.Attributes{"class": "w-4 h-4"})
+										<span>Подтвердить и заказать</span>
+									</button>
+								</div>
 							</div>
 						</form>
 					</div>

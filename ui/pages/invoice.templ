@@ -1,0 +1,266 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+)
+
+templ InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) {
+	<!DOCTYPE html>
+	<html lang="ru">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>{ fmt.Sprintf("Счет на оплату %s — %s", invoice.InvoiceNumber, invoice.Supplier.Name) }</title>
+			<link rel="stylesheet" href="/assets/styles.css"/>
+			<style>
+				@media print {
+					.no-print {
+						display: none !important;
+					}
+					body {
+						background: #fff !important;
+						color: #000 !important;
+						font-size: 11pt !important;
+						padding: 0 !important;
+						margin: 0 !important;
+					}
+					.invoice-container {
+						border: none !important;
+						box-shadow: none !important;
+						max-width: 100% !important;
+						padding: 0 !important;
+					}
+					@page {
+						size: A4 portrait;
+						margin: 15mm 15mm 15mm 15mm;
+					}
+				}
+			</style>
+		</head>
+		<body class="bg-slate-100 text-slate-900 font-sans antialiased min-h-screen py-6 px-4">
+			<!-- Панель управления печатью (скрывается при печати) -->
+			<div class="max-w-4xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-3 no-print bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+				<div class="flex items-center gap-2">
+					<span class="text-xl">📄</span>
+					<div>
+						<h1 class="text-sm font-bold text-slate-800">{ fmt.Sprintf("Счет на оплату %s", invoice.InvoiceNumber) }</h1>
+						<p class="text-xs text-slate-500">Официальный платежный документ для юридических лиц и ИП</p>
+					</div>
+				</div>
+				<div class="flex items-center gap-2">
+					if invoice.OrderCode != "" {
+						<a
+							href={ templ.URL("/track/" + invoice.OrderCode) }
+							class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition"
+						>
+							← К трекеру заказа
+						</a>
+					} else {
+						<a
+							href="/"
+							class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition"
+						>
+							← На главную
+						</a>
+					}
+					<button
+						type="button"
+						onclick="window.print()"
+						class="px-5 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow transition flex items-center gap-1.5 cursor-pointer"
+					>
+						<span>🖨️</span>
+						<span>Распечатать / В PDF</span>
+					</button>
+				</div>
+			</div>
+
+			<!-- Бланк счета формата А4 -->
+			<div class="invoice-container max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 text-[13px] leading-normal font-sans">
+				<!-- Предупреждение о сроке -->
+				<div class="text-[11px] text-slate-500 mb-4 border-b border-slate-200 pb-2">
+					Внимание! Оплата данного счета означает согласие с условиями выполнения работ и поставки. Уведомление об оплате обязательно.
+				</div>
+
+				<!-- Банковские реквизиты поставщика (Образец платежного поручения) -->
+				<table class="w-full border-collapse border border-slate-800 mb-6 text-xs">
+					<tbody>
+						<tr>
+							<td colspan="2" rowspan="2" class="border border-slate-800 p-2 align-top w-7/12">
+								<div class="text-[10px] text-slate-500">Банк получателя</div>
+								<div class="font-bold">{ invoice.Supplier.BankName }</div>
+							</td>
+							<td class="border border-slate-800 p-2 text-[10px] w-20">БИК</td>
+							<td class="border border-slate-800 p-2 font-mono font-bold">{ invoice.Supplier.BankBIK }</td>
+						</tr>
+						<tr>
+							<td class="border border-slate-800 p-2 text-[10px]">Сч. №</td>
+							<td class="border border-slate-800 p-2 font-mono font-bold">{ invoice.Supplier.BankCorr }</td>
+						</tr>
+						<tr>
+							<td class="border border-slate-800 p-2 w-36">
+								<div class="text-[10px] text-slate-500">ИНН { invoice.Supplier.INN }</div>
+							</td>
+							<td class="border border-slate-800 p-2">
+								<div class="text-[10px] text-slate-500">КПП { invoice.Supplier.KPP }</div>
+							</td>
+							<td rowspan="2" class="border border-slate-800 p-2 text-[10px] align-top">Сч. №</td>
+							<td rowspan="2" class="border border-slate-800 p-2 font-mono font-bold align-top">{ invoice.Supplier.BankAccount }</td>
+						</tr>
+						<tr>
+							<td colspan="2" class="border border-slate-800 p-2 align-top">
+								<div class="text-[10px] text-slate-500">Получатель</div>
+								<div class="font-bold">{ invoice.Supplier.Name }</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- Заголовок счета -->
+				<div class="border-b-2 border-slate-900 pb-2 mb-6">
+					<h2 class="text-xl sm:text-2xl font-bold text-slate-900">
+						{ fmt.Sprintf("Счет на оплату № %s от %s", invoice.InvoiceNumber, invoice.InvoiceDate) }
+					</h2>
+				</div>
+
+				<!-- Стороны сделки -->
+				<div class="space-y-2 mb-6 text-xs">
+					<div class="grid grid-cols-12 gap-2">
+						<span class="col-span-2 text-slate-500 font-semibold">Поставщик:</span>
+						<div class="col-span-10">
+							<span class="font-bold">{ invoice.Supplier.Name }</span>,
+							ИНН { invoice.Supplier.INN }, ОГРН { invoice.Supplier.OGRN },
+							{ invoice.Supplier.Address }, тел.: { invoice.Supplier.Phone }
+						</div>
+					</div>
+					<div class="grid grid-cols-12 gap-2">
+						<span class="col-span-2 text-slate-500 font-semibold">Покупатель:</span>
+						<div class="col-span-10">
+							<span class="font-bold">{ invoice.Customer.Name }</span>,
+							{ invoice.Customer.Address }
+							if invoice.Customer.Phone != "" {
+								, тел.: { invoice.Customer.Phone }
+							}
+						</div>
+					</div>
+					if invoice.OrderCode != "" {
+						<div class="grid grid-cols-12 gap-2">
+							<span class="col-span-2 text-slate-500 font-semibold">Основание:</span>
+							<div class="col-span-10 text-slate-700">
+								Заказ-наряд / квитанция № { invoice.OrderCode }
+							</div>
+						</div>
+					}
+				</div>
+
+				<!-- Таблица товаров / услуг -->
+				<table class="w-full border-collapse border border-slate-800 mb-6 text-xs">
+					<thead>
+						<tr class="bg-slate-100 font-bold text-center">
+							<th class="border border-slate-800 p-2 w-10">№</th>
+							<th class="border border-slate-800 p-2 text-left">Товары (работы, услуги)</th>
+							<th class="border border-slate-800 p-2 w-16">Кол-во</th>
+							<th class="border border-slate-800 p-2 w-14">Ед.</th>
+							<th class="border border-slate-800 p-2 w-28 text-right">Цена</th>
+							<th class="border border-slate-800 p-2 w-28 text-right">Сумма</th>
+						</tr>
+					</thead>
+					<tbody>
+						for _, item := range invoice.Items {
+							<tr>
+								<td class="border border-slate-800 p-2 text-center">{ fmt.Sprintf("%d", item.Index) }</td>
+								<td class="border border-slate-800 p-2">{ item.Title }</td>
+								<td class="border border-slate-800 p-2 text-center">{ fmt.Sprintf("%d", item.Quantity) }</td>
+								<td class="border border-slate-800 p-2 text-center">{ item.Unit }</td>
+								<td class="border border-slate-800 p-2 text-right font-mono">{ fmt.Sprintf("%.2f", item.Price) }</td>
+								<td class="border border-slate-800 p-2 text-right font-mono font-bold">{ fmt.Sprintf("%.2f", item.Amount) }</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+
+				<!-- Итоги -->
+				<div class="flex flex-col items-end space-y-1 text-xs mb-6">
+					<div class="flex justify-between w-64">
+						<span class="font-bold">Итого:</span>
+						<span class="font-mono font-bold">{ fmt.Sprintf("%.2f ₽", invoice.TotalAmount) }</span>
+					</div>
+					<div class="flex justify-between w-64 text-slate-600">
+						<span>В том числе НДС:</span>
+						<span>{ invoice.VATText }</span>
+					</div>
+					<div class="flex justify-between w-64 text-sm font-bold border-t border-slate-400 pt-1">
+						<span>Всего к оплате:</span>
+						<span class="font-mono text-blue-900">{ fmt.Sprintf("%.2f ₽", invoice.TotalAmount) }</span>
+					</div>
+				</div>
+
+				<div class="text-xs mb-6 border-b border-slate-200 pb-4">
+					<div>Всего наименований { fmt.Sprintf("%d", len(invoice.Items)) }, на сумму { fmt.Sprintf("%.2f ₽", invoice.TotalAmount) }</div>
+					<div class="font-bold mt-0.5">{ invoice.TotalInWords }</div>
+				</div>
+
+				<!-- Блок QR-оплаты по ГОСТ Р 56042-2014 и подписей -->
+				<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-2">
+					<!-- QR-код для мобильного банка -->
+					<div class="md:col-span-4 p-3 border border-slate-200 rounded-xl bg-slate-50 text-center flex flex-col items-center">
+						<div class="w-24 h-24 bg-white p-1.5 border border-slate-300 rounded-lg flex items-center justify-center shadow-inner">
+							<!-- Легковесный векторный SVG QR-символ стандарта ГОСТ -->
+							<svg viewBox="0 0 100 100" class="w-full h-full text-slate-900 fill-current">
+								<rect x="0" y="0" width="30" height="30" rx="3"></rect>
+								<rect x="5" y="5" width="20" height="20" fill="white"></rect>
+								<rect x="9" y="9" width="12" height="12"></rect>
+								<rect x="70" y="0" width="30" height="30" rx="3"></rect>
+								<rect x="75" y="5" width="20" height="20" fill="white"></rect>
+								<rect x="79" y="9" width="12" height="12"></rect>
+								<rect x="0" y="70" width="30" height="30" rx="3"></rect>
+								<rect x="5" y="75" width="20" height="20" fill="white"></rect>
+								<rect x="9" y="79" width="12" height="12"></rect>
+								<rect x="36" y="10" width="8" height="8"></rect>
+								<rect x="48" y="10" width="8" height="18"></rect>
+								<rect x="36" y="24" width="8" height="14"></rect>
+								<rect x="10" y="38" width="18" height="8"></rect>
+								<rect x="36" y="44" width="14" height="14"></rect>
+								<rect x="64" y="38" width="12" height="12"></rect>
+								<rect x="80" y="44" width="14" height="8"></rect>
+								<rect x="64" y="56" width="10" height="18"></rect>
+								<rect x="78" y="68" width="16" height="16"></rect>
+								<rect x="38" y="68" width="18" height="14"></rect>
+							</svg>
+						</div>
+						<span class="text-[10px] font-bold text-slate-700 mt-2">Оплата по QR (СБП / Банк)</span>
+						<span class="text-[9px] text-slate-500">Отсканируйте в приложении банка</span>
+					</div>
+
+					<!-- Подписи и факсимиле -->
+					<div class="md:col-span-8 space-y-4 text-xs">
+						<div class="flex items-center justify-between border-b border-slate-300 pb-1">
+							<span class="font-semibold text-slate-700">Руководитель</span>
+							<div class="flex items-center gap-4">
+								<span class="text-[10px] text-slate-400">/ подпись /</span>
+								<span class="font-bold text-slate-900">{ invoice.Supplier.Name }</span>
+							</div>
+						</div>
+						<div class="flex items-center justify-between border-b border-slate-300 pb-1">
+							<span class="font-semibold text-slate-700">Бухгалтер</span>
+							<div class="flex items-center gap-4">
+								<span class="text-[10px] text-slate-400">/ подпись /</span>
+								<span class="font-bold text-slate-900">{ invoice.Supplier.Name }</span>
+							</div>
+						</div>
+						<div class="flex items-center justify-end text-[10px] text-slate-400 gap-1 pt-1">
+							<span>М.П.</span>
+							<span>(Печать организации)</span>
+						</div>
+					</div>
+				</div>
+
+				if invoice.Notes != "" {
+					<div class="mt-8 pt-3 border-t border-slate-200 text-[10px] text-slate-400 leading-relaxed">
+						{ invoice.Notes }
+					</div>
+				}
+			</div>
+		</body>
+	</html>
+}

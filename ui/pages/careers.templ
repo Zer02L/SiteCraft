@@ -1,0 +1,30 @@
+package pages
+
+import (
+	"sitecraft/internal/models"
+	"sitecraft/ui/components"
+	"sitecraft/ui/layouts"
+	"sitecraft/ui/sections"
+)
+
+templ CareersPage(settings models.SiteSettings, content models.SiteContent, vacancies []models.VacancyItem) {
+	@layouts.Base("Вакансии и карьера — "+content.HeroTitle, "Работа в развивающейся компании: открытые позиции и достойные условия", settings) {
+		if settings.EnableA11y {
+			@components.A11yBar()
+		}
+		@components.Header(content, settings)
+
+		<main class="flex-grow bg-surface py-10 px-4 sm:px-6 lg:px-8">
+			@sections.CareersSection(vacancies, settings)
+		</main>
+
+		@components.Footer(content, settings)
+
+		if settings.EnableFloatingContact {
+			@components.FloatingContact(content, settings)
+		}
+		if settings.EnableLiveChat {
+			@components.ChatWidget(settings)
+		}
+	}
+}

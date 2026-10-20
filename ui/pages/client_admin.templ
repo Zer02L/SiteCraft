@@ -140,7 +140,7 @@ templ ClientInitialSetup(settings models.SiteSettings, errMsg string) {
 	}
 }
 
-templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, activeTab string) {
+templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, activeTab string) {
 	@layouts.Base("Кабинет управления — "+settings.SiteName, "Управление контактами, заявками и контентом", settings) {
 		<div class="min-h-screen bg-slate-950 text-slate-100 antialiased flex flex-col">
 			<!-- Шапка панели -->
@@ -247,6 +247,29 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 
 					<button
 						type="button"
+						hx-get="/client/tab/reviews"
+						hx-target="#admin-tab-content"
+						hx-swap="innerHTML"
+						hx-push-url="/client?tab=reviews"
+						@click="currentTab = 'reviews'"
+						:class="currentTab === 'reviews' ? 'border-amber-400 text-amber-400 bg-amber-400/5' : 'border-transparent text-slate-400 hover:text-slate-200'"
+						class={ "px-4 py-3 text-xs sm:text-sm font-semibold border-b-2 flex items-center gap-2 transition-colors cursor-pointer",
+							templ.KV("border-amber-400 text-amber-400 bg-amber-400/5", activeTab == "reviews"),
+							templ.KV("border-transparent text-slate-400 hover:text-slate-200", activeTab != "reviews") }
+					>
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+						</svg>
+						<span>Отзывы клиентов</span>
+						if len(reviews) > 0 {
+							<span class="ml-1 px-1.5 py-0.5 rounded-full text-[10px] bg-slate-800 text-slate-400 font-mono">
+								{ fmt.Sprintf("%d", len(reviews)) }
+							</span>
+						}
+					</button>
+
+					<button
+						type="button"
 						hx-get="/client/tab/security"
 						hx-target="#admin-tab-content"
 						hx-swap="innerHTML"
@@ -262,6 +285,24 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 						</svg>
 						<span>Безопасность</span>
 					</button>
+
+					<button
+						type="button"
+						hx-get="/client/tab/fleet"
+						hx-target="#admin-tab-content"
+						hx-swap="innerHTML"
+						hx-push-url="/client?tab=fleet"
+						@click="currentTab = 'fleet'"
+						:class="currentTab === 'fleet' ? 'border-amber-400 text-amber-400 bg-amber-400/5' : 'border-transparent text-slate-400 hover:text-slate-200'"
+						class={ "px-4 py-3 text-xs sm:text-sm font-semibold border-b-2 flex items-center gap-2 transition-colors cursor-pointer",
+							templ.KV("border-amber-400 text-amber-400 bg-amber-400/5", activeTab == "fleet"),
+							templ.KV("border-transparent text-slate-400 hover:text-slate-200", activeTab != "fleet") }
+					>
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+						</svg>
+						<span>Fleet Пульт</span>
+					</button>
 				</div>
 			</header>
 
@@ -271,6 +312,8 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 					@ClientContactsTab(content, settings)
 				} else if activeTab == "articles" {
 					@ClientArticlesTab(articles, trashArticles, false)
+				} else if activeTab == "reviews" {
+					@ClientReviewsTab(reviews)
 				} else if activeTab == "security" {
 					@ClientSecurityTab("", "")
 				} else {
@@ -367,17 +410,8 @@ templ ClientLeadsTab(leads []models.Lead) {
 											<span class="text-slate-600">—</span>
 										}
 									</td>
-									<td class="py-3.5 px-4 max-w-xs truncate">
-										if lead.Source != "" {
-											<span class="inline-block px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px] mr-1.5">
-												{ lead.Source }
-											</span>
-										}
-										if lead.Payload != nil {
-											if comment, ok := lead.Payload["comment"].(string); ok && comment != "" {
-												<span class="text-slate-400">{ comment }</span>
-											}
-										}
+									<td class="py-3.5 px-4">
+										@LeadDetailsCell(lead)
 									</td>
 									<td class="py-3.5 px-4 whitespace-nowrap">
 										@LeadStatusBadge(lead.Status)
@@ -456,17 +490,8 @@ templ LeadRowSingle(lead models.Lead) {
 				<span class="text-slate-600">—</span>
 			}
 		</td>
-		<td class="py-3.5 px-4 max-w-xs truncate">
-			if lead.Source != "" {
-				<span class="inline-block px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[10px] mr-1.5">
-					{ lead.Source }
-				</span>
-			}
-			if lead.Payload != nil {
-				if comment, ok := lead.Payload["comment"].(string); ok && comment != "" {
-					<span class="text-slate-400">{ comment }</span>
-				}
-			}
+		<td class="py-3.5 px-4">
+			@LeadDetailsCell(lead)
 		</td>
 		<td class="py-3.5 px-4 whitespace-nowrap">
 			@LeadStatusBadge(lead.Status)
@@ -488,6 +513,42 @@ templ LeadRowSingle(lead models.Lead) {
 			</div>
 		</td>
 	</tr>
+}
+
+templ LeadDetailsCell(lead models.Lead) {
+	<div class="flex flex-col gap-1 max-w-xs">
+		<div class="flex items-center gap-1.5 flex-wrap">
+			if lead.Source != "" {
+				<span class="inline-block px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] font-mono border border-slate-700">
+					{ lead.Source }
+				</span>
+			}
+			if lead.Payload != nil {
+				if utmSrc, ok := lead.Payload["utm_source"].(string); ok && utmSrc != "" {
+					<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono" title={ "Кампания: " + fmt.Sprintf("%v", lead.Payload["utm_campaign"]) }>
+						<span>🎯 { utmSrc }</span>
+					</span>
+				}
+				if qMap, ok := lead.Payload["quiz_summary"].(map[string]interface{}); ok {
+					if est, ok := qMap["estimated_price"]; ok {
+						<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px] font-mono">
+							💡 { fmt.Sprintf("%v ₽", est) }
+						</span>
+					}
+				}
+				if abVar, ok := lead.Payload["ab_variant"].(string); ok && (abVar == "A" || abVar == "B") {
+					<span class="inline-flex items-center px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-[10px] font-mono font-bold" title="A/B Split Test Variant">
+						<span>🧪 { abVar }</span>
+					</span>
+				}
+			}
+		</div>
+		if lead.Payload != nil {
+			if comment, ok := lead.Payload["comment"].(string); ok && comment != "" {
+				<div class="text-xs text-slate-400 line-clamp-2">{ comment }</div>
+			}
+		}
+	</div>
 }
 
 templ LeadsBadges(newCount int, inProgressCount int, totalCount int) {
@@ -1661,5 +1722,154 @@ templ ClientSecurityTab(msg string, errMsg string) {
 				</div>
 			</form>
 		</div>
+	</div>
+}
+
+templ ClientReviewsTab(reviews []models.ReviewItem) {
+	{{
+		publishedCount := 0
+		pendingCount := 0
+		totalScore := 0
+		for _, r := range reviews {
+			if r.IsPublished {
+				publishedCount++
+			} else {
+				pendingCount++
+			}
+			totalScore += r.Rating
+		}
+		avgScore := 0.0
+		if len(reviews) > 0 {
+			avgScore = float64(totalScore) / float64(len(reviews))
+		}
+	}}
+	<div>
+		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+			<div>
+				<div class="flex items-center gap-3 flex-wrap">
+					<h2 class="text-xl font-bold text-white tracking-tight">Модерация отзывов (Verified UGC)</h2>
+					<div class="flex items-center gap-2">
+						<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+							Опубликовано: <strong class="font-bold">{ fmt.Sprintf("%d", publishedCount) }</strong>
+						</span>
+						if pendingCount > 0 {
+							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">
+								На модерации: <strong class="font-bold">{ fmt.Sprintf("%d", pendingCount) }</strong>
+							</span>
+						}
+						if len(reviews) > 0 {
+							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-amber-300 border border-slate-700">
+								★ <strong class="font-bold">{ fmt.Sprintf("%.1f", avgScore) }</strong> / 5.0
+							</span>
+						}
+					</div>
+				</div>
+				<p class="text-xs text-slate-400 mt-1">Управление клиентскими отзывами, подтверждение модерации и публикация на витрине</p>
+			</div>
+		</div>
+
+		if len(reviews) == 0 {
+			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center">
+				<div class="w-12 h-12 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center mx-auto mb-3 text-xl">
+					★
+				</div>
+				<h3 class="text-white font-bold text-base mb-1">Отзывов пока нет</h3>
+				<p class="text-xs text-slate-400 max-w-sm mx-auto">
+					Клиенты могут оставлять отзывы в трекере заказов или на сайте. Они появятся здесь на модерацию.
+				</p>
+			</div>
+		} else {
+			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+				<div class="overflow-x-auto">
+					<table class="w-full text-left text-xs">
+						<thead class="bg-slate-800/60 text-slate-400 uppercase tracking-wider font-semibold border-b border-slate-800">
+							<tr>
+								<th class="py-3 px-4">Автор & Дата</th>
+								<th class="py-3 px-4">Оценка</th>
+								<th class="py-3 px-4">Услуга / Заказ</th>
+								<th class="py-3 px-4">Отзыв</th>
+								<th class="py-3 px-4">Статус</th>
+								<th class="py-3 px-4 text-right">Действия</th>
+							</tr>
+						</thead>
+						<tbody class="divide-y divide-slate-800/60 text-slate-300">
+							for _, rev := range reviews {
+								<tr class="hover:bg-slate-800/30 transition-colors" id={ "review-row-" + rev.ID }>
+									<td class="py-3.5 px-4">
+										<div class="font-bold text-white">{ rev.AuthorName }</div>
+										<div class="text-[11px] text-slate-500 mt-0.5">
+											if rev.City != "" {
+												<span>{ rev.City } • </span>
+											}
+											<span>{ rev.CreatedAt }</span>
+										</div>
+									</td>
+									<td class="py-3.5 px-4 whitespace-nowrap">
+										<div class="flex items-center text-amber-400 text-sm">
+											for s := 1; s <= rev.Rating; s++ {
+												<span>★</span>
+											}
+											for s := rev.Rating + 1; s <= 5; s++ {
+												<span class="text-slate-600">★</span>
+											}
+										</div>
+									</td>
+									<td class="py-3.5 px-4">
+										if rev.ServiceTitle != "" {
+											<div class="font-medium text-slate-200">{ rev.ServiceTitle }</div>
+										}
+										if rev.OrderCode != "" {
+											<span class="inline-flex items-center gap-1 mt-0.5 px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+												✓ Заказ #{ rev.OrderCode }
+											</span>
+										}
+									</td>
+									<td class="py-3.5 px-4 max-w-xs">
+										<p class="line-clamp-2 text-slate-300">{ rev.Comment }</p>
+									</td>
+									<td class="py-3.5 px-4 whitespace-nowrap" id={ "review-status-" + rev.ID }>
+										if rev.IsPublished {
+											<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+												Опубликован
+											</span>
+										} else {
+											<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
+												На модерации
+											</span>
+										}
+									</td>
+									<td class="py-3.5 px-4 text-right whitespace-nowrap">
+										<div class="inline-flex items-center gap-2">
+											<button
+												type="button"
+												hx-post={ "/client/reviews/" + rev.ID + "/toggle" }
+												hx-target={ "#review-status-" + rev.ID }
+												hx-swap="innerHTML"
+												class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium text-[11px] transition-colors border border-slate-700 cursor-pointer"
+											>
+												Переключить статус
+											</button>
+											<button
+												type="button"
+												hx-post={ "/client/reviews/" + rev.ID + "/delete" }
+												hx-confirm="Удалить этот отзыв безвозвратно?"
+												hx-target={ "#review-row-" + rev.ID }
+												hx-swap="outerHTML"
+												class="p-1 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+												title="Удалить отзыв"
+											>
+												<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+												</svg>
+											</button>
+										</div>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		}
 	</div>
 }

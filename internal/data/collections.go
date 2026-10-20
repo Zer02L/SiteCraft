@@ -47,6 +47,9 @@ func initSiteSettingsCollection(app core.App) error {
 			&core.BoolField{Name: "enable_cart"},
 			&core.TextField{Name: "header_variant"},
 			&core.TextField{Name: "footer_variant"},
+			&core.BoolField{Name: "enable_live_chat"},
+			&core.BoolField{Name: "enable_fleet"},
+			&core.BoolField{Name: "enable_recent_activity"},
 			&core.TextField{Name: "client_admin_password"},
 			&core.TextField{Name: "client_admin_password_hash"},
 		)
@@ -56,7 +59,7 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		log.Println("[Migration] Коллекция site_settings успешно создана")
 	} else {
-		// Ensure payment, theming, blog, TMA, i18n, floating contact, and cart fields exist
+		// Ensure payment, theming, blog, TMA, i18n, floating contact, cart, chat, and fleet fields exist
 		changed := false
 		if col.Fields.GetByName("primary_color") == nil {
 			col.Fields.Add(&core.TextField{Name: "primary_color"})
@@ -96,6 +99,18 @@ func initSiteSettingsCollection(app core.App) error {
 			col.Fields.Add(&core.BoolField{Name: "enable_cart"})
 			changed = true
 		}
+		if col.Fields.GetByName("enable_live_chat") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_live_chat"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_fleet") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_fleet"})
+			changed = true
+		}
+		if col.Fields.GetByName("enable_recent_activity") == nil {
+			col.Fields.Add(&core.BoolField{Name: "enable_recent_activity"})
+			changed = true
+		}
 		if col.Fields.GetByName("header_variant") == nil {
 			col.Fields.Add(&core.TextField{Name: "header_variant"})
 			col.Fields.Add(&core.TextField{Name: "footer_variant"})
@@ -107,6 +122,21 @@ func initSiteSettingsCollection(app core.App) error {
 		}
 		if col.Fields.GetByName("client_admin_password_hash") == nil {
 			col.Fields.Add(&core.TextField{Name: "client_admin_password_hash"})
+			changed = true
+		}
+		if col.Fields.GetByName("legal_entity") == nil {
+			col.Fields.Add(&core.TextField{Name: "legal_entity"})
+			col.Fields.Add(&core.TextField{Name: "legal_address"})
+			col.Fields.Add(&core.TextField{Name: "inn"})
+			col.Fields.Add(&core.TextField{Name: "kpp"})
+			col.Fields.Add(&core.TextField{Name: "ogrn"})
+			col.Fields.Add(&core.TextField{Name: "bank_name"})
+			col.Fields.Add(&core.TextField{Name: "bank_bik"})
+			col.Fields.Add(&core.TextField{Name: "bank_account"})
+			col.Fields.Add(&core.TextField{Name: "bank_corr"})
+			col.Fields.Add(&core.TextField{Name: "contact_email"})
+			col.Fields.Add(&core.BoolField{Name: "enable_careers"})
+			col.Fields.Add(&core.BoolField{Name: "enable_cookie_consent"})
 			changed = true
 		}
 		if changed {
@@ -149,6 +179,9 @@ func initSiteContentCollection(app core.App) error {
 			&core.TextField{Name: "hero_badge"},
 			&core.TextField{Name: "hero_title"},
 			&core.TextField{Name: "hero_subtitle"},
+			&core.TextField{Name: "hero_title_b"},
+			&core.TextField{Name: "hero_subtitle_b"},
+			&core.TextField{Name: "hero_cta_b"},
 			&core.TextField{Name: "owner_name"},
 			&core.TextField{Name: "owner_title"},
 			&core.TextField{Name: "phone1"},
@@ -170,6 +203,17 @@ func initSiteContentCollection(app core.App) error {
 			return err
 		}
 		log.Println("[Migration] Коллекция site_content успешно создана")
+	} else {
+		changed := false
+		if col.Fields.GetByName("hero_title_b") == nil {
+			col.Fields.Add(&core.TextField{Name: "hero_title_b"})
+			col.Fields.Add(&core.TextField{Name: "hero_subtitle_b"})
+			col.Fields.Add(&core.TextField{Name: "hero_cta_b"})
+			changed = true
+		}
+		if changed {
+			_ = app.Save(col)
+		}
 	}
 
 	count, _ := app.CountRecords("site_content")
@@ -274,21 +318,36 @@ func initPageBlocksCollection(app core.App) error {
 }
 
 func initServicesCollection(app core.App) error {
-	_, err := app.FindCollectionByNameOrId("services")
+	col, err := app.FindCollectionByNameOrId("services")
 	if err != nil {
-		col := core.NewBaseCollection("services")
+		col = core.NewBaseCollection("services")
 		col.Fields.Add(
 			&core.TextField{Name: "title", Required: true},
 			&core.TextField{Name: "description"},
 			&core.TextField{Name: "price"},
 			&core.NumberField{Name: "order", OnlyInt: true},
 			&core.BoolField{Name: "active"},
+			&core.NumberField{Name: "stock_count", OnlyInt: true},
+			&core.BoolField{Name: "is_preorder"},
 		)
 
 		if err := app.Save(col); err != nil {
 			return err
 		}
 		log.Println("[Migration] Коллекция services успешно создана")
+	} else {
+		changed := false
+		if col.Fields.GetByName("stock_count") == nil {
+			col.Fields.Add(&core.NumberField{Name: "stock_count", OnlyInt: true})
+			changed = true
+		}
+		if col.Fields.GetByName("is_preorder") == nil {
+			col.Fields.Add(&core.BoolField{Name: "is_preorder"})
+			changed = true
+		}
+		if changed {
+			_ = app.Save(col)
+		}
 	}
 
 	count, _ := app.CountRecords("services")
@@ -350,6 +409,7 @@ func initLeadsCollection(app core.App) error {
 			&core.TextField{Name: "source"},
 			&core.TextField{Name: "booking_date"},
 			&core.TextField{Name: "booking_time"},
+			&core.TextField{Name: "resource_id"},
 			&core.TextField{Name: "status"}, // например, "новая", "обработана", "отменена"
 			&core.JSONField{Name: "payload"}, // динамические поля: action_type, comment, vin, etc.
 			&core.AutodateField{Name: "created", OnCreate: true},
@@ -362,6 +422,10 @@ func initLeadsCollection(app core.App) error {
 		log.Println("[Migration] Коллекция leads для онлайн-заявок успешно создана")
 	} else {
 		changed := false
+		if col.Fields.GetByName("resource_id") == nil {
+			col.Fields.Add(&core.TextField{Name: "resource_id"})
+			changed = true
+		}
 		if col.Fields.GetByName("created") == nil {
 			col.Fields.Add(&core.AutodateField{Name: "created", OnCreate: true})
 			changed = true
@@ -559,3 +623,364 @@ func initServiceOrdersCollection(app core.App) error {
 
 	return nil
 }
+
+func initChatMessagesCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("chat_messages")
+	if err != nil {
+		col = core.NewBaseCollection("chat_messages")
+		col.Fields.Add(
+			&core.TextField{Name: "session_id", Required: true},
+			&core.TextField{Name: "sender", Required: true}, // "visitor" or "operator"
+			&core.TextField{Name: "message", Required: true},
+			&core.NumberField{Name: "tg_msg_id"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция chat_messages для Live Web-to-TG чата успешно создана")
+	}
+	return nil
+}
+
+func initCouponsCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("coupons")
+	if err != nil {
+		col = core.NewBaseCollection("coupons")
+		col.Fields.Add(
+			&core.TextField{Name: "code", Required: true},
+			&core.TextField{Name: "discount_type", Required: true}, // "percent" or "fixed"
+			&core.NumberField{Name: "discount_value", Required: true},
+			&core.NumberField{Name: "min_order_amount"},
+			&core.TextField{Name: "valid_until"},
+			&core.NumberField{Name: "usage_limit", OnlyInt: true},
+			&core.NumberField{Name: "used_count", OnlyInt: true},
+			&core.BoolField{Name: "active"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция coupons успешно создана")
+	}
+
+	count, _ := app.CountRecords("coupons")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("coupons")
+		if err != nil {
+			return err
+		}
+
+		c1 := core.NewRecord(col)
+		c1.Set("code", "PROMO10")
+		c1.Set("discount_type", "percent")
+		c1.Set("discount_value", 10.0)
+		c1.Set("min_order_amount", 1000.0)
+		c1.Set("usage_limit", 100)
+		c1.Set("used_count", 0)
+		c1.Set("active", true)
+		_ = app.Save(c1)
+
+		c2 := core.NewRecord(col)
+		c2.Set("code", "WELCOME500")
+		c2.Set("discount_type", "fixed")
+		c2.Set("discount_value", 500.0)
+		c2.Set("min_order_amount", 2500.0)
+		c2.Set("usage_limit", 50)
+		c2.Set("used_count", 0)
+		c2.Set("active", true)
+		_ = app.Save(c2)
+
+		log.Println("[Migration] Демонстрационные промокоды PROMO10 и WELCOME500 созданы")
+	}
+	return nil
+}
+
+func initResourcesCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("resources")
+	if err != nil {
+		col = core.NewBaseCollection("resources")
+		col.Fields.Add(
+			&core.TextField{Name: "name", Required: true},
+			&core.TextField{Name: "role", Required: true},
+			&core.TextField{Name: "avatar"},
+			&core.BoolField{Name: "active"},
+			&core.NumberField{Name: "order", OnlyInt: true},
+			&core.TextField{Name: "service_ids"},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция resources для записи к специалистам успешно создана")
+	}
+
+	count, _ := app.CountRecords("resources")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("resources")
+		if err != nil {
+			return err
+		}
+
+		r1 := core.NewRecord(col)
+		r1.Set("name", "Захаров Владислав Борисович")
+		r1.Set("role", "Нотариус / Ведущий специалист")
+		r1.Set("avatar", "👨‍⚖️")
+		r1.Set("active", true)
+		r1.Set("order", 1)
+		_ = app.Save(r1)
+
+		r2 := core.NewRecord(col)
+		r2.Set("name", "Васильева Елена Сергеевна")
+		r2.Set("role", "Помощник нотариуса / Сделки и доверенности")
+		r2.Set("avatar", "👩‍💼")
+		r2.Set("active", true)
+		r2.Set("order", 2)
+		_ = app.Save(r2)
+
+		log.Println("[Migration] Демонстрационные специалисты добавлены в resources")
+	}
+	return nil
+}
+
+func initReviewsCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("reviews")
+	if err != nil {
+		col = core.NewBaseCollection("reviews")
+		col.Fields.Add(
+			&core.TextField{Name: "author_name", Required: true},
+			&core.NumberField{Name: "rating", OnlyInt: true, Required: true},
+			&core.TextField{Name: "comment", Required: true},
+			&core.TextField{Name: "order_id"},
+			&core.TextField{Name: "photo"},
+			&core.BoolField{Name: "is_published"},
+			&core.TextField{Name: "source"},
+			&core.AutodateField{Name: "created", OnCreate: true},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция reviews для проверенных отзывов успешно создана")
+	}
+
+	count, _ := app.CountRecords("reviews")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("reviews")
+		if err != nil {
+			return err
+		}
+
+		demoReviews := []struct {
+			Author  string
+			Rating  int
+			Comment string
+			OrderID string
+			Source  string
+		}{
+			{
+				Author:  "Константин Мельников",
+				Rating:  5,
+				Comment: "Все оформили быстро и профессионально. Сделка по недвижимости прошла идеально, без задержек.",
+				OrderID: "SRV-4182",
+				Source:  "track",
+			},
+			{
+				Author:  "Анна Сергеева",
+				Rating:  5,
+				Comment: "Записалась через сайт на конкретное время к специалисту, приняли ровно по записи без очереди. Спасибо за уважение к времени!",
+				OrderID: "",
+				Source:  "site",
+			},
+			{
+				Author:  "Дмитрий В.",
+				Rating:  5,
+				Comment: "Грамотные консультации, помогли с оформлением сложного наследственного дела. Рекомендую.",
+				OrderID: "FIX-9021",
+				Source:  "track",
+			},
+		}
+
+		for _, rev := range demoReviews {
+			r := core.NewRecord(col)
+			r.Set("author_name", rev.Author)
+			r.Set("rating", rev.Rating)
+			r.Set("comment", rev.Comment)
+			r.Set("order_id", rev.OrderID)
+			r.Set("is_published", true)
+			r.Set("source", rev.Source)
+			_ = app.Save(r)
+		}
+		log.Println("[Migration] Начальные проверенные отзывы успешно созданы в reviews")
+	}
+	return nil
+}
+
+func initBranchesCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("branches")
+	if err != nil {
+		col = core.NewBaseCollection("branches")
+		col.Fields.Add(
+			&core.TextField{Name: "name", Required: true},
+			&core.TextField{Name: "city", Required: true},
+			&core.TextField{Name: "address", Required: true},
+			&core.TextField{Name: "phone", Required: true},
+			&core.TextField{Name: "work_hours"},
+			&core.NumberField{Name: "lat"},
+			&core.NumberField{Name: "lng"},
+			&core.TextField{Name: "metro"},
+			&core.TextField{Name: "services"},
+			&core.BoolField{Name: "is_main"},
+			&core.BoolField{Name: "active"},
+			&core.NumberField{Name: "order", OnlyInt: true},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция branches для сети филиалов успешно создана")
+	}
+
+	count, _ := app.CountRecords("branches")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("branches")
+		if err != nil {
+			return err
+		}
+
+		b1 := core.NewRecord(col)
+		b1.Set("name", "Филиал «Центральный»")
+		b1.Set("city", "Санкт-Петербург")
+		b1.Set("address", "Невский пр-т, д. 42")
+		b1.Set("phone", "+7 (812) 309-88-21")
+		b1.Set("work_hours", "Пн-Пт: 09:00 — 21:00, Сб-Вс: 10:00 — 19:00")
+		b1.Set("lat", 59.934280)
+		b1.Set("lng", 30.335099)
+		b1.Set("metro", "Гостиный двор")
+		b1.Set("services", "Комплексное ТО, Экспресс-диагностика, Оформление сделок")
+		b1.Set("is_main", true)
+		b1.Set("active", true)
+		b1.Set("order", 1)
+		_ = app.Save(b1)
+
+		b2 := core.NewRecord(col)
+		b2.Set("name", "Филиал «Северный»")
+		b2.Set("city", "Санкт-Петербург")
+		b2.Set("address", "пр. Просвещения, д. 80, корп. 1")
+		b2.Set("phone", "+7 (812) 309-88-22")
+		b2.Set("work_hours", "Ежедневно: 09:00 — 21:00")
+		b2.Set("lat", 60.038560)
+		b2.Set("lng", 30.395420)
+		b2.Set("metro", "Гражданский проспект")
+		b2.Set("services", "Кузовной цех, Компьютерная диагностика, Замена масел")
+		b2.Set("is_main", false)
+		b2.Set("active", true)
+		b2.Set("order", 2)
+		_ = app.Save(b2)
+
+		b3 := core.NewRecord(col)
+		b3.Set("name", "Филиал «Московский»")
+		b3.Set("city", "Москва")
+		b3.Set("address", "Ленинградский пр-т, д. 36, стр. 2")
+		b3.Set("phone", "+7 (495) 710-99-44")
+		b3.Set("work_hours", "Пн-Сб: 08:30 — 20:30, Вс: выходной")
+		b3.Set("lat", 55.791550)
+		b3.Set("lng", 37.558310)
+		b3.Set("metro", "Динамо")
+		b3.Set("services", "Полный цикл сервиса, Корпоративное обслуживание B2B, Нотариат")
+		b3.Set("is_main", false)
+		b3.Set("active", true)
+		b3.Set("order", 3)
+		_ = app.Save(b3)
+
+		log.Println("[Migration] Демонстрационные филиалы успешно созданы в branches")
+	}
+	return nil
+}
+
+func initVacanciesCollection(app core.App) error {
+	col, err := app.FindCollectionByNameOrId("vacancies")
+	if err != nil {
+		col = core.NewBaseCollection("vacancies")
+		col.Fields.Add(
+			&core.TextField{Name: "title", Required: true},
+			&core.TextField{Name: "department"},
+			&core.TextField{Name: "salary"},
+			&core.TextField{Name: "experience"},
+			&core.TextField{Name: "schedule"},
+			&core.JSONField{Name: "responsibilities"},
+			&core.JSONField{Name: "requirements"},
+			&core.JSONField{Name: "benefits"},
+			&core.BoolField{Name: "active"},
+			&core.NumberField{Name: "order", OnlyInt: true},
+		)
+
+		if err := app.Save(col); err != nil {
+			return err
+		}
+		log.Println("[Migration] Коллекция vacancies для HR-модуля успешно создана")
+	}
+
+	count, _ := app.CountRecords("vacancies")
+	if count == 0 {
+		col, err := app.FindCollectionByNameOrId("vacancies")
+		if err != nil {
+			return err
+		}
+
+		v1 := core.NewRecord(col)
+		v1.Set("title", "Мастер-приемщик / Сервисный консультант")
+		v1.Set("department", "Сервисный отдел")
+		v1.Set("salary", "от 110 000 до 160 000 ₽")
+		v1.Set("experience", "от 2 лет в аналогичной сфере")
+		v1.Set("schedule", "Сменный график 2/2, 09:00 — 21:00")
+		v1.Set("responsibilities", []string{
+			"Прием клиентов, первичная дефектовка и согласование перечня работ",
+			"Контроль соблюдения регламентных сроков выполнения заказов",
+			"Оформление заказ-нарядов, счетов и актов выполненных работ",
+			"Выдача готовой техники и консультирование по рекомендациям",
+		})
+		v1.Set("requirements", []string{
+			"Грамотная речь, клиентоориентированность, вежливость",
+			"Знание устройства современных систем и регламентов ТО",
+			"Опыт работы в профильных CRM / 1С / учетных системах",
+		})
+		v1.Set("benefits", []string{
+			"Официальное оформление по ТК РФ с первого дня",
+			"Выплаты 2 раза в месяц без задержек + KPI за объем",
+			"Теплый современный офис, корпоративная форма, скидки на услуги",
+		})
+		v1.Set("active", true)
+		v1.Set("order", 1)
+		_ = app.Save(v1)
+
+		v2 := core.NewRecord(col)
+		v2.Set("title", "Специалист по ремонту / Автоэлектрик-диагност")
+		v2.Set("department", "Технический цех")
+		v2.Set("salary", "от 130 000 до 220 000 ₽")
+		v2.Set("experience", "от 3 лет практического стажа")
+		v2.Set("schedule", "Сменный график 3/3, 09:00 — 21:00")
+		v2.Set("responsibilities", []string{
+			"Компьютерная диагностика электронных систем и датчиков",
+			"Поиск обрывов проводки, ремонт блоков управления и CAN-шин",
+			"Установка дополнительного оборудования и систем мониторинга",
+		})
+		v2.Set("requirements", []string{
+			"Профильное техническое образование",
+			"Уверенные навыки чтения электрических схем",
+			"Ответственность, чистоплотность и аккуратность в работе",
+		})
+		v2.Set("benefits", []string{
+			"Индивидуальный рабочий пост с передовым сканером и инструментарием",
+			"Обучение за счет компании и повышение квалификации",
+			"Спецодежда с еженедельной химчисткой, душевая, комната отдыха",
+		})
+		v2.Set("active", true)
+		v2.Set("order", 2)
+		_ = app.Save(v2)
+
+		log.Println("[Migration] Демонстрационные вакансии успешно созданы в vacancies")
+	}
+	return nil
+}
+

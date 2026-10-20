@@ -21,8 +21,8 @@
 10. [Динамический Theming Engine и CSS-архитектура](#10-динамический-theming-engine-и-css-архитектура)
 11. [Реестр компонентов (Block Registry / Factory Pattern)](#11-реестр-компонентов-block-registry--factory-pattern)
 12. [Коллекция кинематографических модулей (Cinematic UI — 31 компонент)](#12-коллекция-кинематографических-модулей-cinematic-ui--31-компонент)
-13. [Коммерческие бизнес-модули](#13-коммерческие-бизнес-модули)
-14. [Каталог готовых пресетов (12 ниш)](#14-каталог-готовых-пресетов-12-ниш)
+13. [Коммерческие бизнес-модули (20 модулей)](#13-коммерческие-бизнес-модули-20-модулей)
+14. [Каталог готовых пресетов и тестовых стендов](#14-каталог-готовых-пресетов-и-тестовых-стендов)
 15. [CLI-утилиты и мультисайтовый оркестратор (Fleet of Binaries)](#15-cli-утилиты-и-мультисайтовый-оркестратор-fleet-of-binaries)
 16. [Сборка, тестирование и продакшен-деплой](#16-сборка-тестирование-и-продакшен-деплой)
 17. [Сравнение с аналогами и архитектурные компромиссы](#17-сравнение-с-аналогами-и-архитектурные-компромиссы)
@@ -128,17 +128,18 @@ flowchart TD
 
 ```
 .
-├── main.go                       # Точка входа: инициализация PB, CLI-команды apply-preset и export
+├── main.go                       # Точка входа: инициализация PB, фоновый Cron, CLI-команды apply-preset и export
 ├── go.mod / go.sum               # Модуль Go: PocketBase 0.40.4, Templ 0.3.1070, bluemonday, lucide
 ├── Dockerfile                    # Multi-stage сборка компактного дистрибутива Alpine Linux
 ├── docker-compose.yml            # Продакшен-контейнер с постоянным томом pb_data
 ├── fleet.sh                      # CLI-менеджер парка инстансов (создание, запуск, бэкап, экспорт)
 ├── init-project.sh               # Интерактивный визард создания нового проекта под нишу
+├── BUSINESS_MODULES.md           # Реестр и спецификации 20 коммерческих модулей SiteCraft
 ├── internal/
 │   ├── cache/
-│   │   └── cache.go              # Потокобезопасный in-memory кэш (RWMutex) для настроек и контента
+│   │   └── cache.go              # Потокобезопасный in-memory кэш (RWMutex) для настроек, контента и сущностей
 │   ├── data/
-│   │   ├── collections.go        # Инициализация и авто-миграции 7 коллекций PocketBase
+│   │   ├── collections.go        # Инициализация и авто-миграции 13 коллекций PocketBase
 │   │   ├── hooks.go              # Хуки инвалидации кэша при изменениях в админке
 │   │   ├── preset.go             # Парсинг и применение JSON-пресетов ниш
 │   │   ├── queries.go            # SQL-запросы и выборки данных с fallback-логикой
@@ -152,11 +153,18 @@ flowchart TD
 │   │   └── export_test.go        # Тестирование экспорта
 │   ├── handlers/
 │   │   ├── routes.go             # Регистрация HTTP-роутов PocketBase
-│   │   ├── web.go                # Хэндлеры главной, блога, карты, слотов и sitemap
-│   │   ├── leads.go              # Прием заявок, валидация, honeypot, публикация событий
-│   │   ├── cart.go               # Обработка заказов из корзины (Alpine.js cart)
+│   │   ├── web.go                # Хэндлеры главной, блога, карты, слотов, документов и sitemap
+│   │   ├── leads.go              # Прием заявок, валидация, honeypot, отклики HR, публикация событий
+│   │   ├── cart.go               # Корзина, расчет зон доставки, промокоды (/api/cart/*)
+│   │   ├── client_admin.go       # Личный кабинет владельца (/client): лиды, статьи, безопасность
+│   │   ├── chat.go               # Live Web-to-TG чат с SSE и Telegram Bot мостом
+│   │   ├── ab.go                 # Серверное A/B тестирование без мигания экрана (Zero-FOOC)
+│   │   ├── utm.go                # Middleware сквозной UTM-атрибуции лидов
+│   │   ├── calendar.go           # Генерация .ics календарей (RFC 5545) и отмена записей
+│   │   ├── review.go             # Прием и модерация отзывов клиентов с фото
+│   │   ├── fleet.go              # HTTP API и панель управления мультисайтовым флотом (/fleet)
 │   │   ├── payment.go            # Интеграция с ЮKassa и Mock Sandbox
-│   │   ├── tracker.go            # B2B-трекер заказов с SSE-стримингом
+│   │   ├── tracker.go            # B2B-трекер заказов с SSE-стримингом и сервисной книжкой
 │   │   ├── tma.go                # Telegram Mini App: HMAC-SHA256 авторизация, витрина, VIP-клуб
 │   │   ├── validation.go         # Серверная валидация телефонов, email и капчи
 │   │   └── *_test.go             # Набор интеграционных и юнит-тестов
@@ -168,14 +176,22 @@ flowchart TD
 │   │   ├── localize.go           # Утилиты локализации динамических данных из БД
 │   │   └── i18n_test.go          # Тесты системы i18n
 │   ├── models/
-│   │   ├── content.go            # Структуры данных (SiteSettings, PageBlock, Lead, CartItem, etc.)
+│   │   ├── content.go            # Базовые структуры данных (SiteSettings, PageBlock, Lead, etc.)
+│   │   ├── ecommerce.go          # Зоны доставки, сопутствующие товары (Cross-Sell), промокоды
+│   │   ├── booking.go            # Специалисты/посты (Resource), бронирование с таймслотами
+│   │   ├── chat.go               # Сообщения чата сайта (ChatMessage)
+│   │   ├── review.go             # Отзывы клиентов с оценками и фото (ReviewItem)
+│   │   ├── b2b.go                # Вакансии, филиалы, счета-фактуры с QR-кодом
+│   │   ├── activity.go           # Деперсонализированные события недавней активности (Social Proof)
+│   │   ├── fleet.go              # Метаданные инстансов парка сайтов (FleetInstance)
 │   │   ├── seo.go                # SEO-структуры (MetaTags, OpenGraph, JSON-LD)
 │   │   └── seo_test.go           # Тесты генерации метатегов
 │   ├── modules/
 │   │   └── payment.go            # Интерфейс PaymentProvider и реализация MockProvider
 │   └── notifications/
-│       └── notifications.go      # Асинхронные нотификаторы (Telegram Bot, CRM Webhooks)
-├── presets/                      # 12 готовых JSON-пресетов коммерческих ниш
+│       ├── notifications.go      # Асинхронные нотификаторы (Telegram Bot, CRM Webhooks)
+│       └── reminders.go          # Триггерные напоминания о визитах (Telegram + .ics вложения)
+├── presets/                      # 13 готовых JSON-пресетов коммерческих ниш
 ├── public/                       # Статические медиа-файлы документации
 └── ui/
     ├── embed.go                  # //go:embed ассетов и стилей в бинарник
@@ -190,7 +206,11 @@ flowchart TD
     │   │   ├── card.templ        # Карточки, заголовки и описания
     │   │   └── variants_test.go  # Модульные тесты генератора классов
     │   ├── a11y_bar.templ        # Панель для слабовидящих по ГОСТ (Vanilla JS)
-    │   ├── cart_drawer.templ     # Выдвижная корзина покупок (Alpine.js)
+    │   ├── cart_drawer.templ     # Выдвижная корзина (Alpine.js) с промокодами и зонами доставки
+    │   ├── chat_widget.templ     # Всплывающий Web-to-TG чат с оператором
+    │   ├── cookie_consent.templ  # Баннер согласия на обработку cookies по 152-ФЗ
+    │   ├── exit_intent.templ     # Модальное окно удержания уходящих посетителей
+    │   ├── recent_activity.templ # Тост недавних действий (Social Proof / FOMO)
     │   ├── dynamic_block.templ   # Рендерер rich_text/html с санитизацией bluemonday
     │   ├── floating_contact.templ# Мульти-мессенджер виджет (WhatsApp + Telegram)
     │   ├── footer.templ          # Настраиваемый подвал
@@ -201,12 +221,12 @@ flowchart TD
     ├── layouts/
     │   ├── base.templ            # Корневой HTML-шаблон, инъекция тем, a11y, скрипты
     │   └── seo.go                # Рендеринг SEO-тегов в <head>
-    ├── pages/                    # Страницы сайта (home, blog_list, blog_post, tracker, shop, vip)
+    ├── pages/                    # Страницы сайта (home, blog, tracker, shop, vip, client_admin, invoice, legal, careers, fleet)
     ├── registry/
     │   ├── registry.go           # Фабрика компонентов (Block Registry / Factory Pattern)
     │   ├── helpers.go            # Парсеры JSON payload блоков (Features, FAQ, Quiz, etc.)
     │   └── helpers_test.go       # Тесты парсеров payload
-    └── sections/                 # Модульные секции лендинга (hero/, booking, services, etc.)
+    └── sections/                 # Модульные секции лендинга (hero/, booking, services, careers, before_after, etc.)
 ```
 
 ---
@@ -235,6 +255,9 @@ PocketBase использует встраиваемую SQLite в режиме 
 * `enable_floating_contact` (bool), `whatsapp_phone`, `telegram_contact` — плавающий мессенджер
 * `enable_cart` (bool) — выдвижная корзина заказов
 * `header_variant`, `footer_variant` — варианты раскладки шапки и подвала
+* `enable_live_chat` (bool) — встроенный Web-to-Telegram чат с посетителем
+* `enable_fleet` (bool) — агентский пульт управления мультисайтовым флотом
+* `enable_recent_activity` (bool) — виджет недавней активности (Social Proof / FOMO)
 * `client_admin_password` (text) — устаревший открытый пароль клиентского кабинета (автомигрируется в хэш)
 * `client_admin_password_hash` (text) — bcrypt-хэш пароля доступа в клиентский кабинет (`/client`)
 
@@ -247,22 +270,24 @@ PocketBase использует встраиваемую SQLite в режиме 
 
 ### 3. `page_blocks` (Модульный конструктор страниц)
 Управляет набором и очередностью блоков главной страницы:
-* `type` (text, req) — тип секции: `hero`, `cyber_hero`, `legal_hero`, `split_hero`, `schedule`, `services`, `booking`, `map`, `features`, `faq`, `steps`, `reviews`, `team`, `gallery`, `quiz`, `calculator`, `before_after`, `showcase`, `rich_text`, `html`, `cinematic_*`
+* `type` (text, req) — тип секции: `hero`, `cyber_hero`, `legal_hero`, `split_hero`, `schedule`, `services`, `booking`, `map`, `features`, `faq`, `steps`, `reviews`, `team`, `gallery`, `quiz`, `calculator`, `before_after`, `careers`, `showcase`, `rich_text`, `html`, `cinematic_*`
 * `title` (text) — заголовок секции
 * `content` (text) — сырой HTML или текст (санитизируется через bluemonday)
 * `order` (int) — порядковый номер рендеринга на странице
 * `active` (bool) — флаг видимости
 * `payload` (json) — структурированные данные секции (шаги квиза, карточки features, FAQ)
 
-### 4. `services` (Каталог услуг и прайс-лист)
+### 4. `services` (Каталог услуг, прайс-лист и складской учет)
 * `title` (text, req), `description` (text), `price` (text)
 * `order` (int), `active` (bool)
+* `stock_count` (int) — количество товара на складе (декрементируется при покупке)
+* `is_preorder` (bool) — флаг работы «Под заказ» при исчерпании остатков
 
 ### 5. `leads` (Заявки клиентов и лидген)
 * `name` (text, req), `phone` (text, req), `email` (text)
 * `source` (text), `booking_date` (text), `booking_time` (text)
 * `status` (text: `новая`, `в работе`, `завершена`, `отклонена`)
-* `payload` (json) — произвольные нишевые поля (марка авто, VIN, смета квиза, состав корзины)
+* `payload` (json) — произвольные нишевые поля (марка авто, VIN, смета квиза, состав корзины, отклики вакансий, мастер/пост, UTM-метки, A/B вариант)
 
 ### 6. `articles` (SEO-Блог, База знаний и новости)
 * `title` (text, req), `slug` (text, req, unique)
@@ -280,6 +305,57 @@ PocketBase использует встраиваемую SQLite в режиме 
 * `stages_history` (json) — массив объектов этапов `{stage, title, timestamp, comment, done}`
 * `notes` (text)
 
+### 8. `chat_messages` (Встроенный чат сайта Web-to-Telegram)
+* `session_id` (text, req) — уникальный ID сессии посетителя (`chat_anon_*`)
+* `sender` (text, req: `user` или `operator`)
+* `message` (text, req) — текст сообщения
+* `reply_to_id` (text) — ID сообщения в Telegram
+* `is_read` (bool) — флаг прочтения
+
+### 9. `coupons` (Промокоды, акции и скидки)
+* `code` (text, req, unique) — промокод (например, `PROMO10`, `WELCOME500`)
+* `discount_type` (text, req: `percent` или `fixed`)
+* `discount_value` (number, req) — размер скидки (% или сумма в рублях)
+* `min_order_amount` (number) — минимальный чек для применения скидки
+* `max_uses` (int) — максимальное число активаций (0 = безлимитно)
+* `used_count` (int) — текущее количество использований
+* `is_active` (bool) — активность промокода
+* `expires_at` (text) — дата истечения акции
+
+### 10. `resources` (Специалисты, мастера и посты обслуживания)
+* `name` (text, req) — имя мастера или название поста («Подъемник #1», «Доктор Смирнов»)
+* `role` (text) — должность или специализация («Ведущий хирург», «Мастер-приемщик»)
+* `avatar` (text) — фото специалиста
+* `active` (bool) — доступность для записи
+* `sort_order` (int) — порядок отображения в селекторе бронирования
+
+### 11. `reviews` (Проверенные отзывы клиентов UGC)
+* `author_name` (text, req) — имя клиента
+* `author_avatar` (text) — аватар
+* `rating` (int, req: 1..5) — оценка сервиса
+* `text` (text, req) — текст отзыва
+* `service_id` (text) — привязка к конкретной услуге
+* `photos` (json) — массив прикрепленных фото выполненных работ
+* `is_published` (bool) — модерация (публикация после проверки)
+* `verified` (bool) — бейдж «Проверенный клиент / Заказ подтвержден»
+
+### 12. `branches` (Интерактивная карта филиалов и офисов)
+* `title` (text, req) — название филиала («Центральный офис», «Северный филиал»)
+* `city` (text, req) — город («Москва», «Санкт-Петербург»)
+* `address` (text, req) — фактический адрес
+* `phone` (text), `work_hours` (text)
+* `coordinates` (text) — координаты широты и долготы («55.751244, 37.618423»)
+* `is_active` (bool), `sort_order` (int)
+
+### 13. `vacancies` (Карьерный портал и вакансии / HR)
+* `title` (text, req) — должность («Автомеханик-диагност», «Младший юрист»)
+* `department` (text) — отдел («Сервисная зона», «Корпоративное право»)
+* `salary` (text) — вилка оплаты («от 120 000 ₽»)
+* `experience` (text) — требуемый стаж («от 2 лет»)
+* `description` (text) — описание обязанностей
+* `requirements` (json) — список требований
+* `is_active` (bool), `sort_order` (int)
+
 ---
 
 ## 5. Модели данных Go
@@ -293,9 +369,16 @@ PocketBase использует встраиваемую SQLite в режиме 
 * `FAQPayload`, `FAQItem` — вопросы и ответы с поддержкой аккордеона.
 * `StepsPayload`, `StepItem` — этапы выполнения работ.
 * `QuizPayload`, `QuizStep`, `QuizOption` — многошаговый интерактивный калькулятор с расчетом стоимости.
-* `BeforeAfterPayload`, `BeforeAfterItem` — слайдеры сравнения кейсов.
-* `CartItem`, `CartCheckoutRequest` — товары в корзине и запрос оформления заказа.
-* `Lead` — универсальная модель входящей заявки.
+* `BeforeAfterPayload`, `BeforeAfterItem` — кейсы с фото «До / После», сметой материалов и этапами.
+* `CartItem`, `CartCheckoutRequest` — товары в корзине, гео-зоны доставки и применение промокодов (`ecommerce.go`).
+* `Coupon` — промокод со скидкой и валидацией минимального чека (`ecommerce.go`).
+* `ResourceItem`, `BookingSlot` — персонал, посты обслуживания и таймслоты бронирования (`booking.go`).
+* `ChatMessage` — сообщения живого Web-to-Telegram чата с SSE (`chat.go`).
+* `ReviewItem` — проверенные отзывы клиентов с фото и оценками (`review.go`).
+* `BranchItem`, `VacancyItem`, `InvoiceData` — филиалы сети, вакансии и данные счетов B2B (`b2b.go`).
+* `ActivityEvent` — деперсонализированные события недавней активности по 152-ФЗ (`activity.go`).
+* `FleetInstance` — карточка инстанса в панели мультисайтового парка (`fleet.go`).
+* `Lead` — универсальная модель входящей заявки с UTM-метками и A/B вариантом.
 * `ArticleItem` — статья блога с метатегами для поисковой оптимизации.
 * `ServiceOrder`, `OrderStageHistory` — трекинг сервисного тикета и прогресс-бар.
 * `TMAUser` — верифицированный пользователь Telegram WebApp.
@@ -314,31 +397,52 @@ PocketBase использует встраиваемую SQLite в режиме 
 | `GET` | `/blog` | `webHandler.HandleBlogList` | Каталог статей блога с живым HTMX-поиском | HTML |
 | `GET` | `/blog/{slug}` | `webHandler.HandleBlogPost` | Страница статьи с инкрементом просмотров | HTML |
 | `GET` | `/sitemap.xml` | `webHandler.HandleSitemap` | Динамическая XML-карта сайта для поисковиков | XML (application/xml) |
-| `GET` | `/track` | `trackerHandler.HandleTrackerPage` | Форма поиска статуса заказа по номеру | HTML |
-| `GET` | `/track/{code}` | `trackerHandler.HandleTrackOrder` | Карточка заказа, история этапов и оплата | HTML |
+| `GET` | `/track` | `trackerHandler.HandleTrackerPage` | Поиск статуса заказа по номеру квитанции | HTML |
+| `GET` | `/track/{code}` | `trackerHandler.HandleTrackOrder` | Карточка заказа, этапы, электронная сервисная книжка | HTML |
 | `GET` | `/api/track/status/{code}` | `trackerHandler.HandleTrackStatusPartial` | HTMX-парциал карточки заказа для поллинга | HTML Partial |
-| `GET` | `/api/track/sse/{code}` | `trackerHandler.HandleTrackSSE` | Серверный поток событий (Server-Sent Events) | SSE (text/event-stream) |
+| `GET` | `/api/track/sse/{code}` | `trackerHandler.HandleTrackSSE` | Серверный поток событий заказа (SSE) | SSE (text/event-stream) |
+| `GET` | `/privacy` | `webHandler.HandlePrivacy` | Политика конфиденциальности по 152-ФЗ | HTML |
+| `GET` | `/terms` | `webHandler.HandleTerms` | Пользовательское соглашение и оферта | HTML |
+| `GET` | `/careers` | `webHandler.HandleCareers` | Карьерный портал и каталог вакансий | HTML |
+| `GET` | `/invoice/{code}` | `webHandler.HandleInvoice` | B2B-счет и акт с ГОСТ QR-кодом для печати | HTML Print |
 | `GET` | `/shop` | `tmaHandler.HandleShop` | Telegram Mini App каталог с MainButton | HTML |
 | `GET` | `/vip` | `tmaHandler.HandleVIPClub` | Закрытый VIP-клуб с проверкой доступа | HTML |
 | `POST` | `/api/tma/auth` | `tmaHandler.HandleTMAAuth` | HMAC-SHA256 авторизация сессии Telegram | JSON |
 | `POST` | `/api/shop/checkout` | `tmaHandler.HandleShopCheckout` | Быстрый заказ через Telegram WebApp | JSON |
 | `GET` | `/api/map-frame` | `webHandler.HandleMapFrame` | Ленивая загрузка интерактивной карты (HTMX) | HTML Partial |
 | `GET` | `/api/slots` | `webHandler.HandleSlots` | Проверка свободных/занятых слотов времени | HTML Partial |
+| `GET` | `/api/resources` | `webHandler.HandleResources` | Список доступных мастеров и постов обслуживания | HTML Partial |
+| `GET` | `/api/branches` | `webHandler.HandleBranches` | Выборка филиалов и адресов сети | HTML Partial |
+| `GET` | `/api/booking/calendar.ics`| `bookingHandler.HandleDownloadICS` | Скачивание календарного файла визита (RFC 5545)| text/calendar |
+| `GET` | `/api/booking/action` | `bookingHandler.HandleBookingAction` | Отмена или подтверждение записи из письма | HTML Partial |
 | `GET` | `/api/payment/modal` | `webHandler.HandlePaymentModal` | Модальное окно выбора способа оплаты | HTML Partial |
-| `POST` | `/api/leads` | `leadHandler.HandleCreateLead` | Отправка формы заявки (с Honeypot и капчей) | HTML Partial |
-| `POST` | `/api/cart/checkout` | `cartHandler.HandleCheckout` | Оформление заказа из корзины (Alpine.js) | JSON / HTML |
+| `GET` | `/api/recent-activity` | `webHandler.HandleRecentActivity` | Деперсонализированные события FOMO (кэш 5 мин)| JSON / HTML Partial |
+| `POST` | `/api/leads` | `leadHandler.HandleCreateLead` | Отправка заявки (с Honeypot, UTM, A/B и капчей)| HTML Partial |
+| `POST` | `/api/careers/apply` | `leadHandler.HandleApplyVacancy` | Отклик на вакансию с резюме | HTML Partial |
+| `POST` | `/api/reviews` | `reviewHandler.HandleSubmitReview` | Отправка клиентского отзыва с фото | HTML Partial |
+| `POST` | `/api/cart/checkout` | `cartHandler.HandleCheckout` | Оформление заказа корзины с учетом зоны доставки | JSON / HTML |
+| `POST` | `/api/cart/validate-coupon`| `cartHandler.HandleValidateCoupon` | Проверка и расчет скидки промокода | JSON / HTML Partial |
 | `POST` | `/api/payment/create` | `paymentHandler.HandleCreatePayment` | Инициализация платежа ЮKassa / Mock Sandbox | JSON |
+| `GET` | `/api/chat/sse` | `chatHandler.HandleChatSSE` | SSE-поток входящих сообщений чата сайта | SSE (text/event-stream) |
+| `GET` | `/api/chat/history` | `chatHandler.HandleChatHistory` | История переписки для текущей сессии | JSON |
+| `POST` | `/api/chat/send` | `chatHandler.HandleSendMessage` | Отправка сообщения в чат и релей в Telegram | JSON / HTML Partial |
+| `POST` | `/api/chat/telegram-webhook`| `chatHandler.HandleTelegramWebhook`| Вебхук ответов оператора из Telegram-бота | JSON |
+| `GET` | `/fleet` | `fleetHandler.HandleDashboard` | Пульт управления парком инстансов (Fleet Master)| HTML |
+| `POST` | `/api/fleet/action` | `fleetHandler.HandleFleetAction` | Действия над инстансом (start/stop/restart/backup)| JSON |
+| `POST` | `/api/fleet/create` | `fleetHandler.HandleFleetCreate` | Создание нового инстанса сайта из веб-панели | JSON |
 | `GET` | `/api/lang/{code}` | `i18n.HandleSetLang` | Переключение языка с установкой cookie и редиректом | HTTP 302 Redirect |
 | `GET` | `/client/login` | `clientAdminHandler.HandleLoginPage` | Форма входа в клиентский кабинет | HTML |
-| `POST` | `/client/login` | `clientAdminHandler.HandleLogin` | Аутентификация с bcrypt и защитой от брутфорса (Rate Limiting) | HTTP 302 Redirect / HTML |
-| `POST` | `/client/setup` | `clientAdminHandler.HandleInitialSetup` | Первичная установка мастер-пароля (Setup Wizard >= 8 знаков) | HTTP 302 Redirect / HTML |
+| `POST` | `/client/login` | `clientAdminHandler.HandleLogin` | Аутентификация с bcrypt и защитой от брутфорса | HTTP 302 Redirect / HTML |
+| `POST` | `/client/setup` | `clientAdminHandler.HandleInitialSetup` | Первичная установка мастер-пароля (Setup Wizard) | HTTP 302 Redirect / HTML |
 | `GET` | `/client/logout` | `clientAdminHandler.HandleLogout` | Выход из системы и аннулирование сессии | HTTP 302 Redirect |
 | `GET` | `/client` | `clientAdminHandler.HandleDashboard` | Главный дашборд клиентского кабинета | HTML |
-| `GET` | `/client/tab/leads` | `clientAdminHandler.HandleTabLeads` | HTMX-парциал вкладки лидов с фильтрацией | HTML Partial |
-| `GET` | `/client/tab/contacts` | `clientAdminHandler.HandleTabContacts` | HTMX-парциал вкладки контактов и реквизитов | HTML Partial |
-| `GET` | `/client/tab/articles` | `clientAdminHandler.HandleTabArticles` | HTMX-парциал вкладки управления блогом | HTML Partial |
-| `GET` | `/client/tab/security` | `clientAdminHandler.HandleTabSecurity` | HTMX-парциал вкладки смены пароля доступа | HTML Partial |
-| `POST` | `/client/security/password` | `clientAdminHandler.HandleChangePassword` | Смена пароля с проверкой старого и подтверждения нового | HTML Partial |
+| `GET` | `/client/tab/leads` | `clientAdminHandler.HandleTabLeads` | Вкладка лидов с фильтрацией, сменой статуса, UTM | HTML Partial |
+| `GET` | `/client/tab/contacts` | `clientAdminHandler.HandleTabContacts` | Вкладка контактов, соцсетей и реквизитов | HTML Partial |
+| `GET` | `/client/tab/articles` | `clientAdminHandler.HandleTabArticles` | Вкладка управления блогом и корзиной статей | HTML Partial |
+| `GET` | `/client/tab/security` | `clientAdminHandler.HandleTabSecurity` | Вкладка смены мастер-пароля доступа | HTML Partial |
+| `GET` | `/client/tab/reviews` | `clientAdminHandler.HandleTabReviews` | Вкладка модерации отзывов клиентов | HTML Partial |
+| `GET` | `/client/tab/fleet` | `fleetHandler.HandleTabFleet` | Вкладка управления мультисайтовым флотом | HTML Partial |
+| `POST` | `/client/security/password` | `clientAdminHandler.HandleChangePassword` | Смена пароля с проверкой старого | HTML Partial |
 | `POST` | `/client/contacts` | `clientAdminHandler.HandleSaveContacts` | Сохранение контактных данных сайта | HTML Partial |
 | `POST` | `/client/leads/{id}/status` | `clientAdminHandler.HandleUpdateLeadStatus` | Мгновенная смена статуса заявки в 1 клик | HTML Partial |
 | `GET` | `/client/export/leads.csv` | `clientAdminHandler.HandleExportLeadsCSV` | Экспорт базы входящих заявок в CSV | CSV (text/csv) |
@@ -348,6 +452,8 @@ PocketBase использует встраиваемую SQLite в режиме 
 | `POST` | `/client/articles/restore/{id}` | `clientAdminHandler.HandleRestoreArticle` | Восстановление статьи из Корзины | HTML Partial |
 | `DELETE` | `/client/articles/permanent/{id}` | `clientAdminHandler.HandlePermanentDeleteArticle` | Окончательное безвозвратное удаление статьи | HTML Partial |
 | `POST` | `/client/articles/trash/empty` | `clientAdminHandler.HandleEmptyTrash` | Полная очистка Корзины удаленных статей | HTML Partial |
+| `POST` | `/client/reviews/{id}/toggle` | `reviewHandler.HandleTogglePublish` | Модерация отзыва: публикация / скрытие | HTML Partial |
+| `DELETE` | `/client/reviews/{id}` | `reviewHandler.HandleDeleteReview` | Удаление отзыва клиента | HTML Partial |
 
 ---
 
@@ -550,60 +656,95 @@ registry.RegisterBlock("custom_block", func(b models.PageBlock, ctx registry.Ren
 
 ---
 
-## 13. Коммерческие бизнес-модули
+## 13. Коммерческие бизнес-модули (20 модулей)
 
-### 1. B2B-трекер заказов в реальном времени (`/track`)
-* Позволяет клиентам сервисных центров, СТО, мастерских и клиник отслеживать статус работ по уникальному номеру квитанции (`SRV-4182`).
-* Реализован живой SSE-канал (`/api/track/sse/{code}`) для мгновенного обновления прогресс-бара без перезагрузки страницы.
-* Встроенная возможность онлайн-оплаты счета через ЮKassa прямо со страницы отслеживания.
+SiteCraft включает 20 готовых к продакшену бизнес-модулей, объединенных концепцией **Zero-SMS** ($0 расходов на сторонние шлюзы через связку Telegram Bot API + SMTP Magic Links + QR-коды) и **Zero-Node.js**:
 
-### 2. Telegram Mini Apps (TMA) & VIP-клуб (`/shop`, `/vip`)
-* **Авторизация:** Проверка HMAC-SHA256 подписи строки `initData` через бота (`/api/tma/auth`).
-* **E-commerce витрина (`/shop`):** Поддержка нативной кнопки Telegram `MainButton` для мгновенного оформления заказа.
-* **Закрытый клуб (`/vip`):** Пейволл для продажи доступа к премиальным материалам, курсам и сообществам.
+### 📦 Блок 1. Электронная коммерция, Доставка и Склад (E-Commerce)
 
-### 3. SEO-Блог и База знаний (`/blog`, `/sitemap.xml`)
-* Статьи с поддержкой тегов, форматированного HTML-контента и подсчета просмотров.
-* **Отложенная публикация (Scheduled Publishing):** Статьи отображаются на сайте только при `is_published = true && published_at <= time.Now()`. Для материалов с датой публикации в будущем выставляется статус «Запланирована».
-* **Синхронизация кэша (PocketBase Cron):** Фоновый планировщик (`app.Cron()`) каждую минуту проверяет запланированные статьи и инвалидирует In-Memory кэш, автоматически публикуя материалы в назначенный срок.
-* **Корзина (Soft Delete):** Удалённые материалы исключаются из публичной витрины блога и XML Sitemap, сохраняясь в базе с флагом `is_deleted = true`.
-* Живой поиск по заголовкам и тегам через HTMX без перезагрузки страниц.
-* Автоматическая генерация XML Sitemap по протоколу поисковых систем (включает только опубликованные актуальные статьи).
+1. **Модуль зон доставки и гео-тарифов (`cart_drawer.templ`, `internal/handlers/cart.go`):**
+   * Переключатель «Курьер / Самовывоз».
+   * Расчет тарифов по зонам («По городу» — 300 ₽ / бесплатно от 2 500 ₽, «Пригород» — 650 ₽, «Область» — 1 200 ₽).
+   * Динамический пересчет итогового чека в Alpine.js и фиксация зон в `service_orders` и `leads`.
+2. **Модуль сопутствующих продаж Cross-Sell / Up-Sell (`cart_drawer.templ`, `internal/models/ecommerce.go`):**
+   * Блок «Рекомендуем добавить к заказу» прямо в Drawer-корзине.
+   * Добавление сопутствующих опций (экспресс-выезд, расширенная гарантия 1 год) в 1 клик через Alpine Store без сетевых задержек.
+3. **Легковесный складской учет и остатки Simple Inventory (`internal/data/collections.go`, `services.templ`):**
+   * Поля `stock_count` и `is_preorder` в коллекции `services`.
+   * Автоматическое списание остатка при оформлении заказа в `cart.go`.
+   * При остатке 0 товар автоматически переходит в статус «Под заказ», а при запасе <= 5 выводится FOMO-бейдж «Осталось всего X шт!».
+4. **Система промокодов и акций Promo Engine (`internal/data/collections.go`, `/api/cart/validate-coupon`):**
+   * Коллекция `coupons` со скидками (процентными и фиксированными), валидацией срока действия и лимита активаций (`max_uses`, `used_count`).
+   * Мгновенная проверка по HTMX без перезагрузки, учет счетчика использований при оформлении чекаута. Демо-коды: `PROMO10` (10%) и `WELCOME500` (500 ₽).
+5. **Интерактивная веб-корзина Web Cart Drawer (`ui/components/cart_drawer.templ`):**
+   * Выдвижная корзина на Alpine.js со счетчиками количества, расчетом доставки и скидок. Оформление через `/api/cart/checkout`.
+6. **Telegram Mini Apps (TMA) & VIP-клуб (`/shop`, `/vip`):**
+   * HMAC-SHA256 авторизация сессии Telegram (`/api/tma/auth`), нативная поддержка MainButton и пейволл закрытого сообщества.
 
-### 4. Клиентская панель управления (`/client`)
-* **Архитектура авторизации и безопасность:**
-  * **Изоляция от посетителей:** Административные ссылки на `/client` и `/_/` исключены из публичной шапки и подвала; панель доступна владельцу сайта по прямому URL `/client`.
-  * **Мастер первичной настройки (Setup Wizard, `/client/setup`):** При первом старте инстанса, если пароль еще не задан или равен дефолтному значению, пользователь автоматически направляется на мастер инициализации с обязательной валидацией (длина пароля не менее 8 символов и совпадение подтверждения).
-  * **Bcrypt-хэширование (`golang.org/x/crypto/bcrypt`):** Пароль сохраняется в БД исключительно в виде bcrypt-хэша (`client_admin_password_hash`). Для обратной совместимости реализована автоматическая бесшовная миграция: при первом чтении или успешном входе с legacy открытым паролем (`client_admin_password`) генерируется безопасный хэш, а открытое поле очищается.
-  * **Криптографические сессии (In-Memory `SessionStore`):** Сессионная кука `sitecraft_client_auth` (`HttpOnly`, `SameSite=Lax`, TTL 30 дней) содержит 32-байтный случайный токен, сгенерированный через `crypto/rand` (`hex.EncodeToString`), исключая хранение паролей в браузере. Хранилище сессий потокобезопасно (`sync.RWMutex`) и мгновенно отзывает токены при логауте (`/client/logout`).
-  * **Защита от подбора паролей (`LoginRateLimiter`):** Встроенный ограничитель попыток отслеживает IP-адреса (`e.RealIP()`). После 5 неудачных попыток IP временно блокируется на 15 минут с отдачей HTTP 429 Too Many Requests и таймером обратного отсчета. При успешной авторизации счетчик попыток очищается.
-  * **Вкладка «Безопасность» (`/client/tab/security`):** Полноценный интерфейс для самостоятельной смены пароля доступа владельцем сайта с проверкой текущего пароля и валидацией сложности нового.
-* **Управление лидами:** Таблица входящих заявок, фильтрация по статусам (`новая`, `в работе`, `завершена`), смена статуса в 1 клик через HTMX, экспорт базы лидов в CSV (`/client/export/leads.csv`).
-* **Редактирование контактов:** Управление телефонами, адресом, временем работы, соцсетями и реквизитами без правок кода.
-* **Управление статьями и новостями блога:**
-  * **Таблица публикаций:** Отображение заголовка, URL, даты, статуса (🟢 Опубликована, 🟡 Запланирована, ⚪ Черновик).
-  * **Быстрый тоггл (1 клик):** Скрыть или опубликовать материал мгновенно через `POST /client/articles/toggle/{id}`.
-  * **Визуальный WYSIWYG-редактор:** Форматирование текста через Quill.js в темной теме.
-  * **Drag & Drop обложка:** Загрузка, предпросмотр и удаление изображения обложки на Alpine.js.
-  * **Отложенный постинг:** Ввод точной даты/времени (`datetime-local`) с кнопками быстрых пресетов («Сейчас», «Завтра в 09:00», «Через 3 дня», «Через неделю»).
-  * **Корзина (Soft Delete):** Вкладка «Корзина» со счетчиком удаленных статей, функциями восстановления (`POST /client/articles/restore/{id}`), окончательного удаления (`DELETE /client/articles/permanent/{id}`) и полной очистки (`POST /client/articles/trash/empty`).
+### 🎯 Блок 2. Маркетинг, Лидогенерация и Рост конверсии (Growth & CRO)
 
-### 5. Интерактивная веб-корзина (Web Cart Drawer)
-* Корзина покупок на Alpine.js (`ui/components/cart_drawer.templ`) с подсчетом суммы, выбором количества и кнопкой чекаута.
-* Оформление заказа через эндпоинт `/api/cart/checkout` с сохранением в таблицу `leads` и публикацией события в шину.
+7. **Смарт-квиз и Интерактивный калькулятор сметы (`ui/sections/quiz.templ`, `internal/handlers/leads.go`):**
+   * 3–4 пошаговых экрана с радиокнопками/опциями, наглядный прогресс-бар, мгновенный расчет суммы на клиенте без запросов к серверу, выбор канала связи (Telegram, звонок). Бейджи сметы (`💡 14 500 ₽`) в `/client` и экспорт в CSV.
+8. **Чат сайта напрямую в Telegram Web-to-TG (`ui/components/chat_widget.templ`, `internal/handlers/chat.go`):**
+   * Полноценная замена JivoSite/LiveChat: посетитель пишет в виджет $\rightarrow$ бот пересылает в Telegram владельцу $\rightarrow$ владелец жмет «Ответить» (Reply) $\rightarrow$ ответ мгновенно отображается на сайте через SSE (Server-Sent Events). Нулевые затраты на внешние сервисы. Встроенный автономный poller обновлений для локальной разработки и за NAT.
+9. **Виджет удержания уходящих клиентов Exit-Intent Pop-up (`ui/components/exit_intent.templ`):**
+   * Срабатывает на чистом Alpine.js при быстром уводе курсора к закрытию вкладки (`e.clientY <= 12`) и по мобильному таймеру (45с). Защита от спама через `sessionStorage` (не более 1 показа за сессию).
+10. **Сквозная UTM-атрибуция Zero-JS Lead Attribution (`internal/handlers/utm.go`):**
+    * Go Middleware автоматически перехватывает UTM-метки (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`) и реферер, сохраняет в cookie `sitecraft_utm` на 30 дней и прикрепляет к каждой заявке.
+11. **Виджет недавней активности Social Proof / FOMO (`ui/components/recent_activity.templ`, `/api/recent-activity`):**
+    * Всплывающий тост на Alpine.js с деперсонализированными событиями по 152-ФЗ из базы (`leads` и `service_orders`) и кэшированием в памяти на 5 минут («Алексей из г. Москва только что оформил заявку на ТО»).
+12. **Серверное A/B сплит-тестирование Server A/B (`internal/handlers/ab.go`):**
+    * Ротация заголовков и офферов на сервере Go через 30-дневную cookie `sitecraft_ab` без использования клиентского JS: нулевое мигание экрана (FOOC), фиксация варианта в заявках и бейджи в `/client`.
+13. **Плавающий мульти-мессенджер Floating Contact (`ui/components/floating_contact.templ`):**
+    * Компактный виджет быстрой связи в правом нижнем углу экрана с прямым переходом в WhatsApp или Telegram.
 
-### 6. Плавающий мульти-мессенджер (Floating Contact)
-* Компактный виджет быстрой связи в правом нижнем углу экрана (`ui/components/floating_contact.templ`).
-* Прямой переход в диалог WhatsApp (`whatsapp_phone`) или Telegram (`telegram_contact`).
+### 🛠 Блок 3. Сервис, Запись и Лояльность (Booking & Loyalty)
+
+14. **Многоуровневая запись к мастерам и постам (`internal/models/booking.go`, `ui/sections/booking.templ`):**
+    * Выбор конкретного специалиста или поста («Подъемник #1», «Врач Смирнов») через коллекцию `resources` и эндпоинт `/api/resources`. Фильтрация таймслотов с учетом занятости выбранного ресурса.
+15. **Триггерные напоминания Telegram + Email .ics Calendar RFC 5545 (`internal/handlers/calendar.go`, `internal/notifications/reminders.go`):**
+    * Скачивание файла встречи `.ics` для Apple Calendar, Google Calendar, Outlook (`/api/booking/calendar.ics`).
+    * Генерация календарей на чистом `strings.Builder` (Zero-Dependency).
+    * Ссылки быстрой отмены или подтверждения визита (`/api/booking/action?action=cancel`). Фоновый cron сканирует записи каждые 10 минут и рассылает алерты в Telegram.
+16. **B2B-трекер заказов и Электронная сервисная книжка (`/track`, `ui/pages/tracker.templ`):**
+    * Отслеживание готовности авто/техники с живым SSE/HTMX обновлением прогресс-бара по номеру квитанции (`SRV-4182`), электронная сервисная книжка с регламентом ТО и рекомендациями, онлайн-оплата через ЮKassa.
+17. **Проверенные отзывы с фото Verified UGC (`internal/models/review.go`, `internal/handlers/review.go`):**
+    * Форма отправки отзывов с оценкой (1..5), привязкой к услуге и фото выполненных работ. Премодерация отзывов во вкладке `/client/tab/reviews` и бейдж «Проверенный клиент».
+
+### 🏢 Блок 4. B2B, Отрасли и Комплаенс (B2B & Compliance)
+
+18. **B2B-генератор счетов и актов HTML Print (`ui/pages/invoice.templ`, `/invoice/{code}`):**
+    * Печатная форма счета на оплату и акта сдачи-приемки работ в стандарте `@media print` с авто-генерацией QR-кода по ГОСТ Р 56042-2014 для оплаты в банковских приложениях (СберБанк, Тинькофф).
+19. **Интерактивная карта сети филиалов (`ui/sections/map.templ`, `/api/branches`):**
+    * Коллекция `branches` с фильтрацией по городам, часами работы, телефонами и координатами для Яндекс Карт.
+20. **Портфолио и кейсы «До / После» (`ui/sections/before_after.templ`):**
+    * Сравнение результатов с интерактивным бегунком, сметой выполненных работ, списком использованных материалов и сроками.
+21. **Вакансии и отклики с резюме HR Module (`ui/sections/careers.templ`, `ui/pages/careers.templ`, `/api/careers/apply`):**
+    * Коллекция `vacancies`, отдельная карьерная страница `/careers`, фильтрация по отделам, модальное окно отклика с телефоном и резюме, автопересылка в Telegram HR-менеджеру.
+22. **Генератор документов по 152-ФЗ и согласие на Cookies (`ui/pages/legal.templ`, `ui/components/cookie_consent.templ`):**
+    * Страницы `/privacy` и `/terms`, автоматически подставляющие юридические реквизиты компании из `site_content`.
+    * Баннер согласия на обработку персональных данных и cookies с сохранением в `localStorage`.
+
+### 🎛 Блок 5. Агентский пульт, Безопасность и Клиентская панель
+
+23. **Fleet Master Dashboard (`/fleet`, `/client/tab/fleet`):**
+    * Пульт управления мультисайтовым флотом: мониторинг состояния инстансов (статус, порт, RAM, PID), запуск, остановка, перезапуск и создание новых сайтов через API `/api/fleet/*`.
+24. **Клиентская панель управления (`/client`) и безопасность:**
+    * Изолированный доступ, мастер первого запуска (Setup Wizard >= 8 знаков), Bcrypt-хэширование (`golang.org/x/crypto/bcrypt`), криптографические сессии (`crypto/rand`, 32 байта, HttpOnly), защита от подбора паролей `LoginRateLimiter` (блокировка IP на 15 минут после 5 неудачных попыток), смена пароля в `/client/tab/security`.
+    * Управление лидами со статусами и экспортом в CSV, редактирование контактов, визуальный WYSIWYG-редактор статей блога (Quill.js), Drag & Drop обложки, отложенный постинг и корзина статей (Soft Delete).
+25. **SEO-Блог и База знаний (`/blog`, `/sitemap.xml`):**
+    * Экспертные статьи, живой поиск HTMX, автопубликация по расписанию через PocketBase Cron, динамический `sitemap.xml` и счетчик просмотров.
 
 ---
 
-## 14. Каталог готовых пресетов (12 ниш)
+## 14. Каталог готовых пресетов и тестовых стендов
 
 Все пресеты хранятся в формате JSON в каталоге `presets/`:
 
 | Имя файла пресета | Ниша бизнеса | Ключевые секции и особенности |
 |---|---|---|
+| `presets/test_all_modules.json`<br>(алиас `presets/test.json`) | **Тестовый стенд (Full Suite Test)** | **Комплексное тестирование 20 коммерческих модулей:** E-commerce (доставка, промокоды, остатки), Live Web-to-TG чат, квиз, трекер, вакансии, кейсы До/После, бронирование по слотам, 152-ФЗ, A/B тест и витрина CVA |
+| `presets/notary.json` | Частный нотариус / Контора | Официальный нотариальный статус, расписание, реестр действий, тарифы и запись |
 | `presets/legal.json` | Нотариус / Юридическое бюро | Классический официальный стиль, график работы, реестр нотариальных действий |
 | `presets/legal-swiss.json` | Швейцарский юридический стиль | Строгий минимализм, кинематографический одометр `cinematic_odometer`, бегущая строка |
 | `presets/legal-british.json` | Британский стиль адвокатуры | Глубокий бордовый тон, строгая типографика, консервативная респектабельность |
@@ -662,6 +803,13 @@ registry.RegisterBlock("custom_block", func(b models.PageBlock, ctx registry.Ren
 # Экспорт сайта в плоский HTML/CSS для GitHub Pages, Cloudflare Pages или S3
 ./bin/sitecraft export --out=./dist --preset=cyber
 ```
+
+### 4. Веб-панель Fleet Master Dashboard (`/fleet` и `/client/tab/fleet`)
+
+Полноценный графический интерфейс управления парком клиентских инстансов для веб-студий и агентств:
+* **Мониторинг ресурсов:** список всех развернутых сайтов, их текущие статусы (🟢 Запущен, 🔴 Остановлен), потребление оперативной памяти (RSS), системный PID и активный порт.
+* **Управление в 1 клик:** запуск, остановка, перезапуск и архивирование резервных копий через HTTP API (`POST /api/fleet/action`).
+* **Создание инстансов:** развертывание нового клиентского сайта прямо из браузера (`POST /api/fleet/create`) с выбором пресета ниши, темы и выделением свободного порта.
 
 ---
 
@@ -733,6 +881,7 @@ dental-premium.ru {
 ### ⚠️ Ограничения и компромиссы
 1. **Отсутствие визуального Drag-and-Drop:** Контент наполняется через типизированные поля админки PocketBase, а не перетаскиванием блоков мышкой в браузере.
 2. **Масштабирование SQLite:** Архитектура идеальна для коммерческих лендингов, каталогов и сайтов услуг до 1–2 млн визитов в месяц. Для высоконагруженных порталов с тысячами одновременных транзакций записи потребуется переход на клиент-серверную БД (PostgreSQL).
+3. **Модуль календаря и Cron-напоминаний:** В модуле календаря намеренно использован собственный RFC 5545 генератор на `strings.Builder` вместо внешних Go-библиотек для сохранения размера бинарника (~25 МБ); периодичность проверки напоминаний Cron составляет 10 минут, поэтому для записей, сделанных менее чем за 10 минут до визита, Telegram-алерт сработает постфактум. Документация синхронизирована с фактическим поведением cron-раннера; при необходимости уменьшения задержки интервал сканирования в `main.go` может быть переключен на `*/2 * * * *` без заметной нагрузки на CPU.
 
 ---
 
@@ -821,6 +970,40 @@ dental-premium.ru {
 7. **❌ Запрет сырых строковых классов и дублирования стилей кнопок/карточек в секциях:**
    * *Причина:* Размазывание ручных utility-строк (`px-4 py-2 bg-accent...`) по секциям приводит к рассинхронизации дизайн-системы между 12 пресетами ниш и усложняет глобальный ребрендинг.
    * *Правило:* Для всех кнопок, бейджей и карточек использовать базовые типизированные компоненты из `ui/components/base/` (`@base.Button`, `@base.Badge`, `@base.Card`), а для динамических состояний — нативные Tailwind v4 CSS Data-Variants (`data-open:`, `data-closed:`, `data-active:`).
+
+---
+
+## 20. Продакшен-эксплуатация, HTTP-кэширование, Observability и Watchdog
+
+В архитектуре SiteCraft внедрен комплекс инструментов для надежной и высокопроизводительной работы в продакшене без раздувания зависимостей и потребления RAM:
+
+### 1. Гранулярное HTTP-кэширование (`internal/handlers/cache_control.go`)
+В цепочку middleware роутера встроен `CacheControlMiddleware()`, формирующий заголовки:
+* **Статика (`/assets/*`):** `Cache-Control: public, max-age=31536000, immutable` — кэширование CSS/JS в браузере на 1 год без валидационных запросов (залог 100/100 в PageSpeed).
+* **Динамический SSR (`/`, `/shop`, `/track`):** `Cache-Control: private, no-cache` — защита от рассинхрона когорт A/B-тестирования, выбранного языка (i18n) и занятых слотов бронирования при сохранении работы браузерного BFCache.
+* **Кабинет клиента и Fleet (`/client/*`, `/fleet/*`):** `Cache-Control: private, no-cache, no-store, must-revalidate` + `Pragma: no-cache` — защита персональных данных лидов и сессий от оседания в кэше.
+* **SSE-стриминг (`/api/chat/sse`, `/api/track/sse`):** `Cache-Control: no-cache, no-transform` — исключение буферизации потока событий в реальном времени.
+* **Статьи блога (`/blog/*`):** `Cache-Control: public, max-age=300, stale-while-revalidate=3600`.
+
+### 2. Структурированное логирование Observability (`internal/handlers/observability.go`)
+Реализовано на стандартном пакете Go `log/slog` (без внешних зависимостей):
+* **Двойной режим вывода (`InitLogger`):** при `ENV=production` или `PROD=1` логи выводятся в компактном структурированном JSON для сбора в Vector / Loki / Better Stack Logs. В локальной разработке — читаемый форматированный текст.
+* **`RequestLoggerMiddleware`:** замеряет длительность обработки каждого запроса (`latency`), фиксирует HTTP-метод, путь, статус-код, размер ответа и реальный IP (`e.RealIP()`).
+* **SSE-совместимость:** обертка `statusRecorder` реализует интерфейс `http.Flusher`, гарантируя работу живого чата и трекера заказов.
+* **Фильтрация шума:** рутинные запросы к статическим ассетам `/assets/` отфильтровываются из журнала.
+
+### 3. Обратный прокси (Reverse-Proxy): Caddy, Nginx и Systemd
+* **`Caddyfile`:** автоматический выпуск SSL Let's Encrypt / ZeroSSL, нативное сжатие `zstd`/`gzip`, передача клиентских заголовков и `flush_interval -1` для исключения задержек в Server-Sent Events.
+* **`deploy/nginx/sitecraft.conf`:** конфигурация Nginx с директивой `proxy_buffering off` для SSE.
+* **`deploy/systemd/sitecraft.service`:** продакшен-юнит с изолированной песочницей безопасности Linux (`ProtectSystem=full`, `PrivateTmp=true`, `Restart=always`).
+
+### 4. Автономный фоновый сторож сервера (`deploy/monitoring/watchdog.sh`)
+Легковесный монитор на Bash с потреблением **0 МБ RAM в фоне** (запускается через cron раз в 10–15 минут):
+* Контроль заполнения диска (порог: > 85%).
+* Контроль свободной памяти RAM (порог: < 10%).
+* Контроль Load Average относительно количества физических ядер процессора.
+* Контроль процесса службы: при падении `sitecraft` отправляет алерт и выполняет `systemctl restart sitecraft`.
+* 2-часовой антиспам-кулдаун и автоматические уведомления об успешном восстановлении (`Auto-Recovery`).
 
 ---
 

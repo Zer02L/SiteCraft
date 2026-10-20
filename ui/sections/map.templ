@@ -1,25 +1,123 @@
 package sections
 
 import (
+	"fmt"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components/base"
 
 	icons "github.com/bryanvaz/go-templ-lucide-icons"
 )
 
-templ MapSection(content models.SiteContent, settings models.SiteSettings) {
-	<!-- Interactive Location Map Section -->
-	<section id="map" class="py-16 px-4 max-w-6xl mx-auto">
+templ MapSection(content models.SiteContent, settings models.SiteSettings, branches []models.BranchItem) {
+	<!-- Interactive Location & Multi-Branch Map Section (Блок 4: Сеть филиалов) -->
+	<section
+		id="map"
+		class="py-16 px-4 max-w-6xl mx-auto"
+		if len(branches) > 0 {
+			x-data="{
+				activeCity: 'all',
+				activeBranchId: 0,
+				branches: [],
+			}"
+		}
+	>
 		<div class="text-center mb-8" data-reveal>
 			@base.Badge(base.BadgeProps{
 				Variant: base.BadgeAccent,
 				Class:   "mb-2 uppercase tracking-wider",
 			}) {
-				Локация
+				if len(branches) > 1 {
+					Сеть филиалов
+				} else {
+					Локация
+				}
 			}
-			<h2 class="font-serif-title text-3xl font-bold text-content">Как нас найти</h2>
-			<p class="text-content-muted mt-2 text-sm max-w-xl mx-auto">Удобный подъезд и парковка. Перед визитом рекомендуем предварительно записаться.</p>
+			<h2 class="font-serif-title text-3xl font-bold text-content">
+				if len(branches) > 1 {
+					Наши филиалы и как нас найти
+				} else {
+					Как нас найти
+				}
+			</h2>
+			<p class="text-content-muted mt-2 text-sm max-w-xl mx-auto">
+				Удобный подъезд и собственная парковка для клиентов. Выберите удобный филиал для обслуживания.
+			</p>
 		</div>
+
+		if len(branches) > 1 {
+			<!-- Фильтр по городам (Zero-lag Alpine.js) -->
+			<div class="flex items-center justify-center gap-2 mb-6 flex-wrap" data-reveal>
+				<button
+					type="button"
+					@click="activeCity = 'all'"
+					:class="activeCity === 'all' ? 'bg-primary text-white shadow-md' : 'bg-surface text-content-muted hover:text-content border border-content/15'"
+					class="px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer"
+				>
+					Все отделения ({ fmt.Sprintf("%d", len(branches)) })
+				</button>
+				<!-- Выбираем уникальные города -->
+				for _, city := range getUniqueCities(branches) {
+					<button
+						type="button"
+						@click={ fmt.Sprintf("activeCity = '%s'", city) }
+						:class={ fmt.Sprintf("activeCity === '%s' ? 'bg-primary text-white shadow-md' : 'bg-surface text-content-muted hover:text-content border border-content/15'", city) }
+						class="px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer"
+					>
+						{ city }
+					</button>
+				}
+			</div>
+
+			<!-- Карточки отделений -->
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" data-reveal>
+				for idx, b := range branches {
+					<div
+						x-show={ fmt.Sprintf("activeCity === 'all' || activeCity === '%s'", b.City) }
+						@click={ fmt.Sprintf("activeBranchId = %d", idx) }
+						:class={ fmt.Sprintf("activeBranchId === %d ? 'ring-2 ring-primary border-primary bg-surface shadow-md' : 'border-content/10 bg-surface/70 hover:bg-surface'", idx) }
+						class="p-5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between"
+					>
+						<div>
+							<div class="flex items-center justify-between gap-2 mb-2">
+								<span class="font-bold text-sm text-content">{ b.Name }</span>
+								if b.IsMain {
+									<span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-accent/20 text-primary-dark">
+										Флагман
+									</span>
+								}
+							</div>
+							<p class="text-xs text-content/80 font-medium mb-1 flex items-start gap-1">
+								@icons.MapPin(templ.Attributes{"class": "w-3.5 h-3.5 text-primary flex-shrink-0 mt-0.5"})
+								<span>{ b.Address }</span>
+							</p>
+							if b.Metro != "" {
+								<p class="text-[11px] text-content-muted pl-4">м. { b.Metro }</p>
+							}
+						</div>
+
+						<div class="mt-4 pt-3 border-t border-content/10 flex items-center justify-between text-xs">
+							<a
+								href={ templ.URL("tel:" + b.Phone) }
+								class="font-bold text-primary hover:underline"
+								onclick="event.stopPropagation()"
+							>
+								{ b.Phone }
+							</a>
+							<a
+								href={ templ.URL(fmt.Sprintf("https://yandex.ru/maps/?rtext=~%f,%f", b.Lat, b.Lng)) }
+								target="_blank"
+								rel="noopener noreferrer"
+								class="text-[11px] text-accent hover:underline flex items-center gap-0.5 font-semibold"
+								onclick="event.stopPropagation()"
+							>
+								<span>Маршрут</span>
+								@icons.ExternalLink(templ.Attributes{"class": "w-3 h-3"})
+							</a>
+						</div>
+					</div>
+				}
+			</div>
+		}
 
 		<div class="bg-surface rounded-2xl shadow-sm border border-content/10 overflow-hidden grid grid-cols-1 lg:grid-cols-12" data-reveal>
 			<!-- Адрес и контакты рядом с картой -->
@@ -61,7 +159,7 @@ templ MapSection(content models.SiteContent, settings models.SiteSettings) {
 					</div>
 				</div>
 
-				<div class="mt-8 pt-4 border-t border-content/10">
+				<div class="mt-8 pt-4 border-t border-content/10 space-y-2">
 					@base.Button(base.ButtonProps{
 						Variant: base.BtnAccent,
 						Size:    base.BtnSizeSm,
@@ -87,7 +185,6 @@ templ MapSection(content models.SiteContent, settings models.SiteSettings) {
 						<span class="text-xs font-medium">Загрузка интерактивной карты...</span>
 					</div>
 				} else {
-
 					<iframe
 						src={ content.MapIframe }
 						width="100%"
@@ -101,6 +198,18 @@ templ MapSection(content models.SiteContent, settings models.SiteSettings) {
 			</div>
 		</div>
 	</section>
+}
+
+func getUniqueCities(branches []models.BranchItem) []string {
+	seen := make(map[string]bool)
+	var cities []string
+	for _, b := range branches {
+		if b.City != "" && !seen[b.City] {
+			seen[b.City] = true
+			cities = append(cities, b.City)
+		}
+	}
+	return cities
 }
 
 templ MapFrame(iframeURL string, title string) {

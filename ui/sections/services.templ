@@ -50,8 +50,15 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 					},
 				}) {
 					<div>
-						<div class="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center mb-3">
-							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
+						<div class="flex items-center justify-between mb-3">
+							<div class="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center">
+								@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
+							</div>
+							if s.StockCount == 0 || s.IsPreorder {
+								<span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 font-bold">Под заказ</span>
+							} else if s.StockCount > 0 && s.StockCount <= 5 {
+								<span class="px-2 py-0.5 rounded-full text-[10px] bg-rose-500/10 text-rose-500 border border-rose-500/20 font-bold">Осталось { fmt.Sprintf("%d", s.StockCount) } шт</span>
+							}
 						</div>
 						@base.CardTitle("mb-2") {
 							{ s.Title }
@@ -78,7 +85,11 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 									},
 								}) {
 									@icons.Plus(templ.Attributes{"class": "w-3.5 h-3.5"})
-									<span>В корзину</span>
+									if s.StockCount == 0 || s.IsPreorder {
+										<span>Предзаказ</span>
+									} else {
+										<span>В корзину</span>
+									}
 								}
 							}
 							if settings.EnablePayment {
