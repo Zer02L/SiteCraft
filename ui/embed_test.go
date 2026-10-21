@@ -26,10 +26,10 @@ func TestEmbeddedAssetsFS(t *testing.T) {
 		t.Errorf("embedded styles.css is empty")
 	}
 
-	// Verify cyber_avatar.png can be opened
-	imgFile, err := fsys.Open("cyber_avatar.png")
+	// Verify images/cyber_avatar.png can be opened
+	imgFile, err := fsys.Open("images/cyber_avatar.png")
 	if err != nil {
-		t.Fatalf("failed to open embedded cyber_avatar.png: %v", err)
+		t.Fatalf("failed to open embedded images/cyber_avatar.png: %v", err)
 	}
 	defer imgFile.Close()
 }

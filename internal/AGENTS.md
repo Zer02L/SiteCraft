@@ -9,7 +9,7 @@ Owns all server-side application logic, data persistence, HTTP routing, real-tim
 ## Ownership
 
 - `internal/cache/` — In-memory caching with `sync.RWMutex` and automatic invalidation on PocketBase admin mutations.
-- `internal/data/` — PocketBase collections, schemas, migrations, hooks, and JSON preset loader.
+- `internal/data/` — PocketBase collections, schemas, migrations, hooks, domain queries (site, articles, booking, leads, reviews), and JSON preset loader.
 - `internal/events/` — Internal asynchronous event bus for decoupled component messaging.
 - `internal/exporter/` — Static Site Generation (SSG) HTML/CSS exporter.
 - `internal/handlers/` — HTTP routers, middleware (i18n, rate limiting, auth, cache-control), and HTMX/JSON endpoints (leads, booking, cart, checkout, chat, reviews, fleet, client admin, TMA).

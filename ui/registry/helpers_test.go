@@ -38,3 +38,27 @@ func TestParseBeforeAfterPayload_Defaults(t *testing.T) {
 		t.Errorf("expected beauty before/after items")
 	}
 }
+
+func TestParsePayload_Generic(t *testing.T) {
+	// 1. Nil payload
+	if res := ParsePayload[struct{ Name string }](nil); res != nil {
+		t.Errorf("expected nil result for nil payload, got %+v", res)
+	}
+
+	// 2. Valid payload map
+	payload := map[string]interface{}{
+		"title": "Super Features",
+		"badge": "NEW",
+	}
+	type customStruct struct {
+		Title string `json:"title"`
+		Badge string `json:"badge"`
+	}
+	res := ParsePayload[customStruct](payload)
+	if res == nil {
+		t.Fatal("expected non-nil struct for valid payload")
+	}
+	if res.Title != "Super Features" || res.Badge != "NEW" {
+		t.Errorf("unexpected parsed struct: %+v", res)
+	}
+}

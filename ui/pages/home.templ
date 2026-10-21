@@ -9,62 +9,53 @@ import (
 	"sitecraft/ui/sections/hero"
 )
 
-templ Home(settings models.SiteSettings, content models.SiteContent, services []models.ServiceItem, bookedSlots map[string][]string, blocks []models.PageBlock, resources []models.ResourceItem, reviews []models.ReviewItem, branches []models.BranchItem, vacancies []models.VacancyItem) {
-	@layouts.Base(settings.SiteName+" — "+content.HeroTitle, content.HeroSubtitle, settings, models.NewHomeSEO(settings, content, "")) {
-		if settings.EnableA11y {
+templ Home(data HomePageData) {
+	@layouts.Base(data.Settings.SiteName+" — "+data.Content.HeroTitle, data.Content.HeroSubtitle, data.Settings, models.NewHomeSEO(data.Settings, data.Content, "")) {
+		if data.Settings.EnableA11y {
 			@components.A11yBar()
 		}
-		@components.Header(content, settings)
+		@components.Header(data.Content, data.Settings)
 
 		<!-- Динамический модульный рендеринг секций через BlockRegistry (Factory Pattern) -->
-		if len(blocks) > 0 {
-			for _, b := range blocks {
-				@registry.RenderBlock(b, registry.RenderContext{
-					Settings:    settings,
-					Content:     content,
-					Services:    services,
-					BookedSlots: bookedSlots,
-					Resources:   resources,
-					Reviews:     reviews,
-					Branches:    branches,
-					Vacancies:   vacancies,
-				})
+		if len(data.Blocks) > 0 {
+			for _, b := range data.Blocks {
+				@registry.RenderBlock(b, data.RenderContext())
 			}
 		} else {
 			<!-- Дефолтный порядок, если блоки еще не настроены -->
-			if settings.Theme == "cyber" {
-				@hero.CyberHero(content, settings)
-			} else if settings.Theme == "legal" {
-				@hero.LegalHero(content, settings)
+			if data.Settings.Theme == "cyber" {
+				@hero.CyberHero(data.Content, data.Settings)
+			} else if data.Settings.Theme == "legal" {
+				@hero.LegalHero(data.Content, data.Settings)
 			} else {
-				@hero.Hero(content)
+				@hero.Hero(data.Content)
 			}
-			@sections.ScheduleBar(content)
-			@sections.Features(settings.Theme, nil)
-			@sections.Services(services, settings)
-			@sections.Reviews(settings.Theme, reviews)
-			@sections.Booking(content, bookedSlots, settings, resources)
-			@sections.Faq(settings.Theme, nil)
-			@sections.MapSection(content, settings, branches)
+			@sections.ScheduleBar(data.Content)
+			@sections.Features(data.Settings.Theme, nil)
+			@sections.Services(data.Services, data.Settings)
+			@sections.Reviews(data.Settings.Theme, data.Reviews)
+			@sections.Booking(data.Content, data.BookedSlots, data.Settings, data.Resources)
+			@sections.Faq(data.Settings.Theme, nil)
+			@sections.MapSection(data.Content, data.Settings, data.Branches)
 		}
 
-		@components.Footer(content, settings)
+		@components.Footer(data.Content, data.Settings)
 
-		if settings.EnableFloatingContact {
-			@components.FloatingContact(content, settings)
+		if data.Settings.EnableFloatingContact {
+			@components.FloatingContact(data.Content, data.Settings)
 		}
-		if settings.EnableCart {
-			@components.CartDrawer(settings)
+		if data.Settings.EnableCart {
+			@components.CartDrawer(data.Settings)
 		}
-		if settings.EnableLiveChat {
-			@components.ChatWidget(settings)
+		if data.Settings.EnableLiveChat {
+			@components.ChatWidget(data.Settings)
 		}
-		if settings.EnableRecentActivity {
-			@components.RecentActivity(settings)
+		if data.Settings.EnableRecentActivity {
+			@components.RecentActivity(data.Settings)
 		}
-		@components.ExitIntent(settings)
-		if settings.EnableCookieConsent {
-			@components.CookieConsent(settings)
+		@components.ExitIntent(data.Settings)
+		if data.Settings.EnableCookieConsent {
+			@components.CookieConsent(data.Settings)
 		}
 	}
 }

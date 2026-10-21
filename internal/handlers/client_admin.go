@@ -211,6 +211,22 @@ func (h *ClientAdminHandler) isAuthorized(e *core.RequestEvent) bool {
 	return h.sessionStore.IsValid(cookie.Value)
 }
 
+// RequireAuth returns a route middleware that protects client admin endpoints.
+// If the session is invalid or expired, it redirects to /client/login.
+// For HTMX requests, it sets the HX-Redirect header to trigger a full window navigation.
+func (h *ClientAdminHandler) RequireAuth() func(e *core.RequestEvent) error {
+	return func(e *core.RequestEvent) error {
+		if !h.isAuthorized(e) {
+			if e.Request.Header.Get("HX-Request") == "true" {
+				e.Response.Header().Set("HX-Redirect", "/client/login")
+				return e.String(http.StatusOK, "")
+			}
+			return e.Redirect(http.StatusFound, "/client/login")
+		}
+		return e.Next()
+	}
+}
+
 // HandleLoginPage renders the login page or setup wizard if password is not configured.
 func (h *ClientAdminHandler) HandleLoginPage(e *core.RequestEvent) error {
 	if h.isAuthorized(e) {
@@ -670,6 +686,19 @@ func countLeadsByStatus(leads []models.Lead) (newCount int, inProgressCount int)
 	return newCount, inProgressCount
 }
 
+// sanitizeCSVField neutralizes CSV Formula Injection (OWASP guidance for spreadsheet export).
+// Values starting with =, +, -, @, \t, or \r are prepended with a single quote.
+func sanitizeCSVField(val string) string {
+	trimmed := strings.TrimSpace(val)
+	if len(trimmed) > 0 {
+		switch trimmed[0] {
+		case '=', '+', '-', '@', '\t', '\r':
+			return "'" + val
+		}
+	}
+	return val
+}
+
 // HandleExportLeadsCSV exports all leads as a CSV file download.
 func (h *ClientAdminHandler) HandleExportLeadsCSV(e *core.RequestEvent) error {
 	if !h.isAuthorized(e) {
@@ -710,18 +739,18 @@ func (h *ClientAdminHandler) HandleExportLeadsCSV(e *core.RequestEvent) error {
 			}
 		}
 		_ = w.Write([]string{
-			l.ID,
-			l.Name,
-			l.Phone,
-			l.Email,
-			l.BookingDate,
-			l.BookingTime,
-			l.Status,
-			l.Source,
-			utmSource,
-			utmCampaign,
-			quizInfo,
-			comment,
+			sanitizeCSVField(l.ID),
+			sanitizeCSVField(l.Name),
+			sanitizeCSVField(l.Phone),
+			sanitizeCSVField(l.Email),
+			sanitizeCSVField(l.BookingDate),
+			sanitizeCSVField(l.BookingTime),
+			sanitizeCSVField(l.Status),
+			sanitizeCSVField(l.Source),
+			sanitizeCSVField(utmSource),
+			sanitizeCSVField(utmCampaign),
+			sanitizeCSVField(quizInfo),
+			sanitizeCSVField(comment),
 		})
 	}
 	w.Flush()

@@ -8,20 +8,22 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 ## Ownership
 
-- `ui/assets/` — Tailwind CSS entry point (`input.css`), runtime tokens (`tokens.css`), client scripts, icons, and images.
+- `ui/assets/` — Tailwind CSS entry point (`input.css`), runtime tokens (`tokens.css`), client scripts, icons, and `images/`.
 - `ui/components/` — Reusable Templ components (base primitives, headers, footers, drawers, modals, widgets).
 - `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, and card primitives.
 - `ui/layouts/` — Master templates (`base.templ`) and SEO/meta tag helpers.
 - `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal).
-- `ui/registry/` — Dynamic section registry & block factory pattern (`RegisterBlock`).
-- `ui/sections/` — Pre-built section blocks (hero, features, services, booking, quiz, steps, reviews, team, map, faq, etc.).
-- `ui/embed.go` — Embedded asset file system (`//go:embed assets/*`).
+- `ui/registry/` — Dynamic section registry (`BlockRegistry`), generic payload parser (`ParsePayload[T]`), and block factory pattern (`RenderBlock`).
+- `ui/sections/` — Pre-built section blocks and variants (hero, features, services, booking, quiz, steps, reviews, team, map, faq, etc.).
+- `ui/embed.go` — Embedded asset file system (`//go:embed all:assets`).
 
 ## Local Contracts
 
 - Type-safe templates: all HTML markup authored in `*.templ` files; never write raw unchecked HTML strings.
 - Zero-Node.js in production: compile CSS and templates ahead of time (`templ generate`, `tailwindcss`).
-- Design tokens: configure themes via `@theme` in `ui/assets/input.css` and runtime CSS variables in `ui/assets/css/tokens.css`.
+- Design tokens & Semantic markup: configure themes via `@theme` in `ui/assets/input.css` and runtime CSS variables in `ui/assets/css/tokens.css`. Always use semantic utility classes (`bg-surface`, `text-content`, `text-accent`, `rounded-card`, `rounded-btn`) rather than hardcoded colors or pixel radii.
+- Payload parsing: use generic `registry.ParsePayload[T any]` to parse block payloads without handwriting repetitive unmarshalers.
+- Section variants: maintain variants as named functions in the owning package (e.g. `hero.CyberHero`, `sections.ReviewsSlider`) to avoid excessive micro-packages.
 - Go Variants (CVA) in `ui/components/base/`: use typed Go structs for variant resolution; use `tailwind-merge-go` only when resolving conflicting override classes.
 - Alpine + HTMX compatibility: use `hx-alpine-compat` patterns so dynamic DOM replacements safely reinitialize Alpine state without memory leaks.
 - CSS Data-Variants: prefer native Tailwind v4 data variants (`data-open:`, `data-active:`) triggered by Alpine data attributes over manual JavaScript class manipulation.

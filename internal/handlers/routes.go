@@ -38,99 +38,122 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	cartHandler := NewCartHandler(app, bus)
 	clientAdminHandler := NewClientAdminHandler(app)
 	chatHandler := NewChatHandler(app)
-	chatHandler.StartBackgroundPoller(context.Background())
 	fleetHandler := NewFleetHandler(app, clientAdminHandler.SessionStore())
 	bookingHandler := NewBookingHandler(app)
 	reviewHandler := NewReviewHandler(app)
 
-	// Статические файлы (встроенные ассеты / live-reload в dev-режиме)
+	// Graceful lifecycle: запуск фонового поллера чата с корректной остановкой при завершении приложения
+	chatCtx, cancelChat := context.WithCancel(context.Background())
+	app.OnTerminate().BindFunc(func(te *core.TerminateEvent) error {
+		cancelChat()
+		return te.Next()
+	})
+	chatHandler.StartBackgroundPoller(chatCtx)
+
+	// ==========================================
+	// 1. Статические файлы и публичные страницы (SSR)
+	// ==========================================
 	r.GET("/assets/{path...}", apis.Static(ui.AssetsFS(), false))
-
-	// Клиентская панель управления (/client)
-	r.GET("/client/login", clientAdminHandler.HandleLoginPage)
-	r.POST("/client/login", clientAdminHandler.HandleLogin)
-	r.POST("/client/setup", clientAdminHandler.HandleInitialSetup)
-	r.GET("/client/logout", clientAdminHandler.HandleLogout)
-	r.GET("/client", clientAdminHandler.HandleDashboard)
-	r.GET("/client/tab/leads", clientAdminHandler.HandleTabLeads)
-	r.GET("/client/tab/contacts", clientAdminHandler.HandleTabContacts)
-	r.GET("/client/tab/articles", clientAdminHandler.HandleTabArticles)
-	r.GET("/client/tab/security", clientAdminHandler.HandleTabSecurity)
-	r.POST("/client/security/password", clientAdminHandler.HandleChangePassword)
-	r.POST("/client/contacts", clientAdminHandler.HandleSaveContacts)
-	r.POST("/client/leads/{id}/status", clientAdminHandler.HandleUpdateLeadStatus)
-	r.GET("/client/export/leads.csv", clientAdminHandler.HandleExportLeadsCSV)
-	r.GET("/client/articles/new", clientAdminHandler.HandleNewArticleForm)
-	r.GET("/client/articles/edit/{id}", clientAdminHandler.HandleEditArticleForm)
-	r.POST("/client/articles/save", clientAdminHandler.HandleSaveArticle)
-	r.POST("/client/articles/toggle/{id}", clientAdminHandler.HandleToggleArticlePublish)
-	r.POST("/client/articles/trash/{id}", clientAdminHandler.HandleTrashArticle)
-	r.POST("/client/articles/restore/{id}", clientAdminHandler.HandleRestoreArticle)
-	r.DELETE("/client/articles/permanent/{id}", clientAdminHandler.HandlePermanentDeleteArticle)
-	r.POST("/client/articles/permanent/{id}", clientAdminHandler.HandlePermanentDeleteArticle)
-	r.POST("/client/articles/trash/empty", clientAdminHandler.HandleEmptyTrashArticles)
-
-	// Главная страница (SSR с помощью Templ + In-Memory Cache)
 	r.GET("/", webHandler.HandleHome)
-
-	// Этап 1: SEO-Блог и База знаний
 	r.GET("/blog", webHandler.HandleBlogList)
 	r.GET("/blog/{slug}", webHandler.HandleBlogPost)
 	r.GET("/sitemap.xml", webHandler.HandleSitemap)
-
-	// Этап 2: Ниша Г - B2B-трекер заказов в реальном времени
 	r.GET("/track", trackerHandler.HandleTrackerPage)
 	r.GET("/track/{code}", trackerHandler.HandleTrackOrder)
-	r.GET("/api/track/status/{code}", trackerHandler.HandleTrackStatusPartial)
-	r.GET("/api/track/sse/{code}", trackerHandler.HandleTrackSSE)
-
-	// Блок 4: Отраслевые модули, B2B, Вакансии и 152-ФЗ
 	r.GET("/privacy", webHandler.HandlePrivacy)
 	r.GET("/terms", webHandler.HandleTerms)
 	r.GET("/careers", webHandler.HandleCareers)
 	r.GET("/invoice", webHandler.HandleInvoice)
 	r.GET("/invoice/{code}", webHandler.HandleInvoice)
-
-	// TMA (Telegram Mini App): Ниша А (E-commerce / Shop) и Ниша В (Paywall / VIP Club)
 	r.GET("/shop", tmaHandler.HandleShop)
 	r.GET("/vip", tmaHandler.HandleVIPClub)
-	r.POST("/api/tma/auth", tmaHandler.HandleTMAAuth)
-	r.POST("/api/shop/checkout", tmaHandler.HandleShopCheckout)
-
-	// API HTMX компоненты
-	r.GET("/api/map-frame", webHandler.HandleMapFrame)
-	r.GET("/api/slots", webHandler.HandleSlots)
-	r.GET("/api/resources", webHandler.HandleResources)
-	r.GET("/api/branches", webHandler.HandleBranches)
-	r.GET("/api/booking/calendar.ics", bookingHandler.HandleDownloadICS)
-	r.GET("/api/booking/action", bookingHandler.HandleBookingAction)
-	r.GET("/api/payment/modal", webHandler.HandlePaymentModal)
-	r.GET("/api/recent-activity", webHandler.HandleRecentActivity)
-
-	// API Бизнес-действия
-	r.POST("/api/leads", leadHandler.HandleCreateLead)
-	r.POST("/api/careers/apply", leadHandler.HandleApplyVacancy)
-	r.POST("/api/reviews", reviewHandler.HandleSubmitReview)
-	r.POST("/api/cart/checkout", cartHandler.HandleCheckout)
-	r.POST("/api/cart/validate-coupon", cartHandler.HandleValidateCoupon)
-	r.POST("/api/payment/create", paymentHandler.HandleCreatePayment)
-	r.GET("/api/lang/{code}", i18n.HandleSetLang)
-
-	// Модерация отзывов в кабинете управления
-	r.GET("/client/tab/reviews", clientAdminHandler.HandleTabReviews)
-	r.POST("/client/reviews/{id}/toggle", reviewHandler.HandleTogglePublish)
-	r.POST("/client/reviews/{id}/delete", reviewHandler.HandleDeleteReview)
-	r.DELETE("/client/reviews/{id}", reviewHandler.HandleDeleteReview)
-
-	// Модуль 6: Live Web-to-TG Chat
-	r.GET("/api/chat/sse", chatHandler.HandleChatSSE)
-	r.GET("/api/chat/history", chatHandler.HandleChatHistory)
-	r.POST("/api/chat/send", chatHandler.HandleSendMessage)
-	r.POST("/api/chat/telegram-webhook", chatHandler.HandleTelegramWebhook)
-
-	// Модуль 20: Fleet Master Dashboard
 	r.GET("/fleet", fleetHandler.HandleDashboard)
-	r.GET("/client/tab/fleet", fleetHandler.HandleTabFleet)
-	r.POST("/api/fleet/action", fleetHandler.HandleFleetAction)
-	r.POST("/api/fleet/create", fleetHandler.HandleFleetCreate)
+
+	// ==========================================
+	// 2. Группа API маршрутов (/api/*)
+	// ==========================================
+	api := r.Group("/api")
+
+	// Динамические HTMX-фрагменты
+	api.GET("/map-frame", webHandler.HandleMapFrame)
+	api.GET("/slots", webHandler.HandleSlots)
+	api.GET("/resources", webHandler.HandleResources)
+	api.GET("/branches", webHandler.HandleBranches)
+	api.GET("/booking/calendar.ics", bookingHandler.HandleDownloadICS)
+	api.GET("/booking/action", bookingHandler.HandleBookingAction)
+	api.GET("/payment/modal", webHandler.HandlePaymentModal)
+	api.GET("/recent-activity", webHandler.HandleRecentActivity)
+
+	// Интерактивные действия и бизнес-операции
+	api.POST("/leads", leadHandler.HandleCreateLead)
+	api.POST("/careers/apply", leadHandler.HandleApplyVacancy)
+	api.POST("/reviews", reviewHandler.HandleSubmitReview)
+	api.POST("/cart/checkout", cartHandler.HandleCheckout)
+	api.POST("/cart/validate-coupon", cartHandler.HandleValidateCoupon)
+	api.POST("/payment/create", paymentHandler.HandleCreatePayment)
+	api.GET("/lang/{code}", i18n.HandleSetLang)
+
+	// TMA (Telegram Mini App)
+	api.POST("/tma/auth", tmaHandler.HandleTMAAuth)
+	api.POST("/shop/checkout", tmaHandler.HandleShopCheckout)
+
+	// B2B Трекер заказов
+	api.GET("/track/status/{code}", trackerHandler.HandleTrackStatusPartial)
+	api.GET("/track/sse/{code}", trackerHandler.HandleTrackSSE)
+
+	// Live Web-to-TG Чат
+	api.GET("/chat/sse", chatHandler.HandleChatSSE)
+	api.GET("/chat/history", chatHandler.HandleChatHistory)
+	api.POST("/chat/send", chatHandler.HandleSendMessage)
+	api.POST("/chat/telegram-webhook", chatHandler.HandleTelegramWebhook)
+
+	// Fleet Управление
+	api.POST("/fleet/action", fleetHandler.HandleFleetAction)
+	api.POST("/fleet/create", fleetHandler.HandleFleetCreate)
+
+	// ==========================================
+	// 3. Группа клиентской панели управления (/client/*)
+	// ==========================================
+	client := r.Group("/client")
+
+	// 3.1. Публичные маршруты (аутентификация и первичная настройка)
+	client.GET("/login", clientAdminHandler.HandleLoginPage)
+	client.POST("/login", clientAdminHandler.HandleLogin)
+	client.POST("/setup", clientAdminHandler.HandleInitialSetup)
+	client.GET("/logout", clientAdminHandler.HandleLogout)
+
+	// 3.2. Защищенная подгруппа с Middleware авторизации и HTMX full-window редиректом
+	admin := client.Group("")
+	admin.BindFunc(clientAdminHandler.RequireAuth())
+
+	// Дашборд и вкладки
+	admin.GET("", clientAdminHandler.HandleDashboard)
+	admin.GET("/tab/leads", clientAdminHandler.HandleTabLeads)
+	admin.GET("/tab/contacts", clientAdminHandler.HandleTabContacts)
+	admin.GET("/tab/articles", clientAdminHandler.HandleTabArticles)
+	admin.GET("/tab/security", clientAdminHandler.HandleTabSecurity)
+	admin.GET("/tab/reviews", clientAdminHandler.HandleTabReviews)
+	admin.GET("/tab/fleet", fleetHandler.HandleTabFleet)
+
+	// Управление лидами и контактами
+	admin.POST("/contacts", clientAdminHandler.HandleSaveContacts)
+	admin.POST("/security/password", clientAdminHandler.HandleChangePassword)
+	admin.POST("/leads/{id}/status", clientAdminHandler.HandleUpdateLeadStatus)
+	admin.GET("/export/leads.csv", clientAdminHandler.HandleExportLeadsCSV)
+
+	// Модерация отзывов
+	admin.POST("/reviews/{id}/toggle", reviewHandler.HandleTogglePublish)
+	admin.POST("/reviews/{id}/delete", reviewHandler.HandleDeleteReview)
+	admin.DELETE("/reviews/{id}", reviewHandler.HandleDeleteReview)
+
+	// CRUD статей и корзина
+	admin.GET("/articles/new", clientAdminHandler.HandleNewArticleForm)
+	admin.GET("/articles/edit/{id}", clientAdminHandler.HandleEditArticleForm)
+	admin.POST("/articles/save", clientAdminHandler.HandleSaveArticle)
+	admin.POST("/articles/toggle/{id}", clientAdminHandler.HandleToggleArticlePublish)
+	admin.POST("/articles/trash/{id}", clientAdminHandler.HandleTrashArticle)
+	admin.POST("/articles/restore/{id}", clientAdminHandler.HandleRestoreArticle)
+	admin.DELETE("/articles/permanent/{id}", clientAdminHandler.HandlePermanentDeleteArticle)
+	admin.POST("/articles/permanent/{id}", clientAdminHandler.HandlePermanentDeleteArticle)
+	admin.POST("/articles/trash/empty", clientAdminHandler.HandleEmptyTrashArticles)
 }

@@ -33,6 +33,14 @@
   --radius-input: var(--radius-input);
   --radius-badge: var(--radius-badge);
 
+  /* Motion & Animation tokens */
+  --duration-fast: var(--duration-fast);
+  --duration-base: var(--duration-base);
+  --duration-slow: var(--duration-slow);
+  --ease-standard: var(--ease-standard);
+  --ease-out: var(--ease-out);
+  --ease-spring: var(--ease-spring);
+
   --font-condensed: "Bebas Neue", "Barlow Condensed", Impact, sans-serif;
   --font-serif-title: "Playfair Display", Georgia, serif;
 }

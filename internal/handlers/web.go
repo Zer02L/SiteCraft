@@ -60,7 +60,17 @@ func (h *WebHandler) HandleHome(e *core.RequestEvent) error {
 	}
 
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
-	return pages.Home(settings, content, services, bookedSlots, blocks, resources, reviews, branches, vacancies).Render(ctx, e.Response)
+	return pages.Home(pages.HomePageData{
+		Settings:    settings,
+		Content:     content,
+		Services:    services,
+		BookedSlots: bookedSlots,
+		Blocks:      blocks,
+		Resources:   resources,
+		Reviews:     reviews,
+		Branches:    branches,
+		Vacancies:   vacancies,
+	}).Render(ctx, e.Response)
 }
 
 // HandleRecentActivity returns depersonalized recent marketing events as JSON for FOMO toast.

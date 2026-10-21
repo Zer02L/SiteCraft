@@ -175,17 +175,17 @@ func TestRenderAllModulesHomePage(t *testing.T) {
 
 	// Render Home Page with all blocks and components
 	var buf bytes.Buffer
-	component := pages.Home(
-		preset.Settings,
-		preset.Content,
-		preset.Services,
-		bookedSlots,
-		preset.Blocks,
-		resources,
-		reviews,
-		branches,
-		vacancies,
-	)
+	component := pages.Home(pages.HomePageData{
+		Settings:    preset.Settings,
+		Content:     preset.Content,
+		Services:    preset.Services,
+		BookedSlots: bookedSlots,
+		Blocks:      preset.Blocks,
+		Resources:   resources,
+		Reviews:     reviews,
+		Branches:    branches,
+		Vacancies:   vacancies,
+	})
 
 	err = component.Render(context.Background(), &buf)
 	if err != nil {

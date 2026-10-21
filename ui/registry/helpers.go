@@ -6,8 +6,9 @@ import (
 	"sitecraft/internal/models"
 )
 
-// ParseFeaturesPayload converts raw block payload map into typed FeaturesPayload
-func ParseFeaturesPayload(payload map[string]interface{}) *models.FeaturesPayload {
+// ParsePayload converts a raw block payload map into a typed struct T pointer.
+// Returns nil if payload is nil or JSON unmarshaling fails.
+func ParsePayload[T any](payload map[string]interface{}) *T {
 	if payload == nil {
 		return nil
 	}
@@ -15,60 +16,35 @@ func ParseFeaturesPayload(payload map[string]interface{}) *models.FeaturesPayloa
 	if err != nil {
 		return nil
 	}
-	var res models.FeaturesPayload
+	var res T
 	if err := json.Unmarshal(b, &res); err != nil {
 		return nil
 	}
 	return &res
+}
+
+// ParseFeaturesPayload converts raw block payload map into typed FeaturesPayload
+func ParseFeaturesPayload(payload map[string]interface{}) *models.FeaturesPayload {
+	return ParsePayload[models.FeaturesPayload](payload)
 }
 
 // ParseFAQPayload converts raw block payload map into typed FAQPayload
 func ParseFAQPayload(payload map[string]interface{}) *models.FAQPayload {
-	if payload == nil {
-		return nil
-	}
-	b, err := json.Marshal(payload)
-	if err != nil {
-		return nil
-	}
-	var res models.FAQPayload
-	if err := json.Unmarshal(b, &res); err != nil {
-		return nil
-	}
-	return &res
+	return ParsePayload[models.FAQPayload](payload)
 }
 
 // ParseStepsPayload converts raw block payload map into typed StepsPayload
 func ParseStepsPayload(payload map[string]interface{}) *models.StepsPayload {
-	if payload == nil {
-		return nil
-	}
-	b, err := json.Marshal(payload)
-	if err != nil {
-		return nil
-	}
-	var res models.StepsPayload
-	if err := json.Unmarshal(b, &res); err != nil {
-		return nil
-	}
-	return &res
+	return ParsePayload[models.StepsPayload](payload)
 }
 
 // ParseQuizPayload converts raw block payload map into typed QuizPayload with intelligent niche defaults
 func ParseQuizPayload(payload map[string]interface{}, theme string) models.QuizPayload {
-	var res models.QuizPayload
-	if payload != nil {
-		b, err := json.Marshal(payload)
-		if err == nil {
-			_ = json.Unmarshal(b, &res)
+	if parsed := ParsePayload[models.QuizPayload](payload); parsed != nil && len(parsed.Steps) > 0 {
+		if parsed.Currency == "" {
+			parsed.Currency = "₽"
 		}
-	}
-
-	if len(res.Steps) > 0 {
-		if res.Currency == "" {
-			res.Currency = "₽"
-		}
-		return res
+		return *parsed
 	}
 
 	// Дефолтные конфигурации по нишам
@@ -203,16 +179,8 @@ func QuizOptionDefault(args ...interface{}) []models.QuizOption {
 
 // ParseBeforeAfterPayload converts raw block payload map into typed BeforeAfterPayload
 func ParseBeforeAfterPayload(payload map[string]interface{}, theme string) models.BeforeAfterPayload {
-	var res models.BeforeAfterPayload
-	if payload != nil {
-		b, err := json.Marshal(payload)
-		if err == nil {
-			_ = json.Unmarshal(b, &res)
-		}
-	}
-
-	if len(res.Items) > 0 {
-		return res
+	if parsed := ParsePayload[models.BeforeAfterPayload](payload); parsed != nil && len(parsed.Items) > 0 {
+		return *parsed
 	}
 
 	// Дефолтные кейсы с качественными оптимизированными фото
