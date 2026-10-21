@@ -329,6 +329,8 @@ func initServicesCollection(app core.App) error {
 			&core.BoolField{Name: "active"},
 			&core.NumberField{Name: "stock_count", OnlyInt: true},
 			&core.BoolField{Name: "is_preorder"},
+			&core.BoolField{Name: "is_deleted"},
+			&core.TextField{Name: "deleted_at"},
 		)
 
 		if err := app.Save(col); err != nil {
@@ -343,6 +345,14 @@ func initServicesCollection(app core.App) error {
 		}
 		if col.Fields.GetByName("is_preorder") == nil {
 			col.Fields.Add(&core.BoolField{Name: "is_preorder"})
+			changed = true
+		}
+		if col.Fields.GetByName("is_deleted") == nil {
+			col.Fields.Add(&core.BoolField{Name: "is_deleted"})
+			changed = true
+		}
+		if col.Fields.GetByName("deleted_at") == nil {
+			col.Fields.Add(&core.TextField{Name: "deleted_at"})
 			changed = true
 		}
 		if changed {

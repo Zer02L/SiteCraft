@@ -9,15 +9,16 @@ Owns all server-side application logic, data persistence, HTTP routing, real-tim
 ## Ownership
 
 - `internal/cache/` — In-memory caching with `sync.RWMutex` and automatic invalidation on PocketBase admin mutations.
-- `internal/data/` — PocketBase collections, schemas, migrations, hooks, domain queries (site, articles, booking, leads, reviews), and JSON preset loader.
+- `internal/data/` — PocketBase collections, schemas, migrations, hooks, domain queries (site, articles, booking, leads, reviews, services), and JSON preset loader.
 - `internal/events/` — Internal asynchronous event bus for decoupled component messaging.
 - `internal/exporter/` — Static Site Generation (SSG) HTML/CSS exporter.
-- `internal/handlers/` — HTTP routers, middleware (i18n, rate limiting, auth, cache-control), and HTMX/JSON endpoints (leads, booking, cart, checkout, chat, reviews, fleet, client admin, TMA).
+- `internal/handlers/` — HTTP routers, middleware (i18n, rate limiting, auth, cache-control), and HTMX/JSON endpoints (leads, booking, cart, checkout, chat, reviews, services, fleet, client admin, TMA).
 - `internal/i18n/` — Multi-language catalog, URL/cookie/header negotiation, localized validation.
 - `internal/models/` — Domain models and DTOs (booking, ecommerce, content, fleet, seo, activity, chat, b2b).
 - `internal/modules/` — Business logic extensions (payment processing, etc.).
 - `internal/notifications/` — Async notifications (Telegram Bot relay, CRM webhooks, iCal .ics reminders).
 - `internal/bot/` — Telegram bot interaction handlers.
+- `internal/testutil/` — Test helpers and isolated PocketBase test fixtures (`NewTestApp(t)`).
 
 ## Local Contracts
 
@@ -35,6 +36,17 @@ Owns all server-side application logic, data persistence, HTTP routing, real-tim
 - Any non-trivial business logic, parser, auth check, or money-related calculation must include a focused unit test.
 - Mark intentional shortcuts clearly: `// shortcut: <limit>, <upgrade condition>`.
 - Never compromise trust boundary validation, error handling that prevents data loss, or user data privacy.
+- **Recipe: How to add an HTMX / HTTP endpoint**:
+  1. Define request DTO, validation, and sanitization (honeypot + `bluemonday`) in `internal/handlers/<domain>.go`.
+  2. Implement handler returning a partial Templ component (e.g. `component.Render(ctx, w)` with HTTP 200/422).
+  3. Register route in router (`internal/handlers/routes.go` or module setup).
+  4. Write a compact integration test using `testutil.NewTestApp(t)` and `httptest.NewRecorder()`.
+- **Recipe: How to write an isolated PocketBase test**:
+  1. Initialize app with `app := testutil.NewTestApp(t)`.
+  2. Cleanup is automatic via `t.Cleanup` (`app.ResetBootstrapState()`).
+  3. Query or mutate collections via `app.FindCollectionByNameOrId(...)` without risk of database locking.
+- **Testing & E2E notes**: Drag-and-drop browser sorting and Alpine.js transitions/animations are verified via Go `httptest` server-side HTML partials rather than full browser E2E (Zero Node.js constraint).
+- **Validation shortcuts & risks**: Validation in `review.go` checks byte length `len(name) < 2` (UTF-8 Cyrillic 1 char = 2 bytes); upgrade to `utf8.RuneCountInString` when single-character Unicode validation is required.
 
 ## Verification
 

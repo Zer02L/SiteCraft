@@ -328,6 +328,9 @@ func GetServices(app core.App) []models.ServiceItem {
 
 	var services []models.ServiceItem
 	for _, r := range records {
+		if r.GetBool("is_deleted") {
+			continue
+		}
 		stockCount := -1
 		if r.Collection().Fields.GetByName("stock_count") != nil {
 			stockCount = r.GetInt("stock_count")

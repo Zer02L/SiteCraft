@@ -12,7 +12,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - `ui/components/` — Reusable Templ components (base primitives, headers, footers, drawers, modals, widgets).
 - `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, and card primitives.
 - `ui/layouts/` — Master templates (`base.templ`) and SEO/meta tag helpers.
-- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal).
+- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin).
 - `ui/registry/` — Dynamic section registry (`BlockRegistry`), generic payload parser (`ParsePayload[T]`), and block factory pattern (`RenderBlock`).
 - `ui/sections/` — Pre-built section blocks and variants (hero, features, services, booking, quiz, steps, reviews, team, map, faq, etc.).
 - `ui/embed.go` — Embedded asset file system (`//go:embed all:assets`).
@@ -31,6 +31,11 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 ## Work Guidance
 
+- **Recipe: How to add a new landing section block**:
+  1. Create component in `ui/sections/<name>.templ` using semantic Tailwind v4 design tokens (`bg-surface`, `text-content`, etc.).
+  2. Run `templ generate` to compile template to Go.
+  3. Register the block in `ui/registry/registry.go` (payload struct + factory mapping in `RenderBlock`).
+  4. Add default block data to JSON presets in `presets/` and run `make check`.
 - Re-generate Go template code after editing any `.templ` file: `templ generate`.
 - Rebuild minified CSS on utility changes: `tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`.
 - Register new section blocks in `ui/registry/registry.go` with fallback handling.

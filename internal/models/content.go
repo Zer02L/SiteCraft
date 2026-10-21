@@ -238,6 +238,8 @@ type ServiceItem struct {
 	Active      bool   `json:"active"`
 	StockCount  int    `json:"stock_count"` // -1 for unlimited, 0 for out of stock / preorder, >0 for limited stock
 	IsPreorder  bool   `json:"is_preorder"`
+	IsDeleted   bool   `json:"is_deleted"`
+	DeletedAt   string `json:"deleted_at"`
 }
 
 // Lead represents a form submission

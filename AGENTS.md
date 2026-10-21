@@ -83,7 +83,14 @@ Default section order:
   - Solution priority: Reuse codebase > Go stdlib / Web platform > installed dependencies > shortest working diff.
   - Shortcuts: Must be marked `// shortcut: <limit>, <upgrade condition>`.
   - Quality & Checks: New non-trivial logic requires a compact test. Never cut validation at trust boundaries, error handling that prevents data loss, security (XSS bluemonday, CSRF, honeypot), accessibility (ГОСТ Р 52872-2019, prefers-reduced-motion), or explicit user requirements.
+  - Cookbooks: Check `.agents/cookbooks/` for canonical Templ CVA, HTMX endpoint, and secure form snippets.
   - Response format: End code-change replies with 1-2 lines detailing what was skipped/untested and any known risks.
+
+## Verification
+
+- Canonical check command: `make check` (runs Templ code generation, Tailwind CSS v4 compilation, `go vet ./...`, and `go test ./...`)
+- Full production build: `make build`
+- Dev server with live reload: `make dev`
 
 ## Child DOX Index
 

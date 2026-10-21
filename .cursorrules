@@ -1,0 +1,9 @@
+# Cursor Rules
+
+Refer to [AGENTS.md](./AGENTS.md) for core contracts, architecture, and DOX framework rules.
+
+- Verification: Run `make check` before reporting completion.
+- Philosophy: Ponytail mode — solve problems with minimal diffs and no over-engineering.
+- Stack: Go + PocketBase + Templ + HTMX + Tailwind v4 + Alpine.js. Zero Node.js runtime in production.
+- Templates: Always run `templ generate` when editing `*.templ` files.
+- Patterns: Use `.agents/cookbooks/` for canonical Templ CVA, HTMX handler, and secure form snippets.

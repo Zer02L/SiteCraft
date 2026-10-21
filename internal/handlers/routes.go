@@ -133,6 +133,7 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	admin.GET("/tab/articles", clientAdminHandler.HandleTabArticles)
 	admin.GET("/tab/security", clientAdminHandler.HandleTabSecurity)
 	admin.GET("/tab/reviews", clientAdminHandler.HandleTabReviews)
+	admin.GET("/tab/services", clientAdminHandler.HandleTabServices)
 	admin.GET("/tab/fleet", fleetHandler.HandleTabFleet)
 
 	// Управление лидами и контактами
@@ -140,6 +141,18 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	admin.POST("/security/password", clientAdminHandler.HandleChangePassword)
 	admin.POST("/leads/{id}/status", clientAdminHandler.HandleUpdateLeadStatus)
 	admin.GET("/export/leads.csv", clientAdminHandler.HandleExportLeadsCSV)
+
+	// Управление каталогом услуг и корзина
+	admin.GET("/services/new", clientAdminHandler.HandleNewServiceForm)
+	admin.GET("/services/edit/{id}", clientAdminHandler.HandleEditServiceForm)
+	admin.POST("/services/save", clientAdminHandler.HandleSaveService)
+	admin.POST("/services/{id}/toggle", clientAdminHandler.HandleToggleServiceActive)
+	admin.POST("/services/{id}/trash", clientAdminHandler.HandleTrashService)
+	admin.POST("/services/{id}/restore", clientAdminHandler.HandleRestoreService)
+	admin.DELETE("/services/{id}/permanent", clientAdminHandler.HandlePermanentDeleteService)
+	admin.POST("/services/{id}/permanent", clientAdminHandler.HandlePermanentDeleteService)
+	admin.POST("/services/trash/empty", clientAdminHandler.HandleEmptyTrashServices)
+	admin.POST("/services/{id}/reorder", clientAdminHandler.HandleReorderService)
 
 	// Модерация отзывов
 	admin.POST("/reviews/{id}/toggle", reviewHandler.HandleTogglePublish)

@@ -46,6 +46,7 @@ func (h *ReviewHandler) HandleSubmitReview(e *core.RequestEvent) error {
 		rating = 5
 	}
 
+	// shortcut: byte length check instead of utf8.RuneCountInString (1 cyrillic rune = 2 bytes), upgrade when strict unicode rune counting is required
 	if len(name) < 2 {
 		return e.HTML(http.StatusUnprocessableEntity, `
 			<div class="p-3 bg-rose-50 border border-rose-300 rounded-xl text-rose-800 text-xs">
