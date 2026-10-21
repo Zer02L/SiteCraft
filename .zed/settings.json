@@ -1,0 +1,6 @@
+{
+  "file_scan_exclusions": [
+    "**/*_templ.go",
+    "**/*_templ.txt"
+  ]
+}
