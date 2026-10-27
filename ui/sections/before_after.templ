@@ -44,14 +44,17 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 					activeIdx: 0,
 					sliderPos: 50,
 					isDragging: false,
-					setPosFromEvent(e) {
-						let container = this.$refs.sliderContainer;
+					setPosFromEvent(e, el) {
+						let container = el || this.$refs.sliderContainer;
+						if (!container) return;
 						let rect = container.getBoundingClientRect();
 						let clientX = e.touches ? e.touches[0].clientX : e.clientX;
 						let pos = ((clientX - rect.left) / rect.width) * 100;
 						this.sliderPos = Math.min(100, Math.max(0, pos));
 					}
 				}"
+				@window:mouseup="isDragging = false"
+				@window:touchend="isDragging = false"
 				class="space-y-6"
 			>
 				<!-- Переключатель кейсов (если их больше одного) -->
@@ -81,12 +84,12 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 						<!-- Контейнер интерактивного слайдера -->
 						<div
 							x-ref="sliderContainer"
-							x-on:mousedown="isDragging = true; setPosFromEvent($event)"
-							x-on:mousemove="if (isDragging) setPosFromEvent($event)"
+							x-on:mousedown="isDragging = true; setPosFromEvent($event, $el)"
+							x-on:mousemove="if (isDragging) setPosFromEvent($event, $el)"
 							x-on:mouseup="isDragging = false"
 							x-on:mouseleave="isDragging = false"
-							x-on:touchstart="isDragging = true; setPosFromEvent($event)"
-							x-on:touchmove="if (isDragging) setPosFromEvent($event)"
+							x-on:touchstart="isDragging = true; setPosFromEvent($event, $el)"
+							x-on:touchmove="if (isDragging) setPosFromEvent($event, $el)"
 							x-on:touchend="isDragging = false"
 							class="relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-card overflow-hidden shadow-2xl border border-content/10 select-none cursor-ew-resize bg-surface-muted"
 						>
@@ -97,27 +100,33 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 								class="absolute inset-0 w-full h-full object-cover pointer-events-none"
 								loading="lazy"
 							/>
-							<div class="absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20">
-								if item.AfterLabel != "" {
-									{ item.AfterLabel }
-								} else {
-									"После"
-								}
+
+							<!-- Слой 'ПОСЛЕ' (Шильдик, перекрываемый шторкой при движении вправо через clip-path) -->
+							<div
+								class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10"
+								:style="'clip-path: inset(0 0 0 ' + sliderPos + '%); -webkit-clip-path: inset(0 0 0 ' + sliderPos + '%);'"
+							>
+								<div class="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20 whitespace-nowrap pointer-events-none select-none">
+									if item.AfterLabel != "" {
+										{ item.AfterLabel }
+									} else {
+										"После"
+									}
+								</div>
 							</div>
 
-							<!-- Слой 'ДО' (Обрезаемый слой поверх) -->
+							<!-- Слой 'ДО' (Обрезаемый слой слева через clip-path без сжатия содержимого) -->
 							<div
-								class="absolute inset-0 h-full overflow-hidden pointer-events-none"
-								:style="'width: ' + sliderPos + '%'"
+								class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10"
+								:style="'clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0); -webkit-clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0);'"
 							>
 								<img
 									src={ item.BeforeImage }
 									alt={ item.Title + " — До" }
-									class="absolute top-0 left-0 w-full h-full object-cover max-w-none pointer-events-none"
-									:style="'width: ' + ($refs.sliderContainer ? $refs.sliderContainer.clientWidth + 'px' : '100%')"
+									class="absolute inset-0 w-full h-full object-cover pointer-events-none"
 									loading="lazy"
 								/>
-								<div class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20">
+								<div class="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20 whitespace-nowrap pointer-events-none select-none">
 									if item.BeforeLabel != "" {
 										{ item.BeforeLabel }
 									} else {
@@ -131,7 +140,17 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 								class="absolute top-0 bottom-0 z-20 w-0.5 bg-white shadow-2xl pointer-events-none"
 								:style="'left: ' + sliderPos + '%'"
 							>
-								<div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-xl border-2 border-accent flex items-center justify-center font-bold text-xs pointer-events-auto cursor-ew-resize">
+								<div
+									role="slider"
+									tabindex="0"
+									aria-label="Сравнение До и После"
+									:aria-valuenow="Math.round(sliderPos)"
+									aria-valuemin="0"
+									aria-valuemax="100"
+									x-on:keydown.left.prevent="sliderPos = Math.max(0, sliderPos - 5)"
+									x-on:keydown.right.prevent="sliderPos = Math.min(100, sliderPos + 5)"
+									class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-xl border-2 border-accent flex items-center justify-center font-bold text-xs pointer-events-auto cursor-ew-resize focus:outline-none focus:ring-2 focus:ring-accent"
+								>
 									<div class="flex items-center gap-0.5 text-primary">
 										@icons.ChevronsLeftRight(templ.Attributes{"class": "w-5 h-5"})
 									</div>

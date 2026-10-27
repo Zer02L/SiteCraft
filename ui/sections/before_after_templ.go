@@ -123,7 +123,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 			return templ_7745c5c3_Err
 		}
 		if len(payload.Items) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div x-data=\"{\n\t\t\t\t\tactiveIdx: 0,\n\t\t\t\t\tsliderPos: 50,\n\t\t\t\t\tisDragging: false,\n\t\t\t\t\tsetPosFromEvent(e) {\n\t\t\t\t\t\tlet container = this.$refs.sliderContainer;\n\t\t\t\t\t\tlet rect = container.getBoundingClientRect();\n\t\t\t\t\t\tlet clientX = e.touches ? e.touches[0].clientX : e.clientX;\n\t\t\t\t\t\tlet pos = ((clientX - rect.left) / rect.width) * 100;\n\t\t\t\t\t\tthis.sliderPos = Math.min(100, Math.max(0, pos));\n\t\t\t\t\t}\n\t\t\t\t}\" class=\"space-y-6\"><!-- Переключатель кейсов (если их больше одного) -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div x-data=\"{\n\t\t\t\t\tactiveIdx: 0,\n\t\t\t\t\tsliderPos: 50,\n\t\t\t\t\tisDragging: false,\n\t\t\t\t\tsetPosFromEvent(e, el) {\n\t\t\t\t\t\tlet container = el || this.$refs.sliderContainer;\n\t\t\t\t\t\tif (!container) return;\n\t\t\t\t\t\tlet rect = container.getBoundingClientRect();\n\t\t\t\t\t\tlet clientX = e.touches ? e.touches[0].clientX : e.clientX;\n\t\t\t\t\t\tlet pos = ((clientX - rect.left) / rect.width) * 100;\n\t\t\t\t\t\tthis.sliderPos = Math.min(100, Math.max(0, pos));\n\t\t\t\t\t}\n\t\t\t\t}\" @window:mouseup=\"isDragging = false\" @window:touchend=\"isDragging = false\" class=\"space-y-6\"><!-- Переключатель кейсов (если их больше одного) -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -140,7 +140,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var6 string
 					templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("activeIdx = %d; sliderPos = 50", idx))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 63, Col: 71}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 66, Col: 71}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 					if templ_7745c5c3_Err != nil {
@@ -153,7 +153,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("activeIdx === %d ? 'bg-accent text-primary-dark font-bold shadow-md' : 'bg-surface border border-content/15 text-content-muted hover:text-content'", idx))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 64, Col: 183}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 67, Col: 183}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 					if templ_7745c5c3_Err != nil {
@@ -166,7 +166,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var8 string
 					templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 67, Col: 20}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 70, Col: 20}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 					if templ_7745c5c3_Err != nil {
@@ -190,20 +190,20 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.ResolveAttributeValue(fmt.Sprintf("activeIdx === %d", idx))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 75, Col: 51}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 78, Col: 51}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 scale-98\" x-transition:enter-end=\"opacity-100 scale-100\" class=\"space-y-4\"><!-- Контейнер интерактивного слайдера --><div x-ref=\"sliderContainer\" x-on:mousedown=\"isDragging = true; setPosFromEvent($event)\" x-on:mousemove=\"if (isDragging) setPosFromEvent($event)\" x-on:mouseup=\"isDragging = false\" x-on:mouseleave=\"isDragging = false\" x-on:touchstart=\"isDragging = true; setPosFromEvent($event)\" x-on:touchmove=\"if (isDragging) setPosFromEvent($event)\" x-on:touchend=\"isDragging = false\" class=\"relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-card overflow-hidden shadow-2xl border border-content/10 select-none cursor-ew-resize bg-surface-muted\"><!-- Слой 'ПОСЛЕ' (Фоновое базовое изображение) --><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 scale-98\" x-transition:enter-end=\"opacity-100 scale-100\" class=\"space-y-4\"><!-- Контейнер интерактивного слайдера --><div x-ref=\"sliderContainer\" x-on:mousedown=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:mousemove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:mouseup=\"isDragging = false\" x-on:mouseleave=\"isDragging = false\" x-on:touchstart=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:touchmove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:touchend=\"isDragging = false\" class=\"relative w-full aspect-[16/10] sm:aspect-[16/9] rounded-card overflow-hidden shadow-2xl border border-content/10 select-none cursor-ew-resize bg-surface-muted\"><!-- Слой 'ПОСЛЕ' (Фоновое базовое изображение) --><img src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.ResolveAttributeValue(item.AfterImage)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 95, Col: 29}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 98, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 				if templ_7745c5c3_Err != nil {
@@ -216,13 +216,13 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.ResolveAttributeValue(item.Title + " — После")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 96, Col: 44}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 99, Col: 44}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" class=\"absolute inset-0 w-full h-full object-cover pointer-events-none\" loading=\"lazy\"><div class=\"absolute top-4 right-4 z-10 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" class=\"absolute inset-0 w-full h-full object-cover pointer-events-none\" loading=\"lazy\"><!-- Слой 'ПОСЛЕ' (Шильдик, перекрываемый шторкой при движении вправо через clip-path) --><div class=\"absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10\" :style=\"'clip-path: inset(0 0 0 ' + sliderPos + '%); -webkit-clip-path: inset(0 0 0 ' + sliderPos + '%);'\"><div class=\"absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20 whitespace-nowrap pointer-events-none select-none\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -230,7 +230,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var12 string
 					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(item.AfterLabel)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 102, Col: 26}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 111, Col: 27}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {
@@ -242,14 +242,14 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- Слой 'ДО' (Обрезаемый слой поверх) --><div class=\"absolute inset-0 h-full overflow-hidden pointer-events-none\" :style=\"'width: ' + sliderPos + '%'\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div><!-- Слой 'ДО' (Обрезаемый слой слева через clip-path без сжатия содержимого) --><div class=\"absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10\" :style=\"'clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0); -webkit-clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0);'\"><img src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.ResolveAttributeValue(item.BeforeImage)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 114, Col: 31}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 124, Col: 31}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 				if templ_7745c5c3_Err != nil {
@@ -262,13 +262,13 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.ResolveAttributeValue(item.Title + " — До")
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 115, Col: 39}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 125, Col: 39}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" class=\"absolute top-0 left-0 w-full h-full object-cover max-w-none pointer-events-none\" :style=\"'width: ' + ($refs.sliderContainer ? $refs.sliderContainer.clientWidth + 'px' : '100%')\" loading=\"lazy\"><div class=\"absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" class=\"absolute inset-0 w-full h-full object-cover pointer-events-none\" loading=\"lazy\"><div class=\"absolute top-4 left-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-white text-xs font-bold uppercase tracking-wider border border-white/20 whitespace-nowrap pointer-events-none select-none\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -276,7 +276,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var15 string
 					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(item.BeforeLabel)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 122, Col: 28}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 131, Col: 28}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 					if templ_7745c5c3_Err != nil {
@@ -288,7 +288,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Вертикальный разделитель и бегунок --><div class=\"absolute top-0 bottom-0 z-20 w-0.5 bg-white shadow-2xl pointer-events-none\" :style=\"'left: ' + sliderPos + '%'\"><div class=\"absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-xl border-2 border-accent flex items-center justify-center font-bold text-xs pointer-events-auto cursor-ew-resize\"><div class=\"flex items-center gap-0.5 text-primary\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></div><!-- Вертикальный разделитель и бегунок --><div class=\"absolute top-0 bottom-0 z-20 w-0.5 bg-white shadow-2xl pointer-events-none\" :style=\"'left: ' + sliderPos + '%'\"><div role=\"slider\" tabindex=\"0\" aria-label=\"Сравнение До и После\" :aria-valuenow=\"Math.round(sliderPos)\" aria-valuemin=\"0\" aria-valuemax=\"100\" x-on:keydown.left.prevent=\"sliderPos = Math.max(0, sliderPos - 5)\" x-on:keydown.right.prevent=\"sliderPos = Math.min(100, sliderPos + 5)\" class=\"absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-white text-slate-800 shadow-xl border-2 border-accent flex items-center justify-center font-bold text-xs pointer-events-auto cursor-ew-resize focus:outline-none focus:ring-2 focus:ring-accent\"><div class=\"flex items-center gap-0.5 text-primary\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -303,7 +303,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 145, Col: 76}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 164, Col: 76}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
@@ -321,7 +321,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 					var templ_7745c5c3_Var17 string
 					templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(item.Description)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 147, Col: 99}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 166, Col: 99}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 					if templ_7745c5c3_Err != nil {
@@ -373,7 +373,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 						var templ_7745c5c3_Var18 string
 						templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(item.Duration)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 172, Col: 63}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 191, Col: 63}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 						if templ_7745c5c3_Err != nil {
@@ -392,7 +392,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 						var templ_7745c5c3_Var19 string
 						templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(item.Cost)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 180, Col: 68}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 199, Col: 68}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 						if templ_7745c5c3_Err != nil {
@@ -415,7 +415,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 								var templ_7745c5c3_Var20 string
 								templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(item.MaterialsCost)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 185, Col: 58}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 204, Col: 58}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 								if templ_7745c5c3_Err != nil {
@@ -434,7 +434,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 								var templ_7745c5c3_Var21 string
 								templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(item.WorksCost)
 								if templ_7745c5c3_Err != nil {
-									return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 188, Col: 50}
+									return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 207, Col: 50}
 								}
 								_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 								if templ_7745c5c3_Err != nil {
@@ -488,7 +488,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 							var templ_7745c5c3_Var22 string
 							templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(stage)
 							if templ_7745c5c3_Err != nil {
-								return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 207, Col: 26}
+								return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/before_after.templ`, Line: 226, Col: 26}
 							}
 							_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 							if templ_7745c5c3_Err != nil {

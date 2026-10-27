@@ -1,0 +1,614 @@
+package pages
+
+import (
+	"fmt"
+	"sitecraft/internal/models"
+)
+
+templ ClientArticleForm(article models.ArticleItem, isNew bool) {
+	<div class="max-w-4xl">
+		<div class="flex items-center justify-between mb-6">
+			<div>
+				if isNew {
+					<h2 class="text-xl font-bold text-white tracking-tight">Новая статья</h2>
+				} else {
+					<h2 class="text-xl font-bold text-white tracking-tight">Редактирование статьи</h2>
+				}
+				<p class="text-xs text-slate-400 mt-1">Визуальный редактор публикаций с автогенерацией URL и тегами</p>
+			</div>
+			<button
+				hx-get="/client/tab/articles"
+				hx-target="#admin-tab-content"
+				hx-swap="innerHTML"
+				class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition-colors cursor-pointer"
+			>
+				Назад к списку
+			</button>
+		</div>
+
+		<form
+			hx-post="/client/articles/save"
+			hx-target="#admin-tab-content"
+			hx-swap="innerHTML"
+			hx-encoding="multipart/form-data"
+			enctype="multipart/form-data"
+			x-data={ fmt.Sprintf("articleEditor({ initialTitle: %s, initialSlug: %s, initialTags: %s, initialCover: %s, isNew: %t })",
+				escapeJSONString(article.Title),
+				escapeJSONString(article.Slug),
+				tagsToJSON(article.Tags),
+				escapeJSONString(article.CoverImage),
+				isNew,
+			) }
+			x-init="init()"
+			class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl"
+		>
+			<input type="hidden" name="id" value={ article.ID }/>
+			<input type="hidden" name="tags" :value="tags.join(',')"/>
+			<input type="hidden" name="remove_cover" :value="removeCover ? 'true' : 'false'"/>
+
+			<div class="space-y-6">
+				<!-- Заголовок статьи с транслитерацией -->
+				<div>
+					<div class="flex items-center justify-between mb-2">
+						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+							Заголовок статьи <span class="text-amber-400">*</span>
+						</label>
+						<span class="text-[11px] text-slate-500">Автоматически формирует понятный адрес ссылки</span>
+					</div>
+					<input
+						type="text"
+						name="title"
+						x-model="title"
+						x-on:input="onTitleInput()"
+						required
+						placeholder="Например: Как подготовить документы для сделки в 2026 году..."
+						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+					/>
+				</div>
+
+				<!-- URL-адрес (Slug) + Автор -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<div>
+						<div class="flex items-center justify-between mb-2">
+							<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+								URL-адрес (Slug) <span class="text-amber-400">*</span>
+							</label>
+							<button
+								type="button"
+								x-on:click="regenerateSlug()"
+								title="Обновить ссылку по текущему названию статьи"
+								class="text-[11px] text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
+							>
+								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+								</svg>
+								<span>Сгенерировать</span>
+							</button>
+						</div>
+						<div class="relative">
+							<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-slate-500 font-mono select-none">
+								/blog/
+							</span>
+							<input
+								type="text"
+								name="slug"
+								x-model="slug"
+								x-on:input="onSlugInput()"
+								required
+								placeholder="kak-podgotovit-dokumenty"
+								class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-amber-400 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+							/>
+						</div>
+						<p class="text-[11px] text-slate-500 mt-1 truncate">
+							Адрес на сайте: /blog/<span class="text-slate-300 font-mono" x-text="slug || 'vasha-statya'"></span>
+						</p>
+					</div>
+
+					<div>
+						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+							Автор публикации
+						</label>
+						<input
+							type="text"
+							name="author_name"
+							value={ article.AuthorName }
+							placeholder="Владислав Захаров"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						/>
+					</div>
+				</div>
+
+				<!-- Обложка статьи (Drag & Drop + Preview) -->
+				<div>
+					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+						Обложка статьи
+					</label>
+
+					<input
+						type="file"
+						name="cover_image"
+						x-ref="coverFileInput"
+						accept="image/png,image/jpeg,image/webp,image/gif"
+						class="hidden"
+						x-on:change="handleFileSelect($event)"
+					/>
+
+					<!-- Если обложка выбрана / существует -->
+					<div x-show="coverPreview" class="relative group rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 max-w-lg shadow-md">
+						<img
+							:src="coverPreview"
+							alt="Обложка статьи"
+							class="w-full h-48 sm:h-56 object-cover"
+						/>
+						<div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-xs">
+							<button
+								type="button"
+								x-on:click="$refs.coverFileInput.click()"
+								class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs shadow cursor-pointer transition-colors flex items-center gap-1.5"
+							>
+								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+								</svg>
+								<span>Заменить</span>
+							</button>
+							<button
+								type="button"
+								x-on:click="clearCover()"
+								class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-semibold text-xs cursor-pointer transition-colors flex items-center gap-1.5"
+							>
+								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+								</svg>
+								<span>Удалить</span>
+							</button>
+						</div>
+					</div>
+
+					<!-- Зона Drag & Drop (если обложки нет) -->
+					<div
+						x-show="!coverPreview"
+						x-on:click="$refs.coverFileInput.click()"
+						x-on:dragover.prevent="isDragging = true"
+						x-on:dragleave.prevent="isDragging = false"
+						x-on:drop.prevent="handleDrop($event)"
+						:class="isDragging ? 'border-amber-400 bg-amber-400/10' : 'border-slate-700 hover:border-slate-600 bg-slate-800/40 hover:bg-slate-800/60'"
+						class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all max-w-lg"
+					>
+						<div class="w-12 h-12 mx-auto rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
+							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+							</svg>
+						</div>
+						<p class="text-xs font-semibold text-white mb-1">
+							Нажмите для выбора или перетащите фото сюда
+						</p>
+						<p class="text-[11px] text-slate-400">
+							Поддерживаются WebP, PNG, JPG до 5 МБ (16:9 рекомендуется)
+						</p>
+					</div>
+				</div>
+
+				<!-- Теги / Рубрикатор (Badge Chips) -->
+				<div>
+					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+						Теги и рубрики публикации
+					</label>
+
+					<!-- Контейнер чипсов -->
+					<div class="p-3 rounded-xl bg-slate-800/80 border border-slate-700 min-h-[46px] flex flex-wrap items-center gap-2">
+						<template x-for="(tag, idx) in tags" :key="idx">
+							<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-xs">
+								<span x-text="'#' + tag"></span>
+								<button
+									type="button"
+									x-on:click="removeTag(idx)"
+									title="Удалить тег"
+									class="hover:text-red-400 text-amber-400/80 transition-colors cursor-pointer"
+								>
+									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								</button>
+							</span>
+						</template>
+
+						<input
+							type="text"
+							x-model="newTag"
+							x-on:keydown.enter.prevent="addTag()"
+							x-on:keydown.comma.prevent="addTag()"
+							placeholder="+ Напишите тег и нажмите Enter..."
+							class="flex-1 min-w-[200px] bg-transparent text-white text-xs placeholder-slate-500 focus:outline-none py-1"
+						/>
+					</div>
+
+					<!-- Готовые подсказки тегов -->
+					<div class="flex items-center gap-1.5 flex-wrap mt-2">
+						<span class="text-[11px] text-slate-500 mr-1">Быстрый выбор:</span>
+						for _, suggested := range []string{"Полезное", "Инструкция", "Советы", "Законодательство", "Кейс", "Новости"} {
+							<button
+								type="button"
+								x-on:click={ fmt.Sprintf("suggestTag('%s')", suggested) }
+								class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400 text-[11px] transition-colors cursor-pointer border border-slate-700"
+							>
+								{ "+" + suggested }
+							</button>
+						}
+					</div>
+				</div>
+
+				<!-- Краткий анонс (Лид-абзац) -->
+				<div>
+					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+						Краткий анонс (Лид-абзац для карточки в каталоге)
+					</label>
+					<textarea
+						name="excerpt"
+						rows="2"
+						placeholder="Краткое описание сути статьи в 1-2 предложениях..."
+						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+					>{ article.Excerpt }</textarea>
+				</div>
+
+				<!-- Визуальный редактор текста статьи (Quill.js) -->
+				<div class="space-y-2">
+					<div class="flex items-center justify-between">
+						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+							Текст статьи (Визуальный редактор)
+						</label>
+						<span class="text-[11px] text-amber-400/90 font-medium flex items-center gap-1">
+							<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+							</svg>
+							<span>WYSIWYG: форматирование как в Word</span>
+						</span>
+					</div>
+
+					<!-- Скрытое поле для отправки чистого HTML на бэкенд -->
+					<textarea
+						name="content"
+						x-ref="contentInput"
+						class="hidden"
+					>{ article.Content }</textarea>
+
+					<!-- Контейнер Quill.js со стилизацией под Dark Slate тему -->
+					<div class="quill-dark-wrapper rounded-xl overflow-hidden border border-slate-700 bg-slate-900/90 shadow-inner">
+						<div x-ref="quillEditor" class="min-h-[340px] text-white"></div>
+					</div>
+				</div>
+
+				<!-- Дата и время публикации (Отложенный постинг) -->
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+					<div>
+						<div class="flex items-center justify-between mb-2">
+							<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+								Дата и время публикации
+							</label>
+							<span class="text-[11px] text-amber-400/90 font-medium">Отложенная публикация</span>
+						</div>
+						<input
+							type="datetime-local"
+							name="published_at"
+							id="published_at_input"
+							value={ article.PublishedAtInput() }
+							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+						/>
+						<p class="text-[11px] text-slate-500 mt-1">
+							Если указать дату и время в будущем — материал станет запланированным и появится на сайте автоматически.
+						</p>
+					</div>
+
+					<div>
+						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+							Быстрый выбор времени
+						</label>
+						<div class="flex flex-wrap gap-2 pt-1">
+							<button
+								type="button"
+								onclick="const now = new Date(); const offset = now.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(now - offset).toISOString().slice(0, 16);"
+								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition-colors cursor-pointer"
+							>
+								Сейчас
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+							>
+								Завтра в 09:00
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 3); d.setHours(10, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+							>
+								Через 3 дня
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(12, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+							>
+								Через неделю
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Статус публикации -->
+				<div class="flex items-center gap-3 pt-2">
+					<input
+						type="checkbox"
+						id="is_published"
+						name="is_published"
+						value="true"
+						checked?={ article.IsPublished }
+						class="w-4 h-4 rounded text-amber-500 bg-slate-800 border-slate-700 focus:ring-amber-500 cursor-pointer"
+					/>
+					<label for="is_published" class="text-sm font-medium text-slate-300 cursor-pointer">
+						Опубликовать статью на сайте (если указано будущее время — будет запланирована)
+					</label>
+				</div>
+			</div>
+
+			<div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+				<button
+					type="submit"
+					class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+				>
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+					</svg>
+					<span>Сохранить публикацию</span>
+				</button>
+			</div>
+		</form>
+
+		<!-- Стили Dark Theme для Quill Editor -->
+		<style>
+			.quill-dark-wrapper .ql-toolbar.ql-snow {
+				background-color: #0b1120;
+				border-color: #334155;
+				border-top-left-radius: 0.75rem;
+				border-top-right-radius: 0.75rem;
+				border-bottom: 1px solid #334155;
+				padding: 0.75rem;
+			}
+			.quill-dark-wrapper .ql-container.ql-snow {
+				background-color: #0b1120;
+				border-color: #334155;
+				border-bottom-left-radius: 0.75rem;
+				border-bottom-right-radius: 0.75rem;
+				font-size: 0.95rem;
+				font-family: inherit;
+				color: #e2e8f0;
+			}
+			.quill-dark-wrapper .ql-editor {
+				min-height: 320px;
+				line-height: 1.7;
+				padding: 1rem 1.25rem;
+			}
+			.quill-dark-wrapper .ql-editor.ql-blank::before {
+				color: #64748b;
+				font-style: normal;
+			}
+			.quill-dark-wrapper .ql-snow .ql-stroke {
+				stroke: #94a3b8;
+			}
+			.quill-dark-wrapper .ql-snow .ql-fill {
+				fill: #94a3b8;
+			}
+			.quill-dark-wrapper .ql-snow .ql-picker {
+				color: #94a3b8;
+			}
+			.quill-dark-wrapper .ql-snow .ql-picker-options {
+				background-color: #1e293b;
+				border: 1px solid #334155;
+				border-radius: 0.5rem;
+				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+			}
+			.quill-dark-wrapper .ql-snow .ql-picker-item:hover,
+			.quill-dark-wrapper .ql-snow .ql-picker-item.ql-selected {
+				color: #fbbf24;
+			}
+			.quill-dark-wrapper .ql-snow button:hover .ql-stroke,
+			.quill-dark-wrapper .ql-snow button.ql-active .ql-stroke,
+			.quill-dark-wrapper .ql-snow .ql-picker-label:hover .ql-stroke {
+				stroke: #fbbf24 !important;
+			}
+			.quill-dark-wrapper .ql-snow button:hover .ql-fill,
+			.quill-dark-wrapper .ql-snow button.ql-active .ql-fill {
+				fill: #fbbf24 !important;
+			}
+			.quill-dark-wrapper .ql-snow .ql-picker-label:hover {
+				color: #fbbf24 !important;
+			}
+			.quill-dark-wrapper .ql-editor h2 {
+				font-size: 1.4rem;
+				font-weight: 700;
+				color: #ffffff;
+				margin-top: 1rem;
+				margin-bottom: 0.5rem;
+			}
+			.quill-dark-wrapper .ql-editor h3 {
+				font-size: 1.2rem;
+				font-weight: 600;
+				color: #ffffff;
+				margin-top: 0.75rem;
+				margin-bottom: 0.5rem;
+			}
+			.quill-dark-wrapper .ql-editor blockquote {
+				border-left: 3px solid #fbbf24;
+				padding-left: 0.85rem;
+				color: #94a3b8;
+				font-style: italic;
+				margin: 0.75rem 0;
+			}
+			.quill-dark-wrapper .ql-editor a {
+				color: #fbbf24;
+				text-decoration: underline;
+			}
+			.quill-dark-wrapper .ql-editor img {
+				border-radius: 0.5rem;
+				max-width: 100%;
+				margin: 0.75rem 0;
+			}
+		</style>
+
+		<!-- Скрипт инициализации логики формы статьи -->
+		<script>
+			function articleEditor(config) {
+				return {
+					title: config.initialTitle || '',
+					slug: config.initialSlug || '',
+					slugTouched: !config.isNew && config.initialSlug !== '',
+					tags: Array.isArray(config.initialTags) ? config.initialTags : [],
+					newTag: '',
+					coverPreview: config.initialCover || '',
+					removeCover: false,
+					isDragging: false,
+					quill: null,
+
+					init() {
+						this.initQuill();
+					},
+
+					transliterate(str) {
+						if (!str) return '';
+						const ru = {
+							'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+							'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+							'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n',
+							'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+							'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch',
+							'ш': 'sh', 'щ': 'shch', 'ъ': '', 'ы': 'y', 'ь': '',
+							'э': 'e', 'ю': 'yu', 'я': 'ya'
+						};
+						let res = '';
+						const lower = str.toLowerCase();
+						for (let i = 0; i < lower.length; i++) {
+							const ch = lower[i];
+							if (ru[ch] !== undefined) {
+								res += ru[ch];
+							} else {
+								res += ch;
+							}
+						}
+						return res
+							.replace(/[^a-z0-9\s-]/g, '')
+							.trim()
+							.replace(/[\s_]+/g, '-')
+							.replace(/-+/g, '-');
+					},
+
+					onTitleInput() {
+						if (!this.slugTouched) {
+							this.slug = this.transliterate(this.title);
+						}
+					},
+
+					onSlugInput() {
+						this.slugTouched = true;
+					},
+
+					regenerateSlug() {
+						this.slug = this.transliterate(this.title);
+						this.slugTouched = false;
+					},
+
+					addTag() {
+						const val = this.newTag.trim().replace(/^#/, '').trim();
+						if (val && !this.tags.includes(val)) {
+							this.tags.push(val);
+						}
+						this.newTag = '';
+					},
+
+					removeTag(idx) {
+						this.tags.splice(idx, 1);
+					},
+
+					suggestTag(name) {
+						if (!this.tags.includes(name)) {
+							this.tags.push(name);
+						}
+					},
+
+					handleFileSelect(e) {
+						const file = e.target.files && e.target.files[0];
+						if (file) this.previewImage(file);
+					},
+
+					handleDrop(e) {
+						this.isDragging = false;
+						const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+						if (file) {
+							if (this.$refs.coverFileInput) {
+								this.$refs.coverFileInput.files = e.dataTransfer.files;
+							}
+							this.previewImage(file);
+						}
+					},
+
+					previewImage(file) {
+						if (!file || !file.type.startsWith('image/')) return;
+						this.removeCover = false;
+						const reader = new FileReader();
+						reader.onload = (e) => {
+							this.coverPreview = e.target.result;
+						};
+						reader.readAsDataURL(file);
+					},
+
+					clearCover() {
+						this.coverPreview = '';
+						this.removeCover = true;
+						if (this.$refs.coverFileInput) {
+							this.$refs.coverFileInput.value = '';
+						}
+					},
+
+					initQuill() {
+						const container = this.$refs.quillEditor;
+						if (!container) return;
+						if (container.__quill) return;
+
+						if (typeof Quill === 'undefined') {
+							setTimeout(() => this.initQuill(), 100);
+							return;
+						}
+
+						const quill = new Quill(container, {
+							theme: 'snow',
+							placeholder: 'Напишите текст публикации: форматируйте абзацы, выделяйте заголовки H2/H3, списки, добавляйте изображения...',
+							modules: {
+								toolbar: [
+									[{ 'header': [2, 3, false] }],
+									['bold', 'italic', 'underline', 'strike'],
+									[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+									['blockquote', 'link', 'image'],
+									['clean']
+								]
+							}
+						});
+
+						container.__quill = quill;
+						this.quill = quill;
+
+						const initialHTML = this.$refs.contentInput ? (this.$refs.contentInput.value || '') : '';
+						if (initialHTML) {
+							quill.root.innerHTML = initialHTML;
+						}
+
+						quill.on('text-change', () => {
+							const html = quill.root.innerHTML;
+							if (this.$refs.contentInput) {
+								this.$refs.contentInput.value = (html === '<p><br></p>') ? '' : html;
+							}
+						});
+					}
+				};
+			}
+		</script>
+	</div>
+}

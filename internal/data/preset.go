@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
+	"strings"
 
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
@@ -19,9 +21,35 @@ type PresetData struct {
 	Blocks   []models.PageBlock   `json:"blocks"`
 }
 
+// resolvePresetPath checks if a preset file exists directly or under b2b_ / b2c_ prefixes
+func resolvePresetPath(p string) string {
+	if _, err := os.Stat(p); err == nil {
+		return p
+	}
+	dir := filepath.Dir(p)
+	base := filepath.Base(p)
+	baseNoExt := strings.TrimSuffix(base, ".json")
+	baseUnder := strings.ReplaceAll(baseNoExt, "-", "_")
+
+	candidates := []string{
+		filepath.Join(dir, "b2b_"+baseNoExt+".json"),
+		filepath.Join(dir, "b2c_"+baseNoExt+".json"),
+		filepath.Join(dir, "b2b_"+baseUnder+".json"),
+		filepath.Join(dir, "b2c_"+baseUnder+".json"),
+	}
+
+	for _, c := range candidates {
+		if _, err := os.Stat(c); err == nil {
+			return c
+		}
+	}
+	return p
+}
+
 // ApplyPreset loads a JSON preset from file and writes it to PocketBase collections
 func ApplyPreset(app core.App, presetPath string) error {
-	dataBytes, err := os.ReadFile(presetPath)
+	resolvedPath := resolvePresetPath(presetPath)
+	dataBytes, err := os.ReadFile(resolvedPath)
 	if err != nil {
 		return fmt.Errorf("failed to read preset file %s: %w", presetPath, err)
 	}
@@ -212,6 +240,6 @@ func ApplyPreset(app core.App, presetPath string) error {
 	}
 
 	cache.GetStore().InvalidateAll()
-	log.Printf("[Preset] Successfully applied preset from %s\n", presetPath)
+	log.Printf("[Preset] Successfully applied preset from %s\n", resolvedPath)
 	return nil
 }

@@ -10,6 +10,7 @@ devenv.local.yaml
 # Build & binaries
 /bin/
 /tmp/
+/dist/
 *.exe
 *.exe~
 *.dll

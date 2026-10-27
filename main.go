@@ -39,7 +39,7 @@ func main() {
 				presetName = args[0]
 			}
 			if presetName == "" {
-				presetName = "legal"
+				presetName = "b2b_legal"
 			}
 			presetPath := presetName
 			if !strings.HasSuffix(presetPath, ".json") {

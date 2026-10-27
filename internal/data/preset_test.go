@@ -270,3 +270,80 @@ func TestParsersWithTestPresetPayloads(t *testing.T) {
 		}
 	}
 }
+
+func TestAllPresetsValidation(t *testing.T) {
+	files, err := os.ReadDir("../../presets")
+	if err != nil {
+		t.Fatalf("Failed to read presets directory: %v", err)
+	}
+
+	for _, file := range files {
+		if !strings.HasSuffix(file.Name(), ".json") {
+			continue
+		}
+		path := "../../presets/" + file.Name()
+		t.Run(file.Name(), func(t *testing.T) {
+			dataBytes, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatalf("Failed to read %s: %v", path, err)
+			}
+
+			var preset PresetData
+			if err := json.Unmarshal(dataBytes, &preset); err != nil {
+				t.Fatalf("Failed to unmarshal %s: %v", path, err)
+			}
+
+			if preset.Settings.SiteName == "" {
+				t.Errorf("%s: Missing site_name", file.Name())
+			}
+			if preset.Settings.Tagline == "" {
+				t.Errorf("%s: Missing tagline", file.Name())
+			}
+			if preset.Content.HeroTitle == "" {
+				t.Errorf("%s: Missing hero_title", file.Name())
+			}
+			if len(preset.Blocks) == 0 {
+				t.Errorf("%s: Preset has no page blocks", file.Name())
+			}
+			if len(preset.Services) == 0 {
+				t.Errorf("%s: Preset has no services", file.Name())
+			}
+
+			for idx, block := range preset.Blocks {
+				if block.Type == "" {
+					t.Errorf("%s: Block #%d has empty type", file.Name(), idx)
+				}
+				if _, ok := registry.BlockRegistry[block.Type]; !ok {
+					t.Errorf("%s: Block #%d has unregistered type '%s'", file.Name(), idx, block.Type)
+				}
+			}
+		})
+	}
+}
+
+func TestResolvePresetPath(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"../../presets/legal.json", "../../presets/b2b_legal.json"},
+		{"../../presets/auto.json", "../../presets/b2c_auto.json"},
+		{"../../presets/beauty.json", "../../presets/b2c_beauty.json"},
+		{"../../presets/notary.json", "../../presets/b2b_notary.json"},
+		{"../../presets/delivery.json", "../../presets/b2c_delivery.json"},
+		{"../../presets/repair.json", "../../presets/b2b_repair.json"},
+		{"../../presets/medical.json", "../../presets/b2c_medical.json"},
+		{"../../presets/cyber.json", "../../presets/b2b_cyber.json"},
+		{"../../presets/legal-corporate.json", "../../presets/b2b_legal_corporate.json"},
+		{"../../presets/b2b_legal.json", "../../presets/b2b_legal.json"},
+		{"../../presets/b2c_auto.json", "../../presets/b2c_auto.json"},
+	}
+
+	for _, tc := range tests {
+		resolved := resolvePresetPath(tc.input)
+		if resolved != tc.expected {
+			t.Errorf("resolvePresetPath(%s) = %s, expected %s", tc.input, resolved, tc.expected)
+		}
+	}
+}
+

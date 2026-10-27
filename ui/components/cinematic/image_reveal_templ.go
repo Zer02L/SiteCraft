@@ -108,7 +108,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if props.AfterLabel != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<span class=\"absolute bottom-4 right-4 px-3 py-1 text-xs font-bold rounded-lg bg-black/60 text-white backdrop-blur-md\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<span class=\"absolute bottom-4 right-4 z-0 px-3 py-1 text-xs font-bold rounded-lg bg-black/60 text-white backdrop-blur-md whitespace-nowrap select-none pointer-events-none\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -126,14 +126,14 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><!-- Картинка ДО (Слой с clip-path) --><div class=\"reveal-overlay absolute inset-0 w-full h-full bg-cover bg-center\" style=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><!-- Картинка ДО (Слой с clip-path) --><div class=\"reveal-overlay absolute inset-0 w-full h-full bg-cover bg-center z-10\" style=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("background-image: url('" + props.BeforeImage + "'); clip-path: inset(0 50% 0 0);")
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("background-image: url('" + props.BeforeImage + "'); clip-path: inset(0 50% 0 0); -webkit-clip-path: inset(0 50% 0 0);")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 44, Col: 94}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 44, Col: 131}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -144,7 +144,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if props.BeforeLabel != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<span class=\"absolute bottom-4 left-4 px-3 py-1 text-xs font-bold rounded-lg bg-black/60 text-white backdrop-blur-md\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<span class=\"absolute bottom-4 left-4 z-10 px-3 py-1 text-xs font-bold rounded-lg bg-black/60 text-white backdrop-blur-md whitespace-nowrap select-none pointer-events-none\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
