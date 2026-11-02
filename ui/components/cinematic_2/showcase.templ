@@ -1,0 +1,17 @@
+package cinematic_2
+
+// JHillShowcase renders Screen 1 (Hero) and Screen 2 (Collage) back-to-back
+templ JHillShowcase(props ShowcaseProps) {
+	<div class="w-full bg-black text-white min-h-screen">
+		@HeroScreen(props.Hero)
+		@PortfolioCollage(props.Collage)
+	</div>
+}
+
+// DefaultShowcase renders the canonical JHill showcase with default screens 1 and 2
+templ DefaultShowcase() {
+	@JHillShowcase(ShowcaseProps{
+		Hero:    DefaultHeroProps(),
+		Collage: DefaultCollageProps(),
+	})
+}

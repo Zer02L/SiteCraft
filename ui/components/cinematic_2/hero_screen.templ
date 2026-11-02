@@ -1,0 +1,213 @@
+package cinematic_2
+
+import (
+	"fmt"
+	icons "sitecraft/ui/components/icons"
+)
+
+// HeroScreen renders Screen 1: 100svh Video Hero with navigation and accessible video playback
+templ HeroScreen(props HeroProps) {
+	<section
+		id="hero"
+		class={
+			"relative w-full min-h-[100svh] flex flex-col justify-between overflow-hidden select-none",
+			templ.KV("bg-black text-white", props.Class == ""),
+			props.Class,
+		}
+		x-data="{
+			isPlaying: true,
+			navOpen: false,
+			init() {
+				const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.body.classList.contains('a11y-mode');
+				if (reduced && this.$refs.heroVideo) {
+					this.$refs.heroVideo.pause();
+					this.isPlaying = false;
+				}
+			},
+			togglePlay() {
+				if (!this.$refs.heroVideo) return;
+				if (this.isPlaying) {
+					this.$refs.heroVideo.pause();
+					this.isPlaying = false;
+				} else {
+					this.$refs.heroVideo.play();
+					this.isPlaying = true;
+				}
+			}
+		}"
+		aria-label={ props.BrandName + " Hero Screen" }
+	>
+		<!-- Background Video & Fallback Poster -->
+		<div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+			<!-- Poster Image (Instant paint & fallback) -->
+			if props.PosterURL != "" {
+				<img
+					src={ props.PosterURL }
+					alt=""
+					aria-hidden="true"
+					fetchpriority="high"
+					class="absolute inset-0 w-full h-full object-cover object-center scale-[1.02] filter brightness-90"
+					:class="{ 'opacity-0': isPlaying }"
+				/>
+			}
+
+			<!-- Looping Video -->
+			if props.VideoURL != "" {
+				<video
+					x-ref="heroVideo"
+					autoplay
+					loop
+					muted
+					playsinline
+					preload="metadata"
+					poster={ props.PosterURL }
+					class="absolute inset-0 w-full h-full object-cover object-center scale-[1.01]"
+				>
+					<source src={ props.VideoURL } type="video/mp4" />
+				</video>
+			}
+
+			<!-- Atmospheric Gradient Overlays -->
+			<div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/85"></div>
+			<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/20 to-black/70"></div>
+		</div>
+
+		<!-- Top Header & Navigation -->
+		<header class="relative z-20 w-full px-6 sm:px-10 lg:px-16 pt-6 pb-4 flex items-center justify-between">
+			<!-- Logo / Brand Link -->
+			<a
+				href="/"
+				class="group flex items-center gap-3 text-white focus:outline-none focus:ring-2 focus:ring-white/40 rounded-sm"
+				aria-label={ props.BrandName + " Home" }
+			>
+				<span class="font-extrabold tracking-widest text-xl sm:text-2xl uppercase transition duration-300 group-hover:text-accent font-sans">
+					{ props.BrandName }
+				</span>
+			</a>
+
+			<!-- Desktop Nav Links -->
+			<nav class="hidden md:flex items-center gap-8 text-xs sm:text-sm tracking-wider uppercase font-medium text-white/80">
+				for _, link := range props.NavLinks {
+					<a
+						href={ templ.SafeURL(link.URL) }
+						if link.External {
+							target="_blank"
+							rel="noopener noreferrer"
+						}
+						class="hover:text-white transition duration-200 py-1 border-b border-transparent hover:border-white/60"
+					>
+						{ link.Label }
+					</a>
+				}
+			</nav>
+
+			<!-- Right Action Controls (A11y Video Play/Pause, Cart & Mobile Menu) -->
+			<div class="flex items-center gap-3 sm:gap-4">
+				<!-- Play / Pause Video Accessibility Button (WCAG 2.2.2 & ГОСТ Р 52872-2019) -->
+				<button
+					type="button"
+					@click="togglePlay()"
+					class="p-2 sm:px-3 sm:py-1.5 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/15 text-xs text-white/90 flex items-center gap-1.5 transition duration-200 focus:outline-none focus:ring-2 focus:ring-accent"
+					:aria-pressed="!isPlaying"
+					:aria-label="isPlaying ? 'Pause background video' : 'Play background video'"
+				>
+					<span x-show="isPlaying" class="flex items-center gap-1.5">
+						<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+						<span class="hidden sm:inline text-[11px] tracking-wider uppercase">Motion On</span>
+					</span>
+					<span x-show="!isPlaying" x-cloak class="flex items-center gap-1.5">
+						<span class="w-2 h-2 rounded-full bg-amber-400"></span>
+						<span class="hidden sm:inline text-[11px] tracking-wider uppercase">Paused</span>
+					</span>
+				</button>
+
+				<!-- Cart / Bag Trigger -->
+				<a
+					href="https://www.jhill.com/cart"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="relative p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white/90 hover:text-white transition duration-200"
+					aria-label="Shopping Cart"
+				>
+					@icons.ShoppingBag(templ.Attributes{"class": "w-4 h-4"})
+					if props.CartCount > 0 {
+						<span class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-white">
+							{ fmt.Sprintf("%d", props.CartCount) }
+						</span>
+					}
+				</a>
+
+				<!-- Mobile Menu Toggle Button -->
+				<button
+					type="button"
+					@click="navOpen = !navOpen"
+					class="md:hidden p-2.5 rounded-full bg-white/5 hover:bg-white/15 border border-white/10 text-white transition duration-200"
+					aria-label="Toggle navigation menu"
+					:aria-expanded="navOpen"
+				>
+					<span x-show="!navOpen">
+						@icons.Menu(templ.Attributes{"class": "w-5 h-5"})
+					</span>
+					<span x-show="navOpen" x-cloak>
+						@icons.X(templ.Attributes{"class": "w-5 h-5"})
+					</span>
+				</button>
+			</div>
+		</header>
+
+		<!-- Mobile Navigation Drawer Dropdown -->
+		<div
+			x-show="navOpen"
+			x-cloak
+			x-transition:enter="transition ease-out duration-200"
+			x-transition:enter-start="opacity-0 -translate-y-4"
+			x-transition:enter-end="opacity-100 translate-y-0"
+			x-transition:leave="transition ease-in duration-150"
+			x-transition:leave-start="opacity-100 translate-y-0"
+			x-transition:leave-end="opacity-0 -translate-y-4"
+			class="relative z-20 md:hidden mx-6 p-6 rounded-2xl bg-black/90 backdrop-blur-xl border border-white/15 flex flex-col gap-4 text-center"
+		>
+			for _, link := range props.NavLinks {
+				<a
+					href={ templ.SafeURL(link.URL) }
+					if link.External {
+						target="_blank"
+						rel="noopener noreferrer"
+					}
+					@click="navOpen = false"
+					class="text-sm uppercase tracking-widest text-white/90 hover:text-white py-2 font-medium border-b border-white/10"
+				>
+					{ link.Label }
+				</a>
+			}
+		</div>
+
+		<!-- Center / Bottom Hero Typography -->
+		<div class="relative z-10 w-full px-4 sm:px-10 lg:px-16 pb-10 sm:pb-16 flex flex-col items-center justify-end text-center mt-auto">
+			<div class="max-w-5xl flex flex-col items-center">
+				<h1 class="text-5xl sm:text-7xl md:text-9xl lg:text-[11rem] font-black tracking-tight leading-none text-white drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)] font-sans uppercase break-words">
+					{ props.BrandName }
+				</h1>
+				<p class="mt-3 sm:mt-6 text-xs sm:text-base md:text-xl tracking-[0.25em] sm:tracking-[0.35em] uppercase text-white/90 font-light drop-shadow-md">
+					{ props.Subtitle }
+				</p>
+			</div>
+
+			<!-- Scroll Indicator pointing to Screen 2 -->
+			<div class="mt-8 sm:mt-12">
+				<a
+					href={ templ.SafeURL(props.TargetScroll) }
+					class="group inline-flex flex-col items-center gap-2 text-white/60 hover:text-white transition duration-300 focus:outline-none"
+					aria-label="Scroll to Portfolio Collage"
+				>
+					<span class="text-[10px] sm:text-xs tracking-[0.25em] uppercase font-semibold text-white/70 group-hover:text-white transition">
+						Portfolio
+					</span>
+					<div class="w-8 h-8 rounded-full border border-white/20 group-hover:border-white/60 flex items-center justify-center transition group-hover:translate-y-1 duration-300">
+						@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4 text-white/80 group-hover:text-white"})
+					</div>
+				</a>
+			</div>
+		</div>
+	</section>
+}

@@ -4,6 +4,7 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/components"
 	"sitecraft/ui/components/cinematic"
+	"sitecraft/ui/components/cinematic_2"
 	"sitecraft/ui/sections"
 	"sitecraft/ui/sections/hero"
 
@@ -251,6 +252,50 @@ var BlockRegistry = map[string]BlockRenderer{
 			"M&A СДЕЛКИ", "НЕДВИЖИМОСТЬ И ЗЕМЛЯ", "УГОЛОВНО-ПРАВОВАЯ ЗАЩИТА",
 		}
 		return cinematic.KineticMarquee(items, 25, false)
+	},
+	"cinematic_2_hero": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		props := cinematic_2.DefaultHeroProps()
+		if b.Title != "" {
+			props.BrandName = b.Title
+		}
+		if sub, ok := b.Payload["subtitle"].(string); ok && sub != "" {
+			props.Subtitle = sub
+		} else if b.Content != "" {
+			props.Subtitle = b.Content
+		}
+		return cinematic_2.HeroScreen(props)
+	},
+	"cinematic_2_portfolio": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		props := cinematic_2.DefaultCollageProps()
+		if b.Title != "" {
+			props.Title = b.Title
+		}
+		return cinematic_2.PortfolioCollage(props)
+	},
+	"cinematic_2_showcase": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return cinematic_2.DefaultShowcase()
+	},
+	"jhill_hero": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		props := cinematic_2.DefaultHeroProps()
+		if b.Title != "" {
+			props.BrandName = b.Title
+		}
+		if sub, ok := b.Payload["subtitle"].(string); ok && sub != "" {
+			props.Subtitle = sub
+		} else if b.Content != "" {
+			props.Subtitle = b.Content
+		}
+		return cinematic_2.HeroScreen(props)
+	},
+	"jhill_portfolio": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		props := cinematic_2.DefaultCollageProps()
+		if b.Title != "" {
+			props.Title = b.Title
+		}
+		return cinematic_2.PortfolioCollage(props)
+	},
+	"jhill_showcase": func(b models.PageBlock, ctx RenderContext) templ.Component {
+		return cinematic_2.DefaultShowcase()
 	},
 }
 

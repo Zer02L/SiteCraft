@@ -1,0 +1,241 @@
+package cinematic_2
+
+import (
+	"fmt"
+	icons "sitecraft/ui/components/icons"
+)
+
+// PortfolioCollage renders Screen 2: The tilted multi-layer ArtStation portfolio collage
+templ PortfolioCollage(props CollageProps) {
+	<section
+		id={ props.ID }
+		class={
+			"relative w-full h-[75vh] sm:h-[85vh] min-h-[540px] sm:min-h-[700px] max-h-[1100px] overflow-hidden select-none flex items-center justify-center py-6 sm:py-10",
+			templ.KV("bg-black text-white", props.Class == ""),
+			props.Class,
+		}
+		aria-label={ props.Title + " Gallery" }
+		x-data={ fmt.Sprintf(`{
+			baseRotation: %f,
+			rotation: %f,
+			paused: false,
+			reducedMotion: false,
+			inView: true,
+			tracks: [],
+			offsets: [0, -200, -80],
+			lastY: 0,
+			animId: null,
+			obs: null,
+
+			init() {
+				this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.body.classList.contains('a11y-mode');
+				if (this.reducedMotion) {
+					this.rotation = 0;
+					return;
+				}
+
+				// Адаптивный угол наклона: 6° на смартфонах, 9° на планшетах, 12° на десктопах
+				this.updateRotation();
+				window.addEventListener('resize', () => this.updateRotation(), { passive: true });
+
+				this.$nextTick(() => {
+					this.tracks = [this.$refs.track0, this.$refs.track1, this.$refs.track2].filter(Boolean);
+					this.lastY = window.pageYOffset || 0;
+					this.loop();
+				});
+
+				const scrollHandler = this.handleScroll.bind(this);
+				window.addEventListener('scroll', scrollHandler, { passive: true });
+
+				// IntersectionObserver: пауза RAF при выходе за пределы вьюпорта (Zero-CPU)
+				if ('IntersectionObserver' in window) {
+					this.obs = new IntersectionObserver(([entry]) => {
+						this.inView = entry.isIntersecting;
+					}, { threshold: 0.05 });
+					this.obs.observe(this.$el);
+				}
+
+				// Alpine & HTMX unmount cleanup: предотвращение утечек памяти
+				if (typeof this.$cleanup === 'function') {
+					this.$cleanup(() => {
+						if (this.animId) cancelAnimationFrame(this.animId);
+						window.removeEventListener('scroll', scrollHandler);
+						if (this.obs) this.obs.disconnect();
+					});
+				}
+			},
+
+			updateRotation() {
+				if (this.reducedMotion) {
+					this.rotation = 0;
+					return;
+				}
+				const w = window.innerWidth;
+				if (w < 640) {
+					this.rotation = Math.min(this.baseRotation, 6);
+				} else if (w < 1024) {
+					this.rotation = Math.min(this.baseRotation, 9);
+				} else {
+					this.rotation = this.baseRotation;
+				}
+			},
+
+			handleScroll() {
+				if (this.reducedMotion || this.paused || !this.inView) return;
+				const curY = window.pageYOffset || 0;
+				const dy = curY - this.lastY;
+				if (dy) {
+					for (let i = 0; i < this.tracks.length; i++) {
+						const dir = (i %% 2 === 0) ? -1 : 1;
+						const speed = 0.45 + (i * 0.15);
+						this.offsets[i] += dy * dir * speed;
+						this.clampTrack(i);
+					}
+				}
+				this.lastY = curY;
+			},
+
+			clampTrack(i) {
+				const track = this.tracks[i];
+				if (!track) return;
+				const half = track.scrollWidth / 2;
+				if (half > 0) {
+					if (this.offsets[i] <= -half) {
+						this.offsets[i] += half;
+					} else if (this.offsets[i] > 0) {
+						this.offsets[i] -= half;
+					}
+				}
+				track.style.transform = 'translate3d(' + this.offsets[i] + 'px, 0, 0)';
+			},
+
+			loop() {
+				if (!this.paused && !this.reducedMotion && this.inView) {
+					for (let i = 0; i < this.tracks.length; i++) {
+						const dir = (i %% 2 === 0) ? -0.75 : 0.75;
+						this.offsets[i] += dir;
+						this.clampTrack(i);
+					}
+				}
+				this.animId = requestAnimationFrame(this.loop.bind(this));
+			}
+		}`, props.RotationDeg, props.RotationDeg) }
+		@mouseenter="paused = true"
+		@mouseleave="paused = false"
+	>
+		<!-- Center Floating Title Link CTA -->
+		<div class="absolute inset-0 z-30 pointer-events-none flex items-center justify-center">
+			<a
+				href={ templ.SafeURL(props.TitleLink) }
+				target="_blank"
+				rel="noopener noreferrer"
+				class="pointer-events-auto group px-8 py-4 sm:px-12 sm:py-6 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition-all duration-300 transform hover:scale-110 flex items-center gap-3 text-white focus:outline-none focus:ring-4 focus:ring-accent"
+				aria-label={ props.Title + " - Open ArtStation in new tab" }
+			>
+				<span class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] uppercase font-sans">
+					{ props.Title }
+				</span>
+				<div class="hidden sm:flex w-10 h-10 rounded-full bg-white/10 group-hover:bg-accent items-center justify-center transition duration-300 text-white">
+					@icons.ArrowUpRight(templ.Attributes{"class": "w-5 h-5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200"})
+				</div>
+			</a>
+		</div>
+
+		<!-- Tilted Multi-Layer Carousel Container -->
+		<div
+			class="relative w-[130vw] -mx-[15vw] flex flex-col justify-center gap-4 sm:gap-6 pointer-events-auto transition-transform duration-700 ease-out will-change-transform"
+			:style="'transform: rotate(' + rotation + 'deg); transform-origin: center;'"
+		>
+			<!-- Layer 1: Leftward scroll -->
+			if len(props.Row1) > 0 {
+				<div class="w-full overflow-hidden">
+					<div
+						x-ref="track0"
+						class="flex gap-4 sm:gap-6 will-change-transform"
+						style="transform: translate3d(0px, 0, 0);"
+					>
+						<!-- First sequence -->
+						for idx, item := range props.Row1 {
+							@collageCard(item, fmt.Sprintf("row1-a-%d", idx), props.CardRadius)
+						}
+						<!-- Seamless duplicate for infinite loop -->
+						for idx, item := range props.Row1 {
+							@collageCard(item, fmt.Sprintf("row1-b-%d", idx), props.CardRadius)
+						}
+					</div>
+				</div>
+			}
+
+			<!-- Layer 2: Rightward scroll -->
+			if len(props.Row2) > 0 {
+				<div class="w-full overflow-hidden">
+					<div
+						x-ref="track1"
+						class="flex gap-4 sm:gap-6 will-change-transform"
+						style="transform: translate3d(-200px, 0, 0);"
+					>
+						<!-- First sequence -->
+						for idx, item := range props.Row2 {
+							@collageCard(item, fmt.Sprintf("row2-a-%d", idx), props.CardRadius)
+						}
+						<!-- Seamless duplicate for infinite loop -->
+						for idx, item := range props.Row2 {
+							@collageCard(item, fmt.Sprintf("row2-b-%d", idx), props.CardRadius)
+						}
+					</div>
+				</div>
+			}
+
+			<!-- Layer 3: Leftward scroll -->
+			if len(props.Row3) > 0 {
+				<div class="w-full overflow-hidden">
+					<div
+						x-ref="track2"
+						class="flex gap-4 sm:gap-6 will-change-transform"
+						style="transform: translate3d(-80px, 0, 0);"
+					>
+						<!-- First sequence -->
+						for idx, item := range props.Row3 {
+							@collageCard(item, fmt.Sprintf("row3-a-%d", idx), props.CardRadius)
+						}
+						<!-- Seamless duplicate for infinite loop -->
+						for idx, item := range props.Row3 {
+							@collageCard(item, fmt.Sprintf("row3-b-%d", idx), props.CardRadius)
+						}
+					</div>
+				</div>
+			}
+		</div>
+
+		<!-- Vignette Edge Darkening -->
+		<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-20"></div>
+		<div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70 z-20"></div>
+	</section>
+}
+
+// collageCard renders a single 3D character artwork card
+templ collageCard(item CollageItem, key string, cardRadius string) {
+	<div
+		class={
+			"relative shrink-0 w-[190px] h-[190px] sm:w-[300px] sm:h-[300px] md:w-[380px] md:h-[380px] overflow-hidden bg-slate-900 border border-white/10 shadow-2xl group transition duration-300 hover:scale-[1.03] hover:border-white/40 hover:z-10",
+			templ.KV("rounded-xl sm:rounded-2xl", cardRadius == ""),
+			cardRadius,
+		}
+		data-key={ key }
+	>
+		<img
+			src={ item.ImageURL }
+			alt={ item.Alt }
+			loading="lazy"
+			decoding="async"
+			class="w-full h-full object-cover object-center filter brightness-95 group-hover:brightness-105 transition duration-300"
+		/>
+		if item.Title != "" {
+			<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end p-4">
+				<span class="text-xs sm:text-sm font-semibold text-white tracking-wide drop-shadow">
+					{ item.Title }
+				</span>
+			</div>
+		}
+	</div>
+}

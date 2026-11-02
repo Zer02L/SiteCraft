@@ -1,0 +1,14 @@
+package pages
+
+import (
+	"sitecraft/internal/models"
+	"sitecraft/ui/components/cinematic_2"
+	"sitecraft/ui/layouts"
+)
+
+// JHillDemo renders the standalone showcase page for JHill Screens 1 & 2
+templ JHillDemo(settings models.SiteSettings) {
+	@layouts.Base("JHILL — 3D Character Artist", "Cinematic 3D Character Artist Showcase", settings) {
+		@cinematic_2.DefaultShowcase()
+	}
+}

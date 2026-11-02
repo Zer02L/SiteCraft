@@ -13,8 +13,8 @@ import (
 	"sitecraft/ui/pages"
 	"sitecraft/ui/sections"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // WebHandler handles public web pages and fragment components.
@@ -289,5 +289,21 @@ func (h *WebHandler) HandleInvoice(e *core.RequestEvent) error {
 	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
 	return pages.InvoicePage(invoice, settings).Render(e.Request.Context(), e.Response)
 }
+
+// HandleJHillDemo renders the standalone showcase page for JHill Screens 1 & 2.
+func (h *WebHandler) HandleJHillDemo(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.JHillDemo(settings).Render(e.Request.Context(), e.Response)
+}
+
+// HandleFlatTo3DDemo renders the architectural landing page built with the flat-to-3d OGL skill.
+func (h *WebHandler) HandleFlatTo3DDemo(e *core.RequestEvent) error {
+	settings := data.GetSiteSettings(h.app)
+	e.Response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	return pages.FlatTo3DDemo(settings).Render(e.Request.Context(), e.Response)
+}
+
+
 
 

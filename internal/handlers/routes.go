@@ -8,10 +8,10 @@ import (
 	"sitecraft/internal/notifications"
 	"sitecraft/ui"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/apis"
-	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/router"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/apis"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/tools/router"
 )
 
 // RegisterRoutes registers all website and API routes onto the PocketBase router.
@@ -68,6 +68,8 @@ func RegisterRoutes(app *pocketbase.PocketBase, r *router.Router[*core.RequestEv
 	r.GET("/shop", tmaHandler.HandleShop)
 	r.GET("/vip", tmaHandler.HandleVIPClub)
 	r.GET("/fleet", fleetHandler.HandleDashboard)
+	r.GET("/demo/jhill", webHandler.HandleJHillDemo)
+	r.GET("/demo/flat-to-3d", webHandler.HandleFlatTo3DDemo)
 
 	// ==========================================
 	// 2. Группа API маршрутов (/api/*)
