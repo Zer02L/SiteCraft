@@ -5,7 +5,7 @@ import (
 
 	"sitecraft/internal/data"
 
-	"github.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase"
 )
 
 // NewTestApp creates an isolated PocketBase instance in a temporary directory

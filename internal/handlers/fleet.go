@@ -16,8 +16,8 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // FleetHandler manages multi-tenant instances (Fleet of Binaries).

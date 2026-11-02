@@ -12,7 +12,7 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // HandleTabLeads renders leads tab fragment for HTMX.

@@ -3,8 +3,8 @@ package data
 import (
 	"testing"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func setupTestApp(t *testing.T) *pocketbase.PocketBase {

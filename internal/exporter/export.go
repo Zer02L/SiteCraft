@@ -13,7 +13,7 @@ import (
 	"sitecraft/ui"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // ExportStaticSite renders the landing page and copies static assets into outputDir

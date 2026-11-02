@@ -17,9 +17,9 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/internal/modules"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // CartHandler handles web e-commerce cart checkouts, promo validation, and delivery.

@@ -12,9 +12,9 @@ import (
 	"sitecraft/internal/modules"
 	"sitecraft/ui/components"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // PaymentHandler handles payment creation and processing.

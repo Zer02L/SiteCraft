@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/filesystem"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/tools/filesystem"
 )
 
 func initSiteSettingsCollection(app core.App) error {

@@ -5,7 +5,7 @@ import (
 
 	"sitecraft/internal/cache"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // RegisterCacheHooks sets up event listeners to invalidate in-memory cache upon admin updates

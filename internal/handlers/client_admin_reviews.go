@@ -6,7 +6,7 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // HandleTabReviews renders reviews moderation tab fragment for HTMX.

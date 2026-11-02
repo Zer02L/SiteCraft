@@ -14,9 +14,9 @@ import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // LeadHandler processes incoming leads and inquiries.

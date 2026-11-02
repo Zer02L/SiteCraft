@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // Middleware returns a PocketBase router middleware function that detects

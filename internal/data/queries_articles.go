@@ -8,8 +8,8 @@ import (
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // RecordToArticleItem maps PocketBase record to models.ArticleItem

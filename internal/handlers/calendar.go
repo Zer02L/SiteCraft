@@ -9,8 +9,8 @@ import (
 
 	"sitecraft/internal/data"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // GenerateICS builds a RFC 5545 compliant iCalendar (.ics) string using pure Go stdlib.

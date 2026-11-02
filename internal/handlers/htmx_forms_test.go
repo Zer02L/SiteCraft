@@ -9,7 +9,7 @@ import (
 
 	"sitecraft/internal/testutil"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func TestHTMXLeadFormSubmission(t *testing.T) {

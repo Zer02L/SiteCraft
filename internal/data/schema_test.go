@@ -4,7 +4,7 @@ import (
 	"slices"
 	"testing"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func TestSiteSettingsSelectFields(t *testing.T) {

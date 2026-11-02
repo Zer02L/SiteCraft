@@ -5,7 +5,7 @@ import (
 
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func initServicesCollection(app core.App) error {

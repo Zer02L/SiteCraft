@@ -8,7 +8,7 @@ import (
 
 	"sitecraft/internal/data"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // CheckBookingReminders scans upcoming bookings at NOW() + 2 hours horizon and dispatches 1-click confirm/cancel links.

@@ -5,7 +5,7 @@ import (
 
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // GetReviews retrieves published customer reviews for public display

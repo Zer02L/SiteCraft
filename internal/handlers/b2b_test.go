@@ -6,7 +6,7 @@ import (
 
 	"sitecraft/internal/data"
 
-	"github.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase"
 )
 
 func TestB2BModulesAndInvoiceData(t *testing.T) {

@@ -17,8 +17,8 @@ import (
 	"sitecraft/internal/notifications"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // TMAHandler manages Telegram Mini App authentication, Paywall (Ниша В) and E-commerce (Ниша А).

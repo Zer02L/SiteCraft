@@ -5,8 +5,8 @@ import (
 
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/dbx"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/dbx"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // GetBookedSlots returns a map of date -> slice of booked times for active leads (status != 'отменена')

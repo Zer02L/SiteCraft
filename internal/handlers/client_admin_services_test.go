@@ -10,8 +10,8 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func TestClientAdminServicesWorkflow(t *testing.T) {

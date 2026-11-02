@@ -11,8 +11,8 @@ import (
 	"sitecraft/internal/data"
 
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/pocketbase/pocketbase"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // TestSanitizeCSVField verifies CSV Formula Injection mitigation (OWASP).

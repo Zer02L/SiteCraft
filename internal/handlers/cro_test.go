@@ -10,8 +10,8 @@ import (
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/router"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/tools/router"
 )
 
 func TestABContextKey(t *testing.T) {

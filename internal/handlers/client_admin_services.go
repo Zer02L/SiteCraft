@@ -11,7 +11,7 @@ import (
 	"sitecraft/ui/pages"
 
 	"github.com/microcosm-cc/bluemonday"
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // HandleTabServices renders services tab fragment for HTMX.

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // CacheControlMiddleware applies granular Cache-Control HTTP headers

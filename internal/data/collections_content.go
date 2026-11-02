@@ -3,7 +3,7 @@ package data
 import (
 	"log"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 func initArticlesCollection(app core.App) error {

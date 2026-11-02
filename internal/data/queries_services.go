@@ -8,7 +8,7 @@ import (
 	"sitecraft/internal/cache"
 	"sitecraft/internal/models"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // GetAllServicesAdmin retrieves all active/inactive services excluding trash.

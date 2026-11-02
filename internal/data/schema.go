@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // InitSchema ensures site_settings, site_content, page_blocks, services, and leads collections exist.

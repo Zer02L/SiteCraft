@@ -10,8 +10,8 @@ import (
 	"sitecraft/internal/models"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase/core"
-	"github.com/pocketbase/pocketbase/tools/filesystem"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/tools/filesystem"
 )
 
 // HandleTabArticles renders articles tab fragment for HTMX.

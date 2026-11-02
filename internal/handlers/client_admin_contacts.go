@@ -10,7 +10,7 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/ui/pages"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 	"golang.org/x/crypto/bcrypt"
 )
 

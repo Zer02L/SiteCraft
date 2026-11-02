@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pocketbase/pocketbase/core"
+	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // InitLogger configures the default slog structured logger.
