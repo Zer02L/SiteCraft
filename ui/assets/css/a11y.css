@@ -43,7 +43,7 @@ html.a11y-mode button,
 html.a11y-mode input, 
 html.a11y-mode textarea, 
 html.a11y-mode select {
-  font-family: Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-a11y, Arial, Helvetica, sans-serif) !important;
   border-width: 2px !important;
 }
 

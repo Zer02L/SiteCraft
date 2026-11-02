@@ -1,8 +1,11 @@
 package base
 
 import (
+	"context"
 	"strings"
 	"testing"
+
+	"github.com/a-h/templ"
 )
 
 func TestButtonClasses(t *testing.T) {
@@ -78,5 +81,25 @@ func TestCardClasses(t *testing.T) {
 		if !strings.Contains(res, exp) {
 			t.Errorf("expected card classes to contain %q, got %q", exp, res)
 		}
+	}
+}
+
+func TestButton_RenderOnClick(t *testing.T) {
+	btn := Button(ButtonProps{
+		Variant: BtnDestructive,
+		Attributes: templ.Attributes{
+			"onclick": "window.A11Y.toggle()",
+		},
+	})
+	var buf strings.Builder
+	if err := btn.Render(context.Background(), &buf); err != nil {
+		t.Fatalf("render error: %v", err)
+	}
+	out := buf.String()
+	if strings.Contains(out, "failed sanitization") {
+		t.Errorf("button onclick failed templ sanitization: %s", out)
+	}
+	if !strings.Contains(out, `onclick="window.A11Y.toggle()"`) {
+		t.Errorf("expected onclick=\"window.A11Y.toggle()\" in button, got: %s", out)
 	}
 }

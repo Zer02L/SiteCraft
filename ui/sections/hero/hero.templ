@@ -18,15 +18,15 @@ templ Hero(content models.SiteContent) {
 					Class:   "bg-surface/15 uppercase tracking-wider shadow-sm animate-pulse-glow",
 				}) {
 					<span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span>
-					{ content.HeroBadge }
+					<span data-field="content.HeroBadge">{ content.HeroBadge }</span>
 				}
 
-				<h1 class="font-serif-title text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight animate-fade-in-up">
+				<h1 data-field="content.HeroTitle" class="font-serif-title text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight animate-fade-in-up">
 					{ content.HeroTitle } <br/>
-					<span class="text-accent">{ content.OwnerName }</span>
+					<span data-field="content.OwnerName" class="text-accent">{ content.OwnerName }</span>
 				</h1>
 
-				<p class="text-stone-200 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal">
+				<p data-field="content.HeroSubtitle" class="text-stone-200 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal">
 					{ content.HeroSubtitle }
 				</p>
 

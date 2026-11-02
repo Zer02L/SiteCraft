@@ -93,6 +93,17 @@
   - Кукбук: `.agents/cookbooks/flat_to_3d.md`
   - 100% offline (Zero-CDN), поддержка токенов `SiteTokens`, ГОСТ a11y & `prefers-reduced-motion` фоллбек и HTMX cleanup.
 
+---
+
+### 9. `hallmark-craft` (Адаптация 21 макроструктуры и тем Hallmark под SiteCraft)
+* **Назначение:** Архитектурная компоновка страниц на базе библиотеки Hallmark (21 макроструктура, 17 композиций, 102 темы), переведённая на стек Go + Templ + Tailwind v4 + Alpine.js + HTMX без зависимостей от Node.js и Puppeteer.
+* **Поддержка двух режимов (для тестирования банов):**
+  - `COMMERCIAL_CRO_MODE` (по умолчанию): сохраняет бейджи, стрелки, конверсионные B2B/B2C модули, вложенные карточки в корзинах и социальные доказательства.
+  - `STRICT_AESTHETIC_MODE`: экспериментальный режим для проверки гипотез ультра-чистого журнального минимализма Hallmark Floor (без бейджей, без капслока, без стрелок).
+* **Локальный скил:** `.agents/skills/hallmark-craft/SKILL.md`
+* **Каталог макроструктур:** `.agents/skills/hallmark-craft/references/macrostructures_catalog.md`
+* **Лаборатория тестов Floor:** `.agents/skills/hallmark-craft/references/floor_bans_evaluation.md`
+
 
 Если вы не используете CLI `skills`, структуру можно подключить вручную:
 

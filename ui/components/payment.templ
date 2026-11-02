@@ -13,19 +13,24 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 	<div
 		id="payment-modal"
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-fade-in"
+		data-component="PaymentModal"
+		data-source="ui/components/payment.templ"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="payment-modal-title"
 	>
-		<div class="card-base max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-zoom-in border-content/20">
+		<div class="bg-surface max-w-md w-full p-6 sm:p-8 rounded-card shadow-2xl relative animate-zoom-in border border-content/15 text-content">
 			<button
 				type="button"
 				onclick="document.getElementById('payment-modal').remove()"
-				class="absolute top-4 right-4 text-content-muted hover:text-content p-1 rounded-lg transition cursor-pointer"
+				class="absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
 				aria-label="Закрыть"
 			>
-				@icons.X(templ.Attributes{"class": "w-5 h-5"})
+				@icons.X(templ.Attributes{"class": "w-4 h-4"})
 			</button>
 
 			<div class="text-center mb-6">
-				<div class="w-12 h-12 rounded-full bg-accent/15 text-accent mx-auto flex items-center justify-center mb-3 animate-pulse-glow">
+				<div class="w-12 h-12 rounded-xl bg-accent/15 text-accent mx-auto flex items-center justify-center mb-3 shadow-xs">
 					@icons.CreditCard(templ.Attributes{"class": "w-6 h-6"})
 				</div>
 				if orderCode != "" {
@@ -35,9 +40,9 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 					}) {
 						Квитанция № { orderCode }
 					}
-					<h3 class="font-serif-title text-xl font-bold text-content mt-2">Оплата выполненных работ</h3>
+					<h3 id="payment-modal-title" class="font-serif-title text-xl font-bold text-content mt-2 tracking-tight">Оплата выполненных работ</h3>
 				} else {
-					<h3 class="font-serif-title text-xl font-bold text-content">Оплата услуги</h3>
+					<h3 id="payment-modal-title" class="font-serif-title text-xl font-bold text-content tracking-tight">Оплата услуги</h3>
 				}
 				<p class="text-xs text-content-muted mt-1">{ service.Title }</p>
 			</div>

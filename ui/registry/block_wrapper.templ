@@ -1,0 +1,9 @@
+package registry
+
+// BlockWrapper wraps a section block in a zero-impact (display: contents) container
+// providing data-block and data-source DOM attributes for T3 Code browser inspect and model context.
+templ BlockWrapper(blockType string, sourceFile string, comp templ.Component) {
+	<div data-block={ blockType } data-source={ sourceFile } class="contents">
+		@comp
+	</div>
+}

@@ -299,15 +299,107 @@ var BlockRegistry = map[string]BlockRenderer{
 	},
 }
 
+// BlockSourceMap maps block type to source .templ file for IDE element inspect
+var BlockSourceMap = map[string]string{
+	"hero":                      "ui/sections/hero/hero.templ",
+	"cyber_hero":                "ui/sections/hero/cyber_hero.templ",
+	"legal_hero":                "ui/sections/hero/legal_hero.templ",
+	"split_hero":                "ui/sections/hero/split_hero.templ",
+	"schedule":                  "ui/sections/schedule.templ",
+	"services":                  "ui/sections/services.templ",
+	"booking":                   "ui/sections/booking.templ",
+	"features":                  "ui/sections/features.templ",
+	"team":                      "ui/sections/team.templ",
+	"steps":                     "ui/sections/steps.templ",
+	"reviews":                   "ui/sections/reviews.templ",
+	"faq":                       "ui/sections/faq.templ",
+	"gallery":                   "ui/sections/gallery.templ",
+	"map":                       "ui/sections/map.templ",
+	"branches":                  "ui/sections/map.templ",
+	"careers":                   "ui/sections/careers.templ",
+	"vacancies":                 "ui/sections/careers.templ",
+	"quiz":                      "ui/sections/quiz.templ",
+	"calculator":                "ui/sections/quiz.templ",
+	"before_after":              "ui/sections/before_after.templ",
+	"comparison":                "ui/sections/before_after.templ",
+	"showcase":                  "ui/components/ui_showcase.templ",
+	"rich_text":                 "ui/components/dynamic_block.templ",
+	"html":                      "ui/components/dynamic_block.templ",
+	"cinematic_odometer":        "ui/components/cinematic/odometer.templ",
+	"cinematic_spotlight":       "ui/components/cinematic/spotlight_border.templ",
+	"cinematic_split_scroll":    "ui/components/cinematic/split_scroll.templ",
+	"cinematic_accordion":       "ui/components/cinematic/accordion_slider.templ",
+	"cinematic_horizontal":      "ui/components/cinematic/horizontal_scroll.templ",
+	"cinematic_mesh":            "ui/components/cinematic/mesh_gradient.templ",
+	"cinematic_coverflow":       "ui/components/cinematic/coverflow.templ",
+	"cinematic_sticky_cards":    "ui/components/cinematic/sticky_cards.templ",
+	"cinematic_image_reveal":    "ui/components/cinematic/image_reveal.templ",
+	"cinematic_cursor":          "ui/components/cinematic/cursor_reactive.templ",
+	"cinematic_curtain":         "ui/components/cinematic/curtain_reveal.templ",
+	"cinematic_dock":            "ui/components/cinematic/dock_nav.templ",
+	"cinematic_marquee":         "ui/components/cinematic/kinetic_marquee.templ",
+	"cinematic_magnetic":        "ui/components/cinematic/magnetic_grid.templ",
+	"cinematic_particles":       "ui/components/cinematic/particle_button.templ",
+	"cinematic_scramble":        "ui/components/cinematic/text_scramble.templ",
+	"cinematic_sticky_stack":    "ui/components/cinematic/sticky_stack.templ",
+	"cinematic_svg_draw":        "ui/components/cinematic/svg_draw.templ",
+	"cinematic_typewriter":      "ui/components/cinematic/typewriter.templ",
+	"cinematic_color_shift":     "ui/components/cinematic/color_shift.templ",
+	"cinematic_dynamic_island":  "ui/components/cinematic/dynamic_island.templ",
+	"cinematic_flat_to_3d":      "ui/components/cinematic/flat_to_3d.templ",
+	"cinematic_image_trail":     "ui/components/cinematic/image_trail.templ",
+	"cinematic_ogl_waves":       "ui/components/cinematic/ogl_waves.templ",
+	"cinematic_text_mask":       "ui/components/cinematic/text_mask.templ",
+	"cinematic_view_transitions": "ui/components/cinematic/view_transitions.templ",
+	"cinematic_zoom_parallax":   "ui/components/cinematic/zoom_parallax.templ",
+	"jhill_hero":                "ui/components/cinematic_2/hero_screen.templ",
+	"jhill_collage":             "ui/components/cinematic_2/portfolio_collage.templ",
+	"jhill_showcase":            "ui/components/cinematic_2/showcase.templ",
+}
+
+// ResolveBlockSource determines the exact .templ source file for a given block
+func ResolveBlockSource(b models.PageBlock, ctx RenderContext) string {
+	if b.Type == "hero" {
+		if variant, ok := b.Payload["variant"].(string); ok {
+			switch variant {
+			case "split":
+				return "ui/sections/hero/split_hero.templ"
+			case "cyber":
+				return "ui/sections/hero/cyber_hero.templ"
+			case "legal":
+				return "ui/sections/hero/legal_hero.templ"
+			case "classic":
+				return "ui/sections/hero/hero.templ"
+			}
+		}
+		if ctx.Settings.Theme == "cyber" {
+			return "ui/sections/hero/cyber_hero.templ"
+		}
+		if ctx.Settings.Theme == "legal" {
+			return "ui/sections/hero/legal_hero.templ"
+		}
+		return "ui/sections/hero/hero.templ"
+	}
+	if src, ok := BlockSourceMap[b.Type]; ok {
+		return src
+	}
+	return "ui/components/dynamic_block.templ"
+}
+
 // RegisterBlock allows registering custom block types dynamically
 func RegisterBlock(blockType string, renderer BlockRenderer) {
 	BlockRegistry[blockType] = renderer
 }
 
-// RenderBlock executes registered renderer or fallbacks to dynamic block
+// RenderBlock executes registered renderer or fallbacks to dynamic block,
+// wrapping it in BlockWrapper (display: contents) to provide data-block and data-source DOM context.
 func RenderBlock(b models.PageBlock, ctx RenderContext) templ.Component {
+	var comp templ.Component
 	if renderer, ok := BlockRegistry[b.Type]; ok {
-		return renderer(b, ctx)
+		comp = renderer(b, ctx)
+	} else {
+		comp = components.DynamicBlock(b)
 	}
-	return components.DynamicBlock(b)
+	src := ResolveBlockSource(b, ctx)
+	return BlockWrapper(b.Type, src, comp)
 }

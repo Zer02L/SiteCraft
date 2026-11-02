@@ -6,13 +6,17 @@ import (
 
 templ DynamicBlock(block models.PageBlock) {
 	<!-- Произвольный блок контента (RichText / Raw HTML) с защитой bluemonday -->
-	<section class="py-12 px-4 max-w-6xl mx-auto">
+	<section
+		class="py-12 px-4 max-w-6xl mx-auto"
+		data-component="DynamicBlock"
+		data-source="ui/components/dynamic_block.templ"
+	>
 		if block.Title != "" {
 			<div class="text-center mb-8">
-				<h2 class="section-title">{ block.Title }</h2>
+				<h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-content">{ block.Title }</h2>
 			</div>
 		}
-		<div class="prose max-w-none text-content/90 leading-relaxed card-base sm:p-8">
+		<div class="prose max-w-none text-content/90 leading-relaxed bg-surface rounded-card p-6 sm:p-8 border border-content/10 shadow-xs">
 			@templ.Raw(block.Content)
 		</div>
 	</section>

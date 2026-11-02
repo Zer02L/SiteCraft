@@ -28,6 +28,9 @@ html[data-theme="main-day"] {
   --radius-input: var(--radius-md);
   --radius-badge: var(--radius-full);
 
+  /* Типографические токены доступности (ГОСТ) */
+  --font-a11y: Arial, Helvetica, sans-serif;
+
   /* Единый словарь движения (Motion & Spring Tokens) */
   --duration-fast: 180ms;
   --duration-base: 320ms;

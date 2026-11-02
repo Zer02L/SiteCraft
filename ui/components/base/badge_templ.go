@@ -10,6 +10,8 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
+	"strings"
+
 	"github.com/Oudwins/tailwind-merge-go"
 )
 
@@ -49,47 +51,61 @@ type BadgeProps struct {
 }
 
 func (p BadgeProps) combinedAttrs() templ.Attributes {
+	var raw templ.Attributes
 	if len(p.Attributes) == 0 {
-		return p.Attrs
+		raw = p.Attrs
+	} else if len(p.Attrs) == 0 {
+		raw = p.Attributes
+	} else {
+		raw = make(templ.Attributes, len(p.Attrs)+len(p.Attributes))
+		for k, v := range p.Attrs {
+			raw[k] = v
+		}
+		for k, v := range p.Attributes {
+			raw[k] = v
+		}
 	}
-	if len(p.Attrs) == 0 {
-		return p.Attributes
+	if len(raw) == 0 {
+		return nil
 	}
-	res := make(templ.Attributes, len(p.Attrs)+len(p.Attributes))
-	for k, v := range p.Attrs {
-		res[k] = v
-	}
-	for k, v := range p.Attributes {
+	res := make(templ.Attributes, len(raw))
+	for k, v := range raw {
+		if strings.HasPrefix(k, "on") {
+			if s, ok := v.(string); ok {
+				res[k] = templ.JSUnsafeFuncCall(s)
+				continue
+			}
+		}
 		res[k] = v
 	}
 	return res
 }
 
 func (p BadgeProps) Classes() string {
-	const base = "inline-flex items-center justify-center font-semibold rounded-badge transition-colors"
+	const base = "inline-flex items-center justify-center font-semibold rounded-badge transition-colors tabular-nums tracking-wide select-none"
 
 	var variant string
 	switch p.Variant {
 	case BadgeSecondary:
-		variant = "bg-primary/10 text-primary border border-primary/20"
+		variant = "bg-primary/10 text-primary border border-primary/20 hover:bg-primary/15"
 	case BadgeAccent:
-		variant = "bg-accent/10 text-accent border border-accent/20"
+		variant = "bg-accent/10 text-accent border border-accent/20 hover:bg-accent/15"
 	case BadgeOutline:
-		variant = "border border-content/20 text-content bg-surface/5"
+		variant = "border border-content/20 text-content bg-surface/5 hover:bg-surface/10 hover:border-content/30"
 	case BadgeDestructive:
-		variant = "bg-rose-100 text-rose-800 border border-rose-200"
+		variant = "bg-rose-100 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-800/40"
 	default: // BadgeDefault
-		variant = "bg-primary text-white"
+		variant = "bg-primary text-white border border-primary/20 shadow-xs"
 	}
 
 	var size string
 	switch p.Size {
 	case BadgeSizeSm:
-		size = "text-[10px] px-2 py-0.5"
+		size = "text-[10px] px-2 py-0.5 leading-normal"
 	case BadgeSizeLg:
-		size = "text-sm px-3.5 py-1"
+		size = "text-sm px-3.5 py-1 leading-normal"
 	default: // BadgeSizeDefault
-		size = "text-xs px-2.5 py-0.5"
+		size = "text-xs px-2.5 py-0.5 leading-normal"
 	}
 
 	if p.Class == "" {
@@ -120,7 +136,7 @@ func Badge(props BadgeProps) templ.Component {
 			templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 			templ_7745c5c3_Buffer := templ.GetBuffer()
 			var templ_7745c5c3_ElementScripts []templ.ComponentScript
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<span class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<span data-component=\"Badge\" data-source=\"ui/components/base/badge.templ\" class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

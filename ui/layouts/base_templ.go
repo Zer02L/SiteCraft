@@ -306,7 +306,7 @@ func Base(title string, description string, settings models.SiteSettings, seoOpt
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Скомпилированные стили Tailwind с семантическими токенами --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Скомпилированные стили Tailwind с семантическими токенами --><link rel=\"stylesheet\" href=\"/assets/styles.css\"><!-- No-JS Progressive Enhancement: если JavaScript выключен или недоступен, контент отображается сразу --><noscript><style>\n\t\t\t\t\t[data-reveal] {\n\t\t\t\t\t\topacity: 1 !important;\n\t\t\t\t\t\ttransform: none !important;\n\t\t\t\t\t\ttransition: none !important;\n\t\t\t\t\t}\n\t\t\t\t</style></noscript><style>\n\t\t\t\t.font-serif-title { font-family: 'Merriweather', Georgia, serif; }\n\t\t\t</style><!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
