@@ -11,6 +11,9 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - `ui/assets/` — Tailwind CSS entry point (`input.css`), runtime tokens (`tokens.css`), client scripts, icons, and `images/`.
 - `ui/components/` — Reusable Templ components (base primitives, headers, footers, drawers, modals, widgets).
 - `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, and card primitives.
+- `ui/components/cinematic/` — 31 Zero-GSAP cinematic animation and scrollytelling modules.
+- `ui/components/icons/` — Self-contained type-safe Lucide SVG icon components compiled via Templ.
+- `ui/components/cinematic_2/` — Screen 1 & Screen 2 components adapted from jhill.com (cinematic video hero and tilted ArtStation marquee collage).
 - `ui/layouts/` — Master templates (`base.templ`) and SEO/meta tag helpers.
 - `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin).
 - `ui/registry/` — Dynamic section registry (`BlockRegistry`), generic payload parser (`ParsePayload[T]`), and block factory pattern (`RenderBlock`).
@@ -51,3 +54,4 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 ## Child DOX Index
 
 - [components/cinematic/AGENTS.md](components/cinematic/AGENTS.md) — 31 Zero-GSAP cinematic animation modules, scrollytelling mechanics, and 60 FPS performance contracts.
+- [components/cinematic_2/AGENTS.md](components/cinematic_2/AGENTS.md) — Screen 1 & Screen 2 components from jhill.com (100svh video hero + tilted ArtStation marquee collage).

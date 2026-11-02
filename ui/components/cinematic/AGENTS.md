@@ -4,11 +4,11 @@ Zero-GSAP cinematic animation modules, scrollytelling mechanics, and high-perfor
 
 ## Purpose
 
-Owns the collection of 31 cinematic animation components built with pure CSS, Motion One, and Alpine.js for storytelling, interactive showcases, and high-conversion landing pages.
+Owns the collection of 33 cinematic animation components built with pure CSS, Motion One, Alpine.js, and OGL WebGL for storytelling, interactive showcases, and high-conversion landing pages.
 
 ## Ownership
 
-- `ui/components/cinematic/*.templ` — All 31 cinematic animation components (dock nav, coverflow, sticky stack, horizontal scroll, cursor reactive, text scramble, ogl waves, etc.).
+- `ui/components/cinematic/*.templ` — All 33 cinematic animation components (dock nav, coverflow, sticky stack, horizontal scroll, cursor reactive, text scramble, ogl waves, flat to 3d, etc.).
 - `ui/components/cinematic/README.md` — Component catalog, visual descriptions, and API parameter references.
 
 ## Local Contracts

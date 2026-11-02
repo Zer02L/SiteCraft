@@ -33,7 +33,7 @@ description: Guides the workflow for Google Stitch CLI tailored to SiteCraft (Go
 - Преобразуй экспортированный HTML в синтаксис Templ:
   - Секции страниц размещай в `ui/sections/<section_name>.templ`.
   - Повторно используемые элементы — в `ui/components/base/` (используя `@base.Button`, `@base.Card`, `@base.Badge`) или `ui/components/`.
-  - Для векторных иконок используй библиотеку `go-templ-lucide-icons` вместо тяжелых инлайн-SVG.
+  - Для векторных иконок используй локальный пакет `ui/components/icons` вместо тяжелых инлайн-SVG.
 - Зарегистрируй новый блок в `ui/registry/registry.go` через `registry.RegisterBlock("<type>", ...)`.
 
 ### 5. Синхронизация дизайн-токенов:

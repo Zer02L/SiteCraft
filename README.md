@@ -26,7 +26,7 @@
 5. **Дизайн-система Go Variants (CVA) + Tailwind v4 CSS Data-Variants + `lucide-icons`:**
    * **Zero-Cost Go Variants (`ui/components/base/`):** 100% типобезопасные примитивы кнопок (`@base.Button`), бейджей (`@base.Badge`) и карточек (`@base.Card`) со строгими Go-типами вариантов и размеров. Нулевые аллокации памяти (GC) при стандартном рендере и безопасное разрешение конфликтов классов через `tailwind-merge-go` при оверрайдах.
    * **Нативные CSS Data-Variants Tailwind v4:** управление состояниями модалок, аккордеонов и дропдаунов (`data-open:`, `data-closed:`, `data-active:`) напрямую через data-атрибуты Alpine.js без манипуляций со строками классов в JavaScript.
-   * **`go-templ-lucide-icons`:** 100% типобезопасные векторные иконки без сырого SVG-кода.
+   * **`ui/components/icons` (Lucide):** 100% типобезопасные векторные иконки без сырого SVG-кода, компилируемые Templ.
    * **`tailwind-animations`:** плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
 6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
 7. **Модуль локализации i18n (RU / EN):** Полноценная многоязычность (`internal/i18n`) из коробки: определение языка через URL-параметр `?lang=`, Cookie или заголовок `Accept-Language`, Zero-JS переключатель языков, динамический `<html lang="...">`, `hreflang`, `og:locale` для SEO и локализованные сообщения валидации форм.
@@ -209,7 +209,7 @@ flowchart LR
   * `data-active:` — подсветка активных табов и кнопок фильтрации (`:data-active="isActive ? 'true' : 'false'"`).
   * Полное отсутствие ручной манипуляции со строками классов (`classList.add/remove`) в JavaScript.
 
-* **Иконки `go-templ-lucide-icons`:** Единая типобезопасная коллекция векторных иконок для всех компонентов интерфейса. Никаких inline SVG-дубликатов.
+* **Иконки `ui/components/icons` (Lucide):** Единая типобезопасная коллекция векторных иконок для всех компонентов интерфейса. Никаких inline SVG-дубликатов.
 * **Микровзаимодействия `tailwind-animations` ([animations.css](ui/assets/css/animations.css), [tw-animate.css](ui/assets/css/tw-animate.css)):** Плавные переходы, свечение бейджей `animate-pulse-glow`, всплытие списков `animate-fade-in-up`, модальные окна `animate-scale-in`, микро-лифт карточек (`hover:-translate-y-1 hover:shadow-md`) и тактильный отклик кнопок (`active:scale-[0.98]`).
 * **Доступность из коробки:** Все тяжелые анимации автоматически отключаются при включении режима для слабовидящих (`body.a11y-mode`) или пользовательской настройки ОС `prefers-reduced-motion: reduce`.
 

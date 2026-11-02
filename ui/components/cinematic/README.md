@@ -1,6 +1,6 @@
-# 🎬 Cinematic Site Components (Полная коллекция 31 модуль — Zero-GSAP Edition)
+# 🎬 Cinematic Site Components (Коллекция 33 модуля — Zero-GSAP Edition)
 
-Абсолютно **все 31 кинематографических модуля** адаптированы под архитектуру **SiteCraft** (**Go + Templ + Tailwind CSS + Alpine.js + HTMX**).
+Абсолютно **все 33 кинематографических модуля** адаптированы под архитектуру **SiteCraft** (**Go + Templ + Tailwind CSS + Alpine.js + HTMX**).
 
 Все 31 модуль работают **БЕЗ внешних скриптов, БЕЗ GSAP и БЕЗ npm** (0 КБ сторонних зависимостей).
 
@@ -61,6 +61,7 @@
 | 30 | **Typewriter Effect** | [`typewriter.templ`](typewriter.templ) | Печатающийся текст с мигающей кареткой |
 | 31 | **Gradient Stroke Text** | [`gradient_stroke.templ`](gradient_stroke.templ) | Контурный текст с бегущим градиентом на CSS |
 | 32 | **OGL 3D Waves Background** | [`ogl_waves.templ`](ogl_waves.templ) | **OGL WebGL (~39 KB gzip)** • Интерактивные 3D-волны с шейдерами и привязкой к теме |
+| 33 | **Flat-to-3D Architectural Scrollytelling** | [`flat_to_3d.templ`](flat_to_3d.templ) | **OGL WebGL (~39 KB gzip)** • Архитектурная взрыв-аксонометрия, плоттерный скан, приземление слоев и Dolly Zoom |
 
 ---
 
