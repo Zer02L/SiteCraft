@@ -566,6 +566,12 @@
   .col-span-2 {
     grid-column: span 2 / span 2;
   }
+  .col-span-4 {
+    grid-column: span 4 / span 4;
+  }
+  .col-span-8 {
+    grid-column: span 8 / span 8;
+  }
   .col-span-10 {
     grid-column: span 10 / span 10;
   }
@@ -716,6 +722,13 @@
   .ml-2 {
     margin-left: calc(var(--spacing) * 2);
   }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .line-clamp-1 {
     overflow: hidden;
     display: -webkit-box;
@@ -772,6 +785,9 @@
   }
   .table-row {
     display: table-row;
+  }
+  .aspect-16\/9 {
+    aspect-ratio: 16/9;
   }
   .aspect-\[3\/4\] {
     aspect-ratio: 3/4;
@@ -1356,6 +1372,15 @@
   .resize-none {
     resize: none;
   }
+  .snap-x {
+    scroll-snap-type: x var(--tw-scroll-snap-strictness);
+  }
+  .snap-mandatory {
+    --tw-scroll-snap-strictness: mandatory;
+  }
+  .snap-start {
+    scroll-snap-align: start;
+  }
   .list-inside {
     list-style-position: inside;
   }
@@ -1364,6 +1389,9 @@
   }
   .list-none {
     list-style-type: none;
+  }
+  .auto-rows-\[280px\] {
+    grid-auto-rows: 280px;
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1519,6 +1547,11 @@
     margin-block-start: calc(calc(var(--spacing) * 10) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 10) * calc(1 - var(--tw-space-y-reverse)));
   }
+  :where(.space-y-16 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 16) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 16) * calc(1 - var(--tw-space-y-reverse)));
+  }
   :where(.space-x-1 > :not(:last-child)) {
     --tw-space-x-reverse: 0;
     margin-inline-start: calc(var(--spacing) * var(--tw-space-x-reverse));
@@ -1561,6 +1594,12 @@
     border-top-width: calc(1px * var(--tw-divide-y-reverse));
     border-bottom-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
   }
+  :where(.divide-content\/10 > :not(:last-child)) {
+    border-color: var(--color-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-content) 10%, transparent);
+    }
+  }
   :where(.divide-slate-800 > :not(:last-child)) {
     border-color: var(--color-slate-800);
   }
@@ -1572,6 +1611,9 @@
   }
   .self-end {
     align-self: flex-end;
+  }
+  .self-start {
+    align-self: flex-start;
   }
   .self-stretch {
     align-self: stretch;
@@ -5007,6 +5049,12 @@
     .md\:col-span-8 {
       grid-column: span 8 / span 8;
     }
+    .md\:row-span-1 {
+      grid-row: span 1 / span 1;
+    }
+    .md\:row-span-2 {
+      grid-row: span 2 / span 2;
+    }
     .md\:block {
       display: block;
     }
@@ -5040,6 +5088,9 @@
     .md\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+    .md\:grid-cols-7 {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+    }
     .md\:grid-cols-12 {
       grid-template-columns: repeat(12, minmax(0, 1fr));
     }
@@ -5070,6 +5121,10 @@
     .md\:text-right {
       text-align: right;
     }
+    .md\:text-4xl {
+      font-size: var(--text-4xl);
+      line-height: var(--tw-leading, var(--text-4xl--line-height));
+    }
     .md\:text-5xl {
       font-size: var(--text-5xl);
       line-height: var(--tw-leading, var(--text-5xl--line-height));
@@ -5094,6 +5149,9 @@
   @media (width >= 64rem) {
     .lg\:sticky {
       position: sticky;
+    }
+    .lg\:top-24 {
+      top: calc(var(--spacing) * 24);
     }
     .lg\:top-28 {
       top: calc(var(--spacing) * 28);
@@ -5125,11 +5183,17 @@
     .lg\:mb-12 {
       margin-bottom: calc(var(--spacing) * 12);
     }
+    .lg\:aspect-21\/9 {
+      aspect-ratio: 21/9;
+    }
     .lg\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .lg\:grid-cols-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .lg\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
     .lg\:grid-cols-12 {
       grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -5151,6 +5215,19 @@
     }
     .lg\:gap-16 {
       gap: calc(var(--spacing) * 16);
+    }
+    :where(.lg\:divide-x > :not(:last-child)) {
+      --tw-divide-x-reverse: 0;
+      border-inline-style: var(--tw-border-style);
+      border-inline-start-width: calc(1px * var(--tw-divide-x-reverse));
+      border-inline-end-width: calc(1px * calc(1 - var(--tw-divide-x-reverse)));
+    }
+    :where(.lg\:divide-y-0 > :not(:last-child)) {
+      --tw-divide-y-reverse: 0;
+      border-bottom-style: var(--tw-border-style);
+      border-top-style: var(--tw-border-style);
+      border-top-width: calc(0px * var(--tw-divide-y-reverse));
+      border-bottom-width: calc(0px * calc(1 - var(--tw-divide-y-reverse)));
     }
     .lg\:border-r {
       border-right-style: var(--tw-border-style);
@@ -6470,6 +6547,11 @@ html.a11y-mode [data-reveal], html.a11y-mode .scroll-progress-bar {
   syntax: "*";
   inherits: false;
 }
+@property --tw-scroll-snap-strictness {
+  syntax: "*";
+  inherits: false;
+  initial-value: proximity;
+}
 @property --tw-space-y-reverse {
   syntax: "*";
   inherits: false;
@@ -6726,6 +6808,11 @@ html.a11y-mode [data-reveal], html.a11y-mode .scroll-progress-bar {
   syntax: "*";
   inherits: false;
 }
+@property --tw-divide-x-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -6769,6 +6856,7 @@ html.a11y-mode [data-reveal], html.a11y-mode .scroll-progress-bar {
       --tw-rotate-z: initial;
       --tw-skew-x: initial;
       --tw-skew-y: initial;
+      --tw-scroll-snap-strictness: proximity;
       --tw-space-y-reverse: 0;
       --tw-space-x-reverse: 0;
       --tw-divide-y-reverse: 0;
@@ -6828,6 +6916,7 @@ html.a11y-mode [data-reveal], html.a11y-mode .scroll-progress-bar {
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
       --tw-ease: initial;
+      --tw-divide-x-reverse: 0;
       --tw-animation-delay: 0s;
       --tw-animation-direction: normal;
       --tw-animation-duration: initial;

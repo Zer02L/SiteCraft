@@ -45,6 +45,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - Rebuild minified CSS on utility changes: `tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`.
 - Register new section blocks in `ui/registry/registry.go` with fallback handling.
 - Audit responsive layouts across mobile (390px), tablet (768px), and desktop (1440px) using the `layout-review` skill.
+- Generate architectural landing layouts using the `hallmark-craft` skill (`.agents/skills/hallmark-craft/SKILL.md`).
 - Generate or align sections against `brief.md` using the `stitch-workflow` skill.
 
 ## Verification
