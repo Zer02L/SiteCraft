@@ -65,16 +65,21 @@ templ ExitIntent(settings models.SiteSettings) {
 			x-transition:leave="transition ease-in duration-200"
 			x-transition:leave-start="opacity-100 scale-100 translate-y-0"
 			x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-			class="relative w-full max-w-lg bg-surface border border-accent/30 rounded-2xl p-6 sm:p-8 shadow-2xl overflow-hidden z-10"
+			class="relative w-full max-w-lg bg-surface border border-content/15 rounded-card p-6 sm:p-8 shadow-2xl overflow-hidden z-10"
+			data-component="ExitIntent"
+			data-source="ui/components/exit_intent.templ"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="exit-intent-title"
 		>
-			<!-- Декоративное свечение вверху -->
-			<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-48 bg-accent/20 rounded-full blur-3xl pointer-events-none"></div>
+			<!-- Декоративное мягкое свечение вверху -->
+			<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-48 bg-accent/15 rounded-full blur-3xl pointer-events-none"></div>
 
-			<!-- Кнопка закрытия -->
+			<!-- Кнопка закрытия с доступной областью клика -->
 			<button
 				type="button"
 				@click="close()"
-				class="absolute top-4 right-4 text-content-muted hover:text-content p-1.5 rounded-full hover:bg-content/5 transition-colors cursor-pointer"
+				class="absolute top-4 right-4 text-content-muted hover:text-content w-9 h-9 flex items-center justify-center rounded-btn hover:bg-content/5 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
 				aria-label="Закрыть"
 			>
 				@icons.X(templ.Attributes{"class": "w-5 h-5"})
@@ -82,14 +87,14 @@ templ ExitIntent(settings models.SiteSettings) {
 
 			<div id="exit-intent-form-container">
 				<div class="text-center mb-6">
-					<div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-accent/15 border border-accent/25 text-accent mb-3 shadow-inner">
+					<div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-accent/15 border border-accent/25 text-accent mb-3 shadow-xs">
 						@icons.Gift(templ.Attributes{"class": "w-6 h-6"})
 					</div>
-					<h3 class="text-xl sm:text-2xl font-bold text-content tracking-tight">
+					<h3 id="exit-intent-title" class="text-xl sm:text-2xl font-bold text-content tracking-tight">
 						Подождите! Не уходите с пустыми руками
 					</h3>
 					<p class="text-xs sm:text-sm text-content-muted mt-2 max-w-sm mx-auto leading-relaxed">
-						Зафиксируйте за своим номером <strong class="text-accent font-bold">скидку 10%</strong> или получите бесплатную консультацию ведущего специалиста.
+						Зафиксируйте за своим номером <strong class="text-accent font-semibold">скидку 10%</strong> или получите консультацию специалиста.
 					</p>
 				</div>
 
@@ -112,7 +117,7 @@ templ ExitIntent(settings models.SiteSettings) {
 							name="name"
 							required
 							placeholder="Иван"
-							class="w-full px-4 py-2.5 rounded-xl bg-surface-raised border border-content/15 text-content placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm transition"
+							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-all"
 						/>
 					</div>
 
@@ -124,7 +129,7 @@ templ ExitIntent(settings models.SiteSettings) {
 							required
 							x-mask="+7 (999) 999-99-99"
 							placeholder="+7 (___) ___-__-__"
-							class="w-full px-4 py-2.5 rounded-xl bg-surface-raised border border-content/15 text-content placeholder-content-muted/50 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-sm font-mono transition"
+							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm font-mono transition-all"
 						/>
 					</div>
 
@@ -133,7 +138,7 @@ templ ExitIntent(settings models.SiteSettings) {
 							Variant: base.BtnAccent,
 							Size:    base.BtnSizeLg,
 							Type:    "submit",
-							Class:   "w-full text-primary-dark font-bold py-3 shadow-lg flex items-center justify-center gap-2 cursor-pointer",
+							Class:   "w-full text-surface font-bold py-3 shadow-sm hover:shadow flex items-center justify-center gap-2 cursor-pointer",
 						}) {
 							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
 							<span>Зафиксировать скидку 10%</span>
@@ -141,7 +146,7 @@ templ ExitIntent(settings models.SiteSettings) {
 					</div>
 
 					<p class="text-[10px] text-content-muted/70 text-center mt-2">
-						Нажимая кнопку, вы соглашаетесь на обработку персональных данных. Без спама.
+						Нажимая кнопку, вы соглашаетесь на обработку данных по 152-ФЗ.
 					</p>
 				</form>
 			</div>

@@ -32,13 +32,13 @@ func (p CardProps) Classes() string {
 	var variant string
 	switch p.Variant {
 	case CardInteractive:
-		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300 hover:shadow-xl hover:border-accent/60 hover:-translate-y-1"
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200 hover:shadow-xl hover:border-accent/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 cursor-pointer"
 	case CardSm:
-		variant = "bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition-all duration-300"
+		variant = "bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition-all duration-200"
 	case CardMuted:
-		variant = "bg-surface-muted text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-300"
+		variant = "bg-surface-muted text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200"
 	default: // CardBase
-		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-sm transition-all duration-300"
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200"
 	}
 
 	if p.Class == "" {
@@ -69,7 +69,7 @@ func Card(props CardProps) templ.Component {
 			templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 			templ_7745c5c3_Buffer := templ.GetBuffer()
 			var templ_7745c5c3_ElementScripts []templ.ComponentScript
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-component=\"Card\" data-source=\"ui/components/base/card.templ\" class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -147,7 +147,7 @@ func CardTitle(class ...string) templ.Component {
 			templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 			templ_7745c5c3_Buffer := templ.GetBuffer()
 			var templ_7745c5c3_ElementScripts []templ.ComponentScript
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<h3 class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<h3 data-component=\"CardTitle\" data-source=\"ui/components/base/card.templ\" class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -221,7 +221,7 @@ func CardDescription(class ...string) templ.Component {
 			templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 			templ_7745c5c3_Buffer := templ.GetBuffer()
 			var templ_7745c5c3_ElementScripts []templ.ComponentScript
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<p data-component=\"CardDescription\" data-source=\"ui/components/base/card.templ\" class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

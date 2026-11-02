@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := help
 
 SHELL := /usr/bin/env bash
+export PATH := $(PWD)/.devenv/state/go/bin:$(PWD)/.devenv/profile/bin:$(PATH)
 
 .PHONY: help check test vet generate build dev clean check-clean
 

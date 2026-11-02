@@ -198,7 +198,7 @@ func A11yBar() templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.reset"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 112, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 113, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -210,6 +210,7 @@ func A11yBar() templ.Component {
 			Variant: base.BtnDestructive,
 			Size:    base.BtnSizeSm,
 			Attributes: templ.Attributes{
+				"id":      "a11y-reset-btn",
 				"onclick": "window.A11Y.toggle()",
 			},
 			Class: "text-xs font-bold gap-1.5 transition",

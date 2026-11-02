@@ -106,6 +106,16 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 
 			<!-- Скомпилированные стили Tailwind с семантическими токенами -->
 			<link rel="stylesheet" href="/assets/styles.css"/>
+			<!-- No-JS Progressive Enhancement: если JavaScript выключен или недоступен, контент отображается сразу -->
+			<noscript>
+				<style>
+					[data-reveal] {
+						opacity: 1 !important;
+						transform: none !important;
+						transition: none !important;
+					}
+				</style>
+			</noscript>
 			<style>
 				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
 			</style>

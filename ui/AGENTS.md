@@ -22,7 +22,8 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 ## Local Contracts
 
-- Type-safe templates: all HTML markup authored in `*.templ` files; never write raw unchecked HTML strings.
+- Type-safe templates: all HTML markup authored in `*.templ` files; never write raw unchecked HTML strings. STRICT: Never edit generated `*_templ.go` files directly.
+- DOM Source Mapping: `RenderBlock` in `ui/registry/` must wrap dynamic blocks in `BlockWrapper` (`<div class="contents">` with `data-block` and `data-source`), and base components (`ui/components/base/`) must preserve `data-component` and `data-source` attributes for seamless T3 Code preview inspection.
 - Zero-Node.js in production: compile CSS and templates ahead of time (`templ generate`, `tailwindcss`).
 - Design tokens & Semantic markup: configure themes via `@theme` in `ui/assets/input.css` and runtime CSS variables in `ui/assets/css/tokens.css`. Always use semantic utility classes (`bg-surface`, `text-content`, `text-accent`, `rounded-card`, `rounded-btn`) rather than hardcoded colors or pixel radii.
 - Payload parsing: use generic `registry.ParsePayload[T any]` to parse block payloads without handwriting repetitive unmarshalers.
@@ -31,6 +32,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - Alpine + HTMX compatibility: use `hx-alpine-compat` patterns so dynamic DOM replacements safely reinitialize Alpine state without memory leaks.
 - CSS Data-Variants: prefer native Tailwind v4 data variants (`data-open:`, `data-active:`) triggered by Alpine data attributes over manual JavaScript class manipulation.
 - Accessibility standard: adhere to ГОСТ Р 52872-2019 accessibility mode (`body.a11y-mode`) and honor `@media (prefers-reduced-motion: reduce)`.
+- Anti-Slop Guard in UI: All components must use semantic tokens from `presets/*.json` (never default purple/indigo gradients or floating blur orbs). Elements with `[data-reveal]` must remain accessible and visible without JavaScript via `<noscript>` progressive enhancement. Animations must be restricted to `transform` and `opacity` (150–200ms) with zero layout thrashing.
 
 ## Work Guidance
 

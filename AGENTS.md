@@ -77,6 +77,16 @@ Default section order:
 ## User Preferences
 
 - **SiteCraft Architecture**: Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS v4. Single binary (~25 MB), PageSpeed 100/100, zero Node.js runtime in production, Zero-GSAP animations, type-safe Templ, Tailwind v4 design tokens.
+- **Templ & Source Mapping Contracts**:
+  - STRICT: Never edit generated `*_templ.go` files directly. Always edit the source `*.templ` file and re-generate via `templ generate`.
+  - DOM Source Mapping: Base components and dynamic blocks must maintain `data-component`, `data-source`, and `data-field` attributes to allow 1:1 visual element mapping in T3 Code preview and AI inspectors.
+- **Anti-Slop Guard (Design & Copy Integrity)**:
+  - Strict protection against generic AI templates, visual noise, and hallucinated marketing slop across all B2B/B2C components.
+  - **Palettes & Tokens**: Ban default purple-to-indigo gradients (`from-indigo-500 to-purple-600`) and arbitrary blurred background orbs (`blur-3xl`). Color schemes must originate from `presets/*.json` or explicit project briefs.
+  - **Copywriting**: Ban abstract marketing filler ("инновационные решения", "лидеры рынка", "революционный подход"). Headings and offers must follow the factual formula: specific service/product + measurable benefit/timeline/standard.
+  - **Proof & Trust**: Ban fake testimonials with stock photos. Use real case studies (estimate, scope, timeline, materials), PocketBase UGC reviews, or external review links (Yandex/Avito).
+  - **Layout Rhythm**: Avoid monotonous 3-identical-card grids. Vary structural density (split heroes, asymmetrical bento, interactive quizzes, accent timelines).
+  - **Tactile Performance (60 FPS)**: Content must be readable instantly without waiting for scroll animations. Animations limited to `transform` and `opacity` (150–200ms) with full `prefers-reduced-motion` and No-JS progressive enhancement.
 - **Ponytail (Lazy Senior Dev Mode)**:
   - Best code is the code never written. Solve problems with minimal diffs and no over-engineering.
   - Before writing, grep callers to establish full scope (callers, templates, tests, fixtures, configs).
