@@ -104,6 +104,18 @@
 * **Каталог макроструктур:** `.agents/skills/hallmark-craft/references/macrostructures_catalog.md`
 * **Лаборатория тестов Floor:** `.agents/skills/hallmark-craft/references/floor_bans_evaluation.md`
 
+---
+
+### 10. `stageshow-craft` (Faux Product UI, мокапы и интерактивные демо с курсором)
+* **Оригинал:** [benjitaylor/skills](https://github.com/benjitaylor/skills/tree/main) (скилл `stageshow`)
+* **Автор оригинала:** Benji Taylor (`@benjitaylor`)
+* **Назначение:** Создание кинематографичных мокапов интерфейсов продуктов (Hero-шоты SaaS, окна приложений с кнопками macOS, мобильные телефоны с Dynamic Island, терминалы, Bento-сетки фичей). Исключает «AI slop» за счет бюджета реального текста (3–7 строк, остальное — аккуратные плашки-плейсхолдеры `PlaceholderBar`), принципа естественного среза краев (`Edge Bleed`), нависающих сателлитов (`MockSatellite`) и интерактивного виртуального курсора (`MockCursor`).
+* **Адаптация в SiteCraft:**
+  - **Локальный скил:** `.agents/skills/stageshow-craft/SKILL.md`
+  - **Кукбук:** `.agents/cookbooks/stageshow_craft.md`
+  - **Templ-компоненты:** `ui/components/cinematic/stageshow.templ` (`StageshowStage`, `MockWindow`, `MockPhone`, `MockTerminal`, `PlaceholderBar`, `MockRow`, `MockSatellite`, `MockCursor`)
+  - **Архитектура:** 100% Zero-Node.js, Zero-Playwright, автономный Go + Templ + Tailwind v4 + Alpine.js, ГОСТ a11y & `prefers-reduced-motion` фоллбэк.
+
 
 Если вы не используете CLI `skills`, структуру можно подключить вручную:
 

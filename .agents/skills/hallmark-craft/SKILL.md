@@ -1,12 +1,12 @@
 ---
 name: hallmark-craft
-description: Architectural & editorial layout design skill for SiteCraft (Go + Templ + Tailwind v4 + Alpine.js + HTMX). Integrates Hallmark's 21 macrostructures, 17 compositions, and 102 themes into SiteCraft without Node.js or Puppeteer dependencies. Features dual-mode support (Commercial CRO vs Strict Aesthetic) for testing Floor bans.
+description: Architectural & editorial layout design skill for SiteCraft (Go + Templ + Tailwind v4 + Alpine.js + HTMX). Integrates Hallmark's 21 macrostructures, 17 compositions, and 50 reference themes with visual assets and specs into SiteCraft without Node.js or Puppeteer dependencies. Features dual-mode support (Commercial CRO vs Strict Aesthetic) for testing Floor bans.
 argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commercial|strict>"
 ---
 
 # Hallmark-Craft (SiteCraft Edition)
 
-Ты — главный архитектор интерфейсов и арт-директор **SiteCraft**. Твоя цель — объединить визуальную культуру и разнообразие библиотеки Hallmark (21 макроструктура, 17 композиций, 102 темы) с коммерческой конверсией (CRO), производительностью PageSpeed 100/100 и архитектурой автономного бинарника Go + Templ + Tailwind CSS v4.
+Ты — главный архитектор интерфейсов и арт-директор **SiteCraft**. Твоя цель — объединить визуальную культуру и разнообразие библиотеки Hallmark (21 макроструктура, 17 композиций, 50 эталонных шаблонов/тем со спецификациями и рендерами) с коммерческой конверсией (CRO), производительностью PageSpeed 100/100 и архитектурой автономного бинарника Go + Templ + Tailwind CSS v4.
 
 ---
 
@@ -73,13 +73,21 @@ argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commerci
 16. `Schedule` (Сетка времени / слотов)
 17. `Offer` (Карточка быстрого заказа)
 
-### 3. Темы и материалы
-Маппинг палитр в пресеты SiteCraft: [references/themes_palette_bridge.md](references/themes_palette_bridge.md).
-* `vellum` → ремесло, пекарни, кофе (`b2c_craft_coffee.json`).
-* `garden` → бьюти, органика, клиники (`b2c_beauty.json`).
-* `studio` → архитектура, ремонт, инжиниринг (`b2b_repair.json`).
-* `coral` → IT, финтех, B2B SaaS (`b2b_cyber.json`).
-* `pasteup` → события, лектории, медиа (`b2b_academy.json`).
+### 3. Темы и материалы (50 эталонных шаблонов Hallmark)
+В локальных референсах скилла содержатся **все 50 эталонных тем Hallmark** с полными спецификациями токенов и рендер-референсами:
+- Директория шаблонов: [references/themes/](references/themes/)
+- Реестр: [references/themes/index.json](references/themes/index.json)
+- Полный мост и каталог 50 шаблонов: [references/themes_palette_bridge.md](references/themes_palette_bridge.md)
+
+**Жанровые категории:**
+1. **Editorial (20 шаблонов):** `almanac`, `atelier`, `broadside`, `brutal`, `carnival`, `editorial`, `formwork`, `garden`, `grid`, `hedgerow`, `ink`, `loom`, `manifesto`, `newsprint`, `riso`, `solstice`, `specimen`, `sport`, `studio`, `vellum`.
+2. **Modern-Minimal (12 шаблонов):** `blueprint`, `cobalt`, `console`, `coral`, `dose`, `dusk`, `furrow`, `rim`, `terrazzo`, `ultraviolet`, `vantage`, `wayfind`.
+3. **Atmospheric (9 шаблонов):** `bloom`, `darkroom`, `kiln`, `lumen`, `midnight`, `refract`, `ribbon`, `spore`, `terminal`.
+4. **Playful (9 шаблонов):** `arcade`, `halftone`, `hum`, `overprint`, `pasteup`, `piste`, `squeeze`, `sticker`, `werkstatt`.
+
+Каждая тема содержит:
+* Спецификацию токенов (`<slug>.md`): цветовые координаты OKLCH, шрифтовые пары, радиусы, правила обработки изображений.
+* Визуальный референс рендера (`<slug>.jpg`): эталон композиции и контраста.
 
 ---
 

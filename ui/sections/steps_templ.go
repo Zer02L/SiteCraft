@@ -10,8 +10,6 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"sitecraft/ui/components/base"
-
 	icons "sitecraft/ui/components/icons"
 )
 
@@ -32,41 +30,12 @@ func Steps(theme string) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Process / How It Works (1-2-3-4 Steps) --><section id=\"steps\" class=\"py-16 px-4 bg-surface-muted/50 border-t border-b border-content/10\"><div class=\"max-w-6xl mx-auto\"><div class=\"text-center mb-12\" data-reveal>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Этапы работы")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
-			Variant: base.BadgeAccent,
-			Class:   "mb-2 uppercase tracking-wider",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h2 class=\"section-title\">Как мы работаем</h2><p class=\"section-subtitle\">Прозрачный и понятный процесс от первого обращения до готового результата</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hallmark Architectural Process Steps (Strict Aesthetic Mode) --><section id=\"steps\" data-component=\"hallmark-steps\" data-source=\"ui/sections/steps.templ\" class=\"py-16 md:py-20 px-6 sm:px-10 max-w-6xl mx-auto border-b border-content/10\"><!-- Заголовок секции (Floor 54: без плашек) --><div class=\"mb-12 text-left\" data-reveal><h2 class=\"text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content\">Порядок и регламент приёма</h2><p class=\"text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed\">Чёткая последовательность действий от предварительной правовой экспертизы до выдачи заверенных актов.</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if theme == "auto" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">01</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -74,7 +43,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Приём и осмотр</h3><p class=\"card-desc text-xs\">Принимаем автомобиль, фиксируем пробег и жалобы автовладельца в заказ-наряде.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " Приём и осмотр</h3><p class=\"text-xs text-content-muted leading-relaxed\">Фиксация обращений и первичное оформление заказ-наряда.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">02</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -82,7 +51,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Диагностика</h3><p class=\"card-desc text-xs\">Сканируем электронные блоки и осматриваем узлы на подъемнике, находим точную причину.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " Диагностика</h3><p class=\"text-xs text-content-muted leading-relaxed\">Аппаратное сканирование узлов и определение точной причины.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">03</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -90,7 +59,7 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " Согласование сметы</h3><p class=\"card-desc text-xs\">Утверждаем с вами финальную стоимость работ и запчастей до начала ремонта. Никаких сюрпризов.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " Согласование сметы</h3><p class=\"text-xs text-content-muted leading-relaxed\">Утверждение окончательной калькуляции до начала работ.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">04</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,12 +67,12 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " Ремонт и выдача</h3><p class=\"card-desc text-xs\">Выполняем ремонт, проводим тест качества и выдаем авто с актом и гарантией 1 год.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " Выдача автомобиля</h3><p class=\"text-xs text-content-muted leading-relaxed\">Контрольный осмотр и предоставление акта с гарантией.</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"grid grid-cols-1 md:grid-cols-4 gap-6 relative\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">01</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<!-- Default / Legal / Swiss --> <div class=\"grid grid-cols-1 md:grid-cols-4 gap-8\"><div data-reveal data-reveal-delay=\"100\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">01</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -111,23 +80,23 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " Запись на сайте</h3><p class=\"card-desc text-xs\">Выберите подходящую дату и удобное время в интерактивном календаре онлайн.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">02</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " Запись на приём</h3><p class=\"text-xs text-content-muted leading-relaxed\">Выбор подходящей даты и точного времени в электронной сетке расписания.</p></div><div data-reveal data-reveal-delay=\"200\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">02</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = icons.PhoneCall(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.FileText(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " Подтверждение</h3><p class=\"card-desc text-xs\">Мы связываемся с вами и уточняем список необходимых для визита документов.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">03</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " Правовая экспертиза</h3><p class=\"text-xs text-content-muted leading-relaxed\">Предварительная проверка предоставленных документов и согласование проекта договора.</p></div><div data-reveal data-reveal-delay=\"300\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">03</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = icons.Clock(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = icons.ShieldCheck(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, " Визит без очередей</h3><p class=\"card-desc text-xs\">Приходите к назначенному времени — специалист примет вас строго по расписанию.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"card-base relative hover:-translate-y-1 hover:shadow-lg transition duration-300\"><div class=\"w-10 h-10 rounded-card-sm bg-accent text-surface font-bold flex items-center justify-center text-sm mb-4 shadow\">04</div><h3 class=\"card-title text-base mb-1 flex items-center gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " Визит и удостоверение</h3><p class=\"text-xs text-content-muted leading-relaxed\">Личное подписание документов в кабинете нотариуса строго в назначенное время.</p></div><div data-reveal data-reveal-delay=\"400\" class=\"pt-4 border-t-2 border-content/10 hover:border-accent transition-colors space-y-3\"><div class=\"text-xs font-mono text-content-muted\">04</div><h3 class=\"font-bold text-base text-content flex items-center gap-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -135,12 +104,12 @@ func Steps(theme string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " Готовый результат</h3><p class=\"card-desc text-xs\">Получите заверенные документы, протокол обследования или выполненную услугу.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " Регистрация в реестрах</h3><p class=\"text-xs text-content-muted leading-relaxed\">Внесение акта в ЕИС нотариата и отправка сведений в ведомственные реестры (ФНС, Росреестр).</p></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

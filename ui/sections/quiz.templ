@@ -3,7 +3,6 @@ package sections
 import (
 	"encoding/json"
 	"fmt"
-	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components/base"
 
@@ -19,37 +18,35 @@ func quizPayloadJSON(p models.QuizPayload) string {
 }
 
 templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
-	<section id="quiz" class="py-16 px-4 max-w-4xl mx-auto" data-reveal>
-		<div class="text-center mb-8">
-			@base.Badge(base.BadgeProps{
-				Variant: base.BadgeAccent,
-				Class:   "mb-3 uppercase tracking-wider",
-			}) {
-				if payload.Badge != "" {
-					{ payload.Badge }
-				} else {
-					{ i18n.T(ctx, "quiz.badge") }
-				}
-			}
-			<h2 class="section-title">
+	<!-- Hallmark Architectural Calculator / Quiz (Strict Aesthetic Mode) -->
+	<section
+		id="quiz"
+		data-component="hallmark-quiz"
+		data-source="ui/sections/quiz.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 max-w-4xl mx-auto border-b border-content/10"
+		data-reveal
+	>
+		<!-- Заголовок секции (Floor 54: без плашек) -->
+		<div class="mb-10 text-left">
+			<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
 				if payload.Title != "" {
 					{ payload.Title }
 				} else {
-					"Онлайн-калькулятор стоимости"
+					Расчёт нотариального тарифа и сопутствующих услуг
 				}
 			</h2>
-			<p class="section-subtitle">
+			<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
 				if payload.Subtitle != "" {
 					{ payload.Subtitle }
 				} else {
-					"Ответьте на 3 простых вопроса и получите предварительный расчет стоимости с персональной скидкой"
+					Выберите параметры нотариального действия для расчёта предварительного размера государственной пошлины и правовой работы.
 				}
 			</p>
 		</div>
 
 		<div
 			id="quiz-form-container"
-			class="bg-surface border border-content/10 rounded-card p-6 sm:p-10 shadow-xl relative overflow-hidden"
+			class="bg-surface border border-content/10 p-6 sm:p-10 relative overflow-hidden"
 			x-data={ fmt.Sprintf(`{
 				step: 0,
 				totalSteps: %d,
@@ -57,7 +54,7 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 				currency: '%s',
 				selectedOptions: {},
 				totalPrice: %f,
-				preferredContact: 'whatsapp',
+				preferredContact: 'phone',
 				calcPrice() {
 					let p = this.basePrice;
 					for (let s in this.selectedOptions) {
@@ -97,23 +94,23 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 				}
 			}`, len(payload.Steps), payload.BasePrice, payload.Currency, payload.BasePrice) }
 		>
-			<!-- Верхний индикатор шагов и суммы -->
+			<!-- Индикатор шагов и суммы (Floor 67: sentence-case) -->
 			<div class="mb-8 pb-6 border-b border-content/10 flex flex-wrap items-center justify-between gap-4">
 				<div class="flex items-center gap-3">
 					<div class="flex items-center gap-1.5">
 						<template x-for="i in totalSteps + 1" :key="i">
 							<div
-								class="h-2 rounded-full transition-all duration-300"
-								:class="i - 1 <= step ? 'w-8 bg-accent' : 'w-2.5 bg-content/15'"
+								class="h-1.5 transition-all duration-300"
+								:class="i - 1 <= step ? 'w-8 bg-accent' : 'w-2 bg-content/15'"
 							></div>
 						</template>
 					</div>
-					<span class="text-xs font-semibold text-content-muted" x-text="'Шаг ' + (step + 1) + ' из ' + (totalSteps + 1)"></span>
+					<span class="text-xs text-content-muted" x-text="'Шаг ' + (step + 1) + ' из ' + (totalSteps + 1)"></span>
 				</div>
 
-				<div class="flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-2xl border border-accent/20">
+				<div class="flex items-center gap-2 py-1 px-3 border border-content/15 bg-surface-muted">
 					<span class="text-xs text-content-muted">Предварительно:</span>
-					<span class="text-base font-bold text-accent" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></span>
+					<span class="text-sm font-bold text-content" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></span>
 				</div>
 			</div>
 
@@ -122,36 +119,36 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 				<div
 					x-show={ fmt.Sprintf("step === %d", stepIdx) }
 					x-transition:enter="transition ease-out duration-200"
-					x-transition:enter-start="opacity-0 translate-y-2"
-					x-transition:enter-end="opacity-100 translate-y-0"
+					x-transition:enter-start="opacity-0"
+					x-transition:enter-end="opacity-100"
 					class="space-y-6"
 				>
 					<div>
-						<h3 class="text-xl sm:text-2xl font-bold text-content mb-1">{ s.Question }</h3>
+						<h3 class="text-lg sm:text-xl font-bold text-content mb-1">{ s.Question }</h3>
 						if s.Subtitle != "" {
-							<p class="text-sm text-content-muted">{ s.Subtitle }</p>
+							<p class="text-xs sm:text-sm text-content-muted">{ s.Subtitle }</p>
 						}
 					</div>
 
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+					<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
 						for _, opt := range s.Options {
 							<button
 								type="button"
 								x-on:click={ fmt.Sprintf("selectRadio(%d, '%s', '%s', %f)", stepIdx, opt.ID, opt.Title, opt.PriceModifier) }
-								:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-accent/5 ring-2 ring-accent/30' : 'border-content/10 hover:border-accent/40 bg-surface'", stepIdx, opt.ID) }
-								class="text-left p-4 rounded-card-sm border transition-all duration-200 flex items-start gap-4 cursor-pointer group"
+								:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-surface-muted text-content font-bold' : 'border-content/15 bg-surface text-content hover:border-content/30'", stepIdx, opt.ID) }
+								class="text-left p-4 border transition flex items-start gap-3 cursor-pointer"
 							>
 								<div
-									:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'bg-accent text-primary-dark border-accent' : 'border-content/30 group-hover:border-accent'", stepIdx, opt.ID) }
-									class="w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+									:class={ fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-accent' : 'border-content/30'", stepIdx, opt.ID) }
+									class="w-4 h-4 border flex items-center justify-center shrink-0 mt-0.5"
 								>
-									<span class="w-2 h-2 rounded-full bg-current"></span>
+									<span class="w-1.5 h-1.5 bg-white"></span>
 								</div>
 								<div class="flex-1">
-									<div class="font-bold text-content text-sm sm:text-base group-hover:text-accent transition-colors flex items-center justify-between">
+									<div class="text-xs sm:text-sm font-semibold flex items-center justify-between">
 										<span>{ opt.Title }</span>
 										if opt.PriceModifier > 0 {
-											<span class="text-xs font-semibold text-accent ml-2">+{ fmt.Sprintf("%.0f", opt.PriceModifier) } { payload.Currency }</span>
+											<span class="text-xs font-mono text-accent ml-2">+{ fmt.Sprintf("%.0f", opt.PriceModifier) } { payload.Currency }</span>
 										}
 									</div>
 									if opt.Description != "" {
@@ -162,15 +159,16 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 						}
 					</div>
 
-					<div class="pt-6 flex items-center justify-between">
+					<!-- Навигация (Floor 63: чистые глаголы без стрелок) -->
+					<div class="pt-6 flex items-center justify-between border-t border-content/10">
 						<div>
 							if stepIdx > 0 {
 								<button
 									type="button"
 									x-on:click="step--"
-									class="px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition"
+									class="px-4 py-2 border border-content/15 text-content-muted hover:text-content text-xs font-medium transition cursor-pointer"
 								>
-									← Назад
+									Назад
 								</button>
 							}
 						</div>
@@ -178,11 +176,10 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 							type="button"
 							x-on:click={ fmt.Sprintf("if (canProceed(%d)) { step++; }", stepIdx) }
 							:disabled={ fmt.Sprintf("!canProceed(%d)", stepIdx) }
-							:class={ fmt.Sprintf("canProceed(%d) ? 'bg-accent text-primary-dark hover:brightness-105 shadow-md' : 'bg-content/10 text-content-muted cursor-not-allowed'", stepIdx) }
-							class="px-6 py-2.5 rounded-btn text-sm font-bold transition flex items-center gap-2"
+							:class={ fmt.Sprintf("canProceed(%d) ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer' : 'bg-content/10 text-content-muted cursor-not-allowed'", stepIdx) }
+							class="px-5 py-2 text-xs font-medium transition"
 						>
-							<span>Далее</span>
-							@icons.ArrowRight(templ.Attributes{"class": "w-4 h-4"})
+							Далее
 						</button>
 					</div>
 				</div>
@@ -192,8 +189,8 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 			<div
 				x-show={ fmt.Sprintf("step === %d", len(payload.Steps)) }
 				x-transition:enter="transition ease-out duration-200"
-				x-transition:enter-start="opacity-0 translate-y-2"
-				x-transition:enter-end="opacity-100 translate-y-0"
+				x-transition:enter-start="opacity-0"
+				x-transition:enter-end="opacity-100"
 			>
 				<form
 					hx-post="/api/leads"
@@ -202,68 +199,54 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 					class="space-y-6"
 				>
 					<div>
-						<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold mb-2">
-							@icons.CheckCircle2(templ.Attributes{"class": "w-3.5 h-3.5"})
-							<span>Расчет сформирован!</span>
-						</div>
-						<h3 class="text-2xl font-bold text-content">Куда отправить расчет и промокод?</h3>
-						<p class="text-sm text-content-muted mt-1">
+						<h3 class="text-xl font-bold text-content">Получение расчёта тарифа</h3>
+						<p class="text-xs text-content-muted mt-1">
 							if payload.BonusText != "" {
 								{ payload.BonusText }
 							} else {
-								"Мы зафиксируем за вашим номером скидку 10% и отправим готовую смету в течение 5 минут."
+								Укажите телефон для отправки предварительной сметы и резервирования времени приёма.
 							}
 						</p>
 					</div>
 
-					<!-- Итог расчета плашка -->
-					<div class="p-4 rounded-card-sm bg-accent/10 border border-accent/20 flex items-center justify-between">
-						<div>
-							<div class="text-xs text-content-muted">Итоговая расчетная стоимость:</div>
-							<div class="text-xl sm:text-2xl font-bold text-accent" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></div>
-						</div>
-						<div class="text-right">
-							<span class="inline-block px-2.5 py-1 rounded-btn bg-accent text-primary-dark font-bold text-xs shadow-sm">
-								Скидка -10% включена
-							</span>
-						</div>
+					<div class="p-4 bg-surface-muted border border-content/10 flex items-center justify-between text-xs">
+						<span class="text-content-muted">Расчётный тариф нотариального действия:</span>
+						<span class="text-base font-bold text-content" x-text="totalPrice.toLocaleString('ru-RU') + ' ' + currency"></span>
 					</div>
 
-					<!-- Скрытые поля -->
 					<input type="hidden" name="source" value="quiz_calculator"/>
-					<input type="hidden" name="action_type" value="Расчет стоимости из онлайн-квиза"/>
-					<input type="hidden" name="comment" :value="'Предварительный расчет: ' + totalPrice + ' ' + currency"/>
-					<input type="hidden" name="company_website_url" value=""/> <!-- Honeypot -->
+					<input type="hidden" name="action_type" value="Расчёт стоимости из онлайн-калькулятора"/>
+					<input type="hidden" name="comment" :value="'Предварительный расчёт: ' + totalPrice + ' ' + currency"/>
+					<input type="hidden" name="company_website_url" value=""/>
 					<input type="hidden" name="consent" value="on"/>
 					<input type="hidden" name="quiz_payload" :value="getSummaryPayload()"/>
 
-					<!-- Канал связи -->
 					<div>
-						<label class="form-label mb-2">Куда прислать расчет?</label>
+						<label class="form-label text-xs font-medium text-content mb-2">Способ связи</label>
 						<div class="grid grid-cols-3 gap-3">
 							<button
 								type="button"
 								x-on:click="preferredContact = 'whatsapp'"
-								:class="preferredContact === 'whatsapp' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
-								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+								:class="preferredContact === 'whatsapp' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
 							>
-								@icons.MessageSquare(templ.Attributes{"class": "w-4 h-4 text-emerald-500"})
+								@icons.MessageSquare(templ.Attributes{"class": "w-4 h-4 text-accent"})
 								<span>WhatsApp</span>
 							</button>
 							<button
 								type="button"
 								x-on:click="preferredContact = 'telegram'"
-								:class="preferredContact === 'telegram' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
-								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+								:class="preferredContact === 'telegram' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
 							>
-								@icons.Send(templ.Attributes{"class": "w-4 h-4 text-sky-500"})
+								@icons.Send(templ.Attributes{"class": "w-4 h-4 text-accent"})
 								<span>Telegram</span>
 							</button>
 							<button
 								type="button"
 								x-on:click="preferredContact = 'phone'"
-								:class="preferredContact === 'phone' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'"
-								class="py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition"
+								:class="preferredContact === 'phone' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'"
+								class="py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
 							>
 								@icons.Phone(templ.Attributes{"class": "w-4 h-4 text-accent"})
 								<span>Звонок</span>
@@ -273,44 +256,42 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<div>
-							<label class="form-label mb-1.5">Ваше имя</label>
+							<label class="form-label text-xs font-medium text-content mb-1">Ваше имя</label>
 							<input
 								type="text"
 								name="name"
 								required
-								placeholder="Иван"
-								class="form-input"
+								placeholder="Иван Петров"
+								class="form-input text-xs"
 							/>
 						</div>
 						<div>
-							<label class="form-label mb-1.5">Телефон для связи</label>
+							<label class="form-label text-xs font-medium text-content mb-1">Телефон для связи</label>
 							<input
 								type="tel"
 								name="phone"
 								required
-								x-mask="+7 (999) 999-99-99"
 								placeholder="+7 (___) ___-__-__"
-								class="form-input"
+								class="form-input text-xs font-mono"
 							/>
 						</div>
 					</div>
 
-					<div class="pt-4 flex items-center justify-between gap-4">
+					<div class="pt-4 flex items-center justify-between gap-4 border-t border-content/10">
 						<button
 							type="button"
 							x-on:click="step--"
-							class="px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition"
+							class="px-4 py-2 border border-content/15 text-content-muted hover:text-content text-xs font-medium transition cursor-pointer"
 						>
-							← Назад
+							Назад
 						</button>
 						@base.Button(base.ButtonProps{
 							Variant: base.BtnAccent,
-							Size:    base.BtnSizeLg,
+							Size:    base.BtnSizeDefault,
 							Type:    "submit",
-							Class:   "text-primary-dark font-bold px-8 shadow-lg flex items-center gap-2",
+							Class:   "font-medium",
 						}) {
-							@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
-							<span>Получить расчет и скидку</span>
+							<span>Получить предварительный расчёт</span>
 						}
 					</div>
 				</form>

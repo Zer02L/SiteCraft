@@ -26,77 +26,68 @@ func parsePriceNumber(raw string) float64 {
 }
 
 templ Services(services []models.ServiceItem, settings models.SiteSettings) {
-	<!-- Services Section -->
-	<section id="services" class="py-16 px-4 max-w-6xl mx-auto">
-		<div class="text-center mb-12" data-reveal>
-			@base.Badge(base.BadgeProps{
-				Variant: base.BadgeAccent,
-				Class:   "mb-3 uppercase tracking-wider text-xs px-3 py-1",
-			}) {
-				{ i18n.T(ctx, "services.badge") }
-			}
-			<h2 class="section-title">{ i18n.T(ctx, "services.title") }</h2>
-			<p class="section-subtitle">{ i18n.T(ctx, "services.subtitle") }</p>
+	<!-- Hallmark Architectural Services Registry (Strict Aesthetic Mode) -->
+	<section
+		id="services"
+		data-component="hallmark-services"
+		data-source="ui/sections/services.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 max-w-6xl mx-auto border-b border-content/10"
+	>
+		<!-- Заголовок секции (Floor 54: без плашек) -->
+		<div class="mb-12 text-left" data-reveal>
+			<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
+				{ i18n.T(ctx, "services.title") }
+			</h2>
+			<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
+				{ i18n.T(ctx, "services.subtitle") }
+			</p>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+		<!-- Архитектурный реестр услуг (Hallmark 05-rows: divide-y с тонкими hairlines) -->
+		<div class="divide-y divide-content/10 border-t border-b border-content/10">
 			for idx, s := range services {
-				@base.Card(base.CardProps{
-					Variant: base.CardInteractive,
-					Class:   "flex flex-col justify-between hover:scale-[1.01]",
-					Attrs: templ.Attributes{
-						"data-reveal":       "",
-						"data-reveal-delay": fmt.Sprintf("%d", ((idx % 3) + 1) * 100),
-					},
-				}) {
-					<div>
-						<div class="flex items-center justify-between mb-3">
-							<div class="w-8 h-8 rounded-lg bg-accent/15 text-accent flex items-center justify-center">
-								@icons.Sparkles(templ.Attributes{"class": "w-4 h-4"})
-							</div>
-							if s.StockCount == 0 || s.IsPreorder {
-								<span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 font-bold">Под заказ</span>
-							} else if s.StockCount > 0 && s.StockCount <= 5 {
-								<span class="px-2 py-0.5 rounded-full text-[10px] bg-rose-500/10 text-rose-500 border border-rose-500/20 font-bold">Осталось { fmt.Sprintf("%d", s.StockCount) } шт</span>
-							}
+				<div
+					data-reveal
+					data-reveal-delay={ fmt.Sprintf("%d", ((idx % 3) + 1) * 80) }
+					class="py-6 sm:py-8 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:bg-surface-muted/40 transition-colors px-2 -mx-2"
+				>
+					<div class="space-y-2 lg:max-w-2xl">
+						<div class="flex items-center gap-3">
+							<span class="text-xs font-mono text-content-muted">{ fmt.Sprintf("%02d", idx+1) }</span>
+							<h3 class="text-base sm:text-lg font-bold text-content">{ s.Title }</h3>
 						</div>
-						@base.CardTitle("mb-2") {
-							{ s.Title }
-						}
-						@base.CardDescription("mb-4") {
-							{ s.Description }
+						if s.Description != "" {
+							<p class="text-xs sm:text-sm text-content-muted leading-relaxed pl-7">{ s.Description }</p>
 						}
 					</div>
-					<div class="pt-4 border-t border-content/10 flex items-center justify-between">
-						<div>
-							<span class="text-xs text-content-muted block">{ i18n.T(ctx, "services.cost_label") }</span>
-							<span class="font-bold text-accent text-sm">{ s.Price }</span>
+
+					<div class="flex items-center justify-between lg:justify-end gap-6 pl-7 lg:pl-0 shrink-0">
+						<div class="text-left lg:text-right">
+							<span class="text-[11px] text-content-muted block">{ i18n.T(ctx, "services.cost_label") }</span>
+							<span class="text-sm sm:text-base font-bold text-content">{ s.Price }</span>
 						</div>
-						<div class="flex items-center gap-2">
+
+						<div class="flex items-center gap-3">
 							if settings.EnableCart {
 								@base.Button(base.ButtonProps{
 									Variant: base.BtnAccent,
 									Size:    base.BtnSizeSm,
-									Class:   "gap-1 font-bold",
+									Class:   "font-medium gap-1.5",
 									Attrs: templ.Attributes{
 										"type":        "button",
 										"x-on:click":  fmt.Sprintf("$store.cart.add({ id: '%s', title: '%s', price: %f, price_str: '%s' })", s.ID, s.Title, parsePriceNumber(s.Price), s.Price),
-										"title":       "Добавить в корзину",
+										"title":       "Выбрать услугу",
 									},
 								}) {
 									@icons.Plus(templ.Attributes{"class": "w-3.5 h-3.5"})
-									if s.StockCount == 0 || s.IsPreorder {
-										<span>Предзаказ</span>
-									} else {
-										<span>В корзину</span>
-									}
+									<span>Выбрать</span>
 								}
 							}
 							if settings.EnablePayment {
 								@base.Button(base.ButtonProps{
-									Variant: base.BtnSecondary,
+									Variant: base.BtnOutline,
 									Size:    base.BtnSizeSm,
-									Class:   "gap-1 font-semibold",
+									Class:   "font-medium",
 									Attrs: templ.Attributes{
 										"hx-get":    "/api/payment/modal?service_id=" + s.ID,
 										"hx-target": "#payment-modal-container",
@@ -104,15 +95,14 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 									},
 								}) {
 									@icons.CreditCard(templ.Attributes{"class": "w-3.5 h-3.5 mr-1"})
-									{ i18n.T(ctx, "services.pay_online") }
+									<span>Оплатить</span>
 								}
 							}
 						</div>
 					</div>
-				}
+				</div>
 			}
 		</div>
 		<div id="payment-modal-container"></div>
 	</section>
 }
-

@@ -12,7 +12,6 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"encoding/json"
 	"fmt"
-	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
 	"sitecraft/ui/components/base"
 
@@ -44,105 +43,59 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<section id=\"quiz\" class=\"py-16 px-4 max-w-4xl mx-auto\" data-reveal><div class=\"text-center mb-8\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			if payload.Badge != "" {
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Badge)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 29, Col: 20}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			} else {
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "quiz.badge"))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 31, Col: 32}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
-			Variant: base.BadgeAccent,
-			Class:   "mb-3 uppercase tracking-wider",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<h2 class=\"section-title\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hallmark Architectural Calculator / Quiz (Strict Aesthetic Mode) --><section id=\"quiz\" data-component=\"hallmark-quiz\" data-source=\"ui/sections/quiz.templ\" class=\"py-16 md:py-20 px-6 sm:px-10 max-w-4xl mx-auto border-b border-content/10\" data-reveal><!-- Заголовок секции (Floor 54: без плашек) --><div class=\"mb-10 text-left\"><h2 class=\"text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if payload.Title != "" {
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 36, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 33, Col: 20}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"Онлайн-калькулятор стоимости\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Расчёт нотариального тарифа и сопутствующих услуг")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h2><p class=\"section-subtitle\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</h2><p class=\"text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if payload.Subtitle != "" {
-			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Subtitle)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 43, Col: 23}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 40, Col: 23}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"Ответьте на 3 простых вопроса и получите предварительный расчет стоимости с персональной скидкой\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "Выберите параметры нотариального действия для расчёта предварительного размера государственной пошлины и правовой работы.")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</p></div><div id=\"quiz-form-container\" class=\"bg-surface border border-content/10 rounded-card p-6 sm:p-10 shadow-xl relative overflow-hidden\" x-data=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div><div id=\"quiz-form-container\" class=\"bg-surface border border-content/10 p-6 sm:p-10 relative overflow-hidden\" x-data=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf(`{
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf(`{
 				step: 0,
 				totalSteps: %d,
 				basePrice: %f,
 				currency: '%s',
 				selectedOptions: {},
 				totalPrice: %f,
-				preferredContact: 'whatsapp',
+				preferredContact: 'phone',
 				calcPrice() {
 					let p = this.basePrice;
 					for (let s in this.selectedOptions) {
@@ -182,307 +135,291 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 				}
 			}`, len(payload.Steps), payload.BasePrice, payload.Currency, payload.BasePrice)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 98, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 95, Col: 82}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\"><!-- Верхний индикатор шагов и суммы --><div class=\"mb-8 pb-6 border-b border-content/10 flex flex-wrap items-center justify-between gap-4\"><div class=\"flex items-center gap-3\"><div class=\"flex items-center gap-1.5\"><template x-for=\"i in totalSteps + 1\" :key=\"i\"><div class=\"h-2 rounded-full transition-all duration-300\" :class=\"i - 1 <= step ? 'w-8 bg-accent' : 'w-2.5 bg-content/15'\"></div></template></div><span class=\"text-xs font-semibold text-content-muted\" x-text=\"'Шаг ' + (step + 1) + ' из ' + (totalSteps + 1)\"></span></div><div class=\"flex items-center gap-2 bg-accent/10 px-4 py-2 rounded-2xl border border-accent/20\"><span class=\"text-xs text-content-muted\">Предварительно:</span> <span class=\"text-base font-bold text-accent\" x-text=\"totalPrice.toLocaleString('ru-RU') + ' ' + currency\"></span></div></div><!-- Шаги квиза -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\"><!-- Индикатор шагов и суммы (Floor 67: sentence-case) --><div class=\"mb-8 pb-6 border-b border-content/10 flex flex-wrap items-center justify-between gap-4\"><div class=\"flex items-center gap-3\"><div class=\"flex items-center gap-1.5\"><template x-for=\"i in totalSteps + 1\" :key=\"i\"><div class=\"h-1.5 transition-all duration-300\" :class=\"i - 1 <= step ? 'w-8 bg-accent' : 'w-2 bg-content/15'\"></div></template></div><span class=\"text-xs text-content-muted\" x-text=\"'Шаг ' + (step + 1) + ' из ' + (totalSteps + 1)\"></span></div><div class=\"flex items-center gap-2 py-1 px-3 border border-content/15 bg-surface-muted\"><span class=\"text-xs text-content-muted\">Предварительно:</span> <span class=\"text-sm font-bold text-content\" x-text=\"totalPrice.toLocaleString('ru-RU') + ' ' + currency\"></span></div></div><!-- Шаги квиза -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for stepIdx, s := range payload.Steps {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<div x-show=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div x-show=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("step === %d", stepIdx)).Resolve(ctx)
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("step === %d", stepIdx)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 123, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 120, Col: 49}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" class=\"space-y-6\"><div><h3 class=\"text-xl sm:text-2xl font-bold text-content mb-1\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(s.Question)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 130, Col: 78}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" class=\"space-y-6\"><div><h3 class=\"text-lg sm:text-xl font-bold text-content mb-1\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</h3>")
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(s.Question)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 127, Col: 77}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</h3>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if s.Subtitle != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p class=\"text-sm text-content-muted\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<p class=\"text-xs sm:text-sm text-content-muted\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(s.Subtitle)
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(s.Subtitle)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 132, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 129, Col: 68}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</p>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</p>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-3\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, opt := range s.Options {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<button type=\"button\" x-on:click=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<button type=\"button\" x-on:click=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectRadio(%d, '%s', '%s', %f)", stepIdx, opt.ID, opt.Title, opt.PriceModifier)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 137, Col: 114}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" :class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var9 string
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-surface-muted text-content font-bold' : 'border-content/15 bg-surface text-content hover:border-content/30'", stepIdx, opt.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 138, Col: 202}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" class=\"text-left p-4 border transition flex items-start gap-3 cursor-pointer\"><div :class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var10 string
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-accent' : 'border-content/30'", stepIdx, opt.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 142, Col: 125}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" class=\"w-4 h-4 border flex items-center justify-center shrink-0 mt-0.5\"><span class=\"w-1.5 h-1.5 bg-white\"></span></div><div class=\"flex-1\"><div class=\"text-xs sm:text-sm font-semibold flex items-center justify-between\"><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectRadio(%d, '%s', '%s', %f)", stepIdx, opt.ID, opt.Title, opt.PriceModifier)).Resolve(ctx)
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(opt.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 140, Col: 114}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 149, Col: 27}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" :class=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("isRadioSelected(%d, '%s') ? 'border-accent bg-accent/5 ring-2 ring-accent/30' : 'border-content/10 hover:border-accent/40 bg-surface'", stepIdx, opt.ID)).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 141, Col: 182}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" class=\"text-left p-4 rounded-card-sm border transition-all duration-200 flex items-start gap-4 cursor-pointer group\"><div :class=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("isRadioSelected(%d, '%s') ? 'bg-accent text-primary-dark border-accent' : 'border-content/30 group-hover:border-accent'", stepIdx, opt.ID)).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 145, Col: 169}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" class=\"w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors\"><span class=\"w-2 h-2 rounded-full bg-current\"></span></div><div class=\"flex-1\"><div class=\"font-bold text-content text-sm sm:text-base group-hover:text-accent transition-colors flex items-center justify-between\"><span>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(opt.Title)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 152, Col: 27}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</span> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if opt.PriceModifier > 0 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<span class=\"text-xs font-semibold text-accent ml-2\">+")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span class=\"text-xs font-mono text-accent ml-2\">+")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					var templ_7745c5c3_Var15 string
-					templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", opt.PriceModifier))
+					var templ_7745c5c3_Var12 string
+					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", opt.PriceModifier))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 154, Col: 105}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 151, Col: 101}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					var templ_7745c5c3_Var16 string
-					templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Currency)
-					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 154, Col: 126}
-					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, " ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</span>")
+					var templ_7745c5c3_Var13 string
+					templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(payload.Currency)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 151, Col: 122}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if opt.Description != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<p class=\"text-xs text-content-muted mt-1 leading-relaxed\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<p class=\"text-xs text-content-muted mt-1 leading-relaxed\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					var templ_7745c5c3_Var17 string
-					templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(opt.Description)
+					var templ_7745c5c3_Var14 string
+					templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(opt.Description)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 158, Col: 86}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 155, Col: 86}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</p>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</p>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div></button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div></button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"pt-6 flex items-center justify-between\"><div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</div><!-- Навигация (Floor 63: чистые глаголы без стрелок) --><div class=\"pt-6 flex items-center justify-between border-t border-content/10\"><div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if stepIdx > 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<button type=\"button\" x-on:click=\"step--\" class=\"px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition\">← Назад</button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<button type=\"button\" x-on:click=\"step--\" class=\"px-4 py-2 border border-content/15 text-content-muted hover:text-content text-xs font-medium transition cursor-pointer\">Назад</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</div><button type=\"button\" x-on:click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><button type=\"button\" x-on:click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var18 string
-			templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("if (canProceed(%d)) { step++; }", stepIdx)).Resolve(ctx)
+			var templ_7745c5c3_Var15 string
+			templ_7745c5c3_Var15, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("if (canProceed(%d)) { step++; }", stepIdx)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 179, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 177, Col: 75}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" :disabled=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var19 string
-			templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("!canProceed(%d)", stepIdx)).Resolve(ctx)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 180, Col: 58}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" :disabled=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" :class=\"")
+			var templ_7745c5c3_Var16 string
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("!canProceed(%d)", stepIdx)).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 178, Col: 58}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var20 string
-			templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("canProceed(%d) ? 'bg-accent text-primary-dark hover:brightness-105 shadow-md' : 'bg-content/10 text-content-muted cursor-not-allowed'", stepIdx)).Resolve(ctx)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 181, Col: 173}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" :class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" class=\"px-6 py-2.5 rounded-btn text-sm font-bold transition flex items-center gap-2\"><span>Далее</span>")
+			var templ_7745c5c3_Var17 string
+			templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("canProceed(%d) ? 'bg-primary text-white hover:bg-primary-dark cursor-pointer' : 'bg-content/10 text-content-muted cursor-not-allowed'", stepIdx)).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 179, Col: 173}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = icons.ArrowRight(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</button></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" class=\"px-5 py-2 text-xs font-medium transition\">Далее</button></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<!-- Финальный шаг: Контактные данные --><div x-show=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<!-- Финальный шаг: Контактные данные --><div x-show=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("step === %d", len(payload.Steps))).Resolve(ctx)
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("step === %d", len(payload.Steps))).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 193, Col: 59}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 190, Col: 59}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\"><form hx-post=\"/api/leads\" hx-target=\"#quiz-form-container\" hx-swap=\"innerHTML transition:true\" class=\"space-y-6\"><div><div class=\"inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-xs font-bold mb-2\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.CheckCircle2(templ.Attributes{"class": "w-3.5 h-3.5"}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<span>Расчет сформирован!</span></div><h3 class=\"text-2xl font-bold text-content\">Куда отправить расчет и промокод?</h3><p class=\"text-sm text-content-muted mt-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\"><form hx-post=\"/api/leads\" hx-target=\"#quiz-form-container\" hx-swap=\"innerHTML transition:true\" class=\"space-y-6\"><div><h3 class=\"text-xl font-bold text-content\">Получение расчёта тарифа</h3><p class=\"text-xs text-content-muted mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if payload.BonusText != "" {
-			var templ_7745c5c3_Var22 string
-			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(payload.BonusText)
+			var templ_7745c5c3_Var19 string
+			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(payload.BonusText)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 212, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/quiz.templ`, Line: 205, Col: 27}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\"Мы зафиксируем за вашим номером скидку 10% и отправим готовую смету в течение 5 минут.\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "Укажите телефон для отправки предварительной сметы и резервирования времени приёма.")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</p></div><!-- Итог расчета плашка --><div class=\"p-4 rounded-card-sm bg-accent/10 border border-accent/20 flex items-center justify-between\"><div><div class=\"text-xs text-content-muted\">Итоговая расчетная стоимость:</div><div class=\"text-xl sm:text-2xl font-bold text-accent\" x-text=\"totalPrice.toLocaleString('ru-RU') + ' ' + currency\"></div></div><div class=\"text-right\"><span class=\"inline-block px-2.5 py-1 rounded-btn bg-accent text-primary-dark font-bold text-xs shadow-sm\">Скидка -10% включена</span></div></div><!-- Скрытые поля --><input type=\"hidden\" name=\"source\" value=\"quiz_calculator\"> <input type=\"hidden\" name=\"action_type\" value=\"Расчет стоимости из онлайн-квиза\"> <input type=\"hidden\" name=\"comment\" :value=\"'Предварительный расчет: ' + totalPrice + ' ' + currency\"> <input type=\"hidden\" name=\"company_website_url\" value=\"\"><!-- Honeypot --><input type=\"hidden\" name=\"consent\" value=\"on\"> <input type=\"hidden\" name=\"quiz_payload\" :value=\"getSummaryPayload()\"><!-- Канал связи --><div><label class=\"form-label mb-2\">Куда прислать расчет?</label><div class=\"grid grid-cols-3 gap-3\"><button type=\"button\" x-on:click=\"preferredContact = 'whatsapp'\" :class=\"preferredContact === 'whatsapp' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</p></div><div class=\"p-4 bg-surface-muted border border-content/10 flex items-center justify-between text-xs\"><span class=\"text-content-muted\">Расчётный тариф нотариального действия:</span> <span class=\"text-base font-bold text-content\" x-text=\"totalPrice.toLocaleString('ru-RU') + ' ' + currency\"></span></div><input type=\"hidden\" name=\"source\" value=\"quiz_calculator\"> <input type=\"hidden\" name=\"action_type\" value=\"Расчёт стоимости из онлайн-калькулятора\"> <input type=\"hidden\" name=\"comment\" :value=\"'Предварительный расчёт: ' + totalPrice + ' ' + currency\"> <input type=\"hidden\" name=\"company_website_url\" value=\"\"> <input type=\"hidden\" name=\"consent\" value=\"on\"> <input type=\"hidden\" name=\"quiz_payload\" :value=\"getSummaryPayload()\"><div><label class=\"form-label text-xs font-medium text-content mb-2\">Способ связи</label><div class=\"grid grid-cols-3 gap-3\"><button type=\"button\" x-on:click=\"preferredContact = 'whatsapp'\" :class=\"preferredContact === 'whatsapp' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.MessageSquare(templ.Attributes{"class": "w-4 h-4 text-emerald-500"}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = icons.MessageSquare(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span>WhatsApp</span></button> <button type=\"button\" x-on:click=\"preferredContact = 'telegram'\" :class=\"preferredContact === 'telegram' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<span>WhatsApp</span></button> <button type=\"button\" x-on:click=\"preferredContact = 'telegram'\" :class=\"preferredContact === 'telegram' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.Send(templ.Attributes{"class": "w-4 h-4 text-sky-500"}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = icons.Send(templ.Attributes{"class": "w-4 h-4 text-accent"}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span>Telegram</span></button> <button type=\"button\" x-on:click=\"preferredContact = 'phone'\" :class=\"preferredContact === 'phone' ? 'border-accent bg-accent/10 font-bold text-accent' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 rounded-btn border text-xs sm:text-sm flex items-center justify-center gap-1.5 transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<span>Telegram</span></button> <button type=\"button\" x-on:click=\"preferredContact = 'phone'\" :class=\"preferredContact === 'phone' ? 'border-accent bg-surface-muted font-bold text-content' : 'border-content/10 text-content-muted'\" class=\"py-2.5 px-3 border text-xs flex items-center justify-center gap-1.5 transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -490,11 +427,11 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<span>Звонок</span></button></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"form-label mb-1.5\">Ваше имя</label> <input type=\"text\" name=\"name\" required placeholder=\"Иван\" class=\"form-input\"></div><div><label class=\"form-label mb-1.5\">Телефон для связи</label> <input type=\"tel\" name=\"phone\" required x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (___) ___-__-__\" class=\"form-input\"></div></div><div class=\"pt-4 flex items-center justify-between gap-4\"><button type=\"button\" x-on:click=\"step--\" class=\"px-5 py-2.5 rounded-btn border border-content/15 text-content-muted hover:text-content text-sm font-semibold transition\">← Назад</button>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span>Звонок</span></button></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"form-label text-xs font-medium text-content mb-1\">Ваше имя</label> <input type=\"text\" name=\"name\" required placeholder=\"Иван Петров\" class=\"form-input text-xs\"></div><div><label class=\"form-label text-xs font-medium text-content mb-1\">Телефон для связи</label> <input type=\"tel\" name=\"phone\" required placeholder=\"+7 (___) ___-__-__\" class=\"form-input text-xs font-mono\"></div></div><div class=\"pt-4 flex items-center justify-between gap-4 border-t border-content/10\"><button type=\"button\" x-on:click=\"step--\" class=\"px-4 py-2 border border-content/15 text-content-muted hover:text-content text-xs font-medium transition cursor-pointer\">Назад</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var23 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var20 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -506,11 +443,7 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = icons.Sparkles(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<span>Получить расчет и скидку</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span>Получить предварительный расчёт</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -518,14 +451,14 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 		})
 		templ_7745c5c3_Err = base.Button(base.ButtonProps{
 			Variant: base.BtnAccent,
-			Size:    base.BtnSizeLg,
+			Size:    base.BtnSizeDefault,
 			Type:    "submit",
-			Class:   "text-primary-dark font-bold px-8 shadow-lg flex items-center gap-2",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var23), templ_7745c5c3_Buffer)
+			Class:   "font-medium",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></form></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div></form></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

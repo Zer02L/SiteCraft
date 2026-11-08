@@ -3,187 +3,139 @@ package sections
 import (
 	"fmt"
 	"sitecraft/internal/models"
-	"sitecraft/ui/components/base"
 
 	icons "sitecraft/ui/components/icons"
 )
 
 templ Features(theme string, payload *models.FeaturesPayload) {
-	<!-- Structural section: Advantages / Why Choose Us (Data-driven or Theme fallback) -->
-	<section id="features" class="py-16 px-4 max-w-6xl mx-auto">
+	<!-- Hallmark Architectural Features / Standards (Strict Aesthetic Mode) -->
+	<section
+		id="features"
+		data-component="hallmark-features"
+		data-source="ui/sections/features.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 max-w-6xl mx-auto border-b border-content/10"
+	>
 		if payload != nil && len(payload.Items) > 0 {
-			<!-- Режим 1: Полностью Data-Driven из JSON Payload -->
-			<div class="text-center mb-12" data-reveal>
-				if payload.Badge != "" {
-					@base.Badge(base.BadgeProps{
-						Variant: base.BadgeAccent,
-						Class:   "mb-2 uppercase tracking-wider",
-					}) {
-						{ payload.Badge }
-					}
-				}
-				<h2 class="section-title">
+			<!-- Режим 1: Data-Driven из JSON Payload (Floor 54: без плашек над заголовком) -->
+			<div class="mb-12 text-left" data-reveal>
+				<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
 					if payload.Title != "" {
 						{ payload.Title }
 					} else {
-						Почему выбирают нас
+						Принципы и стандарты практики
 					}
 				</h2>
 				if payload.Subtitle != "" {
-					<p class="section-subtitle">{ payload.Subtitle }</p>
+					<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">{ payload.Subtitle }</p>
 				}
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
 				for idx, item := range payload.Items {
-					<div data-reveal data-reveal-delay={ fmt.Sprintf("%d", (idx%4+1)*100) } class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">
-							if item.Icon != "" {
-								{ item.Icon }
-							} else {
-								@icons.Sparkles(templ.Attributes{"class": "w-6 h-6"})
-							}
+					<div
+						data-reveal
+						data-reveal-delay={ fmt.Sprintf("%d", (idx%4+1)*100) }
+						class="p-6 bg-surface border border-content/10 transition-colors duration-200 hover:border-accent/40 flex flex-col justify-between"
+					>
+						<div>
+							<div class="w-10 h-10 bg-surface-muted border border-content/10 text-content flex items-center justify-center text-xl mb-4">
+								if item.Icon != "" {
+									{ item.Icon }
+								} else {
+									@icons.Sparkles(templ.Attributes{"class": "w-5 h-5 text-accent"})
+								}
+							</div>
+							<h3 class="font-bold text-base text-content mb-2">{ item.Title }</h3>
+							<p class="text-xs text-content-muted leading-relaxed">{ item.Description }</p>
 						</div>
-						<h3 class="card-title text-base mb-2">{ item.Title }</h3>
-						<p class="card-desc text-xs">{ item.Description }</p>
 					</div>
 				}
 			</div>
 		} else {
-			<!-- Режим 2: Встроенный fallback по темам -->
-			<div class="text-center mb-12" data-reveal>
-				@base.Badge(base.BadgeProps{
-					Variant: base.BadgeSecondary,
-					Class:   "section-badge mb-2",
-				}) {
-					Наши стандарты
-				}
-				<h2 class="section-title">Почему выбирают нас</h2>
-				<p class="section-subtitle">Гарантируем высокое качество, пунктуальность и индивидуальный подход к каждой задаче</p>
+			<!-- Режим 2: Встроенный архитектурный fallback (Floor 54 / Floor 67: без плашек и капслока) -->
+			<div class="mb-12 text-left" data-reveal>
+				<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">Принципы и стандарты работы</h2>
+				<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
+					Гарантируем законность каждого совершённого действия, предельную точность юридических формулировок и конфиденциальность сведений.
+				</p>
 			</div>
-
 
 			if theme == "medical" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🩺</div>
-						<h3 class="card-title text-base mb-2">Врачи высшей категории</h3>
-						<p class="card-desc text-xs">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p>
+					<div data-reveal data-reveal-delay="100" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">🩺</div>
+						<h3 class="font-bold text-base text-content mb-2">Врачи высшей категории</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Кандидаты наук и специалисты с опытом работы более 15 лет в ведущих центрах.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🔬</div>
-						<h3 class="card-title text-base mb-2">Собственная лаборатория</h3>
-						<p class="card-desc text-xs">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p>
+					<div data-reveal data-reveal-delay="200" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">🔬</div>
+						<h3 class="font-bold text-base text-content mb-2">Собственная лаборатория</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Срочные результаты анализов за 2 часа с отправкой в личный кабинет и на почту.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">⚡</div>
-						<h3 class="card-title text-base mb-2">Без очередей</h3>
-						<p class="card-desc text-xs">Точный приём по электронным талонам и предварительной записи минута в минуту.</p>
+					<div data-reveal data-reveal-delay="300" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">⚡</div>
+						<h3 class="font-bold text-base text-content mb-2">Приём по расписанию</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Точный приём по электронным талонам и предварительной записи без ожидания.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🛡️</div>
-						<h3 class="card-title text-base mb-2">Лицензия Минздрава</h3>
-						<p class="card-desc text-xs">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p>
+					<div data-reveal data-reveal-delay="400" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">🛡️</div>
+						<h3 class="font-bold text-base text-content mb-2">Лицензия Минздрава</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Полное соответствие клиническим протоколам и медицинским стандартам РФ.</p>
 					</div>
 				</div>
 			} else if theme == "auto" {
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🔧</div>
-						<h3 class="card-title text-base mb-2">Дилерское оборудование</h3>
-						<p class="card-desc text-xs">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p>
+					<div data-reveal data-reveal-delay="100" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">🔧</div>
+						<h3 class="font-bold text-base text-content mb-2">Дилерское оборудование</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Диагностические стенды и фирменные сканеры для европейских и азиатских марок.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">📄</div>
-						<h3 class="card-title text-base mb-2">Гарантия 12 месяцев</h3>
-						<p class="card-desc text-xs">Письменная гарантия на все выполненные работы и установленные запчасти.</p>
+					<div data-reveal data-reveal-delay="200" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">📄</div>
+						<h3 class="font-bold text-base text-content mb-2">Гарантия 12 месяцев</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Письменная гарантия на все выполненные работы и установленные запчасти.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">📦</div>
-						<h3 class="card-title text-base mb-2">Склад запчастей</h3>
-						<p class="card-desc text-xs">Более 5 000 оригинальных и проверенных аналоговых деталей всегда в наличии.</p>
+					<div data-reveal data-reveal-delay="300" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">📦</div>
+						<h3 class="font-bold text-base text-content mb-2">Склад сертифицированных деталей</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Более 5 000 оригинальных и проверенных комплектующих в постоянном наличии.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">☕</div>
-						<h3 class="card-title text-base mb-2">Комфортная зона ожидания</h3>
-						<p class="card-desc text-xs">Wi-Fi, кофе, мониторы с видеотрансляцией из ремонтной зоны прямо в зале.</p>
-					</div>
-				</div>
-			} else if theme == "beauty" {
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">✨</div>
-						<h3 class="card-title text-base mb-2">Премиум-косметика</h3>
-						<p class="card-desc text-xs">Официальные составы L'Oreal Professionnel, Davines и Lebel прямо от дистрибьютора.</p>
-					</div>
-					<div data-reveal data-reveal-delay="200" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">✂️</div>
-						<h3 class="card-title text-base mb-2">Топ-стилисты и колористы</h3>
-						<p class="card-desc text-xs">Дипломированные мастера с международным опытом и постоянным повышением квалификации.</p>
-					</div>
-					<div data-reveal data-reveal-delay="300" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🛡️</div>
-						<h3 class="card-title text-base mb-2">100% стерильность СанПиН</h3>
-						<p class="card-desc text-xs">Сухожаровой шкаф ГП-20, одноразовые наборы и индивидуальные крафт-пакеты при вас.</p>
-					</div>
-					<div data-reveal data-reveal-delay="400" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center text-2xl mb-4">🥂</div>
-						<h3 class="card-title text-base mb-2">Атмосфера релакса</h3>
-						<p class="card-desc text-xs">Тихая музыка, натуральный кофе, шампанское и бережный персонализированный сервис.</p>
-					</div>
-				</div>
-			} else if theme == "cyber" {
-				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-accent/20 text-accent flex items-center justify-center text-2xl mb-4">🌐</div>
-						<h3 class="card-title text-base mb-2 font-condensed tracking-wide uppercase">Metaverse Native</h3>
-						<p class="card-desc text-xs">Бесшовный перенос 3D-аватаров и цифровых активов между открытыми виртуальными мирами.</p>
-					</div>
-					<div data-reveal data-reveal-delay="200" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-accent/20 text-accent flex items-center justify-center text-2xl mb-4">⚡</div>
-						<h3 class="card-title text-base mb-2 font-condensed tracking-wide uppercase">Sub-5ms Latency</h3>
-						<p class="card-desc text-xs">Сверхбыстрый рендеринг и пространственная синхронизация без задержек и лагов.</p>
-					</div>
-					<div data-reveal data-reveal-delay="300" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-accent/20 text-accent flex items-center justify-center text-2xl mb-4">🛡️</div>
-						<h3 class="card-title text-base mb-2 font-condensed tracking-wide uppercase">Identity Security</h3>
-						<p class="card-desc text-xs">Криптографическая защита аватаров и инвентаря на уровне аппаратных ключей.</p>
-					</div>
-					<div data-reveal data-reveal-delay="400" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-accent/20 text-accent flex items-center justify-center text-2xl mb-4">🎮</div>
-						<h3 class="card-title text-base mb-2 font-condensed tracking-wide uppercase">Custom Modding</h3>
-						<p class="card-desc text-xs">Открытый SDK для создания персональных скинов, локаций и механик взаимодействия.</p>
+					<div data-reveal data-reveal-delay="400" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center text-xl mb-4">☕</div>
+						<h3 class="font-bold text-base text-content mb-2">Комфортная зона приёма</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Рабочая зона, свежая пресса и персональное сопровождение мастера-приёмщика.</p>
 					</div>
 				</div>
 			} else {
+				<!-- Default / Legal / Swiss -->
 				<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-					<div data-reveal data-reveal-delay="100" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center mb-4">
-							@icons.Scale(templ.Attributes{"class": "w-6 h-6"})
+					<div data-reveal data-reveal-delay="100" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center mb-4">
+							@icons.Scale(templ.Attributes{"class": "w-5 h-5 text-accent"})
 						</div>
-						<h3 class="card-title text-base mb-2">Строго по закону</h3>
-						<p class="card-desc text-xs">Совершение всех юридических процедур в точном соответствии с законодательством РФ.</p>
+						<h3 class="font-bold text-base text-content mb-2">Строго по закону</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Совершение нотариальных процедур в точном соответствии с законодательством РФ.</p>
 					</div>
-					<div data-reveal data-reveal-delay="200" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center mb-4">
-							@icons.ShieldCheck(templ.Attributes{"class": "w-6 h-6"})
+					<div data-reveal data-reveal-delay="200" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center mb-4">
+							@icons.ShieldCheck(templ.Attributes{"class": "w-5 h-5 text-accent"})
 						</div>
-						<h3 class="card-title text-base mb-2">Тайна совершения действий</h3>
-						<p class="card-desc text-xs">Абсолютная конфиденциальность сведений и защита персональных данных доверителей.</p>
+						<h3 class="font-bold text-base text-content mb-2">Тайна совершения действий</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Абсолютная конфиденциальность сведений и правовая защита персональных данных.</p>
 					</div>
-					<div data-reveal data-reveal-delay="300" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center mb-4">
-							@icons.Zap(templ.Attributes{"class": "w-6 h-6"})
+					<div data-reveal data-reveal-delay="300" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center mb-4">
+							@icons.Zap(templ.Attributes{"class": "w-5 h-5 text-accent"})
 						</div>
-						<h3 class="card-title text-base mb-2">Электронные реестры</h3>
-						<p class="card-desc text-xs">Мгновенная проверка и регистрация документов в Единой информационной системе.</p>
+						<h3 class="font-bold text-base text-content mb-2">Электронные реестры</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Мгновенная проверка и регистрация документов в Единой информационной системе.</p>
 					</div>
-					<div data-reveal data-reveal-delay="400" class="card-interactive">
-						<div class="w-12 h-12 rounded-card-sm bg-primary/10 text-primary flex items-center justify-center mb-4">
-							@icons.Briefcase(templ.Attributes{"class": "w-6 h-6"})
+					<div data-reveal data-reveal-delay="400" class="p-6 bg-surface border border-content/10 hover:border-accent/40 transition-colors">
+						<div class="w-10 h-10 bg-surface-muted border border-content/10 flex items-center justify-center mb-4">
+							@icons.Briefcase(templ.Attributes{"class": "w-5 h-5 text-accent"})
 						</div>
-						<h3 class="card-title text-base mb-2">Комплексный приём</h3>
-						<p class="card-desc text-xs">Подготовка проектов договоров, запросы в Росреестр и регистрация под ключ.</p>
+						<h3 class="font-bold text-base text-content mb-2">Комплексный приём</h3>
+						<p class="text-xs text-content-muted leading-relaxed">Подготовка проектов договоров, выписки из Росреестра и сопровождение сделок под ключ.</p>
 					</div>
 				</div>
 			}

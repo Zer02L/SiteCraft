@@ -450,6 +450,48 @@ html[data-theme="legal-classic-night"] {
   --color-content-muted: #94a3b8;
 }
 
+/* ==========================================================================
+   HALLMARK THEMES COLLECTION
+   ========================================================================== */
+
+/* 1. CORAL (HALLMARK MODERN-MINIMAL) — Warm stationery on felt desk & living coral ink */
+html[data-theme="coral"],
+html[data-theme="coral-day"] {
+  --color-primary: #2d2623;            /* deep warm anthracite ink */
+  --color-primary-dark: #1b1715;
+  --color-primary-light: #483e3a;
+  --color-accent: #e65a40;             /* pure living coral accent */
+  --color-accent-hover: #d24930;
+  --color-accent-light: #faece9;
+  --color-surface: #f7f6f4;            /* fine cotton paper / warm stationery */
+  --color-surface-muted: #eeece8;      /* felt desk / warm secondary surface */
+  --color-content: #241e1b;            /* letterpress carbon ink */
+  --color-content-muted: #756c66;      /* warm muted type */
+  --radius-card: 8px;
+  --radius-card-sm: 6px;
+  --radius-btn: 8px;
+  --radius-input: 6px;
+  --radius-badge: 999px;
+}
+
+html[data-theme="coral-night"] {
+  --color-primary: #f5f2ee;
+  --color-primary-dark: #ded8d2;
+  --color-primary-light: #ffffff;
+  --color-accent: #ff755d;             /* vivid coral glow */
+  --color-accent-hover: #ff8b77;
+  --color-accent-light: #341f1a;
+  --color-surface: #1e1b19;            /* deep dark board */
+  --color-surface-muted: #272320;      /* deep felt backing */
+  --color-content: #f5f2ee;            /* cotton type */
+  --color-content-muted: #a69e97;
+  --radius-card: 8px;
+  --radius-card-sm: 6px;
+  --radius-btn: 8px;
+  --radius-input: 6px;
+  --radius-badge: 999px;
+}
+
 /* =========================================
    5. ВЫЧИСЛЯЕМАЯ ГАРМОНИЧЕСКАЯ ТЕМА (HARMONIC / OKLCH & COLOR-MIX)
    Все оттенки, акценты, фоны и границы рассчитываются

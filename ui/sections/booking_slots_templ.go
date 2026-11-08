@@ -35,7 +35,7 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\t\t\t\tselectedResource: '',\n\t\t\t\t\t\tselectedDate: '2026-10-07',\n\t\t\t\t\t\tselectedTime: '',\n\t\t\t\t\t\tname: '',\n\t\t\t\t\t\tphone: '',\n\t\t\t\t\t\tcomment: '',\n\t\t\t\t\t\tagreeConsent: true,\n\t\t\t\t\t\tbookedMap: {},\n\t\t\t\t\t\terrors: { name: '', phone: '', time: '', consent: '' },\n\t\t\t\t\t\ttouched: { name: false, phone: false },\n\t\t\t\t\t\tdates: [\n\t\t\t\t\t\t\t{ label: 'Ср, 7 окт', date: '2026-10-07', slots: [\n\t\t\t\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '10:15', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '11:00', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '15:30', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '16:30', defaultFree: true }\n\t\t\t\t\t\t\t]},\n\t\t\t\t\t\t\t{ label: 'Чт, 8 окт', date: '2026-10-08', slots: [\n\t\t\t\t\t\t\t\t{ time: '09:30', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '10:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '12:15', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '15:15', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '16:00', defaultFree: false }\n\t\t\t\t\t\t\t]},\n\t\t\t\t\t\t\t{ label: 'Пт, 9 окт', date: '2026-10-09', slots: [\n\t\t\t\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '10:00', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '11:00', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '12:00', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '16:15', defaultFree: true }\n\t\t\t\t\t\t\t]},\n\t\t\t\t\t\t\t{ label: 'Пн, 12 окт', date: '2026-10-12', slots: [\n\t\t\t\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '10:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '14:30', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '16:30', defaultFree: true }\n\t\t\t\t\t\t\t]},\n\t\t\t\t\t\t\t{ label: 'Вт, 13 окт', date: '2026-10-13', slots: [\n\t\t\t\t\t\t\t\t{ time: '09:30', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '10:30', defaultFree: false },\n\t\t\t\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t\t\t\t{ time: '16:30', defaultFree: false }\n\t\t\t\t\t\t\t]}\n\t\t\t\t\t\t],\n\t\t\t\t\t\tinit() {\n\t\t\t\t\t\t\tconst el = document.getElementById('booked-data-json');\n\t\t\t\t\t\t\tif (el) {\n\t\t\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\t\t\tthis.bookedMap = JSON.parse(el.textContent) || {};\n\t\t\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\tisSlotFree(time) {\n\t\t\t\t\t\t\tconst booked = this.bookedMap[this.selectedDate] || [];\n\t\t\t\t\t\t\tif (booked.includes(time)) return false;\n\t\t\t\t\t\t\tconst day = this.dates.find(d => d.date === this.selectedDate);\n\t\t\t\t\t\t\tif (!day) return true;\n\t\t\t\t\t\t\tconst slot = day.slots.find(s => s.time === time);\n\t\t\t\t\t\t\treturn slot ? slot.defaultFree : true;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tcurrentSlots() {\n\t\t\t\t\t\t\tconst day = this.dates.find(d => d.date === this.selectedDate);\n\t\t\t\t\t\t\tif (!day) return [];\n\t\t\t\t\t\t\treturn day.slots.map(s => ({ time: s.time, free: this.isSlotFree(s.time) }));\n\t\t\t\t\t\t},\n\t\t\t\t\t\tselectSlot(time, isFree) {\n\t\t\t\t\t\t\tif (isFree) {\n\t\t\t\t\t\t\t\tthis.selectedTime = time;\n\t\t\t\t\t\t\t\tthis.errors.time = '';\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\tselectResource(id) {\n\t\t\t\t\t\t\tthis.selectedResource = id;\n\t\t\t\t\t\t\tthis.selectedTime = '';\n\t\t\t\t\t\t\tfetch('/api/slots?resource_id=' + encodeURIComponent(id))\n\t\t\t\t\t\t\t\t.then(r => r.ok ? r.json() : {})\n\t\t\t\t\t\t\t\t.then(data => {\n\t\t\t\t\t\t\t\t\tthis.bookedMap = data || {};\n\t\t\t\t\t\t\t\t})\n\t\t\t\t\t\t\t\t.catch(() => {});\n\t\t\t\t\t\t},\n\t\t\t\t\t\tformatPhone(val) {\n\t\t\t\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\t\t\t\tif (!digits) return '';\n\t\t\t\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\t\t\t\tlet res = '+7';\n\t\t\t\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\t\t\t\treturn res;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tonPhoneInput(e) {\n\t\t\t\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t\t\t\t\tif (this.touched.phone) this.validatePhone();\n\t\t\t\t\t\t},\n\t\t\t\t\t\tvalidateName() {\n\t\t\t\t\t\t\tconst val = (this.name || '').trim();\n\t\t\t\t\t\t\tif (!val) { this.errors.name = 'Укажите ФИО заявителя'; return false; }\n\t\t\t\t\t\t\tif (val.length < 2) { this.errors.name = 'ФИО должно содержать не менее 2 символов'; return false; }\n\t\t\t\t\t\t\tthis.errors.name = '';\n\t\t\t\t\t\t\treturn true;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tvalidatePhone() {\n\t\t\t\t\t\t\tconst digits = (this.phone || '').replace(/\\D/g, '');\n\t\t\t\t\t\t\tif (!digits) { this.errors.phone = 'Укажите контактный номер телефона'; return false; }\n\t\t\t\t\t\t\tif (digits.length < 11) { this.errors.phone = 'Укажите номер полностью (10 цифр номера)'; return false; }\n\t\t\t\t\t\t\tthis.errors.phone = '';\n\t\t\t\t\t\t\treturn true;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tvalidateTime() {\n\t\t\t\t\t\t\tif (!this.selectedTime) { this.errors.time = 'Пожалуйста, выберите свободное время'; return false; }\n\t\t\t\t\t\t\tthis.errors.time = '';\n\t\t\t\t\t\t\treturn true;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tvalidateConsent() {\n\t\t\t\t\t\t\tif (!this.agreeConsent) { this.errors.consent = 'Необходимо согласие на обработку данных'; return false; }\n\t\t\t\t\t\t\tthis.errors.consent = '';\n\t\t\t\t\t\t\treturn true;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tvalidateAll() {\n\t\t\t\t\t\t\tthis.touched.name = true;\n\t\t\t\t\t\t\tthis.touched.phone = true;\n\t\t\t\t\t\t\treturn this.validateTime() && this.validateName() && this.validatePhone() && this.validateConsent();\n\t\t\t\t\t\t},\n\t\t\t\t\t\thandleSubmit(e) {\n\t\t\t\t\t\t\tif (!this.validateAll()) {\n\t\t\t\t\t\t\t\te.preventDefault();\n\t\t\t\t\t\t\t\te.stopPropagation();\n\t\t\t\t\t\t\t\treturn false;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\t\thandleSuccess() {\n\t\t\t\t\t\t\tif (this.selectedDate && this.selectedTime) {\n\t\t\t\t\t\t\t\tif (!this.bookedMap[this.selectedDate]) this.bookedMap[this.selectedDate] = [];\n\t\t\t\t\t\t\t\tthis.bookedMap[this.selectedDate].push(this.selectedTime);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\tthis.name = ''; this.phone = ''; this.comment = ''; this.selectedTime = '';\n\t\t\t\t\t\t\tthis.touched.name = false; this.touched.phone = false;\n\t\t\t\t\t\t\tthis.errors = { name: '', phone: '', time: '', consent: '' };\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"grid grid-cols-1 lg:grid-cols-12 gap-8 items-start\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-component=\"hallmark-booking-slots\" data-source=\"ui/sections/booking_slots.templ\" x-data=\"{\n\t\t\tselectedResource: '',\n\t\t\tselectedDate: '2026-10-07',\n\t\t\tselectedTime: '',\n\t\t\tname: '',\n\t\t\tphone: '',\n\t\t\tcomment: '',\n\t\t\tagreeConsent: true,\n\t\t\tbookedMap: {},\n\t\t\terrors: { name: '', phone: '', time: '', consent: '' },\n\t\t\ttouched: { name: false, phone: false },\n\t\t\tdates: [\n\t\t\t\t{ label: 'Ср, 7 окт', date: '2026-10-07', slots: [\n\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t{ time: '10:15', defaultFree: true },\n\t\t\t\t\t{ time: '11:00', defaultFree: false },\n\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t{ time: '15:30', defaultFree: false },\n\t\t\t\t\t{ time: '16:30', defaultFree: true }\n\t\t\t\t]},\n\t\t\t\t{ label: 'Чт, 8 окт', date: '2026-10-08', slots: [\n\t\t\t\t\t{ time: '09:30', defaultFree: false },\n\t\t\t\t\t{ time: '10:30', defaultFree: true },\n\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t{ time: '12:15', defaultFree: false },\n\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t{ time: '15:15', defaultFree: true },\n\t\t\t\t\t{ time: '16:00', defaultFree: false }\n\t\t\t\t]},\n\t\t\t\t{ label: 'Пт, 9 окт', date: '2026-10-09', slots: [\n\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t{ time: '10:00', defaultFree: true },\n\t\t\t\t\t{ time: '11:00', defaultFree: false },\n\t\t\t\t\t{ time: '12:00', defaultFree: false },\n\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t{ time: '16:15', defaultFree: true }\n\t\t\t\t]},\n\t\t\t\t{ label: 'Пн, 12 окт', date: '2026-10-12', slots: [\n\t\t\t\t\t{ time: '09:30', defaultFree: true },\n\t\t\t\t\t{ time: '10:30', defaultFree: true },\n\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t{ time: '14:30', defaultFree: false },\n\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t{ time: '16:30', defaultFree: true }\n\t\t\t\t]},\n\t\t\t\t{ label: 'Вт, 13 окт', date: '2026-10-13', slots: [\n\t\t\t\t\t{ time: '09:30', defaultFree: false },\n\t\t\t\t\t{ time: '10:30', defaultFree: false },\n\t\t\t\t\t{ time: '11:30', defaultFree: true },\n\t\t\t\t\t{ time: '12:00', defaultFree: true },\n\t\t\t\t\t{ time: '14:30', defaultFree: true },\n\t\t\t\t\t{ time: '15:30', defaultFree: true },\n\t\t\t\t\t{ time: '16:30', defaultFree: false }\n\t\t\t\t]}\n\t\t\t],\n\t\t\tinit() {\n\t\t\t\tconst el = document.getElementById('booked-data-json');\n\t\t\t\tif (el) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tthis.bookedMap = JSON.parse(el.textContent) || {};\n\t\t\t\t\t} catch (e) {}\n\t\t\t\t}\n\t\t\t},\n\t\t\tisSlotFree(time) {\n\t\t\t\tconst booked = this.bookedMap[this.selectedDate] || [];\n\t\t\t\tif (booked.includes(time)) return false;\n\t\t\t\tconst day = this.dates.find(d => d.date === this.selectedDate);\n\t\t\t\tif (!day) return true;\n\t\t\t\tconst slot = day.slots.find(s => s.time === time);\n\t\t\t\treturn slot ? slot.defaultFree : true;\n\t\t\t},\n\t\t\tcurrentSlots() {\n\t\t\t\tconst day = this.dates.find(d => d.date === this.selectedDate);\n\t\t\t\tif (!day) return [];\n\t\t\t\treturn day.slots.map(s => ({ time: s.time, free: this.isSlotFree(s.time) }));\n\t\t\t},\n\t\t\tselectSlot(time, isFree) {\n\t\t\t\tif (isFree) {\n\t\t\t\t\tthis.selectedTime = time;\n\t\t\t\t\tthis.errors.time = '';\n\t\t\t\t}\n\t\t\t},\n\t\t\tselectResource(id) {\n\t\t\t\tthis.selectedResource = id;\n\t\t\t\tthis.selectedTime = '';\n\t\t\t\tfetch('/api/slots?resource_id=' + encodeURIComponent(id))\n\t\t\t\t\t.then(r => r.ok ? r.json() : {})\n\t\t\t\t\t.then(data => {\n\t\t\t\t\t\tthis.bookedMap = data || {};\n\t\t\t\t\t})\n\t\t\t\t\t.catch(() => {});\n\t\t\t},\n\t\t\tformatPhone(val) {\n\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\tif (!digits) return '';\n\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\tlet res = '+7';\n\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\treturn res;\n\t\t\t},\n\t\t\tonPhoneInput(e) {\n\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t\tif (this.touched.phone) this.validatePhone();\n\t\t\t},\n\t\t\tvalidateName() {\n\t\t\t\tconst val = (this.name || '').trim();\n\t\t\t\tif (!val) { this.errors.name = 'Укажите ФИО заявителя'; return false; }\n\t\t\t\tif (val.length < 2) { this.errors.name = 'ФИО должно содержать не менее 2 символов'; return false; }\n\t\t\t\tthis.errors.name = '';\n\t\t\t\treturn true;\n\t\t\t},\n\t\t\tvalidatePhone() {\n\t\t\t\tconst digits = (this.phone || '').replace(/\\D/g, '');\n\t\t\t\tif (!digits) { this.errors.phone = 'Укажите контактный номер телефона'; return false; }\n\t\t\t\tif (digits.length < 11) { this.errors.phone = 'Укажите номер полностью (10 цифр номера)'; return false; }\n\t\t\t\tthis.errors.phone = '';\n\t\t\t\treturn true;\n\t\t\t},\n\t\t\tvalidateTime() {\n\t\t\t\tif (!this.selectedTime) { this.errors.time = 'Пожалуйста, выберите свободное время'; return false; }\n\t\t\t\tthis.errors.time = '';\n\t\t\t\treturn true;\n\t\t\t},\n\t\t\tvalidateConsent() {\n\t\t\t\tif (!this.agreeConsent) { this.errors.consent = 'Необходимо согласие на обработку данных'; return false; }\n\t\t\t\tthis.errors.consent = '';\n\t\t\t\treturn true;\n\t\t\t},\n\t\t\tvalidateAll() {\n\t\t\t\tthis.touched.name = true;\n\t\t\t\tthis.touched.phone = true;\n\t\t\t\treturn this.validateTime() && this.validateName() && this.validatePhone() && this.validateConsent();\n\t\t\t},\n\t\t\thandleSubmit(e) {\n\t\t\t\tif (!this.validateAll()) {\n\t\t\t\t\te.preventDefault();\n\t\t\t\t\te.stopPropagation();\n\t\t\t\t\treturn false;\n\t\t\t\t}\n\t\t\t},\n\t\t\thandleSuccess() {\n\t\t\t\tif (this.selectedDate && this.selectedTime) {\n\t\t\t\t\tif (!this.bookedMap[this.selectedDate]) this.bookedMap[this.selectedDate] = [];\n\t\t\t\t\tthis.bookedMap[this.selectedDate].push(this.selectedTime);\n\t\t\t\t}\n\t\t\t\tthis.name = ''; this.phone = ''; this.comment = ''; this.selectedTime = '';\n\t\t\t\tthis.touched.name = false; this.touched.phone = false;\n\t\t\t\tthis.errors = { name: '', phone: '', time: '', consent: '' };\n\t\t\t}\n\t\t}\" class=\"grid grid-cols-1 lg:grid-cols-12 gap-8 items-start\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -43,12 +43,12 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Календарь и сетка времени (левая колонка) --><div class=\"lg:col-span-7 card-base sm:p-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Календарь и сетка времени (левая колонка, архитектурная панель) --><div class=\"lg:col-span-7 bg-surface border border-content/10 p-6 sm:p-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(resList) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- Шаг 1: Выбор специалиста / мастера / поста (Resource Booking) --> <div class=\"mb-6 pb-4 border-b border-content/10\"><h3 class=\"font-bold text-content text-base flex items-center gap-2 mb-3\"><svg class=\"w-5 h-5 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z\"></path></svg> 1. Выберите специалиста или кабинет</h3><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2.5\"><button type=\"button\" @click=\"selectResource('')\" :class=\"selectedResource === ''\n\t\t\t\t\t\t\t\t\t\t\t? 'border-primary bg-primary/10 text-primary font-bold shadow-xs'\n\t\t\t\t\t\t\t\t\t\t\t: 'border-content/10 bg-surface-muted text-content/70 hover:border-content/30'\" class=\"p-3 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer\"><span class=\"w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0\">✨</span><div class=\"min-w-0\"><div class=\"text-xs font-semibold leading-tight\">Любой специалист</div><div class=\"text-[10px] text-content-muted mt-0.5\">Ближайшее доступное время</div></div></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- Шаг 1: Выбор специалиста или кабинета --> <div class=\"mb-6 pb-4 border-b border-content/10\"><h3 class=\"font-bold text-content text-sm mb-3\">1. Специалист или нотариальный состав</h3><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-2.5\"><button type=\"button\" @click=\"selectResource('')\" :class=\"selectedResource === ''\n\t\t\t\t\t\t\t\t? 'border-accent bg-surface-muted text-content font-bold'\n\t\t\t\t\t\t\t\t: 'border-content/10 bg-surface text-content-muted hover:border-content/30'\" class=\"p-3 border text-left flex items-center gap-3 transition cursor-pointer\"><div class=\"min-w-0\"><div class=\"text-xs font-semibold leading-tight\">Любой специалист</div><div class=\"text-[10px] text-content-muted mt-0.5\">Ближайшее доступное окно</div></div></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -60,7 +60,7 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectResource('%s')", r.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 200, Col: 61}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 201, Col: 58}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 				if templ_7745c5c3_Err != nil {
@@ -71,292 +71,309 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedResource === '%s' ? 'border-primary bg-primary/10 text-primary font-bold shadow-xs' : 'border-content/10 bg-surface-muted text-content/70 hover:border-content/30'", r.ID)).Resolve(ctx)
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedResource === '%s' ? 'border-accent bg-surface-muted text-content font-bold' : 'border-content/10 bg-surface text-content-muted hover:border-content/30'", r.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 201, Col: 211}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 202, Col: 197}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"p-3 rounded-xl border text-left flex items-center gap-3 transition-all cursor-pointer\"><span class=\"w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center text-sm font-bold flex-shrink-0\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"p-3 border text-left flex items-center gap-3 transition cursor-pointer\"><div class=\"min-w-0\"><div class=\"text-xs font-semibold leading-tight truncate\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(r.Avatar)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(r.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 204, Col: 146}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 206, Col: 75}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span><div class=\"min-w-0\"><div class=\"text-xs font-semibold leading-tight truncate\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"text-[10px] text-content-muted mt-0.5 truncate\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(r.Name)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(r.Role)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 206, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 207, Col: 77}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div><div class=\"text-[10px] text-content-muted mt-0.5 truncate\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(r.Role)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 207, Col: 80}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div></button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div></button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"flex items-center justify-between mb-4 pb-3 border-b border-content/10\"><h3 class=\"font-bold text-content text-base flex items-center gap-2\"><svg class=\"w-5 h-5 text-primary\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"flex items-center justify-between mb-4 pb-3 border-b border-content/10\"><h3 class=\"font-bold text-content text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(resList) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "2. ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "2. ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.date_label"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 218, Col: 44}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "1. ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.date_label"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 219, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 220, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "1. ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.date_label"))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 221, Col: 47}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</h3><div class=\"flex items-center gap-3 text-xs\"><span class=\"flex items-center gap-1.5\"><span class=\"w-2.5 h-2.5 rounded-full bg-emerald-500\"></span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</h3><div class=\"flex items-center gap-3 text-xs text-content-muted\"><span class=\"flex items-center gap-1.5\"><span class=\"w-2 h-2 bg-accent\"></span> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 string
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.legend_free"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 224, Col: 121}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span> <span class=\"flex items-center gap-1.5\"><span class=\"w-2 h-2 bg-content/20\"></span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.legend_free"))
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.legend_busy"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 225, Col: 146}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 225, Col: 125}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span> <span class=\"flex items-center gap-1.5 text-content-muted\"><span class=\"w-2.5 h-2.5 rounded-full bg-stone-300\"></span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span></div></div><!-- Выбор дней недели --><div class=\"grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6\"><template x-for=\"day in dates\" :key=\"day.date\"><button type=\"button\" @click=\"selectedDate = day.date; selectedTime = ''\" :class=\"selectedDate === day.date\n\t\t\t\t\t\t\t? 'bg-primary text-white border-primary'\n\t\t\t\t\t\t\t: 'bg-surface text-content border-content/10 hover:border-content/30'\" class=\"p-2.5 border text-center transition flex flex-col items-center justify-center cursor-pointer\"><span class=\"text-xs font-medium\" x-text=\"day.label\"></span></button></template></div><!-- Сетка слотов времени --><div class=\"mb-4\"><h4 class=\"font-bold text-content text-sm mb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.legend_busy"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 226, Col: 163}
+		if len(resList) > 0 {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "3. ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.time_label"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 249, Col: 44}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "2. ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.time_label"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 251, Col: 44}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span></div></div><!-- Выбор дней недели --><div class=\"grid grid-cols-2 sm:grid-cols-5 gap-2 mb-6\"><template x-for=\"day in dates\" :key=\"day.date\"><button type=\"button\" @click=\"selectedDate = day.date; selectedTime = ''\" :class=\"selectedDate === day.date\n\t\t\t\t\t\t\t\t\t\t? 'bg-primary text-white border-primary shadow-sm'\n\t\t\t\t\t\t\t\t\t\t: 'bg-surface-muted text-content/80 border-content/10 hover:bg-surface-muted'\" class=\"p-2.5 rounded-card-sm border text-center transition flex flex-col items-center justify-center cursor-pointer\"><span class=\"text-xs font-semibold\" x-text=\"day.label\"></span></button></template></div><!-- Сетка слотов времени --><div class=\"mb-4\"><h4 class=\"font-semibold text-content text-sm mb-3\">2. ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.time_label"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 248, Col: 97}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</h4><div class=\"grid grid-cols-3 sm:grid-cols-4 gap-2.5\"><template x-for=\"slot in currentSlots()\" :key=\"slot.time\"><button type=\"button\" :disabled=\"!slot.free\" @click=\"selectSlot(slot.time, slot.free)\" :class=\"!slot.free\n\t\t\t\t\t\t\t\t\t\t\t? 'bg-surface-muted text-content-muted border-content/10 cursor-not-allowed line-through'\n\t\t\t\t\t\t\t\t\t\t\t: (selectedTime === slot.time\n\t\t\t\t\t\t\t\t\t\t\t\t? 'bg-emerald-600 text-white border-emerald-700 shadow-md ring-2 ring-emerald-300'\n\t\t\t\t\t\t\t\t\t\t\t\t: 'bg-emerald-50/80 text-emerald-800 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 cursor-pointer font-medium')\" class=\"py-2.5 px-3 rounded-btn border text-sm transition flex items-center justify-center gap-1.5\"><span x-text=\"slot.time\"></span></button></template></div></div><div class=\"p-3 bg-amber-50/80 rounded-card-sm border border-amber-200/80 text-xs text-amber-800 flex items-center gap-2\"><svg class=\"w-4 h-4 text-amber-600 flex-shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.lunch"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 270, Col: 42}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</h4><div class=\"grid grid-cols-3 sm:grid-cols-4 gap-2\"><template x-for=\"slot in currentSlots()\" :key=\"slot.time\"><button type=\"button\" :disabled=\"!slot.free\" @click=\"selectSlot(slot.time, slot.free)\" :class=\"!slot.free\n\t\t\t\t\t\t\t\t? 'bg-surface-muted text-content/30 border-content/10 cursor-not-allowed line-through'\n\t\t\t\t\t\t\t\t: (selectedTime === slot.time\n\t\t\t\t\t\t\t\t\t? 'bg-accent text-white border-accent font-bold'\n\t\t\t\t\t\t\t\t\t: 'bg-surface text-content border-content/15 hover:border-accent cursor-pointer font-medium')\" class=\"py-2 px-3 border text-xs transition flex items-center justify-center\"><span x-text=\"slot.time\"></span></button></template></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, " ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+		if content.LunchBreak != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"pt-3 border-t border-content/10 text-xs text-content-muted\"><span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var12 string
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.lunch"))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 275, Col: 40}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, " ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var13 string
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(content.LunchBreak)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 275, Col: 63}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, ".</span></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		var templ_7745c5c3_Var13 string
-		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(content.LunchBreak)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 270, Col: 65}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, ".</span></div></div><!-- Форма подтверждения (правая колонка) --><div class=\"lg:col-span-5 card-base sm:p-8\"><h3 class=\"font-serif-title text-xl font-bold text-content mb-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><!-- Форма подтверждения (правая колонка, архитектурная панель) --><div class=\"lg:col-span-5 bg-surface border border-content/10 p-6 sm:p-8\"><h3 class=\"text-lg font-bold text-content mb-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.slots_title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 276, Col: 107}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 282, Col: 87}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</h3><p class=\"text-xs text-content-muted mb-5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</h3><p class=\"text-xs text-content-muted mb-5 leading-relaxed\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.slots_desc"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 277, Col: 84}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 283, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</p><!-- Индикатор выбранного времени --><div :class=\"errors.time ? 'border-rose-300 bg-rose-50/50' : (selectedTime ? 'border-emerald-300 bg-emerald-50/30' : 'border-content/10 bg-surface-muted')\" class=\"mb-4 p-3 rounded-card-sm border text-xs flex items-center justify-between transition\"><span class=\"text-content-muted\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</p><!-- Индикатор выбранного времени --><div :class=\"errors.time ? 'border-rose-400 bg-rose-50/20' : (selectedTime ? 'border-accent bg-surface-muted' : 'border-content/10 bg-surface-muted/40')\" class=\"mb-5 p-3 border text-xs flex items-center justify-between transition\"><span class=\"text-content-muted\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.time_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 284, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 290, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, ":</span> <span :class=\"selectedTime ? 'text-emerald-700' : 'text-content-muted'\" class=\"font-bold\" x-text=\"selectedTime ? (selectedDate + ' ' + selectedTime) : '—'\"></span></div><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @submit=\"handleSubmit($event)\" @htmx:after:request=\"if ($event.detail.successful) handleSuccess()\" @htmx:after-request=\"if ($event.detail.successful) handleSuccess()\" class=\"space-y-4\" novalidate><!-- Honeypot --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><input type=\"hidden\" name=\"booking_date\" :value=\"selectedDate\"> <input type=\"hidden\" name=\"booking_time\" :value=\"selectedTime\"> <input type=\"hidden\" name=\"resource_id\" :value=\"selectedResource\"><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, ":</span> <span :class=\"selectedTime ? 'text-content font-bold' : 'text-content-muted'\" x-text=\"selectedTime ? (selectedDate + ' в ' + selectedTime) : 'Не выбрано'\"></span></div><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @submit=\"handleSubmit($event)\" @htmx:after:request=\"if ($event.detail.successful) handleSuccess()\" @htmx:after-request=\"if ($event.detail.successful) handleSuccess()\" class=\"space-y-4\" novalidate><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><input type=\"hidden\" name=\"booking_date\" :value=\"selectedDate\"> <input type=\"hidden\" name=\"booking_time\" :value=\"selectedTime\"> <input type=\"hidden\" name=\"resource_id\" :value=\"selectedResource\"><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.name_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 312, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 316, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</label> <input type=\"text\" name=\"name\" x-model=\"name\" @input=\"if (touched.name) validateName()\" @blur=\"touched.name = true; validateName()\" placeholder=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</label> <input type=\"text\" name=\"name\" x-model=\"name\" @input=\"if (touched.name) validateName()\" @blur=\"touched.name = true; validateName()\" placeholder=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.name_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 319, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 323, Col: 59}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" class=\"form-input\"><template x-if=\"errors.name\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.name\"></p></template></div><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" class=\"form-input text-xs\"><template x-if=\"errors.name\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.name\"></p></template></div><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.phone_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 328, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 332, Col: 100}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</label> <input type=\"tel\" name=\"phone\" x-model=\"phone\" @input=\"onPhoneInput($event)\" @blur=\"touched.phone = true; validatePhone()\" placeholder=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</label> <input type=\"tel\" name=\"phone\" x-model=\"phone\" @input=\"onPhoneInput($event)\" @blur=\"touched.phone = true; validatePhone()\" placeholder=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.phone_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 335, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 339, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" class=\"form-input\"><template x-if=\"errors.phone\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.phone\"></p></template></div><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" class=\"form-input text-xs font-mono\"><template x-if=\"errors.phone\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.phone\"></p></template></div><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.comment_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 344, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 348, Col: 102}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</label> <textarea name=\"comment\" x-model=\"comment\" rows=\"2\" placeholder=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</label> <textarea name=\"comment\" x-model=\"comment\" rows=\"2\" placeholder=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.comment_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 349, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 353, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"form-input\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" x-model=\"agreeConsent\" class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" class=\"form-input text-xs\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" x-model=\"agreeConsent\" class=\"mt-0.5 border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.consent_text"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 363, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 367, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, " *</span></label><template x-if=\"errors.consent\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.consent\"></p></template></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, " *</span></label><template x-if=\"errors.consent\"><p class=\"text-xs text-rose-600 mt-1\" x-text=\"errors.consent\"></p></template></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -372,7 +389,7 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<span class=\"htmx-indicator\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<span class=\"htmx-indicator\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -380,7 +397,7 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -388,20 +405,20 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var25 string
 			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.submit_slots"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 381, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_slots.templ`, Line: 385, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -411,12 +428,12 @@ func BookingSlots(content models.SiteContent, bookedSlots map[string][]string, s
 			Variant: base.BtnPrimary,
 			Size:    base.BtnSizeLg,
 			Type:    "submit",
-			Class:   "w-full font-bold shadow gap-2",
+			Class:   "w-full font-medium gap-2",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var24), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</form><div id=\"booking-response\" class=\"mt-4\"></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</form><div id=\"booking-response\" class=\"mt-4 text-xs\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

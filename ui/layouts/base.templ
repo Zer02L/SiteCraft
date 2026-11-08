@@ -105,7 +105,7 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 			}
 
 			<!-- Скомпилированные стили Tailwind с семантическими токенами -->
-			<link rel="stylesheet" href="/assets/styles.css"/>
+			<link rel="stylesheet" href="/assets/styles.css?v=coral"/>
 			<!-- No-JS Progressive Enhancement: если JavaScript выключен или недоступен, контент отображается сразу -->
 			<noscript>
 				<style>
@@ -120,39 +120,13 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 				.font-serif-title { font-family: 'Merriweather', Georgia, serif; }
 			</style>
 
-			<!-- Динамическая инъекция темы из PocketBase (Theming Engine на базе современного CSS color-mix) -->
-			if settings.PrimaryColor != "" || settings.AccentColor != "" || settings.BackgroundColor != "" || settings.FontFamily != "" {
-				<style>
-					:root {
-						if settings.PrimaryColor != "" {
-							--color-primary: { settings.PrimaryColor };
-							--color-primary-dark: color-mix(in srgb, { settings.PrimaryColor }, black 25%);
-							--color-primary-light: color-mix(in srgb, { settings.PrimaryColor }, white 25%);
-						}
-						if settings.AccentColor != "" {
-							--color-accent: { settings.AccentColor };
-							--color-accent-hover: color-mix(in srgb, { settings.AccentColor }, black 15%);
-							--color-accent-light: color-mix(in srgb, { settings.AccentColor } 15%, white);
-						}
-						if settings.BackgroundColor != "" {
-							--color-surface: { settings.BackgroundColor };
-							--color-surface-muted: color-mix(in srgb, { settings.BackgroundColor }, black 4%);
-						}
-						if settings.FontFamily != "" {
-							--font-custom: { settings.FontFamily }, sans-serif;
-							font-family: var(--font-custom);
-						}
-					}
-				</style>
-			}
-
 			<!-- Микро-скрипт Доступности и Темы на чистом Vanilla JS (< 1.5 КБ, без зависимостей) -->
 			<script>
 				(function() {
 					const root = document.documentElement;
 					
 					// Тема сайта (сохраняется в localStorage)
-					const savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'main';
+					const savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'coral';
 					root.setAttribute('data-theme', savedTheme);
 
 					// API Доступности (a11y)

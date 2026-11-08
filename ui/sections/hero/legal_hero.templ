@@ -2,133 +2,139 @@ package hero
 
 import (
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 	"sitecraft/ui/components/cinematic"
 )
 
 templ LegalHero(content models.SiteContent, settings models.SiteSettings) {
-	<section class="relative bg-surface text-content min-h-[90vh] flex flex-col justify-between pt-12 pb-8 px-6 sm:px-10 lg:px-14 overflow-hidden border-b border-surface-muted select-none">
-		<!-- Фоновые кинематографические элементы -->
-		<div class="pointer-events-none absolute -top-32 -right-32 w-96 h-96 rounded-full bg-accent/10 blur-[120px]"></div>
-		<div class="pointer-events-none absolute bottom-0 left-10 w-80 h-80 rounded-full bg-primary/10 blur-[100px]"></div>
-
-		<!-- Верхняя статусная панель -->
-		<div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-surface-muted/60">
+	<!-- Hallmark Architectural Hero (Strict Aesthetic Mode) -->
+	<section
+		data-component="hallmark-legal-hero"
+		data-source="ui/sections/hero/legal_hero.templ"
+		class="relative bg-surface text-content min-h-[85vh] flex flex-col justify-between pt-10 pb-8 px-6 sm:px-10 lg:px-14 overflow-hidden border-b border-content/10 select-none"
+	>
+		<!-- Верхняя архитектоническая строка статуса (Floor 54 / Floor 67: без плашек и капслока) -->
+		<div class="relative z-10 flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-content/10">
 			<div class="flex items-center gap-3">
-				<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent/10 text-accent border border-accent/20">
-					⚖️ Официальная юридическая практика
+				<span class="w-1.5 h-1.5 bg-accent"></span>
+				<span class="text-xs text-content-muted tracking-normal">
+					if content.HeroBadge != "" {
+						<span data-field="content.HeroBadge">{ content.HeroBadge }</span>
+					} else {
+						<span>Официальная юридическая и нотариальная практика</span>
+					}
 				</span>
-				if content.OwnerTitle != "" {
-					<span class="hidden sm:inline-block text-xs text-content-muted">
-						{ content.OwnerTitle }
-					</span>
-				}
 			</div>
 
-			<div class="flex items-center gap-4 text-xs font-mono">
+			<div class="flex items-center gap-4 text-xs">
 				if content.Phone1 != "" {
-					<a href={ templ.SafeURL("tel:" + content.Phone1) } class="text-content font-bold hover:text-accent transition-colors">
-						📞 { content.Phone1 }
+					<a href={ templ.SafeURL("tel:" + content.Phone1) } class="text-content font-semibold hover:text-accent transition-colors">
+						{ content.Phone1 }
 					</a>
 				}
-				<span class="hidden md:inline-block text-content-muted">•</span>
-				<span class="hidden md:inline-block text-emerald-600 dark:text-emerald-400 font-medium">Приём заявок 24/7</span>
+				<span class="hidden md:inline-block text-content/20">•</span>
+				<span class="hidden md:inline-block text-content-muted">Приём по предварительной записи</span>
 			</div>
 		</div>
 
-		<!-- Центральный блок (Заголовок, Печатающийся текст, Оффер, Штамп) -->
+		<!-- Центральный блок: Типографический манифест и архитектурный формуляр -->
 		<div class="relative z-10 my-auto py-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 			<div class="lg:col-span-8 flex flex-col items-start space-y-6">
-				<!-- Префикс и печатающийся текст -->
 				<div>
-					<span class="text-xs font-mono uppercase tracking-[0.2em] text-accent font-bold block mb-3">
-						if content.HeroBadge != "" {
-							{ content.HeroBadge }
-						} else {
-							АДВОКАТСКОЕ БЮРО & ЮРИДИЧЕСКИЙ КОНСАЛТИНГ
-						}
-					</span>
-					
-					<h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-content leading-[1.08] mb-4">
+					<h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-content leading-[1.06] mb-4">
 						if content.HeroTitle != "" {
-							{ content.HeroTitle }
+							<span data-field="content.HeroTitle">{ content.HeroTitle }</span>
 						} else {
-							Правовая защита
+							<span>Правовая защита и нотариат</span>
 						}
 					</h1>
 
-					<!-- Кинематографический Typewriter -->
-					<div class="pt-1">
-						@cinematic.Typewriter("Фокус на ", []string{
-							"защите вашего бизнеса",
-							"сохранении активов",
-							"арбитражных победах",
-							"налоговой безопасности",
+					<!-- Минималистичный текстовый фокус -->
+					<div class="pt-1 text-content-muted text-base sm:text-lg">
+						@cinematic.Typewriter("Специализация: ", []string{
+							"защита корпоративных прав",
+							"удостоверение сделок с долями ООО",
+							"наследственное производство",
+							"депозитные расчёты и эскроу",
 						}, "")
 					</div>
 				</div>
 
-				<p class="text-lg sm:text-xl text-content-muted max-w-2xl leading-relaxed font-normal">
+				<p data-field="content.HeroSubtitle" class="text-base sm:text-lg text-content-muted max-w-2xl leading-relaxed font-normal">
 					if content.HeroSubtitle != "" {
 						{ content.HeroSubtitle }
 					} else {
-						Комплексное ведение сложных судебных споров, сопровождение сделок и защита прав собственников бизнеса в строгом соответствии с законом.
+						Комплексное ведение нотариальных действий, сопровождение сделок и защита прав граждан и бизнеса в строгом соответствии с законодательством Российской Федерации.
 					}
 				</p>
 
-				<!-- Кнопки действий -->
-				<div class="flex flex-wrap items-center gap-5 pt-4">
-					<a
-						href="#booking"
-						class="px-8 py-4 rounded-xl bg-accent text-white font-bold text-sm tracking-wide hover:bg-accent-hover transition-all shadow-xl shadow-accent/20 hover:scale-[1.02] active:scale-[0.98]"
-					>
+				<!-- Кнопки действий (Floor 63: чистые глаголы без стрелочек) -->
+				<div class="flex flex-wrap items-center gap-4 pt-2">
+					@base.Button(base.ButtonProps{
+						Variant: base.BtnAccent,
+						Size:    base.BtnSizeLg,
+						Href:    "#booking",
+						Class:   "font-medium",
+					}) {
 						Записаться на консультацию
-					</a>
-					<a
-						href="#services"
-						class="px-6 py-4 rounded-xl bg-surface-muted/80 text-content font-semibold text-sm hover:bg-surface-muted border border-surface-muted transition-all"
-					>
-						Направления практики ↓
-					</a>
+					}
+					@base.Button(base.ButtonProps{
+						Variant: base.BtnOutline,
+						Size:    base.BtnSizeLg,
+						Href:    "#services",
+						Class:   "font-medium",
+					}) {
+						Реестр нотариальных действий
+					}
 				</div>
 			</div>
 
-			<!-- Правая колонка: Вращающийся кинематографический штамп и карточка адвоката -->
-			<div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col items-center justify-center gap-8">
-				<!-- Вращающийся бейдж доверия -->
-				<div class="p-4 rounded-3xl bg-surface-muted/30 border border-surface-muted flex items-center justify-center shadow-lg">
-					@cinematic.CircularTextBadge("АДВОКАТСКАЯ ТАЙНА • 100% КОНФИДЕНЦИАЛЬНОСТЬ • ", "⚖️", 170)
-				</div>
-
-				<!-- Карточка доверия -->
-				<div class="p-6 rounded-2xl bg-surface border border-surface-muted shadow-md max-w-xs text-center sm:text-left">
-					<div class="text-xs uppercase tracking-wider text-accent font-bold mb-1">
-						Персональная ответственность
-					</div>
-					<div class="text-base font-bold text-content mb-1">
-						if content.OwnerName != "" {
-							{ content.OwnerName }
-						} else {
-							Адвокат коллегии
+			<!-- Правая колонка: Архитектурный формуляр доверия (Floor 11: плоский реестр с hairlines) -->
+			<div class="lg:col-span-4 flex flex-col items-stretch max-w-sm w-full mx-auto lg:mx-0">
+				<div class="p-6 bg-surface-muted border border-content/10 space-y-4">
+					<div class="border-b border-content/10 pb-3">
+						<div class="text-xs text-content-muted">Персональная ответственность</div>
+						<div class="text-base font-bold text-content mt-1">
+							if content.OwnerName != "" {
+								<span data-field="content.OwnerName">{ content.OwnerName }</span>
+							} else {
+								<span>Нотариус города Москвы</span>
+							}
+						</div>
+						if content.OwnerTitle != "" {
+							<div class="text-xs text-content-muted mt-0.5" data-field="content.OwnerTitle">{ content.OwnerTitle }</div>
 						}
 					</div>
-					<p class="text-xs text-content-muted leading-relaxed">
-						Строгое соблюдение Кодекса профессиональной этики адвоката РФ.
-					</p>
+
+					<div class="space-y-2.5 text-xs text-content-muted leading-relaxed">
+						<div class="flex items-start gap-2">
+							<span class="text-accent">•</span>
+							<span>Приказ Министерства юстиции РФ и статус нотариуса</span>
+						</div>
+						<div class="flex items-start gap-2">
+							<span class="text-accent">•</span>
+							<span>Прямое электронное взаимодействие с Росреестром и ФНС</span>
+						</div>
+						<div class="flex items-start gap-2">
+							<span class="text-accent">•</span>
+							<span>Полная нотариальная тайна и имущественная ответственность</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- Нижняя бегущая строка с направлениями практики -->
-		<div class="relative z-10 pt-4 -mx-6 sm:-mx-10 lg:-mx-14 border-t border-surface-muted/60">
+		<!-- Нижняя бегущая строка направлений практики (Floor 67: sentence-case, без капслока) -->
+		<div class="relative z-10 pt-4 -mx-6 sm:-mx-10 lg:-mx-14 border-t border-content/10">
 			@cinematic.KineticMarquee([]string{
-				"АРБИТРАЖНЫЙ СУД",
-				"ЗАЩИТА БИЗНЕСА",
-				"НАЛОГОВЫЕ СПОРЫ",
-				"БАНКРОТСТВО",
-				"M&A СДЕЛКИ",
-				"НЕДВИЖИМОСТЬ И ЗЕМЛЯ",
-				"УГОЛОВНО-ПРАВОВАЯ ЗАЩИТА",
-				"ИСПОЛНИТЕЛЬНОЕ ПРОИЗВОДСТВО",
+				"Сделки с недвижимостью",
+				"Корпоративные решения и доли ООО",
+				"Удостоверение доверенностей",
+				"Наследственные дела",
+				"Депозит нотариуса",
+				"Электронная регистрация в Росреестре",
+				"Обеспечение доказательств в сети Интернет",
+				"Брачные договоры и соглашения",
 			}, 28, false)
 		</div>
 	</section>
