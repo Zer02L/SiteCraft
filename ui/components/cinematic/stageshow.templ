@@ -1,0 +1,327 @@
+package cinematic
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/Oudwins/tailwind-merge-go"
+)
+
+// StageshowStageProps определяет свойства контейнера сцены Faux UI
+type StageshowStageProps struct {
+	ID         string
+	Bleed      bool
+	Background string
+	Class      string
+}
+
+// StageshowStage — контейнер сцены для Faux UI с поддержкой кадрирования и обрезки краев
+templ StageshowStage(props StageshowStageProps) {
+	<div
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		class={ twmerge.Merge(
+			"relative w-full overflow-hidden rounded-2xl select-none",
+			props.Background,
+			props.Class,
+		) }
+		data-component="stageshow-stage"
+		data-source="ui/components/cinematic/stageshow.templ"
+	>
+		{ children... }
+	</div>
+}
+
+// MockWindowProps определяет параметры окна приложения или браузера
+type MockWindowProps struct {
+	ID        string
+	Title     string
+	URL       string
+	ShowDots  bool
+	Class     string
+}
+
+// MockWindow — окно приложения десктопа с кнопками macOS, адресной строкой и тонкими гранями
+templ MockWindow(props MockWindowProps) {
+	<div
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		class={ twmerge.Merge(
+			"relative flex flex-col bg-surface border border-content/10 rounded-xl shadow-2xl overflow-hidden",
+			props.Class,
+		) }
+		data-component="stageshow-window"
+		data-source="ui/components/cinematic/stageshow.templ"
+	>
+		<!-- Window Header / Chrome -->
+		<div class="flex items-center justify-between px-3.5 py-2.5 bg-content/5 border-b border-content/10 gap-3">
+			<div class="flex items-center gap-1.5 shrink-0">
+				<span class="w-3 h-3 rounded-full bg-rose-500/80 border border-rose-600/30"></span>
+				<span class="w-3 h-3 rounded-full bg-amber-500/80 border border-amber-600/30"></span>
+				<span class="w-3 h-3 rounded-full bg-emerald-500/80 border border-emerald-600/30"></span>
+			</div>
+			if props.URL != "" {
+				<div class="flex items-center justify-center flex-1 max-w-xs mx-auto px-3 py-1 bg-surface/80 rounded-md border border-content/10 text-[11px] font-mono text-content/60 truncate">
+					<svg class="w-3 h-3 mr-1.5 opacity-40 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+					</svg>
+					<span>{ props.URL }</span>
+				</div>
+			} else if props.Title != "" {
+				<div class="text-xs font-medium text-content/70 truncate flex-1 text-center">
+					{ props.Title }
+				</div>
+			} else {
+				<div class="flex-1"></div>
+			}
+			<div class="w-12 shrink-0"></div>
+		</div>
+
+		<!-- Window Content Area -->
+		<div class="flex-1 overflow-hidden relative">
+			{ children... }
+		</div>
+	</div>
+}
+
+// MockPhoneProps определяет параметры смартфона
+type MockPhoneProps struct {
+	ID            string
+	DynamicIsland bool
+	Class         string
+}
+
+// MockPhone — мокап мобильного устройства с Dynamic Island и скруглением экрана
+templ MockPhone(props MockPhoneProps) {
+	<div
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		class={ twmerge.Merge(
+			"relative w-[280px] sm:w-[320px] aspect-[9/19] bg-black rounded-[42px] p-3 shadow-2xl border-4 border-content/20 ring-1 ring-white/10 overflow-hidden flex flex-col",
+			props.Class,
+		) }
+		data-component="stageshow-phone"
+		data-source="ui/components/cinematic/stageshow.templ"
+	>
+		<!-- Dynamic Island -->
+		<div class="absolute top-4 left-1/2 -translate-x-1/2 z-20 w-24 h-5 bg-black rounded-full flex items-center justify-between px-2 shadow-sm border border-white/10">
+			<span class="w-2 h-2 rounded-full bg-emerald-500/80 animate-pulse"></span>
+			<span class="w-2.5 h-2.5 rounded-full bg-white/20"></span>
+		</div>
+
+		<!-- Phone Screen Area -->
+		<div class="flex-1 bg-surface rounded-[32px] overflow-hidden pt-8 flex flex-col relative border border-content/5">
+			{ children... }
+		</div>
+	</div>
+}
+
+// MockTerminalProps определяет свойства окна консоли/терминала
+type MockTerminalProps struct {
+	ID     string
+	Title  string
+	Prompt string
+	Class  string
+}
+
+// MockTerminal — терминал разработчика в моноширинном стиле
+templ MockTerminal(props MockTerminalProps) {
+	<div
+		if props.ID != "" {
+			id={ props.ID }
+		}
+		class={ twmerge.Merge(
+			"relative flex flex-col bg-zinc-950 text-zinc-100 font-mono text-xs border border-zinc-800 rounded-xl shadow-2xl overflow-hidden",
+			props.Class,
+		) }
+		data-component="stageshow-terminal"
+		data-source="ui/components/cinematic/stageshow.templ"
+	>
+		<!-- Terminal Bar -->
+		<div class="flex items-center justify-between px-3 py-2 bg-zinc-900 border-b border-zinc-800">
+			<div class="flex items-center gap-1.5">
+				<span class="w-2.5 h-2.5 rounded-full bg-zinc-700"></span>
+				<span class="w-2.5 h-2.5 rounded-full bg-zinc-700"></span>
+				<span class="w-2.5 h-2.5 rounded-full bg-zinc-700"></span>
+			</div>
+			if props.Title != "" {
+				<span class="text-[11px] text-zinc-400 font-mono">{ props.Title }</span>
+			}
+			<div class="w-8"></div>
+		</div>
+
+		<!-- Terminal Body -->
+		<div class="p-4 space-y-2 overflow-hidden flex-1">
+			{ children... }
+		</div>
+	</div>
+}
+
+// PlaceholderBarProps определяет свойства плашки-заглушки текста
+type PlaceholderBarProps struct {
+	Width   string // e.g., "w-32", "w-3/4", "w-full"
+	Height  string // e.g., "h-2", "h-2.5", "h-3"
+	Opacity string // e.g., "opacity-20", "opacity-40"
+	Class   string
+}
+
+// PlaceholderBar — нейтральная плашка для фонового текста, не отвлекающая от ключевого сюжета
+templ PlaceholderBar(props PlaceholderBarProps) {
+	<div
+		class={ twmerge.Merge(
+			"rounded-full bg-content/15 shrink-0",
+			props.Width,
+			props.Height,
+			props.Opacity,
+			props.Class,
+		) }
+		aria-hidden="true"
+	></div>
+}
+
+// MockRowProps определяет параметры строки в таблице/списке
+type MockRowProps struct {
+	Title         string
+	Subtitle      string
+	BadgeText     string
+	BadgeColor    string
+	Active        bool
+	Class         string
+}
+
+// MockRow — строка списка или таблицы в мокапе с поддержкой активного состояния
+templ MockRow(props MockRowProps) {
+	{{
+		activeClass := "bg-content/5 border-content/5 hover:border-content/10"
+		if props.Active {
+			activeClass = "bg-accent/10 border-accent/30 text-content"
+		}
+	}}
+	<div
+		class={ twmerge.Merge(
+			"flex items-center justify-between px-3 py-2.5 rounded-lg border transition-colors duration-200",
+			activeClass,
+			props.Class,
+		) }
+	>
+		<div class="flex items-center gap-2.5 min-w-0">
+			<div class="w-2 h-2 rounded-full shrink-0 bg-content/30"></div>
+			<div class="flex flex-col gap-1 min-w-0">
+				if props.Title != "" {
+					<span class="text-xs font-medium text-content truncate leading-none">{ props.Title }</span>
+				} else {
+					@PlaceholderBar(PlaceholderBarProps{Width: "w-24", Height: "h-2"})
+				}
+				if props.Subtitle != "" {
+					<span class="text-[10px] text-content/50 truncate leading-none">{ props.Subtitle }</span>
+				}
+			</div>
+		</div>
+
+		if props.BadgeText != "" {
+			<span class={ twmerge.Merge("text-[10px] font-mono px-2 py-0.5 rounded-full shrink-0", props.BadgeColor) }>
+				{ props.BadgeText }
+			</span>
+		}
+	</div>
+}
+
+// MockSatelliteProps определяет свойства нависающего сателлит-блока
+type MockSatelliteProps struct {
+	Class string
+}
+
+// MockSatellite — парящий блок (чек, тост, уведомление), нависающий над краем основного фрейма
+templ MockSatellite(props MockSatelliteProps) {
+	<div
+		class={ twmerge.Merge(
+			"absolute z-30 bg-surface/95 backdrop-blur-md border border-content/15 rounded-xl shadow-2xl p-4 transition-all duration-300",
+			props.Class,
+		) }
+		data-component="stageshow-satellite"
+	>
+		{ children... }
+	</div>
+}
+
+// MockCursorWaypoint определяет точку маршрута виртуального курсора
+type MockCursorWaypoint struct {
+	X          int  `json:"x"`
+	Y          int  `json:"y"`
+	Click      bool `json:"click"`
+	DurationMs int  `json:"duration_ms"`
+}
+
+// MockCursorProps определяет свойства интерактивного курсора
+type MockCursorProps struct {
+	ID        string
+	Waypoints []MockCursorWaypoint
+	Class     string
+}
+
+// jsonWaypoints сериализует точки маршрута в JSON
+func jsonWaypoints(waypoints []MockCursorWaypoint) string {
+	b, err := json.Marshal(waypoints)
+	if err != nil {
+		return "[]"
+	}
+	return string(b)
+}
+
+// MockCursor — виртуальный анимированный курсор на Alpine.js для демонстрации сценариев в Faux UI
+templ MockCursor(props MockCursorProps) {
+	<div
+		class={ twmerge.Merge(
+			"pointer-events-none absolute z-40 transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform",
+			props.Class,
+		) }
+		x-data={ fmt.Sprintf(`{
+			waypoints: %s,
+			idx: 0,
+			x: 0,
+			y: 0,
+			clicking: false,
+			reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+			timer: null,
+			init() {
+				if (this.reduced || !this.waypoints.length) return;
+				this.step();
+			},
+			step() {
+				const pt = this.waypoints[this.idx];
+				this.x = pt.x;
+				this.y = pt.y;
+				this.clicking = false;
+				
+				setTimeout(() => {
+					if (pt.click) {
+						this.clicking = true;
+						setTimeout(() => { this.clicking = false; }, 200);
+					}
+				}, 600);
+
+				this.timer = setTimeout(() => {
+					this.idx = (this.idx + 1) %% this.waypoints.length;
+					this.step();
+				}, pt.duration_ms || 2000);
+			},
+			destroy() {
+				if (this.timer) clearTimeout(this.timer);
+			}
+		}`, jsonWaypoints(props.Waypoints)) }
+		:style="`transform: translate3d(${x}px, ${y}px, 0px)`"
+		x-show="!reduced"
+		data-component="stageshow-cursor"
+	>
+		<svg
+			class="w-6 h-6 drop-shadow-md text-content transition-transform duration-150"
+			:class="{ 'scale-75 -translate-y-0.5': clicking }"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<path d="M4 0l16 12.279-6.951 1.17 4.325 8.817-3.596 1.734-4.35-8.879-5.428 5.428v-20.549z"></path>
+		</svg>
+	</div>
+}
