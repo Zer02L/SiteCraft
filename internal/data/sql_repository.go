@@ -21,6 +21,7 @@ import (
 type Repository struct {
 	queries *db.Queries
 	rawDB   *sql.DB
+	cache   *cache.Store
 }
 
 var globalRepo *Repository
@@ -40,12 +41,27 @@ func NewRepository(database *sql.DB, queries *db.Queries) *Repository {
 	return &Repository{
 		queries: queries,
 		rawDB:   database,
+		cache:   cache.GetStore(),
 	}
+}
+
+// WithCache overrides the cache store for this repository instance.
+func (r *Repository) WithCache(c *cache.Store) *Repository {
+	r.cache = c
+	return r
+}
+
+// Cache returns the configured cache store or falls back to default.
+func (r *Repository) Cache() *cache.Store {
+	if r.cache != nil {
+		return r.cache
+	}
+	return cache.GetStore()
 }
 
 // GetSiteSettings retrieves settings from cache or database.
 func (r *Repository) GetSiteSettings(ctx context.Context) (models.SiteSettings, error) {
-	c := cache.GetStore()
+	c := r.Cache()
 	if cached, ok := c.GetSettings(); ok {
 		return cached, nil
 	}
@@ -198,13 +214,13 @@ func (r *Repository) UpsertSiteSettings(ctx context.Context, s models.SiteSettin
 	if err != nil {
 		return err
 	}
-	cache.GetStore().InvalidateSettings()
+	r.Cache().InvalidateSettings()
 	return nil
 }
 
 // GetSiteContent retrieves content from cache or database.
 func (r *Repository) GetSiteContent(ctx context.Context) (models.SiteContent, error) {
-	c := cache.GetStore()
+	c := r.Cache()
 	if cached, ok := c.GetContent(); ok {
 		return cached, nil
 	}
@@ -276,13 +292,13 @@ func (r *Repository) UpsertSiteContent(ctx context.Context, c models.SiteContent
 	if err != nil {
 		return err
 	}
-	cache.GetStore().InvalidateContent()
+	r.Cache().InvalidateContent()
 	return nil
 }
 
 // GetServices returns active services.
 func (r *Repository) GetServices(ctx context.Context) ([]models.ServiceItem, error) {
-	c := cache.GetStore()
+	c := r.Cache()
 	if cached, ok := c.GetServices(); ok {
 		return cached, nil
 	}
@@ -312,7 +328,7 @@ func (r *Repository) GetServices(ctx context.Context) ([]models.ServiceItem, err
 
 // GetPageBlocks returns active page blocks ordered by index.
 func (r *Repository) GetPageBlocks(ctx context.Context) ([]models.PageBlock, error) {
-	c := cache.GetStore()
+	c := r.Cache()
 	if cached, ok := c.GetBlocks(); ok {
 		return cached, nil
 	}
@@ -396,7 +412,7 @@ func (r *Repository) CreateLead(ctx context.Context, lead models.Lead) (models.L
 
 // GetArticles returns published articles.
 func (r *Repository) GetArticles(ctx context.Context) ([]models.ArticleItem, error) {
-	c := cache.GetStore()
+	c := r.Cache()
 	if cached, ok := c.GetArticles(); ok {
 		return cached, nil
 	}
@@ -600,7 +616,7 @@ func (r *Repository) ApplyPreset(ctx context.Context, presetPath string) error {
 				IsPreorder:  isPre,
 			})
 		}
-		cache.GetStore().InvalidateServices()
+		r.Cache().InvalidateServices()
 	}
 
 	// 4. Page Blocks
@@ -623,9 +639,363 @@ func (r *Repository) ApplyPreset(ctx context.Context, presetPath string) error {
 				Payload:    string(payloadBytes),
 			})
 		}
-		cache.GetStore().InvalidateBlocks()
+		r.Cache().InvalidateBlocks()
 	}
 
 	slog.Info("Successfully applied preset to SQL database", "preset", presetPath)
 	return nil
 }
+
+// --- Services Operations ---
+
+// GetServiceByID returns a single service by ID.
+func (r *Repository) GetServiceByID(ctx context.Context, id string) (models.ServiceItem, error) {
+	row, err := r.queries.GetServiceByID(ctx, id)
+	if err != nil {
+		return models.ServiceItem{}, err
+	}
+	return models.ServiceItem{
+		ID:          row.ID,
+		Title:       row.Title,
+		Description: row.Description,
+		Price:       row.Price,
+		Order:       int(row.OrderIndex),
+		Active:      row.Active == 1,
+		StockCount:  int(row.StockCount),
+		IsPreorder:  row.IsPreorder == 1,
+		IsDeleted:   row.IsDeleted == 1,
+	}, nil
+}
+
+// SaveService creates or updates a service and invalidates services cache.
+func (r *Repository) SaveService(ctx context.Context, item models.ServiceItem) error {
+	actInt := int64(0)
+	if item.Active {
+		actInt = 1
+	}
+	stock := int64(item.StockCount)
+	if stock == 0 {
+		stock = -1
+	}
+	preorder := int64(0)
+	if item.IsPreorder {
+		preorder = 1
+	}
+
+	var err error
+	if item.ID != "" {
+		_, err = r.queries.UpdateService(ctx, db.UpdateServiceParams{
+			ID:          item.ID,
+			Title:       item.Title,
+			Description: item.Description,
+			Price:       item.Price,
+			OrderIndex:  int64(item.Order),
+			Active:      actInt,
+			StockCount:  stock,
+			IsPreorder:  preorder,
+		})
+	} else {
+		_, err = r.queries.CreateService(ctx, db.CreateServiceParams{
+			ID:          uuid.New().String(),
+			Title:       item.Title,
+			Description: item.Description,
+			Price:       item.Price,
+			OrderIndex:  int64(item.Order),
+			Active:      actInt,
+			StockCount:  stock,
+			IsPreorder:  preorder,
+		})
+	}
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateServices()
+	return nil
+}
+
+// ToggleService toggles the active state of a service and invalidates services cache.
+func (r *Repository) ToggleService(ctx context.Context, id string) error {
+	svc, err := r.queries.GetServiceByID(ctx, id)
+	if err != nil {
+		return err
+	}
+	newActive := int64(1)
+	if svc.Active == 1 {
+		newActive = 0
+	}
+	_, err = r.queries.UpdateService(ctx, db.UpdateServiceParams{
+		ID:          svc.ID,
+		Title:       svc.Title,
+		Description: svc.Description,
+		Price:       svc.Price,
+		OrderIndex:  svc.OrderIndex,
+		Active:      newActive,
+		StockCount:  svc.StockCount,
+		IsPreorder:  svc.IsPreorder,
+	})
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateServices()
+	return nil
+}
+
+// SoftDeleteService marks a service as deleted and invalidates services cache.
+func (r *Repository) SoftDeleteService(ctx context.Context, id string) error {
+	if err := r.queries.SoftDeleteService(ctx, id); err != nil {
+		return err
+	}
+	r.Cache().InvalidateServices()
+	return nil
+}
+
+// --- Page Block Operations ---
+
+// GetPageBlockByID retrieves a page block by ID.
+func (r *Repository) GetPageBlockByID(ctx context.Context, id string) (models.PageBlock, error) {
+	row, err := r.queries.GetPageBlockByID(ctx, id)
+	if err != nil {
+		return models.PageBlock{}, err
+	}
+	var payload map[string]interface{}
+	if row.Payload != "" {
+		_ = json.Unmarshal([]byte(row.Payload), &payload)
+	}
+	return models.PageBlock{
+		ID:      row.ID,
+		Type:    row.Type,
+		Title:   row.Title,
+		Content: row.Content,
+		Order:   int(row.OrderIndex),
+		Active:  row.Active == 1,
+		Payload: payload,
+	}, nil
+}
+
+// CreatePageBlock inserts a page block and invalidates blocks cache.
+func (r *Repository) CreatePageBlock(ctx context.Context, block models.PageBlock) (models.PageBlock, error) {
+	if block.ID == "" {
+		block.ID = uuid.New().String()
+	}
+	payloadBytes, _ := json.Marshal(block.Payload)
+	act := int64(1)
+	if !block.Active {
+		act = 0
+	}
+	_, err := r.queries.CreatePageBlock(ctx, db.CreatePageBlockParams{
+		ID:         block.ID,
+		PageID:     "",
+		Type:       block.Type,
+		Title:      block.Title,
+		Content:    block.Content,
+		OrderIndex: int64(block.Order),
+		Active:     act,
+		Payload:    string(payloadBytes),
+	})
+	if err != nil {
+		return block, err
+	}
+	r.Cache().InvalidateBlocks()
+	return block, nil
+}
+
+// TogglePageBlock toggles block visibility and invalidates blocks cache.
+func (r *Repository) TogglePageBlock(ctx context.Context, id string) error {
+	block, err := r.queries.GetPageBlockByID(ctx, id)
+	if err != nil {
+		return err
+	}
+	newActive := int64(1)
+	if block.Active == 1 {
+		newActive = 0
+	}
+	_, err = r.queries.UpdatePageBlock(ctx, db.UpdatePageBlockParams{
+		ID:         block.ID,
+		Type:       block.Type,
+		Title:      block.Title,
+		Content:    block.Content,
+		OrderIndex: block.OrderIndex,
+		Active:     newActive,
+		Payload:    block.Payload,
+	})
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateBlocks()
+	return nil
+}
+
+// SwapPageBlockOrder swaps order of two blocks atomically inside a transaction and invalidates cache.
+func (r *Repository) SwapPageBlockOrder(ctx context.Context, id1 string, order1 int64, id2 string, order2 int64) error {
+	tx, err := r.rawDB.BeginTx(ctx, nil)
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	qtx := r.queries.WithTx(tx)
+	if err := qtx.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{
+		ID:         id1,
+		OrderIndex: order2,
+	}); err != nil {
+		return fmt.Errorf("failed to update block order %s: %w", id1, err)
+	}
+	if err := qtx.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{
+		ID:         id2,
+		OrderIndex: order1,
+	}); err != nil {
+		return fmt.Errorf("failed to update block order %s: %w", id2, err)
+	}
+
+	if err := tx.Commit(); err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
+	}
+
+	r.Cache().InvalidateBlocks()
+	return nil
+}
+
+// DeletePageBlock deletes a block by ID and invalidates cache.
+func (r *Repository) DeletePageBlock(ctx context.Context, id string) error {
+	if err := r.queries.DeletePageBlock(ctx, id); err != nil {
+		return err
+	}
+	r.Cache().InvalidateBlocks()
+	return nil
+}
+
+// --- Article Operations ---
+
+// GetArticleByID returns an article by ID.
+func (r *Repository) GetArticleByID(ctx context.Context, id string) (models.ArticleItem, error) {
+	art, err := r.queries.GetArticleByID(ctx, id)
+	if err != nil {
+		return models.ArticleItem{}, err
+	}
+	return models.ArticleItem{
+		ID:             art.ID,
+		Title:          art.Title,
+		Slug:           art.Slug,
+		Excerpt:        art.Excerpt,
+		Content:        art.Content,
+		CoverImage:     art.CoverImage,
+		AuthorName:     art.AuthorName,
+		PublishedAt:    art.PublishedAt,
+		IsPublished:    art.IsPublished == 1,
+		ViewsCount:     int(art.ViewsCount),
+		SEOTitle:       art.SeoTitle,
+		SEODescription: art.SeoDescription,
+		Tags:           strings.Split(art.Tags, ","),
+	}, nil
+}
+
+// SaveArticle creates or updates an article and invalidates articles cache.
+func (r *Repository) SaveArticle(ctx context.Context, item models.ArticleItem) error {
+	pubInt := int64(0)
+	if item.IsPublished {
+		pubInt = 1
+	}
+	tags := strings.Join(item.Tags, ",")
+
+	var err error
+	if item.ID != "" {
+		_, err = r.queries.UpdateArticle(ctx, db.UpdateArticleParams{
+			ID:             item.ID,
+			Title:          item.Title,
+			Slug:           item.Slug,
+			Excerpt:        item.Excerpt,
+			Content:        item.Content,
+			CoverImage:     item.CoverImage,
+			AuthorName:     item.AuthorName,
+			PublishedAt:    item.PublishedAt,
+			IsPublished:    pubInt,
+			SeoTitle:       item.SEOTitle,
+			SeoDescription: item.SEODescription,
+			Tags:           tags,
+		})
+	} else {
+		_, err = r.queries.CreateArticle(ctx, db.CreateArticleParams{
+			ID:             uuid.New().String(),
+			Title:          item.Title,
+			Slug:           item.Slug,
+			Excerpt:        item.Excerpt,
+			Content:        item.Content,
+			CoverImage:     item.CoverImage,
+			AuthorName:     item.AuthorName,
+			PublishedAt:    item.PublishedAt,
+			IsPublished:    pubInt,
+			SeoTitle:       item.SEOTitle,
+			SeoDescription: item.SEODescription,
+			Tags:           tags,
+		})
+	}
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateArticles()
+	return nil
+}
+
+// ToggleArticle toggles publication status of an article and invalidates articles cache.
+func (r *Repository) ToggleArticle(ctx context.Context, id string) error {
+	art, err := r.queries.GetArticleByID(ctx, id)
+	if err != nil {
+		return err
+	}
+	newPub := int64(1)
+	if art.IsPublished == 1 {
+		newPub = 0
+	}
+	_, err = r.queries.UpdateArticle(ctx, db.UpdateArticleParams{
+		ID:             art.ID,
+		Title:          art.Title,
+		Slug:           art.Slug,
+		Excerpt:        art.Excerpt,
+		Content:        art.Content,
+		CoverImage:     art.CoverImage,
+		AuthorName:     art.AuthorName,
+		PublishedAt:    art.PublishedAt,
+		IsPublished:    newPub,
+		SeoTitle:       art.SeoTitle,
+		SeoDescription: art.SeoDescription,
+		Tags:           art.Tags,
+	})
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateArticles()
+	return nil
+}
+
+// SoftDeleteArticle soft deletes an article and invalidates articles cache.
+func (r *Repository) SoftDeleteArticle(ctx context.Context, id string) error {
+	if err := r.queries.SoftDeleteArticle(ctx, id); err != nil {
+		return err
+	}
+	r.Cache().InvalidateArticles()
+	return nil
+}
+
+// --- Leads and Reviews ---
+
+// UpdateLeadStatus updates the status of a lead.
+func (r *Repository) UpdateLeadStatus(ctx context.Context, id, status string) error {
+	_, err := r.queries.UpdateLeadStatus(ctx, db.UpdateLeadStatusParams{
+		ID:     id,
+		Status: status,
+	})
+	return err
+}
+
+// ApproveReview marks a review as approved.
+func (r *Repository) ApproveReview(ctx context.Context, id string) error {
+	_, err := r.queries.ApproveReview(ctx, id)
+	return err
+}
+
+// DeleteReview deletes a review by ID.
+func (r *Repository) DeleteReview(ctx context.Context, id string) error {
+	_, err := r.rawDB.ExecContext(ctx, "DELETE FROM reviews WHERE id = ?", id)
+	return err
+}
+

@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -157,32 +157,32 @@ func SendTelegramMessage(token string, bodyData map[string]interface{}) {
 	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", token)
 	payloadBytes, err := json.Marshal(bodyData)
 	if err != nil {
-		log.Printf("[Notification Error] Failed to encode TG payload: %v\n", err)
+		slog.Error("Failed to encode TG payload", "error", err)
 		return
 	}
 
 	resp, err := httpClient.Post(apiURL, "application/json", bytes.NewReader(payloadBytes))
 	if err != nil {
-		log.Printf("[Notification Error] Failed to send Telegram alert: %v\n", err)
+		slog.Error("Failed to send Telegram alert", "error", err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 300 {
-		log.Printf("[Notification Error] Telegram API responded with status: %d\n", resp.StatusCode)
+		slog.Warn("Telegram API responded with error status", "status", resp.StatusCode)
 	}
 }
 
 func sendWebhook(webhookURL string, lead models.Lead) {
 	payloadBytes, err := json.Marshal(lead)
 	if err != nil {
-		log.Printf("[Notification Error] Failed to encode webhook payload: %v\n", err)
+		slog.Error("Failed to encode webhook payload", "error", err)
 		return
 	}
 
 	req, err := http.NewRequest("POST", webhookURL, bytes.NewReader(payloadBytes))
 	if err != nil {
-		log.Printf("[Notification Error] Failed to create webhook request: %v\n", err)
+		slog.Error("Failed to create webhook request", "error", err)
 		return
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -190,12 +190,12 @@ func sendWebhook(webhookURL string, lead models.Lead) {
 
 	resp, err := httpClient.Do(req)
 	if err != nil {
-		log.Printf("[Notification Error] Failed to dispatch webhook: %v\n", err)
+		slog.Error("Failed to dispatch webhook", "error", err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode >= 300 {
-		log.Printf("[Notification Error] Webhook responded with status: %d\n", resp.StatusCode)
+		slog.Warn("Webhook responded with error status", "status", resp.StatusCode)
 	}
 }

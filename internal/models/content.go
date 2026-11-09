@@ -67,9 +67,45 @@ type SiteSettings struct {
 	EnableCareers       bool   `json:"enable_careers"`
 	EnableCookieConsent bool   `json:"enable_cookie_consent"`
 
+	// Модули кабинета администратора: список явно отключенных модулей через запятую (например "reviews,fleet")
+	DisabledModules string `json:"disabled_modules,omitempty"`
+
 	// Пароль для входа в клиентский кабинет (/client)
 	ClientAdminPassword     string `json:"client_admin_password"` // Legacy plain password for auto-migration
 	ClientAdminPasswordHash string `json:"client_admin_password_hash"`
+}
+
+// IsModuleActive checks whether an admin/business module is active for the current site.
+func (s SiteSettings) IsModuleActive(moduleID string) bool {
+	if s.DisabledModules != "" {
+		for _, disabled := range strings.Split(s.DisabledModules, ",") {
+			if strings.TrimSpace(disabled) == moduleID {
+				return false
+			}
+		}
+	}
+	switch moduleID {
+	case "articles", "blog":
+		return s.EnableBlog
+	case "fleet":
+		return s.EnableFleet
+	case "cart", "orders":
+		return s.EnableCart
+	case "live_chat", "chat":
+		return s.EnableLiveChat
+	default:
+		return true
+	}
+}
+
+// AdminTabModule represents a client admin panel tab/module passed to UI templates.
+type AdminTabModule struct {
+	ID         string `json:"id"`
+	Title      string `json:"title"`
+	Route      string `json:"route"`
+	BadgeCount int    `json:"badge_count"`
+	BadgeClass string `json:"badge_class"`
+	Order      int    `json:"order"`
 }
 
 // SiteContent holds content blocks displayed on the website
