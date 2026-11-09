@@ -140,7 +140,7 @@ flowchart TD
   * `media/` — Пайплайн обработки картинок (миниатюры, WebP/AVIF, кэширование).
   * `models/` — Доменные Go-структуры (`Lead`, `Service`, `Article`, `ServiceOrder`, `ReviewItem`, `ThemeConfig`).
   * `notifications/` — Telegram-бот нотификатор и CRM вебхуки.
-  * `server/` — Корневой сервер Chi, стек middleware, маршрутизация и graceful shutdown.
+  * `server/` — Корневой сервер Chi, стек middleware, маршрутизация, модульный реестр панели управления (`admin_registry.go`) и graceful shutdown.
 * `ui/` — Фронтенд-слой:
   * `assets/` — CSS-first Tailwind v4 конфиг (`input.css`) и скомпилированный бандл (`styles.css`).
   * `components/base/` — Zero-cost CVA UI-примитивы (`Button`, `Badge`, `Card`).
@@ -213,6 +213,39 @@ flowchart TD
 | `/api/review` | `POST` | Отправка отзыва с фотографиями | HTMX статус модерации |
 | `/fleet/*` | `GET/POST`| Мультисайтовый пульт управления инстансами | HTML / JSON |
 | `/sitemap.xml`, `/robots.txt` | `GET` | Динамические SEO-файлы | XML / Plain Text |
+
+---
+
+### 6.1 Модульная архитектура клиентской админ-панели (AdminModule Registry) и безопасность
+
+Клиентский кабинет управления (`/admin`, `/client`) спроектирован по паттерну **Module Registry & Dynamic Tabs** с гарантией безопасности на уровне Go Middleware:
+
+```mermaid
+flowchart LR
+    Request["HTTP Request (/admin/tab/{id})"] --> AuthCheck["auth.RequireAdminAuth (SCS Session)"]
+    AuthCheck --> RequireMod{"RequireModule(id)\nIsModuleActive?"}
+    RequireMod -- "Нет / Выключен" --> Status404["404 Not Found (Zero Leakage)"]
+    RequireMod -- "Да / Активен" --> Handler["Module.TabHandler (Templ HTML Fragment)"]
+```
+
+#### Архитектурные принципы:
+1. **Единый контракт модуля (`AdminModule`):**
+   Каждый раздел панели описывается изолированной структурой в [`internal/server/admin_registry.go`](file:///home/zerg/Projects/web/SiteCreator/internal/server/admin_registry.go):
+   * `ID` — уникальный идентификатор (`leads`, `contacts`, `services`, `articles`, `reviews`, `security`, `fleet`).
+   * `Title` — локализованное название для меню.
+   * `Order` — вес сортировки в сайдбаре.
+   * `IsEnabled` — предикат проверки активности (чтение флагов `SiteSettings.EnableBlog`, `EnableFleet`, `EnableCart`).
+   * `Badge` — динамическая функция подсчета счетчиков (например, кол-во новых заявок).
+   * `TabHandler` — HTTP-обработчик, возвращающий HTML-фрагмент для HTMX-свопа.
+2. **Нулевая утечка информации (Defense-in-Depth):**
+   * Если модуль отключен клиенту, доступ к нему блокируется через `s.RequireModule(id, handler)` и `s.RequireModuleGroup(id)`.
+   * Запрос к отключенной вкладке возвращает **HTTP 404 Not Found**, исключая несанкционированное зондирование API и функционала.
+   * Любые действия модуля (`POST /admin/articles/save`, `POST /admin/services/new` и т.д.) обернуты в middleware группы.
+3. **Безопасный Fallback (`ResolveActiveTab`):**
+   * Если пользователь обращается к дашборду по прямой закладке с отключенным модулем (`/admin?tab=articles` при `EnableBlog == false`), сервер автоматически выбирает первый доступный активный модуль (`leads` или `contacts`).
+4. **Динамический UI без хардкода:**
+   * В шаблоне [`ui/pages/client_admin.templ`](file:///home/zerg/Projects/web/SiteCreator/ui/pages/client_admin.templ) мобильный `<select>` и десктопный сайдбар `<nav>` рендерятся единым циклом по `modules []AdminTabModule`.
+   * Для отключенных модулей кнопки физически отсутствуют в DOM-дереве.
 
 ---
 

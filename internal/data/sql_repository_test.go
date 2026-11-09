@@ -95,4 +95,63 @@ func TestSQLRepositoryOperations(t *testing.T) {
 	if len(blocks) == 0 {
 		t.Errorf("expected page blocks to be loaded from preset")
 	}
+
+	// 5. Test Service Mutations & Cache Invalidation
+	testSvc := models.ServiceItem{
+		Title:       "Консультация юриста",
+		Description: "Первичная консультация",
+		Price:       "5000",
+		Order:       10,
+		Active:      true,
+	}
+	if err := repo.SaveService(ctx, testSvc); err != nil {
+		t.Fatalf("SaveService failed: %v", err)
+	}
+	svcsAfterSave, err := repo.GetServices(ctx)
+	if err != nil {
+		t.Fatalf("GetServices failed: %v", err)
+	}
+	foundSvc := false
+	var savedSvcID string
+	for _, s := range svcsAfterSave {
+		if s.Title == "Консультация юриста" {
+			foundSvc = true
+			savedSvcID = s.ID
+			break
+		}
+	}
+	if !foundSvc {
+		t.Errorf("expected to find newly saved service in cache/db")
+	}
+
+	// Toggle Service
+	if err := repo.ToggleService(ctx, savedSvcID); err != nil {
+		t.Fatalf("ToggleService failed: %v", err)
+	}
+	toggledSvc, err := repo.GetServiceByID(ctx, savedSvcID)
+	if err != nil {
+		t.Fatalf("GetServiceByID failed: %v", err)
+	}
+	if toggledSvc.Active {
+		t.Errorf("expected service to be inactive after toggle")
+	}
+
+	// 6. Test Block Swap & Transactions
+	b1, err := repo.CreatePageBlock(ctx, models.PageBlock{Type: "hero", Title: "B1", Order: 1, Active: true})
+	if err != nil {
+		t.Fatalf("CreatePageBlock 1 failed: %v", err)
+	}
+	b2, err := repo.CreatePageBlock(ctx, models.PageBlock{Type: "faq", Title: "B2", Order: 2, Active: true})
+	if err != nil {
+		t.Fatalf("CreatePageBlock 2 failed: %v", err)
+	}
+	if err := repo.SwapPageBlockOrder(ctx, b1.ID, 1, b2.ID, 2); err != nil {
+		t.Fatalf("SwapPageBlockOrder failed: %v", err)
+	}
+	b1Updated, _ := repo.GetPageBlockByID(ctx, b1.ID)
+	b2Updated, _ := repo.GetPageBlockByID(ctx, b2.ID)
+	if b1Updated.Order != 2 || b2Updated.Order != 1 {
+		t.Errorf("expected swapped orders (2 and 1), got b1=%d, b2=%d", b1Updated.Order, b2Updated.Order)
+	}
 }
+

@@ -9,13 +9,11 @@ import (
 	"strings"
 
 	"sitecraft/internal/auth"
-	"sitecraft/internal/db"
 	"sitecraft/internal/media"
 	"sitecraft/internal/models"
 	"sitecraft/ui/pages"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
 )
 
 func (s *Server) setupAdminRoutes() {
@@ -29,7 +27,11 @@ func (s *Server) setupAdminRoutes() {
 	s.Router.Post("/client/login", s.HandleAdminLogin)
 	s.Router.Get("/client/logout", s.HandleAdminLogout)
 	s.Router.Get("/client", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/admin"+r.URL.Path[len("/client"):], http.StatusPermanentRedirect)
+		target := "/admin"
+		if r.URL.RawQuery != "" {
+			target += "?" + r.URL.RawQuery
+		}
+		http.Redirect(w, r, target, http.StatusMovedPermanently)
 	})
 
 	// 2. Protected Admin Group
@@ -38,16 +40,28 @@ func (s *Server) setupAdminRoutes() {
 
 		// Dashboard and tabs
 		admin.Get("/admin", s.HandleAdminDashboard)
-		admin.Get("/admin/tab/leads", s.HandleAdminTabLeads)
+
+		// Dynamic modular tab endpoints with security checks
+		admin.Get("/admin/tab/leads", s.RequireModule("leads", s.HandleAdminTabLeads))
+		admin.Get("/client/tab/leads", s.RequireModule("leads", s.HandleAdminTabLeads))
 		admin.Get("/admin/tab/blocks", s.HandleAdminTabBlocks)
+		admin.Get("/client/tab/blocks", s.HandleAdminTabBlocks)
 		admin.Get("/admin/tab/media", s.HandleAdminTabMedia)
+		admin.Get("/client/tab/media", s.HandleAdminTabMedia)
 		admin.Get("/admin/tab/settings", s.HandleAdminTabSettings)
-		admin.Get("/admin/tab/services", s.HandleAdminTabServices)
-		admin.Get("/admin/tab/articles", s.HandleAdminTabArticles)
-		admin.Get("/admin/tab/contacts", s.HandleAdminTabContacts)
-		admin.Get("/admin/tab/reviews", s.HandleAdminTabReviews)
-		admin.Get("/admin/tab/fleet", s.HandleAdminTabFleet)
-		admin.Get("/admin/tab/security", s.HandleAdminTabSecurity)
+		admin.Get("/client/tab/settings", s.HandleAdminTabSettings)
+		admin.Get("/admin/tab/services", s.RequireModule("services", s.HandleAdminTabServices))
+		admin.Get("/client/tab/services", s.RequireModule("services", s.HandleAdminTabServices))
+		admin.Get("/admin/tab/articles", s.RequireModule("articles", s.HandleAdminTabArticles))
+		admin.Get("/client/tab/articles", s.RequireModule("articles", s.HandleAdminTabArticles))
+		admin.Get("/admin/tab/contacts", s.RequireModule("contacts", s.HandleAdminTabContacts))
+		admin.Get("/client/tab/contacts", s.RequireModule("contacts", s.HandleAdminTabContacts))
+		admin.Get("/admin/tab/reviews", s.RequireModule("reviews", s.HandleAdminTabReviews))
+		admin.Get("/client/tab/reviews", s.RequireModule("reviews", s.HandleAdminTabReviews))
+		admin.Get("/admin/tab/fleet", s.RequireModule("fleet", s.HandleAdminTabFleet))
+		admin.Get("/client/tab/fleet", s.RequireModule("fleet", s.HandleAdminTabFleet))
+		admin.Get("/admin/tab/security", s.RequireModule("security", s.HandleAdminTabSecurity))
+		admin.Get("/client/tab/security", s.RequireModule("security", s.HandleAdminTabSecurity))
 
 		// Block Builder actions (Phase 5.2)
 		admin.Post("/admin/blocks/new", s.HandleAdminCreateBlock)
@@ -56,9 +70,14 @@ func (s *Server) setupAdminRoutes() {
 		admin.Post("/admin/blocks/{id}/move-down", s.HandleAdminMoveBlockDown)
 		admin.Delete("/admin/blocks/{id}", s.HandleAdminDeleteBlock)
 
-		// Leads actions (Phase 5.3)
-		admin.Post("/admin/leads/{id}/status", s.HandleAdminUpdateLeadStatus)
-		admin.Get("/admin/export/leads.csv", s.HandleAdminExportLeadsCSV)
+		// Leads actions (protected by RequireModuleGroup)
+		admin.Group(func(ld chi.Router) {
+			ld.Use(s.RequireModuleGroup("leads"))
+			ld.Post("/admin/leads/{id}/status", s.HandleAdminUpdateLeadStatus)
+			ld.Post("/client/leads/{id}/status", s.HandleAdminUpdateLeadStatus)
+			ld.Get("/admin/export/leads.csv", s.HandleAdminExportLeadsCSV)
+			ld.Get("/client/export/leads.csv", s.HandleAdminExportLeadsCSV)
+		})
 
 		// Media Library upload (Phase 5.4)
 		if s.Media != nil {
@@ -70,29 +89,42 @@ func (s *Server) setupAdminRoutes() {
 		admin.Post("/admin/contacts", s.HandleAdminSaveContacts)
 		admin.Post("/admin/security/password", s.HandleAdminChangePassword)
 
-		// Service management
-		admin.Get("/admin/services/new", s.HandleAdminNewServiceForm)
-		admin.Get("/admin/services/edit/{id}", s.HandleAdminEditServiceForm)
-		admin.Post("/admin/services/save", s.HandleAdminSaveService)
-		admin.Post("/admin/services/{id}/toggle", s.HandleAdminToggleService)
-		admin.Post("/admin/services/{id}/trash", s.HandleAdminTrashService)
+		// Service management (protected by RequireModuleGroup)
+		admin.Group(func(srv chi.Router) {
+			srv.Use(s.RequireModuleGroup("services"))
+			srv.Get("/admin/services/new", s.HandleAdminNewServiceForm)
+			srv.Get("/admin/services/edit/{id}", s.HandleAdminEditServiceForm)
+			srv.Post("/admin/services/save", s.HandleAdminSaveService)
+			srv.Post("/admin/services/{id}/toggle", s.HandleAdminToggleService)
+			srv.Post("/admin/services/{id}/trash", s.HandleAdminTrashService)
+		})
 
-		// Article management
-		admin.Get("/admin/articles/new", s.HandleAdminNewArticleForm)
-		admin.Get("/admin/articles/edit/{id}", s.HandleAdminEditArticleForm)
-		admin.Post("/admin/articles/save", s.HandleAdminSaveArticle)
-		admin.Post("/admin/articles/toggle/{id}", s.HandleAdminToggleArticle)
-		admin.Post("/admin/articles/trash/{id}", s.HandleAdminTrashArticle)
+		// Article management (protected by RequireModuleGroup)
+		admin.Group(func(art chi.Router) {
+			art.Use(s.RequireModuleGroup("articles"))
+			art.Get("/admin/articles/new", s.HandleAdminNewArticleForm)
+			art.Get("/admin/articles/edit/{id}", s.HandleAdminEditArticleForm)
+			art.Post("/admin/articles/save", s.HandleAdminSaveArticle)
+			art.Post("/admin/articles/toggle/{id}", s.HandleAdminToggleArticle)
+			art.Post("/admin/articles/trash/{id}", s.HandleAdminTrashArticle)
+		})
 
-		// Reviews
-		admin.Post("/admin/reviews/{id}/toggle", s.HandleAdminToggleReview)
-		admin.Delete("/admin/reviews/{id}", s.HandleAdminDeleteReview)
-		admin.Post("/admin/reviews/{id}/delete", s.HandleAdminDeleteReview)
+		// Reviews (protected by RequireModuleGroup)
+		admin.Group(func(rev chi.Router) {
+			rev.Use(s.RequireModuleGroup("reviews"))
+			rev.Post("/admin/reviews/{id}/toggle", s.HandleAdminToggleReview)
+			rev.Delete("/admin/reviews/{id}", s.HandleAdminDeleteReview)
+			rev.Post("/admin/reviews/{id}/delete", s.HandleAdminDeleteReview)
+		})
 
 		// Mirror under /client/* for full backwards compatibility
 		admin.Get("/client/*", func(w http.ResponseWriter, r *http.Request) {
 			path := strings.TrimPrefix(r.URL.Path, "/client")
-			http.Redirect(w, r, "/admin"+path, http.StatusTemporaryRedirect)
+			target := "/admin" + path
+			if r.URL.RawQuery != "" {
+				target += "?" + r.URL.RawQuery
+			}
+			http.Redirect(w, r, target, http.StatusTemporaryRedirect)
 		})
 	})
 }
@@ -156,13 +188,14 @@ func (s *Server) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
 	reviews, _ := s.Repo.GetReviews(ctx)
 	services, _ := s.Repo.GetServices(ctx)
 
+	// Fetch active modules dynamically from registry
+	modules := s.AdminModules.GetActive(ctx, s, settings)
+
 	activeTab := r.URL.Query().Get("tab")
-	if activeTab == "" {
-		activeTab = "leads"
-	}
+	activeTab = s.ResolveActiveTab(activeTab, modules)
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = pages.ClientDashboard(settings, content, leads, articles, nil, reviews, services, nil, activeTab).Render(ctx, w)
+	_ = pages.ClientDashboard(settings, content, leads, articles, nil, reviews, services, nil, activeTab, modules).Render(ctx, w)
 }
 
 // Tab handlers for HTMX partial swap
@@ -273,18 +306,19 @@ func (s *Server) HandleAdminCreateBlock(w http.ResponseWriter, r *http.Request) 
 	content := r.FormValue("content")
 
 	blocks, _ := s.Repo.GetPageBlocks(ctx)
-	order := int64(len(blocks) + 1)
+	order := len(blocks) + 1
 
-	_, _ = s.Queries.CreatePageBlock(ctx, db.CreatePageBlockParams{
-		ID:         uuid.New().String(),
-		PageID:     "",
-		Type:       blockType,
-		Title:      title,
-		Content:    content,
-		OrderIndex: order,
-		Active:     1,
-		Payload:    "{}",
+	_, err := s.Repo.CreatePageBlock(ctx, models.PageBlock{
+		Type:    blockType,
+		Title:   title,
+		Content: content,
+		Order:   order,
+		Active:  true,
+		Payload: map[string]interface{}{},
 	})
+	if err != nil {
+		slog.Error("failed to create page block", "error", err)
+	}
 
 	s.HandleAdminTabBlocks(w, r)
 }
@@ -292,21 +326,8 @@ func (s *Server) HandleAdminCreateBlock(w http.ResponseWriter, r *http.Request) 
 func (s *Server) HandleAdminToggleBlock(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	block, err := s.Queries.GetPageBlockByID(ctx, id)
-	if err == nil {
-		newActive := int64(1)
-		if block.Active == 1 {
-			newActive = 0
-		}
-		_, _ = s.Queries.UpdatePageBlock(ctx, db.UpdatePageBlockParams{
-			ID:         block.ID,
-			Type:       block.Type,
-			Title:      block.Title,
-			Content:    block.Content,
-			OrderIndex: block.OrderIndex,
-			Active:     newActive,
-			Payload:    block.Payload,
-		})
+	if err := s.Repo.TogglePageBlock(ctx, id); err != nil {
+		slog.Error("failed to toggle page block", "id", id, "error", err)
 	}
 	s.HandleAdminTabBlocks(w, r)
 }
@@ -314,12 +335,13 @@ func (s *Server) HandleAdminToggleBlock(w http.ResponseWriter, r *http.Request) 
 func (s *Server) HandleAdminMoveBlockUp(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	blocks, _ := s.Queries.ListPageBlocks(ctx, "")
+	blocks, _ := s.Repo.GetPageBlocks(ctx)
 	for i, b := range blocks {
 		if b.ID == id && i > 0 {
 			prev := blocks[i-1]
-			_ = s.Queries.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{ID: b.ID, OrderIndex: prev.OrderIndex})
-			_ = s.Queries.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{ID: prev.ID, OrderIndex: b.OrderIndex})
+			if err := s.Repo.SwapPageBlockOrder(ctx, b.ID, int64(b.Order), prev.ID, int64(prev.Order)); err != nil {
+				slog.Error("failed to move block up", "id", id, "error", err)
+			}
 			break
 		}
 	}
@@ -329,12 +351,13 @@ func (s *Server) HandleAdminMoveBlockUp(w http.ResponseWriter, r *http.Request) 
 func (s *Server) HandleAdminMoveBlockDown(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	blocks, _ := s.Queries.ListPageBlocks(ctx, "")
+	blocks, _ := s.Repo.GetPageBlocks(ctx)
 	for i, b := range blocks {
 		if b.ID == id && i < len(blocks)-1 {
 			next := blocks[i+1]
-			_ = s.Queries.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{ID: b.ID, OrderIndex: next.OrderIndex})
-			_ = s.Queries.UpdatePageBlockOrder(ctx, db.UpdatePageBlockOrderParams{ID: next.ID, OrderIndex: b.OrderIndex})
+			if err := s.Repo.SwapPageBlockOrder(ctx, b.ID, int64(b.Order), next.ID, int64(next.Order)); err != nil {
+				slog.Error("failed to move block down", "id", id, "error", err)
+			}
 			break
 		}
 	}
@@ -344,7 +367,9 @@ func (s *Server) HandleAdminMoveBlockDown(w http.ResponseWriter, r *http.Request
 func (s *Server) HandleAdminDeleteBlock(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	_ = s.Queries.DeletePageBlock(ctx, id)
+	if err := s.Repo.DeletePageBlock(ctx, id); err != nil {
+		slog.Error("failed to delete page block", "id", id, "error", err)
+	}
 	s.HandleAdminTabBlocks(w, r)
 }
 
@@ -355,10 +380,9 @@ func (s *Server) HandleAdminUpdateLeadStatus(w http.ResponseWriter, r *http.Requ
 	_ = r.ParseForm()
 	status := r.FormValue("status")
 
-	_, _ = s.Queries.UpdateLeadStatus(ctx, db.UpdateLeadStatusParams{
-		ID:     id,
-		Status: status,
-	})
+	if err := s.Repo.UpdateLeadStatus(ctx, id, status); err != nil {
+		slog.Error("failed to update lead status", "id", id, "error", err)
+	}
 	s.HandleAdminTabLeads(w, r)
 }
 
@@ -469,20 +493,10 @@ func (s *Server) HandleAdminNewServiceForm(w http.ResponseWriter, r *http.Reques
 func (s *Server) HandleAdminEditServiceForm(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	svc, err := s.Queries.GetServiceByID(ctx, id)
+	item, err := s.Repo.GetServiceByID(ctx, id)
 	if err != nil {
 		http.NotFound(w, r)
 		return
-	}
-	item := models.ServiceItem{
-		ID:          svc.ID,
-		Title:       svc.Title,
-		Description: svc.Description,
-		Price:       svc.Price,
-		Order:       int(svc.OrderIndex),
-		Active:      svc.Active == 1,
-		StockCount:  int(svc.StockCount),
-		IsPreorder:  svc.IsPreorder == 1,
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = pages.ClientServiceForm(item, false).Render(ctx, w)
@@ -497,33 +511,20 @@ func (s *Server) HandleAdminSaveService(w http.ResponseWriter, r *http.Request) 
 	price := r.FormValue("price")
 	order, _ := strconv.Atoi(r.FormValue("order"))
 	active := r.FormValue("active") == "on" || r.FormValue("active") == "true"
-	actInt := int64(0)
-	if active {
-		actInt = 1
+
+	item := models.ServiceItem{
+		ID:          id,
+		Title:       title,
+		Description: desc,
+		Price:       price,
+		Order:       order,
+		Active:      active,
+		StockCount:  -1,
+		IsPreorder:  false,
 	}
 
-	if id != "" {
-		_, _ = s.Queries.UpdateService(ctx, db.UpdateServiceParams{
-			ID:          id,
-			Title:       title,
-			Description: desc,
-			Price:       price,
-			OrderIndex:  int64(order),
-			Active:      actInt,
-			StockCount:  -1,
-			IsPreorder:  0,
-		})
-	} else {
-		_, _ = s.Queries.CreateService(ctx, db.CreateServiceParams{
-			ID:          uuid.New().String(),
-			Title:       title,
-			Description: desc,
-			Price:       price,
-			OrderIndex:  int64(order),
-			Active:      actInt,
-			StockCount:  -1,
-			IsPreorder:  0,
-		})
+	if err := s.Repo.SaveService(ctx, item); err != nil {
+		slog.Error("failed to save service", "error", err)
 	}
 	s.HandleAdminTabServices(w, r)
 }
@@ -531,22 +532,8 @@ func (s *Server) HandleAdminSaveService(w http.ResponseWriter, r *http.Request) 
 func (s *Server) HandleAdminToggleService(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	svc, err := s.Queries.GetServiceByID(ctx, id)
-	if err == nil {
-		newActive := int64(1)
-		if svc.Active == 1 {
-			newActive = 0
-		}
-		_, _ = s.Queries.UpdateService(ctx, db.UpdateServiceParams{
-			ID:          svc.ID,
-			Title:       svc.Title,
-			Description: svc.Description,
-			Price:       svc.Price,
-			OrderIndex:  svc.OrderIndex,
-			Active:      newActive,
-			StockCount:  svc.StockCount,
-			IsPreorder:  svc.IsPreorder,
-		})
+	if err := s.Repo.ToggleService(ctx, id); err != nil {
+		slog.Error("failed to toggle service", "id", id, "error", err)
 	}
 	s.HandleAdminTabServices(w, r)
 }
@@ -554,7 +541,9 @@ func (s *Server) HandleAdminToggleService(w http.ResponseWriter, r *http.Request
 func (s *Server) HandleAdminTrashService(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	_ = s.Queries.SoftDeleteService(ctx, id)
+	if err := s.Repo.SoftDeleteService(ctx, id); err != nil {
+		slog.Error("failed to trash service", "id", id, "error", err)
+	}
 	s.HandleAdminTabServices(w, r)
 }
 
@@ -567,24 +556,10 @@ func (s *Server) HandleAdminNewArticleForm(w http.ResponseWriter, r *http.Reques
 func (s *Server) HandleAdminEditArticleForm(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	art, err := s.Queries.GetArticleByID(ctx, id)
+	item, err := s.Repo.GetArticleByID(ctx, id)
 	if err != nil {
 		http.NotFound(w, r)
 		return
-	}
-	item := models.ArticleItem{
-		ID:             art.ID,
-		Title:          art.Title,
-		Slug:           art.Slug,
-		Excerpt:        art.Excerpt,
-		Content:        art.Content,
-		CoverImage:     art.CoverImage,
-		AuthorName:     art.AuthorName,
-		PublishedAt:    art.PublishedAt,
-		IsPublished:    art.IsPublished == 1,
-		SEOTitle:       art.SeoTitle,
-		SEODescription: art.SeoDescription,
-		Tags:           strings.Split(art.Tags, ","),
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = pages.ClientArticleForm(item, false).Render(ctx, w)
@@ -601,41 +576,24 @@ func (s *Server) HandleAdminSaveArticle(w http.ResponseWriter, r *http.Request) 
 	author := r.FormValue("author_name")
 	date := r.FormValue("published_at")
 	isPub := r.FormValue("is_published") == "on" || r.FormValue("is_published") == "true"
-	pubInt := int64(0)
-	if isPub {
-		pubInt = 1
+
+	item := models.ArticleItem{
+		ID:             id,
+		Title:          title,
+		Slug:           slug,
+		Excerpt:        excerpt,
+		Content:        content,
+		CoverImage:     "",
+		AuthorName:     author,
+		PublishedAt:    date,
+		IsPublished:    isPub,
+		SEOTitle:       title,
+		SEODescription: excerpt,
+		Tags:           nil,
 	}
 
-	if id != "" {
-		_, _ = s.Queries.UpdateArticle(ctx, db.UpdateArticleParams{
-			ID:             id,
-			Title:          title,
-			Slug:           slug,
-			Excerpt:        excerpt,
-			Content:        content,
-			CoverImage:     "",
-			AuthorName:     author,
-			PublishedAt:    date,
-			IsPublished:    pubInt,
-			SeoTitle:       title,
-			SeoDescription: excerpt,
-			Tags:           "",
-		})
-	} else {
-		_, _ = s.Queries.CreateArticle(ctx, db.CreateArticleParams{
-			ID:             uuid.New().String(),
-			Title:          title,
-			Slug:           slug,
-			Excerpt:        excerpt,
-			Content:        content,
-			CoverImage:     "",
-			AuthorName:     author,
-			PublishedAt:    date,
-			IsPublished:    pubInt,
-			SeoTitle:       title,
-			SeoDescription: excerpt,
-			Tags:           "",
-		})
+	if err := s.Repo.SaveArticle(ctx, item); err != nil {
+		slog.Error("failed to save article", "error", err)
 	}
 	s.HandleAdminTabArticles(w, r)
 }
@@ -643,26 +601,8 @@ func (s *Server) HandleAdminSaveArticle(w http.ResponseWriter, r *http.Request) 
 func (s *Server) HandleAdminToggleArticle(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	art, err := s.Queries.GetArticleByID(ctx, id)
-	if err == nil {
-		newPub := int64(1)
-		if art.IsPublished == 1 {
-			newPub = 0
-		}
-		_, _ = s.Queries.UpdateArticle(ctx, db.UpdateArticleParams{
-			ID:             art.ID,
-			Title:          art.Title,
-			Slug:           art.Slug,
-			Excerpt:        art.Excerpt,
-			Content:        art.Content,
-			CoverImage:     art.CoverImage,
-			AuthorName:     art.AuthorName,
-			PublishedAt:    art.PublishedAt,
-			IsPublished:    newPub,
-			SeoTitle:       art.SeoTitle,
-			SeoDescription: art.SeoDescription,
-			Tags:           art.Tags,
-		})
+	if err := s.Repo.ToggleArticle(ctx, id); err != nil {
+		slog.Error("failed to toggle article", "id", id, "error", err)
 	}
 	s.HandleAdminTabArticles(w, r)
 }
@@ -670,20 +610,26 @@ func (s *Server) HandleAdminToggleArticle(w http.ResponseWriter, r *http.Request
 func (s *Server) HandleAdminTrashArticle(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	_ = s.Queries.SoftDeleteArticle(ctx, id)
+	if err := s.Repo.SoftDeleteArticle(ctx, id); err != nil {
+		slog.Error("failed to trash article", "id", id, "error", err)
+	}
 	s.HandleAdminTabArticles(w, r)
 }
 
 func (s *Server) HandleAdminToggleReview(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	_, _ = s.Queries.ApproveReview(ctx, id)
+	if err := s.Repo.ApproveReview(ctx, id); err != nil {
+		slog.Error("failed to approve review", "id", id, "error", err)
+	}
 	s.HandleAdminTabReviews(w, r)
 }
 
 func (s *Server) HandleAdminDeleteReview(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	_, _ = s.DB.ExecContext(ctx, "DELETE FROM reviews WHERE id = ?", id)
+	if err := s.Repo.DeleteReview(ctx, id); err != nil {
+		slog.Error("failed to delete review", "id", id, "error", err)
+	}
 	s.HandleAdminTabReviews(w, r)
 }

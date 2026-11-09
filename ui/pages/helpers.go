@@ -63,3 +63,42 @@ func formatPhoneMask(phone string) string {
 	}
 	return phone
 }
+
+// isTabActive checks if the given tabID is present among active modules.
+func isTabActive(tabID string, modules []models.AdminTabModule) bool {
+	for _, m := range modules {
+		if m.ID == tabID {
+			return true
+		}
+	}
+	return false
+}
+
+// formatWhatsAppPhone returns standard international digits suitable for wa.me links.
+func formatWhatsAppPhone(phone string) string {
+	d := extractDigits(phone)
+	if len(d) == 11 && d[0] == '8' {
+		return "7" + d[1:]
+	}
+	return d
+}
+
+// getInitials returns a 2-letter uppercase initials string from a person's name.
+func getInitials(name string) string {
+	fields := strings.Fields(strings.TrimSpace(name))
+	if len(fields) == 0 {
+		return "КЛ"
+	}
+	r0 := []rune(fields[0])
+	if len(fields) == 1 {
+		if len(r0) >= 2 {
+			return strings.ToUpper(string(r0[:2]))
+		}
+		return strings.ToUpper(string(r0))
+	}
+	r1 := []rune(fields[1])
+	if len(r0) > 0 && len(r1) > 0 {
+		return strings.ToUpper(string(r0[:1])) + strings.ToUpper(string(r1[:1]))
+	}
+	return strings.ToUpper(string(r0[:1]))
+}

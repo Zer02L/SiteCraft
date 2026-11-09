@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -30,13 +31,14 @@ import (
 
 // Server represents the independent Chi-based SiteCraft HTTP server.
 type Server struct {
-	Router     chi.Router
-	DB         *sql.DB
-	Queries    *db.Queries
-	Repo       *data.Repository
-	Media      *media.Service
-	SessionMgr *scs.SessionManager
-	EventBus   *events.MemoryBus
+	Router       chi.Router
+	DB           *sql.DB
+	Queries      *db.Queries
+	Repo         *data.Repository
+	Media        *media.Service
+	SessionMgr   *scs.SessionManager
+	EventBus     *events.MemoryBus
+	AdminModules *AdminModuleRegistry
 }
 
 // Config holds runtime server options.
@@ -64,6 +66,7 @@ func New(database *sql.DB, queries *db.Queries, mediaSvc *media.Service, session
 		EventBus:   bus,
 	}
 
+	s.initAdminModules()
 	s.setupMiddlewares()
 	s.setupRoutes()
 	return s, nil
@@ -663,9 +666,49 @@ func (s *Server) HandleFleetDashboard(w http.ResponseWriter, r *http.Request) {
 
 // Start runs the HTTP listener on the configured address.
 func (s *Server) Start(addr string) error {
+	return s.StartWithContext(context.Background(), addr)
+}
+
+// StartWithContext runs the HTTP listener with graceful shutdown on context cancellation.
+func (s *Server) StartWithContext(ctx context.Context, addr string) error {
 	if addr == "" {
 		addr = ":8090"
 	}
-	slog.Info("Starting SiteCraft HTTP Server (Chi + SQLite/Postgres + Templ)", "addr", addr)
-	return http.ListenAndServe(addr, s.Router)
+
+	httpServer := &http.Server{
+		Addr:    addr,
+		Handler: s.Router,
+	}
+
+	errChan := make(chan error, 1)
+	go func() {
+		slog.Info("Starting SiteCraft HTTP Server (Chi + SQLite/Postgres + Templ)", "addr", addr)
+		if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			errChan <- err
+		}
+		close(errChan)
+	}()
+
+	select {
+	case err := <-errChan:
+		return err
+	case <-ctx.Done():
+		slog.Info("Shutting down HTTP server gracefully...")
+		shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		var shutdownErr error
+		if err := httpServer.Shutdown(shutdownCtx); err != nil {
+			slog.Error("HTTP server shutdown error", "error", err)
+			shutdownErr = err
+		}
+
+		if s.EventBus != nil {
+			if err := s.EventBus.Shutdown(shutdownCtx); err != nil {
+				slog.Error("EventBus shutdown error", "error", err)
+			}
+		}
+
+		return shutdownErr
+	}
 }

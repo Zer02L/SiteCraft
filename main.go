@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log/slog"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"sitecraft/internal/auth"
@@ -159,7 +161,8 @@ func main() {
 }
 
 func runServe(dbDSN, port, httpFlag, dirFlag, presetFlag, themeFlag string) error {
-	ctx := context.Background()
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	defer stop()
 
 	// Prioritize --http if provided (e.g. 0.0.0.0:8080, 127.0.0.1:8090, :8090, 8080)
 	if httpFlag != "" {
@@ -221,7 +224,7 @@ func runServe(dbDSN, port, httpFlag, dirFlag, presetFlag, themeFlag string) erro
 	isPostgres := strings.HasPrefix(dbDSN, "postgres://") || strings.HasPrefix(dbDSN, "postgresql://")
 	sessionManager := auth.NewSessionManager(sqlDB, isPostgres)
 
-	// 4. Background Cron Workers
+	// 4. Background Cron Workers with Context-aware Termination
 	go func() {
 		reminderTicker := time.NewTicker(10 * time.Minute)
 		scheduleTicker := time.NewTicker(1 * time.Minute)
@@ -230,20 +233,21 @@ func runServe(dbDSN, port, httpFlag, dirFlag, presetFlag, themeFlag string) erro
 
 		for {
 			select {
+			case <-ctx.Done():
+				return
 			case <-reminderTicker.C:
-				notifications.CheckBookingReminders(context.Background(), repo)
+				notifications.CheckBookingReminders(ctx, repo)
 			case <-scheduleTicker.C:
-				notifications.CheckArticlesSchedule()
+				notifications.CheckArticlesSchedule(repo)
 			}
 		}
 	}()
 
-	// 5. HTTP Web Server
+	// 5. HTTP Web Server with Graceful Shutdown
 	srv, err := server.New(sqlDB, queries, mediaService, sessionManager)
 	if err != nil {
 		return fmt.Errorf("failed to create server: %w", err)
 	}
 
-	slog.Info("Starting SiteCraft HTTP Server", "addr", port)
-	return srv.Start(port)
+	return srv.StartWithContext(ctx, port)
 }

@@ -2,8 +2,9 @@ package events
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"sync"
+	"time"
 )
 
 // Event represents any domain event within the application.
@@ -24,6 +25,7 @@ type Bus interface {
 type MemoryBus struct {
 	mu       sync.RWMutex
 	handlers map[string][]Handler
+	wg       sync.WaitGroup
 }
 
 var (
@@ -54,6 +56,8 @@ func (b *MemoryBus) Subscribe(eventName string, handler Handler) {
 }
 
 // Publish distributes the event asynchronously to all subscribed handlers.
+// The context is detached from request cancellation using context.WithoutCancel,
+// given a 15-second execution budget, and tracked via WaitGroup for graceful shutdown.
 func (b *MemoryBus) Publish(ctx context.Context, event Event) {
 	b.mu.RLock()
 	handlers := append([]Handler(nil), b.handlers[event.EventName()]...)
@@ -63,17 +67,42 @@ func (b *MemoryBus) Publish(ctx context.Context, event Event) {
 		return
 	}
 
+	asyncCtx := context.WithoutCancel(ctx)
+
 	for _, h := range handlers {
 		handler := h
+		b.wg.Add(1)
 		go func() {
+			defer b.wg.Done()
 			defer func() {
 				if r := recover(); r != nil {
-					log.Printf("[EventBus Panic] Event: %s, Error: %v\n", event.EventName(), r)
+					slog.Error("EventBus Panic", "event", event.EventName(), "panic", r)
 				}
 			}()
-			if err := handler(ctx, event); err != nil {
-				log.Printf("[EventBus Error] Event %s failed: %v\n", event.EventName(), err)
+
+			timeoutCtx, cancel := context.WithTimeout(asyncCtx, 15*time.Second)
+			defer cancel()
+
+			if err := handler(timeoutCtx, event); err != nil {
+				slog.Error("EventBus handler error", "event", event.EventName(), "error", err)
 			}
 		}()
 	}
 }
+
+// Shutdown waits for active event handlers to complete or until the context expires.
+func (b *MemoryBus) Shutdown(ctx context.Context) error {
+	done := make(chan struct{})
+	go func() {
+		b.wg.Wait()
+		close(done)
+	}()
+
+	select {
+	case <-done:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
+}
+

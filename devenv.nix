@@ -54,6 +54,11 @@
     "dev".exec = "air";
   };
 
+  # Background processes managed by devenv up
+  processes = {
+    web.exec = "air";
+  };
+
   enterShell = ''
     echo "=========================================================="
     echo "  Юридический сайт-визитка (Go + PocketBase + Templ + HTMX) "

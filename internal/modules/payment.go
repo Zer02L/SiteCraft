@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -121,7 +121,7 @@ type MockPaymentProvider struct{}
 
 func (m *MockPaymentProvider) CreatePayment(req models.PaymentRequest) (models.PaymentResponse, error) {
 	mockID := fmt.Sprintf("mock_pay_%d", time.Now().Unix())
-	log.Printf("[Payment Mock] Created test payment %s for amount: %.2f %s\n", mockID, req.Amount, req.Currency)
+	slog.Info("Created test payment", "id", mockID, "amount", req.Amount, "currency", req.Currency)
 	return models.PaymentResponse{
 		PaymentID:  mockID,
 		Status:     "pending",
