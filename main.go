@@ -1,38 +1,70 @@
 package main
 
 import (
-	"log"
+	"context"
+	"fmt"
+	"log/slog"
 	"os"
+	"path/filepath"
 	"strings"
+	"time"
 
-	"sitecraft/internal/cache"
+	"sitecraft/internal/auth"
 	"sitecraft/internal/data"
+	"sitecraft/internal/db"
 	"sitecraft/internal/exporter"
-	"sitecraft/internal/handlers"
+	"sitecraft/internal/media"
 	"sitecraft/internal/notifications"
+	"sitecraft/internal/server"
 
-	"ganigeorgiev.com/pocketbase/pocketbase"
-	"ganigeorgiev.com/pocketbase/pocketbase/core"
 	"github.com/spf13/cobra"
 )
 
 func main() {
-	// Инициализация структурированного логирования slog (JSON в проде, текст в dev)
-	handlers.InitLogger()
+	// Initialize structured logger
+	handler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	})
+	slog.SetDefault(slog.New(handler))
 
-	app := pocketbase.New()
-
+	var dbDSN string
 	var presetFlag string
 	var themeFlag string
+	var portFlag string
+	var httpFlag string
+	var dirFlag string
 
-	// Флаги на корневую команду
-	app.RootCmd.PersistentFlags().StringVar(&presetFlag, "preset", "", "Preset name or JSON path (legal, medical, auto, beauty)")
-	app.RootCmd.PersistentFlags().StringVar(&themeFlag, "theme", "", "Color theme override (legal, medical, auto, beauty, tech, dark)")
+	rootCmd := &cobra.Command{
+		Use:   "sitecraft",
+		Short: "SiteCraft - Ultra-fast Zero-Node.js Go + Templ + SQLite/Postgres Platform",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runServe(dbDSN, portFlag, httpFlag, dirFlag, presetFlag, themeFlag)
+		},
+	}
 
-	// Команда для явного применения пресета в базу данных: ./app apply-preset <name> [--theme=...]
+	rootCmd.PersistentFlags().StringVar(&dbDSN, "db", "", "Database DSN (e.g. pb_data/sitecraft.db or postgres://...)")
+	rootCmd.PersistentFlags().StringVar(&presetFlag, "preset", "", "Preset name or JSON path (legal, medical, auto, beauty)")
+	rootCmd.PersistentFlags().StringVar(&themeFlag, "theme", "", "Color theme override")
+	rootCmd.PersistentFlags().StringVarP(&portFlag, "port", "p", ":8090", "HTTP server listen address")
+	rootCmd.PersistentFlags().StringVar(&httpFlag, "http", "", "HTTP server listen address (alias for --port, e.g. 0.0.0.0:8080 or :8090)")
+	rootCmd.PersistentFlags().StringVar(&dirFlag, "dir", "", "Data directory (e.g. ./pb_data or ./data)")
+
+	// 1. serve command
+	serveCmd := &cobra.Command{
+		Use:   "serve",
+		Short: "Starts the high-performance HTTP web server and background workers",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runServe(dbDSN, portFlag, httpFlag, dirFlag, presetFlag, themeFlag)
+		},
+	}
+	serveCmd.Flags().StringVar(&httpFlag, "http", "", "HTTP server listen address")
+	serveCmd.Flags().StringVar(&dirFlag, "dir", "", "Data directory")
+	rootCmd.AddCommand(serveCmd)
+
+	// 2. apply-preset command
 	applyPresetCmd := &cobra.Command{
 		Use:   "apply-preset [preset_name]",
-		Short: "Loads and applies niche preset and demo data into PocketBase",
+		Short: "Loads and applies niche preset and demo data into database",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			presetName := presetFlag
 			if len(args) > 0 && args[0] != "" {
@@ -45,33 +77,37 @@ func main() {
 			if !strings.HasSuffix(presetPath, ".json") {
 				presetPath = "presets/" + presetPath + ".json"
 			}
-			if err := app.Bootstrap(); err != nil {
-				return err
+
+			if dirFlag != "" && dbDSN == "" {
+				cleanDir := filepath.Clean(dirFlag)
+				_ = os.MkdirAll(cleanDir, 0755)
+				dbDSN = filepath.Join(cleanDir, "sitecraft.db")
 			}
-			if err := data.InitSchema(app); err != nil {
-				return err
+
+			sqlDB, queries, err := db.Open(dbDSN)
+			if err != nil {
+				return fmt.Errorf("failed to open database: %w", err)
 			}
-			if err := data.ApplyPreset(app, presetPath); err != nil {
-				return err
+			defer sqlDB.Close()
+
+			ctx := context.Background()
+			repo := data.NewRepository(sqlDB, queries)
+			if err := repo.ApplyPreset(ctx, presetPath); err != nil {
+				return fmt.Errorf("failed to apply preset: %w", err)
 			}
+
 			if themeFlag != "" {
-				if settingsCol, err := app.FindCollectionByNameOrId("site_settings"); err == nil {
-					rec, _ := app.FindFirstRecordByFilter("site_settings", "")
-					if rec == nil {
-						rec = core.NewRecord(settingsCol)
-					}
-					rec.Set("theme", themeFlag)
-					_ = app.Save(rec)
-				}
+				_, _ = sqlDB.ExecContext(ctx, "UPDATE site_settings SET theme = ?", themeFlag)
 			}
-			log.Printf("[Preset] Successfully applied %s (theme: %s)\n", presetPath, themeFlag)
+
+			slog.Info("Successfully applied preset", "path", presetPath, "theme", themeFlag)
 			return nil
 		},
 	}
-	applyPresetCmd.Flags().StringVar(&themeFlag, "theme", "", "Color theme override")
-	app.RootCmd.AddCommand(applyPresetCmd)
+	applyPresetCmd.Flags().StringVar(&dirFlag, "dir", "", "Data directory")
+	rootCmd.AddCommand(applyPresetCmd)
 
-	// Команда статического экспорта: ./app export [--preset=...] [--out=./dist]
+	// 3. export command
 	var outDirFlag string
 	exportCmd := &cobra.Command{
 		Use:   "export",
@@ -80,91 +116,134 @@ func main() {
 			if outDirFlag == "" {
 				outDirFlag = "./dist"
 			}
-			if err := app.Bootstrap(); err != nil {
-				return err
+
+			if dirFlag != "" && dbDSN == "" {
+				cleanDir := filepath.Clean(dirFlag)
+				_ = os.MkdirAll(cleanDir, 0755)
+				dbDSN = filepath.Join(cleanDir, "sitecraft.db")
 			}
-			if err := data.InitSchema(app); err != nil {
-				return err
+
+			sqlDB, queries, err := db.Open(dbDSN)
+			if err != nil {
+				return fmt.Errorf("failed to open database: %w", err)
 			}
+			defer sqlDB.Close()
+
+			ctx := context.Background()
+			repo := data.NewRepository(sqlDB, queries)
+
 			if presetFlag != "" {
 				presetPath := presetFlag
 				if !strings.HasSuffix(presetPath, ".json") {
 					presetPath = "presets/" + presetPath + ".json"
 				}
-				_ = data.ApplyPreset(app, presetPath)
+				_ = repo.ApplyPreset(ctx, presetPath)
 			}
-			if err := exporter.ExportStaticSite(app, outDirFlag); err != nil {
-				return err
+
+			if err := exporter.ExportStaticSite(repo, outDirFlag); err != nil {
+				return fmt.Errorf("export failed: %w", err)
 			}
-			log.Printf("[Export] Сайт успешно экспортирован в статический вид: %s\n", outDirFlag)
+
+			slog.Info("Successfully exported static site", "outDir", outDirFlag)
 			return nil
 		},
 	}
 	exportCmd.Flags().StringVar(&outDirFlag, "out", "./dist", "Output directory for exported files")
-	app.RootCmd.AddCommand(exportCmd)
+	exportCmd.Flags().StringVar(&dirFlag, "dir", "", "Data directory")
+	rootCmd.AddCommand(exportCmd)
 
-	// Инициализация структуры коллекций и начальных данных
-	app.OnBootstrap().BindFunc(func(e *core.BootstrapEvent) error {
-		if err := e.Next(); err != nil {
-			return err
-		}
-		if err := data.InitSchema(e.App); err != nil {
-			log.Printf("[Bootstrap Warning] Не удалось инициализировать схему БД: %v\n", err)
-		}
-		return nil
-	})
-
-	// Настройка веб-сервера и применение пресета при старте serve (если передан флаг)
-	app.OnServe().BindFunc(func(se *core.ServeEvent) error {
-		// Извлекаем флаги --preset и --theme даже если они переданы после `serve`
-		presetVal := presetFlag
-		themeVal := themeFlag
-		for i, arg := range os.Args {
-			if strings.HasPrefix(arg, "--preset=") {
-				presetVal = strings.TrimPrefix(arg, "--preset=")
-			} else if arg == "--preset" && i+1 < len(os.Args) {
-				presetVal = os.Args[i+1]
-			}
-			if strings.HasPrefix(arg, "--theme=") {
-				themeVal = strings.TrimPrefix(arg, "--theme=")
-			} else if arg == "--theme" && i+1 < len(os.Args) {
-				themeVal = os.Args[i+1]
-			}
-		}
-
-		if presetVal != "" {
-			presetPath := presetVal
-			if !strings.HasSuffix(presetPath, ".json") {
-				presetPath = "presets/" + presetPath + ".json"
-			}
-			if err := data.ApplyPreset(app, presetPath); err != nil {
-				log.Printf("[Preset Warning] Не удалось применить пресет: %v\n", err)
-			} else if themeVal != "" {
-				if _, err := app.FindCollectionByNameOrId("site_settings"); err == nil {
-					rec, _ := app.FindFirstRecordByFilter("site_settings", "")
-					if rec != nil {
-						rec.Set("theme", themeVal)
-						_ = app.Save(rec)
-					}
-				}
-			}
-		}
-
-		// Регулярная проверка отложенных публикаций блога (инвалидация кэша статей)
-		app.Cron().MustAdd("check_scheduled_articles", "* * * * *", func() {
-			cache.GetStore().InvalidateArticles()
-		})
-
-		// Модуль #12: Регулярная проверка напоминаний о визитах за 2 часа (раз в 10 минут)
-		app.Cron().MustAdd("check_booking_reminders", "*/10 * * * *", func() {
-			notifications.CheckBookingReminders(app)
-		})
-
-		handlers.RegisterRoutes(app, se.Router)
-		return se.Next()
-	})
-
-	if err := app.Start(); err != nil {
-		log.Fatal(err)
+	if err := rootCmd.Execute(); err != nil {
+		slog.Error("CLI command failed", "error", err)
+		os.Exit(1)
 	}
+}
+
+func runServe(dbDSN, port, httpFlag, dirFlag, presetFlag, themeFlag string) error {
+	ctx := context.Background()
+
+	// Prioritize --http if provided (e.g. 0.0.0.0:8080, 127.0.0.1:8090, :8090, 8080)
+	if httpFlag != "" {
+		port = httpFlag
+	}
+	if !strings.Contains(port, ":") {
+		port = ":" + port
+	}
+
+	// Environment variable overrides
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		if !strings.HasPrefix(envPort, ":") {
+			port = ":" + envPort
+		} else {
+			port = envPort
+		}
+	}
+
+	// If --dir is specified and dbDSN is empty, use dir
+	if dirFlag != "" && dbDSN == "" {
+		cleanDir := filepath.Clean(dirFlag)
+		_ = os.MkdirAll(cleanDir, 0755)
+		dbDSN = filepath.Join(cleanDir, "sitecraft.db")
+	}
+
+	// 1. Database & Migrations
+	sqlDB, queries, err := db.Open(dbDSN)
+	if err != nil {
+		return fmt.Errorf("database initialization error: %w", err)
+	}
+	defer sqlDB.Close()
+
+	repo := data.NewRepository(sqlDB, queries)
+
+	// Apply preset if requested
+	if presetFlag != "" {
+		presetPath := presetFlag
+		if !strings.HasSuffix(presetPath, ".json") {
+			presetPath = "presets/" + presetPath + ".json"
+		}
+		if err := repo.ApplyPreset(ctx, presetPath); err != nil {
+			slog.Warn("Failed to apply preset", "error", err)
+		} else if themeFlag != "" {
+			_, _ = sqlDB.ExecContext(ctx, "UPDATE site_settings SET theme = ?", themeFlag)
+		}
+	}
+
+	// 2. Media Service
+	uploadsDir := "data/uploads"
+	if dirFlag != "" {
+		uploadsDir = filepath.Join(dirFlag, "uploads")
+	}
+	mediaService, err := media.NewService(uploadsDir)
+	if err != nil {
+		slog.Warn("Media service init warning", "error", err)
+	}
+
+	// 3. Session Manager
+	isPostgres := strings.HasPrefix(dbDSN, "postgres://") || strings.HasPrefix(dbDSN, "postgresql://")
+	sessionManager := auth.NewSessionManager(sqlDB, isPostgres)
+
+	// 4. Background Cron Workers
+	go func() {
+		reminderTicker := time.NewTicker(10 * time.Minute)
+		scheduleTicker := time.NewTicker(1 * time.Minute)
+		defer reminderTicker.Stop()
+		defer scheduleTicker.Stop()
+
+		for {
+			select {
+			case <-reminderTicker.C:
+				notifications.CheckBookingReminders(context.Background(), repo)
+			case <-scheduleTicker.C:
+				notifications.CheckArticlesSchedule()
+			}
+		}
+	}()
+
+	// 5. HTTP Web Server
+	srv, err := server.New(sqlDB, queries, mediaService, sessionManager)
+	if err != nil {
+		return fmt.Errorf("failed to create server: %w", err)
+	}
+
+	slog.Info("Starting SiteCraft HTTP Server", "addr", port)
+	return srv.Start(port)
 }

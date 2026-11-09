@@ -252,7 +252,9 @@ type Lead struct {
 	Source      string                 `json:"source"`
 	BookingDate string                 `json:"booking_date"`
 	BookingTime string                 `json:"booking_time"`
+	ResourceID  string                 `json:"resource_id,omitempty"`
 	Payload     map[string]interface{} `json:"payload"`
+	Created     string                 `json:"created,omitempty"`
 }
 
 // PaymentRequest contains information to initiate an online payment

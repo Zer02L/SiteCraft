@@ -4,16 +4,19 @@ import (
 	"net/http"
 	"strings"
 
-	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"github.com/go-chi/chi/v5"
 )
 
 // HandleSetLang handles language switching via /api/lang/{code}.
 // It sets the cookie and redirects the visitor back to the Referer or root.
-func HandleSetLang(e *core.RequestEvent) error {
-	code := e.Request.PathValue("code")
+func HandleSetLang(w http.ResponseWriter, r *http.Request) {
+	code := chi.URLParam(r, "code")
+	if code == "" {
+		code = r.PathValue("code")
+	}
 	normalized := Normalize(code)
 
-	http.SetCookie(e.Response, &http.Cookie{
+	http.SetCookie(w, &http.Cookie{
 		Name:     CookieName,
 		Value:    normalized,
 		Path:     "/",
@@ -22,13 +25,11 @@ func HandleSetLang(e *core.RequestEvent) error {
 		HttpOnly: false,
 	})
 
-	targetURL := e.Request.Header.Get("Referer")
+	targetURL := r.Header.Get("Referer")
 	if targetURL == "" {
 		targetURL = "/"
 	} else {
-		// Clean up any ?lang=... in Referer to avoid overriding the newly set cookie
 		if strings.Contains(targetURL, "lang=") {
-			// If referer has query param lang=, replace or strip it
 			targetURL = strings.ReplaceAll(targetURL, "?lang=ru", "")
 			targetURL = strings.ReplaceAll(targetURL, "&lang=ru", "")
 			targetURL = strings.ReplaceAll(targetURL, "?lang=en", "")
@@ -36,7 +37,5 @@ func HandleSetLang(e *core.RequestEvent) error {
 		}
 	}
 
-	e.Response.Header().Set("Location", targetURL)
-	e.Response.WriteHeader(http.StatusSeeOther)
-	return nil
+	http.Redirect(w, r, targetURL, http.StatusSeeOther)
 }

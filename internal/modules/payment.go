@@ -23,9 +23,11 @@ type PaymentProvider interface {
 
 // YooKassaClient implements payments via ЮKassa REST API
 type YooKassaClient struct {
-	ShopID   string
-	Secret   string
-	Sandbox  bool
+	ShopID     string
+	Secret     string
+	Sandbox    bool
+	BaseURL    string       // Optional override for testing (default: https://api.yookassa.ru/v3/payments)
+	HTTPClient *http.Client // Optional HTTP client override for testing
 }
 
 // NewPaymentProvider creates a payment provider based on site settings
@@ -66,7 +68,10 @@ func (y *YooKassaClient) CreatePayment(req models.PaymentRequest) (models.Paymen
 		return models.PaymentResponse{}, err
 	}
 
-	apiURL := "https://api.yookassa.ru/v3/payments"
+	apiURL := y.BaseURL
+	if apiURL == "" {
+		apiURL = "https://api.yookassa.ru/v3/payments"
+	}
 	httpReq, err := http.NewRequest("POST", apiURL, bytes.NewReader(bodyBytes))
 	if err != nil {
 		return models.PaymentResponse{}, err
@@ -76,7 +81,11 @@ func (y *YooKassaClient) CreatePayment(req models.PaymentRequest) (models.Paymen
 	httpReq.Header.Set("Content-Type", "application/json")
 	httpReq.Header.Set("Idempotence-Key", fmt.Sprintf("%d", time.Now().UnixNano()))
 
-	resp, err := httpClient.Do(httpReq)
+	client := y.HTTPClient
+	if client == nil {
+		client = httpClient
+	}
+	resp, err := client.Do(httpReq)
 	if err != nil {
 		return models.PaymentResponse{}, fmt.Errorf("yookassa request failed: %w", err)
 	}

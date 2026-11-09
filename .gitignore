@@ -9,6 +9,7 @@ devenv.local.yaml
 
 # Build & binaries
 /bin/
+/app
 /tmp/
 /dist/
 *.exe
@@ -17,7 +18,8 @@ devenv.local.yaml
 *.so
 *.dylib
 
-# PocketBase data & SQLite databases
+# Runtime data & SQLite databases
+/data/
 /pb_data/
 *.db
 *.db-*

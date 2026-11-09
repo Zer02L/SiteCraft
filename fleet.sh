@@ -98,10 +98,8 @@ cmd_create() {
     if [ -d "$SITE_PATH" ]; then
         echo -e "${RED}❌ Сайт с ID '${SITE_ID}' уже существует в ${SITE_PATH}${RESET}"
         exit 1
-    fi
-
     echo -e "${CYAN}🚀 Создание нового изолированного инстанса '${SITE_ID}'...${RESET}"
-    mkdir -p "${SITE_PATH}/pb_data"
+    mkdir -p "${SITE_PATH}/data"
     mkdir -p "${SITE_PATH}/logs"
 
     # Запись метаданных сайта
@@ -117,23 +115,20 @@ EOF
     ensure_engine
 
     echo -e "📦 Применение пресета [${PRESET}] и инициализация SQLite..."
-    "$ENGINE_BIN" apply-preset "${PRESET}" --theme="${THEME}" --dir="${SITE_PATH}/pb_data" > "${SITE_PATH}/logs/init.log" 2>&1
-
-    echo -e "👤 Регистрация суперпользователя PocketBase..."
-    "$ENGINE_BIN" superuser upsert "${ADMIN_EMAIL}" "${ADMIN_PASS}" --dir="${SITE_PATH}/pb_data" >> "${SITE_PATH}/logs/init.log" 2>&1 || true
+    "$ENGINE_BIN" apply-preset "${PRESET}" --theme="${THEME}" --db="${SITE_PATH}/data/sitecraft.db" > "${SITE_PATH}/logs/init.log" 2>&1
 
     # Генерация автономного скрипта запуска для инстанса
     cat <<EOF > "${SITE_PATH}/run.sh"
 #!/usr/bin/env bash
 cd "${BASE_DIR}"
-exec "${ENGINE_BIN}" serve --http="127.0.0.1:${PORT}" --dir="${SITE_PATH}/pb_data"
+exec "${ENGINE_BIN}" serve --port=":${PORT}" --db="${SITE_PATH}/data/sitecraft.db"
 EOF
     chmod +x "${SITE_PATH}/run.sh"
 
     echo -e "${GREEN}${BOLD}✓ Экземпляр '${SITE_ID}' успешно создан!${RESET}"
-    echo -e "  📍 Директория данных: ${CYAN}${SITE_PATH}/pb_data${RESET}"
+    echo -e "  📍 Директория данных: ${CYAN}${SITE_PATH}/data${RESET}"
     echo -e "  🌐 Порт:              ${CYAN}${PORT}${RESET}"
-    echo -e "  👤 Админ:             ${CYAN}${ADMIN_EMAIL}${RESET} / ${CYAN}${ADMIN_PASS}${RESET}"
+    echo -e "  👤 Админка:           ${CYAN}http://127.0.0.1:${PORT}/admin${RESET}"
     echo -e "  🚀 Запуск инстанса:   ${YELLOW}./fleet.sh start ${SITE_ID}${RESET}"
 }
 
@@ -165,7 +160,7 @@ cmd_start() {
     if kill -0 "$NEW_PID" 2>/dev/null; then
         echo -e "${GREEN}✓ Сайт '${SITE_ID}' успешно запущен! PID: ${NEW_PID}${RESET}"
         echo -e "  👉 Публичный URL:  ${CYAN}http://127.0.0.1:${PORT}${RESET}"
-        echo -e "  👉 Админка:        ${CYAN}http://127.0.0.1:${PORT}/_/${RESET}"
+        echo -e "  👉 Админка:        ${CYAN}http://127.0.0.1:${PORT}/admin${RESET}"
     else
         echo -e "${RED}❌ Не удалось запустить процесс. Проверьте ${SITE_PATH}/logs/stdout.log${RESET}"
     fi

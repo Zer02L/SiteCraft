@@ -116,6 +116,20 @@
   - **Templ-компоненты:** `ui/components/cinematic/stageshow.templ` (`StageshowStage`, `MockWindow`, `MockPhone`, `MockTerminal`, `PlaceholderBar`, `MockRow`, `MockSatellite`, `MockCursor`)
   - **Архитектура:** 100% Zero-Node.js, Zero-Playwright, автономный Go + Templ + Tailwind v4 + Alpine.js, ГОСТ a11y & `prefers-reduced-motion` фоллбэк.
 
+---
+
+### 11. `impeccable-craft` (Фронтенд-крафт, Anti-Slop линтинг и модификаторы стиля)
+* **Оригинал:** [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+* **Автор оригинала:** Paul Bakaus
+* **Назначение:** Оснащение агента точным дизайн-вокабуляром (`shape`, `critique`, `audit`, `polish`, `bolder`, `quieter`, `distill`, `typeset`) и детерминированным Anti-Slop чекером. Предотвращает появление шаблонного «AI slop» (дефолтные фиолетово-синие градиенты, случайные размытые сферы `blur-3xl`, захардкоженные HEX-цвета, тесные отступы, карточки-матрешки, абстрактный маркетинговый мусор).
+* **Адаптация в SiteCraft:**
+  - **Локальный скилл:** `.agents/skills/impeccable-craft/SKILL.md`
+  - **Кукбук:** `.agents/cookbooks/impeccable_craft.md`
+  - **Детерминированный статический чекер (0 токенов):** `.agents/skills/impeccable-craft/scripts/check_slop.py`
+  - **Справочник 60+ правил Anti-Slop:** `.agents/skills/impeccable-craft/references/slop_heuristics.md`
+  - **Плейбук команд:** `.agents/skills/impeccable-craft/references/commands_playbook.md`
+  - **Архитектура:** Строгая типизация Go Templ (`*.templ`), Tailwind CSS v4 токены (`bg-surface`, `border-content/10`), ГОСТ Р 52872-2019 a11y, Zero-Node.js.
+
 
 Если вы не используете CLI `skills`, структуру можно подключить вручную:
 
