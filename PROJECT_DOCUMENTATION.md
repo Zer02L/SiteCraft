@@ -2,8 +2,8 @@
 
 > **SiteCraft** — модульный масштабируемый движок и универсальный стартовый набор (Boilerplate / Starter Kit) для создания сверхбыстрых коммерческих сайтов, веб-приложений малого и среднего бизнеса (SMB), локальных сервисов и корпоративных порталов.
 >
-> **Стек:** Go 1.27 + PocketBase v0.40.4 + Templ + HTMX + Alpine.js + Tailwind CSS v4.3 (Oxide)  
-> **Форм-фактор:** Single Binary (~25 МБ) • **RAM:** 20–35 МБ • **TTFB:** < 10 мс • **PageSpeed:** 95–100/100
+> **Стек:** Go 1.27 + Chi v5 + modernc/sqlite (PostgreSQL-ready) + sqlc + goose + scs + bimg + Templ + HTMX + Alpine.js + Tailwind CSS v4.3 (Oxide)  
+> **Форм-фактор:** Single Binary (~22 МБ) • **RAM:** 15–25 МБ • **TTFB:** 0.8–3.5 мс • **PageSpeed:** 95–100/100
 
 ---
 
@@ -12,9 +12,10 @@
 | Задача | Где лежит код | Основные файлы | Команда проверки |
 |---|---|---|---|
 | **Добавить UI-блок / секцию** | `ui/sections/`, `ui/components/` | `ui/registry/registry.go`, `ui/pages/` | `make check` |
-| **Добавить HTTP-маршрут / API** | `internal/handlers/` | `internal/handlers/routes.go` | `make test` |
+| **Добавить HTTP-маршрут / API** | `internal/handlers/`, `internal/server/` | `internal/server/server.go` | `make test` |
 | **Изменить стили / токены темы** | `ui/assets/` | `ui/assets/input.css` | `make generate` |
-| **Добавить коллекцию БД / миграцию**| `internal/data/` | `internal/data/collections.go`, `schema.go` | `make check` |
+| **Добавить таблицу БД / миграцию**| `sql/migrations/` | `sql/migrations/sqlite/*.sql`, `sql/migrations/postgres/*.sql` | `sqlc generate && make test` |
+| **Добавить / изменить SQL-запрос** | `sql/queries/` | `sql/queries/*.sql`, `internal/db/` | `sqlc generate && make test` |
 | **Изменить бизнес-модель данных** | `internal/models/` | `internal/models/*.go` | `make test` |
 | **Добавить/настроить пресет ниши** | `presets/` | `presets/*.json`, `internal/data/preset.go` | `make test` |
 | **Запуск сервера с авто-перезагрузкой**| Корень | `.air.toml` | `make dev` |
@@ -27,10 +28,10 @@
 1. [Ключевые характеристики](#1-ключевые-характеристики)
 2. [Архитектура ядра и потоков данных](#2-архитектура-ядра-и-потоков-данных)
 3. [Структура проекта](#3-структура-проекта)
-4. [База данных и коллекции PocketBase](#4-база-данных-и-коллекции-pocketbase)
+4. [База данных, sqlc и миграции goose](#4-база-данных-sqlc-и-миграции-goose)
 5. [Модели данных Go и безопасность](#5-модели-данных-go-и-безопасность)
 6. [Карта маршрутов и API](#6-карта-маршрутов-и-api)
-7. [In-Memory кэширование и реактивные хуки](#7-in-memory-кэширование-и-реактивные-хуки)
+7. [In-Memory кэширование и реактивная инвалидация](#7-in-memory-кэширование-и-реактивная-инвалидация)
 8. [Событийная шина и уведомления (Event-Driven)](#8-событийная-шина-и-уведомления-event-driven)
 9. [Интернационализация (i18n)](#9-интернационализация-i18n)
 10. [CSS-архитектура и Dynamic Theming Engine](#10-css-архитектура-и-dynamic-theming-engine)
@@ -71,10 +72,10 @@ flowchart TD
         Proxy["Caddy / Nginx (Авто-SSL & gzip/zstd)"]
     end
 
-    subgraph Binary["Автономный бинарник SiteCraft (~25 МБ)"]
+    subgraph Binary["Автономный бинарник SiteCraft (~22 МБ)"]
         direction TB
         
-        Router["PocketBase Router & Middleware\n(i18n.Middleware, Honeypot, bluemonday)"]
+        Router["Chi v5 Router & Middleware Stack\n(RequestID, RealIP, Slog, Recoverer, Compress,\nCSRF nosurf, SCS Sessions, i18n, UTM, A/B)"]
         
         subgraph Handlers["internal/handlers/"]
             H_Web["WebHandler\n(/, /blog, /sitemap.xml)"]
@@ -82,7 +83,7 @@ flowchart TD
             H_Track["TrackerHandler\n(/track, /api/track/sse)"]
             H_TMA["TMAHandler\n(/shop, /vip, /api/tma/auth)"]
             H_Cart["CartHandler\n(/api/cart/checkout)"]
-            H_Client["ClientAdminHandler\n(/client/*)"]
+            H_Client["AdminHandler\n(/admin/*)"]
         end
         
         subgraph EventBusLayer["internal/events & internal/notifications"]
@@ -96,9 +97,10 @@ flowchart TD
             Tailwind["Tailwind v4 CSS\n(ui/assets/styles.css)"]
         end
 
-        subgraph StorageLayer["internal/data & PocketBase"]
+        subgraph StorageLayer["internal/db, internal/data & SQLite/Postgres"]
             Cache["In-Memory Cache (sync.RWMutex)\n(internal/cache/cache.go)"]
-            SQLite["PocketBase SQLite WAL\n(pb_data/data.db)"]
+            SQLC["sqlc Generated Queries\n(internal/db/Querier)"]
+            DBConn["SQLite WAL (data/sitecraft.db)\nor PostgreSQL (pgx/v5)"]
         end
     end
 
@@ -108,34 +110,43 @@ flowchart TD
     Handlers --> Registry --> TemplEngine
     Handlers --> EBus --> Subscribers
     Handlers --> Cache
-    Cache -.->|Miss| SQLite
-    SQLite -.->|Hooks OnRecordUpdate| Cache
+    Cache -.->|Miss| SQLC --> DBConn
+    Handlers -.->|Mutations / Invalidation| Cache
 ```
 
 ---
 
 ## 3. Структура проекта
 
-* `main.go` — Точка входа: инициализация PocketBase, фоновый Cron, CLI-команды `apply-preset` и `export`.
+* `main.go` — Точка входа: инициализация Chi сервера, запуск миграций goose, фоновый планировщик, CLI-команды `apply-preset` и `export`.
 * `Makefile` — Главный интерфейс команд для разработчика и ИИ-агента (`make check`, `make generate`, `make test`, `make build`, `make dev`).
+* `sql/` — Хранилище SQL миграций и запросов:
+  * `migrations/sqlite/` — ANSI/SQLite DDL миграции goose (`00001_init.sql`).
+  * `migrations/postgres/` — PostgreSQL DDL миграции goose (`00001_init.sql`).
+  * `queries/` — Типобезопасные SQL-запросы для sqlc (`pages.sql`, `leads.sql`, `services.sql`, `articles.sql`, `settings.sql`, etc.).
+* `sqlc.yaml` — Конфигурация генератора sqlc (`engine: sqlite`, `emit_interface: true`, пакет `internal/db`).
 * `AGENTS.md` — Иерархия DOX-контрактов для ИИ-агентов ([AGENTS.md](AGENTS.md), [internal/AGENTS.md](internal/AGENTS.md), [ui/AGENTS.md](ui/AGENTS.md), [deploy/AGENTS.md](deploy/AGENTS.md), [presets/AGENTS.md](presets/AGENTS.md)).
 * `BUSINESS_MODULES.md` — Детальные спецификации 20 коммерческих модулей.
 * `FLEET_ARCHITECTURE.md` — Спецификация мультисайтового оркестратора и скрипта `fleet.sh`.
 * `internal/` — Бэкенд-ядро:
+  * `auth/` — Сессии SCS, хэширование паролей bcrypt, middleware защиты `/admin`.
   * `cache/` — Потокобезопасный in-memory кэш (`sync.RWMutex`).
-  * `data/` — Схема PocketBase (`collections.go`), запросы (`queries.go`), хуки инвалидации (`hooks.go`) и пресеты (`preset.go`).
+  * `data/` — Пресеты ниш (`preset.go`) и доменный репозиторий `sql_repository.go`.
+  * `db/` — Драйвер SQLite/Postgres, запуск goose-миграций и sqlc-интерфейс `Querier`.
   * `events/` — Внутрипроцессная шина событий (`bus.go`, `events.go`).
   * `exporter/` — Статический генератор (SSG HTML/CSS).
-  * `handlers/` — HTTP-роуты, прием лидов, админка `/client`, чат, корзина, трекер заказов, платежи, TMA.
+  * `handlers/` — HTTP-хэндлеры Chi (web, leads, админка `/admin`, чат, корзина, трекер заказов, платежи, TMA).
   * `i18n/` — Интернационализация (словари RU/EN, плюрализация, middleware).
+  * `media/` — Пайплайн обработки картинок (миниатюры, WebP/AVIF, кэширование).
   * `models/` — Доменные Go-структуры (`Lead`, `Service`, `Article`, `ServiceOrder`, `ReviewItem`, `ThemeConfig`).
   * `notifications/` — Telegram-бот нотификатор и CRM вебхуки.
+  * `server/` — Корневой сервер Chi, стек middleware, маршрутизация и graceful shutdown.
 * `ui/` — Фронтенд-слой:
   * `assets/` — CSS-first Tailwind v4 конфиг (`input.css`) и скомпилированный бандл (`styles.css`).
   * `components/base/` — Zero-cost CVA UI-примитивы (`Button`, `Badge`, `Card`).
   * `components/cinematic/` — 31 кинематографический UI-модуль без GSAP.
   * `layouts/` — Базовые HTML-шаблоны и SEO-генерация.
-  * `pages/` — Полноэкранные страницы лендинга, блога, трекера, магазина, админки клиента.
+  * `pages/` — Полноэкранные страницы лендинга, блога, трекера, магазина, кастомной админки (`client_admin_*.templ`).
   * `registry/` — Реестр и фабрика динамических блоков (`registry.go`, `helpers.go`).
   * `sections/` — Секции лендинга (hero, booking, services, faq, quiz, etc.).
 * `presets/` — 13 готовых конфигураций ниш SMB в формате JSON.
@@ -143,34 +154,35 @@ flowchart TD
 
 ---
 
-## 4. База данных и коллекции PocketBase
+## 4. База данных, sqlc и миграции goose
 
-Схема инициализируется декларативно в `internal/data/collections.go` при первом запуске:
+Схема базы данных строго типизирована, хранится в виде ANSI SQL миграций goose (`sql/migrations/`) и компилируется в Go-код через `sqlc`. Поддерживается паттерн **Dual-Engine Ready** (SQLite по умолчанию, PostgreSQL для масштабирования):
 
-| Коллекция | Тип | Назначение | Ключевые поля |
-|---|---|---|---|
-| `site_settings` | Синглтон | Бренд, SEO, цветовая тема, контакты, соцсети | `site_name`, `theme_color`, `active_preset`, `meta_title` |
-| `site_content` | Синглтон | Главные заголовки, бейджи доверия, копирайт | `hero_title`, `hero_subtitle`, `trust_badges`, `footer_text` |
-| `page_blocks` | Модули | Блочный конструктор секций страниц | `type`, `title`, `order`, `is_active`, `payload` (JSON) |
-| `services` | Каталог | Услуги, прайс-лист, длительность, склад | `name`, `slug`, `price`, `duration_minutes`, `stock_count` |
-| `leads` | Лидогенерация | Заявки с форм, запись, UTM-метки | `name`, `phone`, `email`, `status`, `utm_source`, `utm_campaign` |
-| `articles` | Блог / SEO | Статьи, новости, база знаний | `title`, `slug`, `content_html`, `meta_description`, `is_published` |
-| `service_orders` | B2B-трекер | Статусы заказов, запчасти, сумма к оплате | `order_number`, `client_phone`, `status`, `total_amount`, `steps` |
-| `chat_messages` | Live-чат | Сообщения Web-to-Telegram и SSE | `session_id`, `sender_type`, `text`, `tg_message_id` |
-| `coupons` | Промокоды | Скидки (фиксированные / проценты), лимиты | `code`, `discount_type`, `discount_value`, `is_active` |
-| `resources` | Персонал | Мастера, врачи, посты обслуживания | `name`, `role`, `specialization`, `avatar` |
-| `reviews` | UGC | Модерируемые отзывы клиентов с фото | `author_name`, `rating`, `comment`, `is_published`, `photos` |
-| `branches` | География | Офисы, координаты для карт, телефоны филиалов | `name`, `city`, `address`, `lat`, `lng`, `working_hours` |
-| `vacancies` | HR | Карьерный портал, вакансии, требования | `title`, `department`, `salary`, `requirements`, `is_open` |
+| Таблица | Назначение | Ключевые поля |
+|---|---|---|
+| `site_settings` | Бренд, SEO, цветовая тема, контакты, реквизиты, 152-ФЗ | `id`, `site_name`, `theme_color`, `active_preset`, `meta_title`, `phone`, `email` |
+| `site_content` | Главные заголовки, бейджи доверия, копирайт | `id`, `hero_title`, `hero_subtitle`, `trust_badges`, `footer_text` |
+| `page_blocks` | Блочный конструктор секций страниц | `id`, `type`, `title`, `order_index`, `is_active`, `payload` (JSON) |
+| `services` | Каталог услуг, прайс-лист, длительность, склад | `id`, `name`, `slug`, `price`, `duration_minutes`, `stock_count` |
+| `leads` | Заявки с форм, запись на прием, UTM-атрибуция | `id`, `name`, `phone`, `email`, `status`, `utm_source`, `utm_campaign` |
+| `articles` | Блог / SEO, отложенный постинг | `id`, `title`, `slug`, `content_html`, `meta_description`, `is_published`, `published_at` |
+| `service_orders` | B2B-трекер заказов, этапы выполнения, смета | `id`, `order_number`, `client_phone`, `status`, `total_amount`, `steps` |
+| `chat_messages` | Сообщения Live-чата Web-to-Telegram и SSE | `id`, `session_id`, `sender_type`, `text`, `tg_message_id` |
+| `coupons` | Промокоды, скидки (фикс/процент), лимиты | `id`, `code`, `discount_type`, `discount_value`, `is_active` |
+| `resources` | Персонал: мастера, специалисты, посты обслуживания | `id`, `name`, `role`, `specialization`, `avatar` |
+| `reviews` | Проверенные отзывы клиентов с фото (Verified UGC) | `id`, `author_name`, `rating`, `comment`, `is_published`, `photos` |
+| `branches` | География: филиалы, адреса, координаты для карт | `id`, `name`, `city`, `address`, `lat`, `lng`, `working_hours` |
+| `vacancies` | HR-портал: открытые вакансии и требования | `id`, `title`, `department`, `salary`, `requirements`, `is_open` |
+| `sessions` | Сессии авторизации администраторов (SCS Store) | `token`, `data`, `expiry` |
 
 ---
 
 ## 5. Модели данных Go и безопасность
 
-Доменные структуры расположены в каталоге `internal/models/`:
+Доменные структуры расположены в каталоге `internal/models/` и слое `internal/data/sql_repository.go`:
 * `Lead` (`lead.go`) — Валидация телефонов по E.164, Honeypot-поле, санитизация через `bluemonday.UGCPolicy()`.
 * `Service` (`service.go`) — Каталог услуг, складские остатки, длительность для слотов записи.
-* `Article` (`article.go`) — Блог, чтение времени, генерация OpenGraph / JSON-LD метаданных.
+* `Article` (`article.go`) — Блог, время чтения, генерация OpenGraph / JSON-LD метаданных.
 * `ServiceOrder` (`b2b.go`) — Трекинг заказа, история этапов, расчет стоимости с НДС.
 * `ThemeConfig` (`theme.go`) — Палитра, радиус скруглений, темный режим, сезонные темы.
 
@@ -178,7 +190,7 @@ flowchart TD
 
 ## 6. Карта маршрутов и API
 
-Маршруты регистрируются в `internal/handlers/routes.go`:
+Маршруты регистрируются в `internal/server/server.go`:
 
 | Путь | Метод | Описание | Ответ / Своп |
 |---|---|---|---|
@@ -186,7 +198,13 @@ flowchart TD
 | `/blog`, `/blog/{slug}` | `GET` | Каталог статей и страница статьи | HTML (Templ SSR) |
 | `/track` | `GET` | Трекер статуса заказа по номеру/телефону | HTML (Templ SSR) |
 | `/api/track/sse` | `GET` | SSE-поток обновлений статуса заказа | Server-Sent Events |
-| `/client/*` | `GET/POST`| Личный кабинет владельца (лиды, статьи, услуги, отзывы, безопасность) | HTML / HTMX частичные свопы |
+| `/admin` | `GET` | Главная панель управления (сводка, метрики) | HTML (Templ SSR) |
+| `/admin/login`, `/admin/logout` | `GET/POST`| Авторизация в админке с защитой от брутфорса | HTML / Редирект |
+| `/admin/blocks` | `GET/POST`| Визуальный конструктор структуры блоков страниц | HTML / HTMX свопы |
+| `/admin/leads` | `GET/POST`| Управление заявками (фильтрация, статусы, экспорт)| HTML / HTMX свопы |
+| `/admin/media` | `GET/POST`| Медиатека (drag-and-drop загрузка, ресайз) | HTML / HTMX свопы |
+| `/admin/settings` | `GET/POST`| Управление брендом, контактами, SEO и 152-ФЗ | HTML / HTMX свопы |
+| `/media/{size}/{filename}` | `GET` | Раздача оптимизированных миниатюр (thumb, sm, md, lg)| Бинарный WebP/JPEG/PNG |
 | `/api/leads` | `POST` | Прием заявки с валидацией и антиспамом | HTMX фрагмент подтверждения |
 | `/api/slots` | `GET` | Доступные слоты бронирования по дате/мастеру | HTMX HTML-фрагмент |
 | `/api/cart/*` | `POST` | Добавление в корзину, расчет доставки, промокод | JSON / HTMX корзины |
@@ -198,11 +216,11 @@ flowchart TD
 
 ---
 
-## 7. In-Memory кэширование и реактивные хуки
+## 7. In-Memory кэширование и реактивная инвалидация
 
 * Реализация: `internal/cache/cache.go`.
 * Блокировки: `sync.RWMutex` (параллельное чтение без блокировок, эксклюзивная запись).
-* Инвалидация через PocketBase Hooks (`internal/data/hooks.go`): хуки `OnRecordAfterCreateSuccess`, `OnRecordAfterUpdateSuccess`, `OnRecordAfterDeleteSuccess` сбрасывают ключи кэша в течение < 1 мс при любых правках в админке `/_/`.
+* Инвалидация при мутациях: методы репозитория (`internal/data/sql_repository.go`) и хэндлеры админки автоматически сбрасывают ключи кэша (`site_data`, `articles_list`, `services_list`) в течение < 0.1 мс при сохранении изменений.
 
 ---
 
@@ -298,7 +316,8 @@ flowchart TD
 ### Стандарты безопасности (Zero-Trust):
 * **XSS:** Все пользовательские тексты и HTML очищаются через `bluemonday.UGCPolicy()`.
 * **Антиспам:** Скрытое поле-ловушка Honeypot (`website_hp`) в формах + Rate Limiting по IP.
-* **CSRF:** Проверка служебных заголовков `HX-Request` и PocketBase токенов.
+* **CSRF:** Проверка служебных заголовков `HX-Request`, токенов защиты `nosurf` и защищенных сессий SCS (`SameSite=Lax`, `HttpOnly`).
+* **Пароли:** Хэширование паролей администратора через `bcrypt` (стоимость 12) с защитой от тайминг-атак.
 
 ---
 
@@ -320,10 +339,13 @@ flowchart TD
 
 ## 18. Дорожная карта и планируемые улучшения (Roadmap)
 
-В данный раздел вынесены второстепенные задачи и идеи развития клиентской панели управления `/client`:
+В данный раздел вынесены второстепенные задачи и идеи развития панели управления `/admin`:
 
-1. **Медиа-загрузчик для брендинга (Drag & Drop):**
-   * Интерактивная загрузка логотипа сайта, фавиконки и фото руководителя через Alpine.js + PocketBase File API во вкладке «Контакты» (сейчас пути задаются текстовыми значениями или в пресетах).
-2. **Расширенные SEO-настройки страниц и блога:**
+1. **Расширенные SEO-настройки страниц и блога:**
    * Кастомный ввод Meta Title и Meta Description с визуальным счетчиком оптимальной длины символов (зеленый/красный бейдж).
    * Выбор кастомного Open Graph превью для социальных сетей (VK, Telegram) и настройка канонических URL.
+2. **Аналитика и конверсии (Встроенный дэшборд):**
+   * График динамики заявок по дням и неделям (SVG/HTML графики без внешних JS библиотек).
+   * Разбивка конверсий по источникам UTM-меток (`utm_source`, `utm_campaign`).
+3. **Пакетная обработка изображений:**
+   * Фоновая оптимизация загруженных оригиналов и генерация формата AVIF в дополнение к WebP.

@@ -1,50 +1,50 @@
 package sections
 
-import (
-	"sitecraft/ui/components/base"
-)
-
 templ Gallery(theme string) {
-	<!-- Structural section: Visual Portfolio / Photo Gallery -->
-	<section id="gallery" class="py-16 px-4 max-w-6xl mx-auto">
-		<div class="text-center mb-12" data-reveal>
-			@base.Badge(base.BadgeProps{
-				Variant: base.BadgeAccent,
-				Class:   "mb-2 uppercase tracking-wider",
-			}) {
-				Галерея
-			}
-			<h2 class="section-title">Портфолио и атмосфера</h2>
-			<p class="section-subtitle">Взгляните на результаты нашей работы и комфортное пространство студии</p>
+	<!-- Hallmark Architectural Gallery / Atmosphere (Strict Aesthetic Mode) -->
+	<section
+		id="gallery"
+		data-component="hallmark-gallery"
+		data-source="ui/sections/gallery.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 max-w-6xl mx-auto border-b border-content/10"
+	>
+		<!-- Заголовок секции (Floor 54: без плашек) -->
+		<div class="mb-12 text-left" data-reveal>
+			<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
+				Пространство приёмной и атмосфера
+			</h2>
+			<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
+				Комфортные приватные переговорные комнаты, архивное хранилище и оснащение для конфиденциального приёма.
+			</p>
 		</div>
 
 		<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-			<div data-reveal data-reveal-delay="100" class="group relative overflow-hidden rounded-card bg-surface-muted aspect-square border border-content/10">
-				<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-pink-100 via-rose-50 to-amber-50 p-6 text-center group-hover:scale-105 transition duration-300">
-					<span class="text-4xl mb-2">💇‍♀️</span>
-					<span class="font-bold text-xs text-content">Airtouch & Укладка</span>
-					<span class="text-[10px] text-content-muted mt-1">Холодный блонд</span>
+			<div data-reveal data-reveal-delay="100" class="group relative overflow-hidden bg-surface-muted aspect-square border border-content/10">
+				<div class="w-full h-full flex flex-col items-center justify-center p-6 text-center group-hover:bg-surface transition duration-300">
+					<span class="text-3xl mb-2 text-accent">🏛️</span>
+					<span class="font-bold text-xs text-content">Приватная переговорная</span>
+					<span class="text-[11px] text-content-muted mt-1">Для крупных сделок</span>
 				</div>
 			</div>
-			<div data-reveal data-reveal-delay="200" class="group relative overflow-hidden rounded-card bg-surface-muted aspect-square border border-content/10">
-				<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-rose-100 via-pink-50 to-purple-50 p-6 text-center group-hover:scale-105 transition duration-300">
-					<span class="text-4xl mb-2">💅</span>
-					<span class="font-bold text-xs text-content">Smart-педикюр</span>
-					<span class="text-[10px] text-content-muted mt-1">Стойкий глянец</span>
+			<div data-reveal data-reveal-delay="200" class="group relative overflow-hidden bg-surface-muted aspect-square border border-content/10">
+				<div class="w-full h-full flex flex-col items-center justify-center p-6 text-center group-hover:bg-surface transition duration-300">
+					<span class="text-3xl mb-2 text-accent">📜</span>
+					<span class="font-bold text-xs text-content">Нотариальный архив</span>
+					<span class="text-[11px] text-content-muted mt-1">Охраняемое хранение</span>
 				</div>
 			</div>
-			<div data-reveal data-reveal-delay="300" class="group relative overflow-hidden rounded-card bg-surface-muted aspect-square border border-content/10">
-				<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-amber-100 via-orange-50 to-rose-50 p-6 text-center group-hover:scale-105 transition duration-300">
-					<span class="text-4xl mb-2">✨</span>
-					<span class="font-bold text-xs text-content">Макияж & Образ</span>
-					<span class="text-[10px] text-content-muted mt-1">Вечерний стиль</span>
+			<div data-reveal data-reveal-delay="300" class="group relative overflow-hidden bg-surface-muted aspect-square border border-content/10">
+				<div class="w-full h-full flex flex-col items-center justify-center p-6 text-center group-hover:bg-surface transition duration-300">
+					<span class="text-3xl mb-2 text-accent">💼</span>
+					<span class="font-bold text-xs text-content">Кабинет нотариуса</span>
+					<span class="text-[11px] text-content-muted mt-1">Личный приём</span>
 				</div>
 			</div>
-			<div data-reveal data-reveal-delay="400" class="group relative overflow-hidden rounded-card bg-surface-muted aspect-square border border-content/10">
-				<div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-tr from-teal-50 via-pink-50 to-amber-100 p-6 text-center group-hover:scale-105 transition duration-300">
-					<span class="text-4xl mb-2">🌸</span>
-					<span class="font-bold text-xs text-content">SPA для волос</span>
-					<span class="text-[10px] text-content-muted mt-1">Глубокое питание</span>
+			<div data-reveal data-reveal-delay="400" class="group relative overflow-hidden bg-surface-muted aspect-square border border-content/10">
+				<div class="w-full h-full flex flex-col items-center justify-center p-6 text-center group-hover:bg-surface transition duration-300">
+					<span class="text-3xl mb-2 text-accent">🛡️</span>
+					<span class="font-bold text-xs text-content">Зона ожидания</span>
+					<span class="text-[11px] text-content-muted mt-1">Деловая среда</span>
 				</div>
 			</div>
 		</div>

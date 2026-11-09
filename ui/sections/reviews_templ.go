@@ -49,207 +49,163 @@ func Reviews(theme string, customReviews ...[]models.ReviewItem) templ.Component
 				WorstRating:  1,
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Structural section: Customer Reviews / Testimonials with Schema.org UGC --><section id=\"reviews\" class=\"py-16 px-4 bg-surface-muted border-t border-b border-content/10\" itemscope itemtype=\"https://schema.org/LocalBusiness\"><meta itemprop=\"name\" content=\"SiteCraft Business\"><div class=\"max-w-6xl mx-auto\"><div class=\"text-center mb-10\" data-reveal>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var2 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
-					}
-				}()
-			}
-			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Отзывы клиентов")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			return nil
-		})
-		templ_7745c5c3_Err = base.Badge(base.BadgeProps{
-			Variant: base.BadgeAccent,
-			Class:   "mb-2 uppercase tracking-wider",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<h2 class=\"section-title\">Что говорят наши клиенты</h2><p class=\"section-subtitle\">Реальные отзывы доверителей и посетителей с независимой верификацией</p><!-- Schema.org AggregateRating микроразметка -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Hallmark Editorial Testimonials (Strict Aesthetic Mode) --><section id=\"reviews\" data-component=\"hallmark-reviews\" data-source=\"ui/sections/reviews.templ\" class=\"py-16 md:py-20 px-6 sm:px-10 bg-surface-muted/40 border-b border-content/10\" itemscope itemtype=\"https://schema.org/LocalBusiness\"><meta itemprop=\"name\" content=\"SiteCraft Business\"><div class=\"max-w-6xl mx-auto\"><!-- Заголовок секции (Floor 54: без плашек) --><div class=\"mb-12 text-left\" data-reveal><h2 class=\"text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content\">Отзывы и практика взаимодействия</h2><p class=\"text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed\">Верифицированные отзывы доверителей по результатам совершённых нотариальных действий и правовых консультаций.</p><!-- Schema.org AggregateRating (минималистичный сводный показатель) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(revList) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div itemprop=\"aggregateRating\" itemscope itemtype=\"https://schema.org/AggregateRating\" class=\"mt-3 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-xs text-amber-500 font-bold\"><span class=\"text-amber-400\">★★★★★</span> <span itemprop=\"ratingValue\" class=\"text-content font-bold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div itemprop=\"aggregateRating\" itemscope itemtype=\"https://schema.org/AggregateRating\" class=\"mt-4 flex items-center gap-3 text-xs text-content-muted\"><span class=\"text-accent text-sm\">★★★★★</span> <span class=\"text-content font-bold\"><span itemprop=\"ratingValue\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", agg.AverageScore))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 58, Col: 111}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span> из <span itemprop=\"bestRating\">5</span></span> <span class=\"text-content-muted\">• (<span itemprop=\"reviewCount\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", agg.AverageScore))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", agg.TotalReviews))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 57, Col: 105}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 59, Col: 110}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> <span class=\"text-content-muted font-normal\">из <span itemprop=\"bestRating\">5</span> (<span itemprop=\"reviewCount\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", agg.TotalReviews))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 58, Col: 160}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span> отзывов)</span></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span> подтверждённых отзывов)</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(revList) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Динамические проверенные отзывы из базы (Verified UGC) --> <div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Динамические отзывы (Floor 11: архитектурная сетка с тонкими hairlines) --> <div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, rev := range revList {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div data-reveal itemprop=\"review\" itemscope itemtype=\"https://schema.org/Review\" class=\"card-base flex flex-col justify-between\"><div><div class=\"flex items-center justify-between mb-3\"><div class=\"text-amber-500 text-sm\" itemprop=\"reviewRating\" itemscope itemtype=\"https://schema.org/Rating\"><meta itemprop=\"ratingValue\" content=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div data-reveal itemprop=\"review\" itemscope itemtype=\"https://schema.org/Review\" class=\"p-6 bg-surface border border-content/10 flex flex-col justify-between\"><div class=\"space-y-3\"><div class=\"flex items-center justify-between text-xs\"><div class=\"text-accent text-xs\" itemprop=\"reviewRating\" itemscope itemtype=\"https://schema.org/Rating\"><meta itemprop=\"ratingValue\" content=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("%d", rev.Rating)).Resolve(ctx)
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("%d", rev.Rating)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 77, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 78, Col: 78}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"><meta itemprop=\"bestRating\" content=\"5\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\"><meta itemprop=\"bestRating\" content=\"5\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				for i := 0; i < rev.Rating; i++ {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<span>★</span> ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<span>★</span> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
 				for i := rev.Rating; i < 5; i++ {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<span class=\"text-stone-300 dark:text-stone-700\">★</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<span class=\"text-content/20\">★</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if rev.OrderID != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<span class=\"inline-flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-500/20\"><svg class=\"w-3 h-3 text-emerald-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Проверенный заказ</span></span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<span class=\"text-[11px] text-content-muted font-mono\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var5 string
+					templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(rev.OrderID)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 88, Col: 78}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><p class=\"text-content/80 text-sm italic leading-relaxed\" itemprop=\"reviewBody\">«")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><p class=\"text-content text-xs sm:text-sm leading-relaxed\" itemprop=\"reviewBody\">«")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(rev.Comment)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 94, Col: 24}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 92, Col: 24}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center justify-between\"><div class=\"flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "»</p></div><div class=\"mt-6 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-8 h-8 bg-surface-muted border border-content/10 text-content font-bold flex items-center justify-center text-xs shrink-0\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(string([]rune(rev.AuthorName)[0]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 100, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 98, Col: 44}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div><div class=\"text-xs font-bold text-content\" itemprop=\"author\" itemscope itemtype=\"https://schema.org/Person\"><span itemprop=\"name\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div class=\"text-xs\"><div class=\"font-bold text-content\" itemprop=\"author\" itemscope itemtype=\"https://schema.org/Person\"><span itemprop=\"name\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(rev.AuthorName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 104, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 102, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</span></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				if rev.OrderID != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"text-[10px] text-content-muted font-mono\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					var templ_7745c5c3_Var9 string
-					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(rev.OrderID)
-					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/reviews.templ`, Line: 107, Col: 78}
-					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div>")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</div></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span></div><div class=\"text-content-muted text-[11px]\">Удостоверенное действие</div></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else if theme == "medical" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Прекрасная клиника! Проходила УЗИ и сдавала анализы. Никаких очередей, всё точно по времени. Врач подробно объяснил каждый показатель и успокоил.»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">ЕМ</div><div><div class=\"text-xs font-bold text-content\">Елена Михайлова</div><div class=\"text-[11px] text-content-muted\">Пациент отделения УЗИ</div></div></div></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Терапевт очень внимательно изучил все симптомы, назначил только нужные анализы без навязывания лишних услуг. Результаты пришли на почту в тот же вечер!»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">АС</div><div><div class=\"text-xs font-bold text-content\">Алексей Смирнов</div><div class=\"text-[11px] text-content-muted\">Первичный приём</div></div></div></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Современное оборудование, чистота и вежливый персонал. Записалась через сайт за минуту, сразу перезвонили и подтвердили запись. Очень рекомендую!»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">ОВ</div><div><div class=\"text-xs font-bold text-content\">Ольга Васильева</div><div class=\"text-[11px] text-content-muted\">Регулярный чекап</div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Оформляли сделку купли-продажи квартиры. Всё прошло спокойно, чётко и строго по закону. Нотариус подробно разъяснил каждый пункт договора.»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">ВГ</div><div><div class=\"text-xs font-bold text-content\">Виктор Григорьев</div><div class=\"text-[11px] text-content-muted\">Удостоверение сделки</div></div></div></div><div data-reveal data-reveal-delay=\"200\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Быстро заверили генеральную доверенность для юридического лица. Записались заранее онлайн, приняли ровно в назначенное время без ожидания.»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">НМ</div><div><div class=\"text-xs font-bold text-content\">Наталья Мельникова</div><div class=\"text-[11px] text-content-muted\">Оформление доверенности</div></div></div></div><div data-reveal data-reveal-delay=\"300\" class=\"card-base flex flex-col justify-between\"><div><div class=\"text-amber-500 text-sm mb-3\">★★★★★</div><p class=\"text-content/80 text-sm italic leading-relaxed\">«Ведение наследственного дела прошло без стресса. Помогли оперативно запросить архивные справки и оформить свидетельство о праве на наследство.»</p></div><div class=\"mt-4 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-9 h-9 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center text-xs\">АР</div><div><div class=\"text-xs font-bold text-content\">Андрей Романов</div><div class=\"text-[11px] text-content-muted\">Наследственное дело</div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Fallback отзывы (Default / Legal / Swiss) --> <div class=\"grid grid-cols-1 md:grid-cols-3 gap-6\"><div data-reveal data-reveal-delay=\"100\" class=\"p-6 bg-surface border border-content/10 flex flex-col justify-between\"><div class=\"space-y-3\"><div class=\"text-accent text-xs\">★★★★★</div><p class=\"text-content text-xs sm:text-sm leading-relaxed\">«Оформляли сделку купли-продажи коммерческой недвижимости. Всё прошло спокойно, чётко и строго по регламенту. Нотариус подробно разъяснил каждый пункт договора.»</p></div><div class=\"mt-6 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-8 h-8 bg-surface-muted border border-content/10 text-content font-bold flex items-center justify-center text-xs\">ВГ</div><div class=\"text-xs\"><div class=\"font-bold text-content\">Виктор Григорьев</div><div class=\"text-content-muted text-[11px]\">Удостоверение сделки</div></div></div></div><div data-reveal data-reveal-delay=\"200\" class=\"p-6 bg-surface border border-content/10 flex flex-col justify-between\"><div class=\"space-y-3\"><div class=\"text-accent text-xs\">★★★★★</div><p class=\"text-content text-xs sm:text-sm leading-relaxed\">«Быстро заверили генеральную доверенность для юридического лица. Записались заранее онлайн, приняли ровно в назначенное время без малейшего ожидания.»</p></div><div class=\"mt-6 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-8 h-8 bg-surface-muted border border-content/10 text-content font-bold flex items-center justify-center text-xs\">НМ</div><div class=\"text-xs\"><div class=\"font-bold text-content\">Наталья Мельникова</div><div class=\"text-content-muted text-[11px]\">Оформление полномочий</div></div></div></div><div data-reveal data-reveal-delay=\"300\" class=\"p-6 bg-surface border border-content/10 flex flex-col justify-between\"><div class=\"space-y-3\"><div class=\"text-accent text-xs\">★★★★★</div><p class=\"text-content text-xs sm:text-sm leading-relaxed\">«Ведение наследственного дела прошло организованно. Помогли оперативно запросить архивные справки и выдать свидетельство о праве на наследство.»</p></div><div class=\"mt-6 pt-4 border-t border-content/10 flex items-center gap-3\"><div class=\"w-8 h-8 bg-surface-muted border border-content/10 text-content font-bold flex items-center justify-center text-xs\">АР</div><div class=\"text-xs\"><div class=\"font-bold text-content\">Андрей Романов</div><div class=\"text-content-muted text-[11px]\">Наследственное дело</div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<!-- Кнопка и интерактивная форма отправки отзыва (UGC) --><div class=\"mt-12 text-center\" x-data=\"{ openForm: false, rating: 5 }\"><button type=\"button\" @click=\"openForm = !openForm\" class=\"inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-primary/30 text-primary hover:bg-primary/5 text-xs font-bold transition-all shadow-xs cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z\"></path></svg> <span x-text=\"openForm ? 'Скрыть форму отзыва' : 'Оставить отзыв о сотрудничестве'\"></span></button><!-- Разворачиваемая форма отзыва --><div x-show=\"openForm\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 -translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" class=\"max-w-lg mx-auto mt-6 card-base p-6 text-left\"><h3 class=\"text-sm font-bold text-content mb-1\">Поделитесь вашим впечатлением</h3><p class=\"text-xs text-content-muted mb-4\">Ваш отзыв будет проверен и поможет нам стать лучше.</p><form hx-post=\"/api/reviews\" hx-target=\"#review-submit-response\" hx-swap=\"innerHTML\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); }\" class=\"space-y-4\"><!-- Honeypot --><div class=\"hidden\" aria-hidden=\"true\"><input type=\"text\" name=\"website_company_url\" tabindex=\"-1\" autocomplete=\"off\"></div><!-- Выбор звезд (1-5) --><div><label class=\"form-label\">Ваша оценка *</label><div class=\"flex items-center gap-1.5 mt-1\"><input type=\"hidden\" name=\"rating\" :value=\"rating\"><template x-for=\"star in [1, 2, 3, 4, 5]\" :key=\"star\"><button type=\"button\" @click=\"rating = star\" class=\"text-xl transition-transform hover:scale-110 focus:outline-none cursor-pointer\" :class=\"star <= rating ? 'text-amber-400' : 'text-stone-300 dark:text-stone-600'\">★</button></template><span class=\"text-xs text-content-muted ml-2 font-medium\" x-text=\"rating + ' из 5'\"></span></div></div><div><label class=\"form-label\">Ваше имя *</label> <input type=\"text\" name=\"author_name\" required minlength=\"2\" placeholder=\"Иван Петров\" class=\"form-input\"></div><div><label class=\"form-label\">Номер заказа / договора (для проверенного бейджа)</label> <input type=\"text\" name=\"order_id\" placeholder=\"Например: SRV-4182 или номер договора\" class=\"form-input font-mono uppercase\"></div><div><label class=\"form-label\">Ваш отзыв *</label> <textarea name=\"comment\" required minlength=\"5\" rows=\"3\" placeholder=\"Опишите, что вам понравилось в работе специалистов...\" class=\"form-input\"></textarea></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<!-- Форма отправки отзыва (UGC) сдержанного архитектурного стиля --><div class=\"mt-12 text-center\" x-data=\"{ openForm: false, rating: 5 }\"><button type=\"button\" @click=\"openForm = !openForm\" class=\"px-5 py-2.5 border border-content/20 text-content hover:bg-surface text-xs font-medium transition cursor-pointer\"><span x-text=\"openForm ? 'Скрыть форму отзыва' : 'Оставить отзыв о приёме'\"></span></button><div x-show=\"openForm\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 -translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" class=\"max-w-lg mx-auto mt-6 bg-surface p-6 text-left border border-content/10\"><h3 class=\"text-sm font-bold text-content mb-1\">Ваш отзыв о сотрудничестве</h3><p class=\"text-xs text-content-muted mb-4\">Отзыв будет опубликован после верификации нотариального действия.</p><form hx-post=\"/api/reviews\" hx-target=\"#review-submit-response\" hx-swap=\"innerHTML\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); }\" class=\"space-y-4\"><div class=\"hidden\" aria-hidden=\"true\"><input type=\"text\" name=\"website_company_url\" tabindex=\"-1\" autocomplete=\"off\"></div><div><label class=\"form-label text-xs font-medium text-content\">Оценка взаимодействия *</label><div class=\"flex items-center gap-1.5 mt-1\"><input type=\"hidden\" name=\"rating\" :value=\"rating\"><template x-for=\"star in [1, 2, 3, 4, 5]\" :key=\"star\"><button type=\"button\" @click=\"rating = star\" class=\"text-lg transition focus:outline-none cursor-pointer\" :class=\"star <= rating ? 'text-accent' : 'text-content/20'\">★</button></template><span class=\"text-xs text-content-muted ml-2 font-medium\" x-text=\"rating + ' из 5'\"></span></div></div><div><label class=\"form-label text-xs font-medium text-content\">Ваше имя *</label> <input type=\"text\" name=\"author_name\" required minlength=\"2\" placeholder=\"Иван Петров\" class=\"form-input text-xs\"></div><div><label class=\"form-label text-xs font-medium text-content\">Номер реестровой записи или договора</label> <input type=\"text\" name=\"order_id\" placeholder=\"Например: 77/14-н/77-2026\" class=\"form-input text-xs font-mono\"></div><div><label class=\"form-label text-xs font-medium text-content\">Текст отзыва *</label> <textarea name=\"comment\" required minlength=\"5\" rows=\"3\" placeholder=\"Опишите ваши впечатления от качества и регламента приёма...\" class=\"form-input text-xs\"></textarea></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Var10 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -261,7 +217,7 @@ func Reviews(theme string, customReviews ...[]models.ReviewItem) templ.Component
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<span>Отправить отзыв на модерацию</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<span>Отправить отзыв</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -271,12 +227,12 @@ func Reviews(theme string, customReviews ...[]models.ReviewItem) templ.Component
 			Type:    "submit",
 			Variant: base.BtnPrimary,
 			Size:    base.BtnSizeSm,
-			Class:   "w-full font-bold shadow-xs",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var10), templ_7745c5c3_Buffer)
+			Class:   "w-full font-medium",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</form><div id=\"review-submit-response\" class=\"mt-4\"></div></div></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</form><div id=\"review-submit-response\" class=\"mt-4 text-xs\"></div></div></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

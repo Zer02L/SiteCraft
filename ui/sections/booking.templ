@@ -3,7 +3,6 @@ package sections
 import (
 	"sitecraft/internal/i18n"
 	"sitecraft/internal/models"
-	"sitecraft/ui/components/base"
 )
 
 templ Booking(content models.SiteContent, bookedSlots map[string][]string, settings models.SiteSettings, resources ...[]models.ResourceItem) {
@@ -13,24 +12,24 @@ templ Booking(content models.SiteContent, bookedSlots map[string][]string, setti
 			resList = resources[0]
 		}
 	}}
-	<!-- Booking Section (Simple or Interactive Slots) -->
-	<section id="booking" class="py-16 px-4 bg-surface-muted border-t border-content/10">
+	<!-- Hallmark Architectural Booking (Strict Aesthetic Mode) -->
+	<section
+		id="booking"
+		data-component="hallmark-booking"
+		data-source="ui/sections/booking.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 bg-surface-muted/40 border-b border-content/10"
+	>
 		<div class="max-w-6xl mx-auto" data-reveal>
-			<div class="text-center mb-10">
-				@base.Badge(base.BadgeProps{
-					Variant: base.BadgeAccent,
-					Class:   "mb-2 uppercase tracking-wider",
-				}) {
-					{ i18n.T(ctx, "booking.badge") }
-				}
-				<h2 class="section-title">
+			<!-- Заголовок секции (Floor 54: без плашек) -->
+			<div class="mb-12 text-left">
+				<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
 					if settings.BookingMode == "simple" {
 						{ i18n.T(ctx, "booking.simple_title") }
 					} else {
 						{ i18n.T(ctx, "booking.slots_title") }
 					}
 				</h2>
-				<p class="section-subtitle">
+				<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
 					if settings.BookingMode == "simple" {
 						{ i18n.T(ctx, "booking.simple_desc") }
 					} else {

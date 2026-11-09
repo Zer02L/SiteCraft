@@ -76,7 +76,7 @@ Default section order:
 
 ## User Preferences
 
-- **SiteCraft Architecture**: Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS v4. Single binary (~25 MB), PageSpeed 100/100, zero Node.js runtime in production, Zero-GSAP animations, type-safe Templ, Tailwind v4 design tokens.
+- **SiteCraft Architecture**: Go 1.27 + Chi v5 + modernc/sqlite (PostgreSQL-ready) + sqlc + goose + scs + bimg + Templ + HTMX + Alpine.js + Tailwind CSS v4. Single binary (~22 MB), RAM ~15-20 MB, TTFB < 5ms, PageSpeed 100/100, zero Node.js runtime in production, Zero-GSAP animations, type-safe Templ, Tailwind v4 design tokens.
 - **Templ & Source Mapping Contracts**:
   - STRICT: Never edit generated `*_templ.go` files directly. Always edit the source `*.templ` file and re-generate via `templ generate`.
   - DOM Source Mapping: Base components and dynamic blocks must maintain `data-component`, `data-source`, and `data-field` attributes to allow 1:1 visual element mapping in T3 Code preview and AI inspectors.
@@ -84,9 +84,10 @@ Default section order:
   - Strict protection against generic AI templates, visual noise, and hallucinated marketing slop across all B2B/B2C components.
   - **Palettes & Tokens**: Ban default purple-to-indigo gradients (`from-indigo-500 to-purple-600`) and arbitrary blurred background orbs (`blur-3xl`). Color schemes must originate from `presets/*.json` or explicit project briefs.
   - **Copywriting**: Ban abstract marketing filler ("инновационные решения", "лидеры рынка", "революционный подход"). Headings and offers must follow the factual formula: specific service/product + measurable benefit/timeline/standard.
-  - **Proof & Trust**: Ban fake testimonials with stock photos. Use real case studies (estimate, scope, timeline, materials), PocketBase UGC reviews, or external review links (Yandex/Avito).
+  - **Proof & Trust**: Ban fake testimonials with stock photos. Use real case studies (estimate, scope, timeline, materials), verified UGC reviews from SQLite/PostgreSQL, or external review links (Yandex/Avito).
   - **Layout Rhythm**: Avoid monotonous 3-identical-card grids. Vary structural density (split heroes, asymmetrical bento, interactive quizzes, accent timelines).
   - **Tactile Performance (60 FPS)**: Content must be readable instantly without waiting for scroll animations. Animations limited to `transform` and `opacity` (150–200ms) with full `prefers-reduced-motion` and No-JS progressive enhancement.
+  - **Craft & Heuristic Audit**: Use `.agents/skills/impeccable-craft/` (commands `polish`, `bolder`, `quieter`, `distill`, `audit`) and run `.agents/skills/impeccable-craft/scripts/check_slop.py` for 0-token deterministic verification against 60+ anti-slop rules.
 - **Ponytail (Lazy Senior Dev Mode)**:
   - Best code is the code never written. Solve problems with minimal diffs and no over-engineering.
   - Before writing, grep callers to establish full scope (callers, templates, tests, fixtures, configs).
@@ -104,7 +105,7 @@ Default section order:
 
 ## Child DOX Index
 
-- [internal/AGENTS.md](internal/AGENTS.md) — Backend core: PocketBase integration, SQLite schemas, HTTP handlers, middleware, caching, i18n, events, business modules, and tests.
+- [internal/AGENTS.md](internal/AGENTS.md) — Backend core: Chi routing, SQLite/PostgreSQL data layer via sqlc & goose, HTTP handlers, middleware, SCS sessions, bimg media, caching, i18n, events, business modules, and tests.
 - [ui/AGENTS.md](ui/AGENTS.md) — Frontend presentation: Templ components, layouts, pages, Tailwind v4 design tokens, Go Variants (CVA), and static assets.
 - [presets/AGENTS.md](presets/AGENTS.md) — Vertical business configs: SMB niche JSON presets, theme colors, section structures, and seed data.
 - [deploy/AGENTS.md](deploy/AGENTS.md) — Deployment & operations: single-binary systemd units, Nginx/Caddy reverse proxies, fleet orchestration, and Zero-RAM watchdog monitoring.

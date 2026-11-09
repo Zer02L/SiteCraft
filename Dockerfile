@@ -3,14 +3,16 @@ FROM golang:1.27-alpine AS builder
 
 WORKDIR /app
 
-# Install build dependencies
-RUN apk add --no-cache git curl nodejs npm
+# Install build tools
+RUN apk add --no-cache git curl ca-certificates
 
-# Install templ
-RUN go install github.com/a-h/templ/cmd/templ@v0.3.1070
+# Install templ CLI
+RUN go install github.com/a-h/templ/cmd/templ@v0.3.1100
 
-# Install standalone tailwindcss CLI
-RUN npm install -g tailwindcss
+# Install standalone Tailwind CSS v4 CLI (Zero-Node.js)
+RUN curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64 && \
+    chmod +x tailwindcss-linux-x64 && \
+    mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
 # Copy dependency manifests
 COPY go.mod go.sum ./
@@ -19,31 +21,34 @@ RUN go mod download
 # Copy application sources
 COPY . .
 
-# Generate templates & compile CSS
+# Generate Templ templates & compile Tailwind CSS
 RUN templ generate
 RUN tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
 
-# Compile single binary
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/bin/sitecraft .
+# Compile pure Go binary (CGO=0)
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/bin/sitecraft main.go
 
 # Stage 2: Minimal runtime image
-FROM alpine:3.20
+FROM alpine:3.21
 
-WORKDIR /pb
+WORKDIR /app
 
-# Install runtime certificates and tzdata
+# Install runtime certificates and timezone data
 RUN apk add --no-cache ca-certificates tzdata
 
-# Copy binary, assets, and presets
-COPY --from=builder /app/bin/sitecraft /pb/sitecraft
-COPY --from=builder /app/ui/assets /pb/ui/assets
-COPY --from=builder /app/presets /pb/presets
+# Copy binary and presets
+COPY --from=builder /app/bin/sitecraft /app/sitecraft
+COPY --from=builder /app/presets /app/presets
 
 # Expose HTTP port
 EXPOSE 8090
 
-# Volume for SQLite database and uploaded files
-VOLUME ["/pb/pb_data"]
+# Volume for data (SQLite database & uploaded media)
+VOLUME ["/data"]
 
-ENTRYPOINT ["/pb/sitecraft"]
-CMD ["serve", "--http=0.0.0.0:8090"]
+ENV DATABASE_URL="file:/data/sitecraft.db?_pragma=busy_timeout(5000)" \
+    UPLOADS_DIR="/data/uploads" \
+    PORT=":8090"
+
+ENTRYPOINT ["/app/sitecraft"]
+CMD ["serve", "--port=:8090"]

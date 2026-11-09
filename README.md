@@ -1,10 +1,11 @@
 # ⚡ SiteCraft Engine & Starter Kit
 
-**SiteCraft** — универсальный модульный движок и стартовый набор для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов малого и среднего бизнеса (SMB) на стеке **Go 1.27 + PocketBase + Templ + HTMX + Alpine.js + Tailwind CSS v4**.
+**SiteCraft** — универсальный модульный движок и стартовый набор для создания сверхбыстрых коммерческих сайтов, каталогов услуг и лендингов малого и среднего бизнеса (SMB) на стеке **Go 1.27 + Chi v5 + modernc/sqlite (PostgreSQL-ready) + sqlc + goose + scs + bimg + Templ + HTMX + Alpine.js + Tailwind CSS v4**.
 
 ![PageSpeed](https://img.shields.io/badge/PageSpeed-100%2F100-success?style=flat-square)
-![Binary Size](https://img.shields.io/badge/Single%20Binary-~25MB-blue?style=flat-square)
-![RAM Usage](https://img.shields.io/badge/RAM%20Usage-20--35MB-orange?style=flat-square)
+![Binary Size](https://img.shields.io/badge/Single%20Binary-~22MB-blue?style=flat-square)
+![RAM Usage](https://img.shields.io/badge/RAM%20Usage-15--25MB-orange?style=flat-square)
+![TTFB](https://img.shields.io/badge/TTFB-0.8--3.5ms-success?style=flat-square)
 ![Throughput](https://img.shields.io/badge/Read%20RPS-до%2045k%20req%2Fs-success?style=flat-square)
 ![Tailwind v4](https://img.shields.io/badge/Tailwind%20CSS-v4.3%20(Oxide)-38bdf8?style=flat-square)
 ![UI](https://img.shields.io/badge/UI-Go%20Variants%20(CVA)%20%2B%20Tailwind%20v4-000000?style=flat-square)
@@ -16,9 +17,9 @@
 
 ## 🎯 Ключевые преимущества
 
-1. **Единый автономный бинарник (~25 МБ):** Веб-сервер, база данных SQLite, панель управления (`/_/`), шаблоны и ассеты скомпилированы в один файл.
-2. **Нулевой рантайм Node.js в продакшене:** Стили и шаблоны компилируются заранее при сборке.
-3. **In-Memory Cache (sync.RWMutex):** Отдача страниц за **< 10 мс (TTFB)** с автоматической инвалидацией при редактировании данных в админке.
+1. **Единый автономный бинарник (~22 МБ):** Веб-сервер Chi, база данных SQLite (с заделом под PostgreSQL), кастомная панель управления (`/admin`), шаблоны и ассеты скомпилированы в один файл.
+2. **Нулевой рантайм Node.js в продакшене:** Стили и шаблоны компилируются заранее при сборке (`templ generate`, `tailwindcss --minify`).
+3. **In-Memory Cache (sync.RWMutex):** Отдача страниц за **0.8–3.5 мс (TTFB)** с автоматической инвалидацией при редактировании данных в админке.
 4. **Связка HTMX + Alpine.js (`hx-alpine-compat`):** 
    * **`hx-alpine-compat`** — нативная совместимость HTMX и Alpine.js при динамических DOM-свопах (автоматическая переинициализация реактивного состояния, модалок и форм без утечек памяти).
    * **Alpine.js + @alpinejs/mask** — мгновенные клиентские микро-интеракции (мобильное бургер-меню, маски номеров телефонов, корзина, календарь).
@@ -28,11 +29,11 @@
    * **Нативные CSS Data-Variants Tailwind v4:** управление состояниями модалок, аккордеонов и дропдаунов (`data-open:`, `data-closed:`, `data-active:`) напрямую через data-атрибуты Alpine.js без манипуляций со строками классов в JavaScript.
    * **`ui/components/icons` (Lucide):** 100% типобезопасные векторные иконки без сырого SVG-кода, компилируемые Templ.
    * **`tailwind-animations`:** плавные микро-взаимодействия (`animate-fade-in`, `animate-fade-in-up`, `animate-pulse-glow`, `hover:-translate-y-1`, `active:scale-[0.98]`) с автоматическим отключением в режиме доступности (`a11y-mode`) и `prefers-reduced-motion`.
-6. **Динамический Theming Engine (управление цветами и шрифтами из PocketBase):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
+6. **Динамический Theming Engine (управление цветами и шрифтами из админки):** Возможность задавать `primary_color`, `accent_color`, `background_color` и `font_family` на лету из панели управления без пересборки Tailwind CSS!
 7. **Модуль локализации i18n (RU / EN):** Полноценная многоязычность (`internal/i18n`) из коробки: определение языка через URL-параметр `?lang=`, Cookie или заголовок `Accept-Language`, Zero-JS переключатель языков, динамический `<html lang="...">`, `hreflang`, `og:locale` для SEO и локализованные сообщения валидации форм.
 8. **Реестр компонентов (Block Registry / Factory Pattern):** Расширяемая модульная архитектура (`ui/registry/registry.go`). Любые новые секции легко регистрируются через `RegisterBlock(type, renderer)`. Включает встроенный блок `showcase` с витриной компонентов.
 9. **Генератор статических сайтов (Static SSG Exporter):** Выгрузка сайта в чистый плоский HTML/CSS для бесплатного хостинга на GitHub Pages, Cloudflare Pages или S3.
-10. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~25 МБ RAM на сайт (до 50 сайтов на VPS за $10).
+10. **Оркестратор Fleet of Binaries (`./fleet.sh`):** Мультисайтовое развертывание для агентств и студий. 1 клиент = 1 изолированная база SQLite + личная админка. Потребление ~15–20 МБ RAM на сайт (до 60 сайтов на VPS за $10).
 11. **20 готовых бизнес-модулей "из коробки" (Zero-SMS & Zero-Node.js):**
     * **E-Commerce & Склад:** Drawer-корзина (`cart_drawer`), расчет зон доставки и гео-тарифов, сопутствующие продажи (Cross-Sell / Up-Sell), складской учет остатков (Simple Inventory) с режимом «Под заказ», промокоды и купоны (Promo Engine), Telegram Mini Apps витрина (`/shop`) и VIP-клуб (`/vip`).
     * **Лидогенерация & CRO:** Смарт-квиз со сметой (`quiz`), живой Web-to-Telegram чат с SSE и релеем в бота (`chat_widget`), модалка удержания уходящих (`exit_intent`), сквозная UTM-атрибуция (Zero-JS), виджет недавней активности (Social Proof / FOMO), серверное A/B тестирование (Zero-FOOC) и плавающий мульти-мессенджер (`floating_contact`).
@@ -60,17 +61,18 @@ flowchart TD
         Caddy["Caddy / Nginx (SSL & Маршрутизация доменов)"]
     end
 
-    subgraph Binary["Единый автономный бинарник SiteCraft (~25 МБ)"]
+    subgraph Binary["Единый автономный бинарник SiteCraft (~22 МБ)"]
         direction TB
         
-        Router["PocketBase Native Router & Middleware\n(Honeypot, BlueMonday Sanitize, Static Embed)"]
+        Router["Chi v5 Router & Middleware Stack\n(RequestID, RealIP, Slog, Compress, CSRF, SCS, i18n)"]
         
         subgraph BusinessHandlers["Бизнес-хэндлеры (internal/handlers)"]
             H_Web["Web Handler (/ /blog /shop)"]
             H_Track["B2B Tracker (/track)"]
             H_TMA["TMA Mini App & VIP Club (/vip)"]
             H_Lead["Lead Generator & Slots (/booking)"]
-            H_Pay["Payment Handler (/payment)"]
+            H_Admin["Admin Panel (/admin)"]
+            H_Media["Media Streamer (/media)"]
         end
         
         subgraph EventBusLayer["Событийная шина & Сервисы (internal/events & internal/notifications)"]
@@ -86,9 +88,9 @@ flowchart TD
         end
 
         subgraph CoreData["Слой данных & Кэш"]
-            Cache["In-Memory Cache (sync.RWMutex)\n< 10ms TTFB"]
-            PB["Embedded PocketBase (Go Framework)"]
-            SQLite[("Встроенная SQLite БД\n(pb_data/data.db)")]
+            Cache["In-Memory Cache (sync.RWMutex)\n0.8–3.5ms TTFB"]
+            SQLC["sqlc Generated Querier\n(internal/db)"]
+            DBConn[("Встроенная SQLite WAL (data/sitecraft.db)\nили PostgreSQL (pgx/v5)")]
         end
 
         SSG["Static SSG Exporter\n(Flat HTML/CSS в ./dist)"]
@@ -105,13 +107,18 @@ flowchart TD
     Client -.-> Router
 
     Router --> BusinessHandlers
-    H_Web & H_Track & H_TMA & H_Lead --> Registry
+    H_Web & H_Track & H_TMA & H_Lead & H_Admin --> Registry
     Registry --> Templ
     Templ --> ClientLibs
 
     H_Lead -.->|Publish Event| EBus
-    H_Pay -.->|Publish Event| EBus
+    BusinessHandlers -.->|Publish Event| EBus
     EBus --> Subscribers
+    BusinessHandlers --> PayGateway
+
+    BusinessHandlers --> Cache
+    Cache -.->|Miss| SQLC --> DBConn
+    H_Admin -.->|Инвалидация кэша при мутациях| Cache
     H_Pay --> PayGateway
 
     BusinessHandlers --> Cache
@@ -231,7 +238,7 @@ registry.RegisterBlock("showcase", func(b models.PageBlock, ctx registry.RenderC
 })
 ```
 
-Все блоки страницы упорядочиваются и настраиваются через коллекцию `page_blocks` в админке PocketBase.
+Все блоки страницы упорядочиваются и настраиваются через таблицу `page_blocks` в админке `/admin/blocks`.
 
 ---
 
@@ -243,7 +250,7 @@ registry.RegisterBlock("showcase", func(b models.PageBlock, ctx registry.RenderC
 internal/i18n/
 ├── i18n.go         # Ядро: нормализация локали, извлечение из запроса, контекст, T(), Plural(), OGLocale()
 ├── catalogs.go     # Словари переводов (навигация, темы, a11y, кнопки, расписание, ошибки, футер)
-├── middleware.go   # PocketBase Router Middleware (детекция языка, запись cookie site_lang)
+├── middleware.go   # Chi Router HTTP-Middleware (детекция языка, запись cookie site_lang)
 ├── handler.go      # HTTP-хэндлер переключения языка (/api/lang/{code}) с редиректом
 ├── localize.go     # Хелперы локализации динамического контента и услуг
 └── i18n_test.go    # Модульные тесты для всех компонентов локализации
@@ -261,34 +268,38 @@ internal/i18n/
    * Теги `<link rel="alternate" hreflang="ru" ...>` и `hreflang="en"`.
    * OpenGraph мета-тег `<meta property="og:locale" content="ru_RU" / "en_US">`.
 4. **Локализованная валидация форм:** Ошибки отправки заявок (имя, телефон, капча/honeypot) возвращаются на языке текущего пользователя.
-5. **Управление из админки:** Флаг `enable_i18n` (включение/отключение отображения переключателя) и `default_lang` в коллекции `site_settings`.
+5. **Управление из админки:** Флаг `enable_i18n` (включение/отключение отображения переключателя) и `default_lang` в таблице `site_settings`.
 
 ---
 
-## 🎛 Клиентская панель управления (`/client`) и безопасность
+## 🎛 Панель управления конструктора (`/admin`) и безопасность
 
-Для владельца сайта и контент-менеджера реализован автономный кабинет `/client`, изолированный от технической админки PocketBase (`/_/`):
+Для владельца сайта и контент-менеджера реализован автономный кабинет `/admin` на `Templ + Tailwind v4 + Alpine.js + HTMX`:
 
 ### 1. Архитектура безопасности и авторизации:
-* **Изолированный доступ:** Публичные страницы сайта не содержат ссылок на админку. Кабинет открывается напрямую по адресу `/client`.
-* **Мастер первичной настройки (Setup Wizard, `/client/setup`):** При первом старте инстанса, если пароль еще не установлен, система требует задать безопасный пароль (не менее 8 символов) с подтверждением.
-* **Bcrypt-хэширование:** Пароль хранится в базе исключительно в виде bcrypt-хэша (`client_admin_password_hash`). Для старых инстансов предусмотрена бесшовная автомиграция legacy-паролей при первом чтении или входе.
-* **Криптографические сессии (`SessionStore`):** Кука `sitecraft_client_auth` (`HttpOnly`, `SameSite=Lax`, 30 дней) хранит 32-байтный криптографически стойкий токен (`crypto/rand`). Никаких открытых паролей в браузере. При выходе сессия немедленно отзывается из памяти.
-* **Защита от подбора паролей (`LoginRateLimiter`):** Встроенный ограничитель блокирует IP-адрес на 15 минут после 5 неудачных попыток входа с кодом HTTP 429 Too Many Requests и обратным таймером.
-* **Смена пароля (`/client/tab/security`):** Безопасная смена мастер-пароля с проверкой текущего пароля прямо из панели.
+* **Изолированный доступ:** Кабинет открывается напрямую по адресу `/admin`.
+* **Bcrypt-хэширование:** Пароль хранится в защищенной таблице исключительно в виде bcrypt-хэша (`cost 12`).
+* **Криптографические сессии (`SCS SessionStore`):** Защищенная сессионная кука (`HttpOnly`, `SameSite=Lax`, авто-продление). Сессии хранятся в таблице `sessions` SQLite/PostgreSQL.
+* **Защита от CSRF (`nosurf`):** Все POST-формы панели защищены токенами CSRF.
+* **Смена пароля и настроек:** Управление доступом, брендом, метаданными и 152-ФЗ прямо из вкладки настроек.
 
-### 2. Управление лидами и заявками:
+### 2. Конструктор структуры страниц (`/admin/blocks`):
+* Визуальное упорядочивание блоков (Hero, Bento, Services, FAQ, Contacts) с перемещением вверх/вниз в 1 клик через HTMX.
+* Быстрое включение/отключение блоков без удаления данных.
+
+### 3. Управление лидами и заявками (`/admin/leads`):
 * Таблица входящих заявок с фильтрацией по статусам (`новая`, `в работе`, `завершена`).
 * Быстрая смена статуса в 1 клик через HTMX без перезагрузки.
-* Экспорт базы заявок в CSV (`/client/export/leads.csv`) для импорта в Excel / Google Таблицы.
+* Экспорт базы заявок в CSV для импорта в Excel / Google Таблицы.
 
-### 3. Редактирование контактов:
-* Мгновенное обновление телефонов, адресов, часов работы, соцсетей (Telegram, WhatsApp) и реквизитов компании без правок исходного кода.
+### 4. Медиатека (`/admin/media`):
+* Drag & Drop загрузка файлов с генерацией миниатюр (thumb, sm, md, lg).
+* Быстрое копирование URL картинки в буфер обмена.
 
-### 4. Управление блогом и базой знаний:
+### 5. Управление блогом и базой знаний:
 * **Визуальный редактор:** Полноценный WYSIWYG-редактор Quill.js в едином темном стиле сайта.
 * **Обложки статей:** Drag & Drop загрузка с мгновенным предпросмотром на Alpine.js.
-* **Отложенная публикация (Scheduled Publishing):** Выбор даты/времени (`published_at`) и быстрые пресеты («Сейчас», «Завтра в 09:00», «Через 3 дня», «Через неделю»). PocketBase Cron автоматически делает запланированные статьи видимыми на сайте и сбрасывает кэш.
+* **Отложенная публикация (Scheduled Publishing):** Выбор даты/времени (`published_at`) и автоматическая активация по планировщику.
 * **Быстрый тоггл (1 клик):** Мгновенная публикация или скрытие материала в таблице статей.
 * **Корзина (Soft Delete):** Защита от случайного удаления: восстановление из корзины в 1 клик, окончательное удаление и полная очистка корзины.
 
@@ -349,16 +360,16 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 
 ## 📊 Сравнение с аналогами
 
-| Критерий | SiteCraft (Go + PocketBase + HTMX) | WordPress (PHP + MySQL) | Tilda / Webflow (No-Code SaaS) | Next.js + Strapi (Node.js Fullstack) |
+| Критерий | SiteCraft (Go + Chi + HTMX) | WordPress (PHP + MySQL) | Tilda / Webflow (No-Code SaaS) | Next.js + Strapi (Node.js Fullstack) |
 |---|---|---|---|---|
-| **Потребление RAM** | **~20–35 МБ** | 250–600 МБ | Облако (SaaS) | 350–800 МБ |
-| **TTFB (отклик)** | **< 10 мс** | 150–500 мс | 100–300 мс | 50–150 мс |
+| **Потребление RAM** | **~15–25 МБ** | 250–600 МБ | Облако (SaaS) | 350–800 МБ |
+| **TTFB (отклик)** | **0.8–3.5 мс** | 150–500 мс | 100–300 мс | 50–150 мс |
 | **Пропускная способность (RPS)** | **4 000 – 45 000+ req/s** | 50 – 300 req/s | Ограничено тарифом | 500 – 2 500 req/s |
 | **Параллельный онлайн** | **15 000 – 250 000+ польз.** | 300 – 1 500 польз. | 1 000 – 5 000 польз. | 3 000 – 15 000 польз. |
 | **Сложность деплоя** | **1 бинарник** (или Docker) | LAMP/LEMP стек + плагины | 0 (кнопка в облаке) | Node.js рантайм + БД + Redis |
-| **Встроенная админка** | **Да (PocketBase)** | Да (тяжелая CMS) | Да (визуальный редактор) | Да (в Headless CMS) |
-| **Стоимость владения** | **$0** (до 50 сайтов на VPS за $10) | $5–15/мес за сайт | $12–25/мес за сайт | $15–30/мес |
-| **Контроль данных** | **100% On-Premise (SQLite)** | 100% On-Premise | 0% (Vendor lock-in) | 100% On-Premise |
+| **Встроенная админка** | **Да (`/admin` Templ+HTMX)** | Да (тяжелая CMS) | Да (визуальный редактор) | Да (в Headless CMS) |
+| **Стоимость владения** | **$0** (до 60 сайтов на VPS за $10) | $5–15/мес за сайт | $12–25/мес за сайт | $15–30/мес |
+| **Контроль данных** | **100% On-Premise (SQLite / Postgres)** | 100% On-Premise | 0% (Vendor lock-in) | 100% On-Premise |
 | **Интерактивность UI** | **HTMX + Alpine.js** | jQuery / тяжелые плагины | Базовые виджеты | React/Vue гидратация |
 | **PageSpeed** | **95–100** | 50–80 | 60–85 | 85–95 |
 
@@ -381,7 +392,7 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 * **Параллельное чтение (Read-Heavy):** SQLite WAL позволяет неограниченное число одновременных читателей без взаимных блокировок. В сочетании со встроенным In-Memory кэшем (`sync.RWMutex`) скорость отдачи страниц достигает десятков тысяч RPS.
 * **Последовательная запись (Single-Writer):** SQLite выполняет транзакции записи последовательно. Потолок интенсивной записи на современном NVMe составляет **1 500 – 4 000 транзакций в секунду**. Для 99.9% коммерческих сайтов (сотни тысяч оформленных заявок и заказов в сутки) этого запаса хватает с избытком.
 * **Потенциал масштабирования через CDN Edge-кэш:** В приведенных бенчмарках оценивалась «чистая» производительность самого Go-бинарника без внешней буферизации. При подключении CDN (Cloudflare / Fastly) с кэшированием публичных HTML-страниц и статики на границе сети (Edge Cache) пропускная способность на чтение масштабируется до сотен тысяч и миллионов RPS, разгружая инстанс для обработки исключительно динамических POST-заявок и транзакций.
-* **Когда потребуется масштабирование:** Переход на распределенную архитектуру (PostgreSQL кластер / шардирование) требуется только при постоянной пиковой записи свыше 3 000–5 000 req/s (высоконагруженные биржи, стриминг-чаты) или необходимости запуска нескольких реплик приложения в режиме multi-master.
+* **Когда потребуется масштабирование:** Переход на распределенную архитектуру (PostgreSQL кластер / шардирование) поддерживается из коробки через драйвер `pgx/v5` и `sqlc.yaml`.
 
 ---
 
@@ -398,7 +409,7 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 ./bin/my-site serve --http=127.0.0.1:8090 --preset=medical
 ```
 * **Сайт:** [http://127.0.0.1:8090](http://127.0.0.1:8090)
-* **Панель управления PocketBase:** [http://127.0.0.1:8090/_/](http://127.0.0.1:8090/_/)
+* **Панель управления SiteCraft Admin:** [http://127.0.0.1:8090/admin](http://127.0.0.1:8090/admin)
   * **Логин по умолчанию:** `admin@local.dev`
   * **Пароль по умолчанию:** `admin123456`
 

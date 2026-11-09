@@ -12,25 +12,24 @@ import (
 	"sitecraft/internal/data"
 	"sitecraft/ui"
 	"sitecraft/ui/pages"
-
-	"ganigeorgiev.com/pocketbase/pocketbase/core"
 )
 
 // ExportStaticSite renders the landing page and copies static assets into outputDir
-func ExportStaticSite(app core.App, outputDir string) error {
+func ExportStaticSite(repo *data.Repository, outputDir string) error {
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("failed to create output directory: %w", err)
 	}
 
-	settings := data.GetSiteSettings(app)
-	content := data.GetSiteContent(app)
-	services := data.GetServices(app)
-	bookedSlots := data.GetBookedSlots(app)
-	blocks := data.GetPageBlocks(app)
-	resources := data.GetResources(app)
-	reviews := data.GetReviews(app)
-	branches := data.GetBranches(app)
-	vacancies := data.GetVacancies(app)
+	ctx := context.Background()
+	settings, _ := repo.GetSiteSettings(ctx)
+	content, _ := repo.GetSiteContent(ctx)
+	services, _ := repo.GetServices(ctx)
+	bookedSlots, _ := repo.GetBookedSlots(ctx)
+	blocks, _ := repo.GetPageBlocks(ctx)
+	resources, _ := repo.GetResources(ctx)
+	reviews, _ := repo.GetReviews(ctx)
+	branches, _ := repo.GetBranches(ctx)
+	vacancies, _ := repo.GetVacancies(ctx)
 
 	// 1. Render index.html via Templ
 	var buf bytes.Buffer
@@ -38,14 +37,14 @@ func ExportStaticSite(app core.App, outputDir string) error {
 		Settings:    settings,
 		Content:     content,
 		Services:    services,
-		BookedSlots: bookedSlots,
+		BookedSlots: map[string][]string{"": bookedSlots},
 		Blocks:      blocks,
 		Resources:   resources,
 		Reviews:     reviews,
 		Branches:    branches,
 		Vacancies:   vacancies,
 	})
-	if err := component.Render(context.Background(), &buf); err != nil {
+	if err := component.Render(ctx, &buf); err != nil {
 		return fmt.Errorf("failed to render home page template: %w", err)
 	}
 
@@ -55,13 +54,13 @@ func ExportStaticSite(app core.App, outputDir string) error {
 	}
 
 	// 2. Render Blog and articles if enabled
-	articles := data.GetArticles(app)
+	articles, _ := repo.GetArticles(ctx)
 	if len(articles) > 0 {
 		blogDir := filepath.Join(outputDir, "blog")
 		_ = os.MkdirAll(blogDir, 0755)
 
 		var blogBuf bytes.Buffer
-		if err := pages.BlogList(settings, content, articles, "").Render(context.Background(), &blogBuf); err == nil {
+		if err := pages.BlogList(settings, content, articles, "").Render(ctx, &blogBuf); err == nil {
 			_ = os.WriteFile(filepath.Join(blogDir, "index.html"), blogBuf.Bytes(), 0644)
 		}
 
@@ -69,7 +68,7 @@ func ExportStaticSite(app core.App, outputDir string) error {
 			artDir := filepath.Join(blogDir, a.Slug)
 			_ = os.MkdirAll(artDir, 0755)
 			var artBuf bytes.Buffer
-			if err := pages.BlogPost(settings, content, a, articles).Render(context.Background(), &artBuf); err == nil {
+			if err := pages.BlogPost(settings, content, a, articles).Render(ctx, &artBuf); err == nil {
 				_ = os.WriteFile(filepath.Join(artDir, "index.html"), artBuf.Bytes(), 0644)
 			}
 		}

@@ -3,52 +3,49 @@ package sections
 import (
 	"fmt"
 	"sitecraft/internal/models"
-	"sitecraft/ui/components/base"
 
 	icons "sitecraft/ui/components/icons"
 )
 
 templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSettings) {
-	<!-- Careers & HR Module (Блок 4: Вакансии и найм) -->
-	<section id="careers" class="py-16 px-4 max-w-5xl mx-auto" data-reveal>
-		<div class="text-center mb-10">
-			@base.Badge(base.BadgeProps{
-				Variant: base.BadgeAccent,
-				Class:   "mb-3 uppercase tracking-wider",
-			}) {
-				Карьера и найм
-			}
-			<h2 class="section-title">Работа в нашей команде</h2>
-			<p class="section-subtitle">
-				Мы ценим профессионализм, открытость и желание развиваться. Предлагаем честные условия, современное рабочее место и достойный доход.
+	<!-- Hallmark Architectural Careers & Registry (Strict Aesthetic Mode) -->
+	<section
+		id="careers"
+		data-component="hallmark-careers"
+		data-source="ui/sections/careers.templ"
+		class="py-16 md:py-20 px-6 sm:px-10 max-w-5xl mx-auto border-b border-content/10"
+		data-reveal
+	>
+		<!-- Заголовок секции (Floor 54: без плашек) -->
+		<div class="mb-12 text-left">
+			<h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-content">
+				Вакансии и карьера в конторе
+			</h2>
+			<p class="text-sm sm:text-base text-content-muted mt-2 max-w-2xl leading-relaxed">
+				Приглашаем юристов, консультантов и помощников нотариуса с фундаментальным профильным образованием.
 			</p>
 		</div>
 
 		if len(vacancies) == 0 {
-			<div class="p-8 text-center bg-surface rounded-2xl border border-content/10 max-w-md mx-auto text-sm text-content-muted">
-				<p>В настоящее время открытых вакансий нет. Вы можете направить резюме на будущее в наш отдел кадров.</p>
+			<div class="p-8 text-left bg-surface border border-content/10 text-xs sm:text-sm text-content-muted leading-relaxed">
+				<p>В настоящее время открытых конкурсных вакансий нет. Вы можете направить резюме для включения в кадровый резерв на электронную почту конторы.</p>
 			</div>
 		} else {
-			<div class="space-y-4" x-data="{ openVacancyId: null }">
+			<div class="divide-y divide-content/10 border-t border-b border-content/10" x-data="{ openVacancyId: null }">
 				for _, v := range vacancies {
-					<div
-						class="rounded-2xl border border-content/10 bg-surface overflow-hidden shadow-sm transition hover:border-content/20"
-					>
-						<!-- Шапка карточки вакансии -->
+					<div class="py-5">
 						<div
 							@click={ fmt.Sprintf("openVacancyId = (openVacancyId === '%s' ? null : '%s')", v.ID, v.ID) }
-							class="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none"
+							class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer select-none"
 						>
 							<div class="space-y-1">
-								<div class="flex items-center gap-2 flex-wrap">
-									<h3 class="font-bold text-base sm:text-lg text-content">{ v.Title }</h3>
+								<div class="flex items-center gap-3">
+									<h3 class="font-bold text-base text-content">{ v.Title }</h3>
 									if v.Department != "" {
-										<span class="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-surface-muted text-content-muted border border-content/10">
-											{ v.Department }
-										</span>
+										<span class="text-xs text-content-muted">({ v.Department })</span>
 									}
 								</div>
-								<div class="flex items-center gap-4 text-xs text-content-muted">
+								<div class="flex items-center gap-3 text-xs text-content-muted">
 									if v.Experience != "" {
 										<span>Опыт: { v.Experience }</span>
 									}
@@ -58,31 +55,30 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 								</div>
 							</div>
 
-							<div class="flex items-center justify-between sm:justify-end gap-4 self-stretch sm:self-center">
+							<div class="flex items-center justify-between sm:justify-end gap-6 shrink-0">
 								if v.Salary != "" {
-									<span class="text-sm sm:text-base font-bold text-primary whitespace-nowrap">{ v.Salary }</span>
+									<span class="text-sm font-semibold text-content">{ v.Salary }</span>
 								}
 								<button
 									type="button"
-									class="w-8 h-8 rounded-full bg-surface-muted flex items-center justify-center text-content-muted transition-transform"
-									:class={ fmt.Sprintf("openVacancyId === '%s' ? 'rotate-180 bg-accent/20 text-primary-dark' : ''", v.ID) }
+									class="w-8 h-8 flex items-center justify-center text-content-muted transition-transform"
+									:class={ fmt.Sprintf("openVacancyId === '%s' ? 'rotate-180 text-accent' : ''", v.ID) }
 								>
 									@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4"})
 								</button>
 							</div>
 						</div>
 
-						<!-- Развернутые подробности и форма отклика -->
 						<div
 							x-show={ fmt.Sprintf("openVacancyId === '%s'", v.ID) }
 							x-collapse
-							class="px-5 sm:px-6 pb-6 pt-2 border-t border-content/10 bg-surface-muted/40 space-y-6"
+							class="pt-5 mt-4 border-t border-content/10 space-y-6"
 						>
-							<div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-content/80 pt-2">
+							<div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-content/80">
 								if len(v.Responsibilities) > 0 {
 									<div class="space-y-2">
-										<span class="font-bold text-content uppercase tracking-wider text-[11px] block">Обязанности:</span>
-										<ul class="space-y-1.5 list-disc pl-4 text-content-muted leading-relaxed">
+										<span class="font-bold text-content text-xs block">Обязанности:</span>
+										<ul class="space-y-1 list-disc pl-4 text-content-muted leading-relaxed">
 											for _, r := range v.Responsibilities {
 												<li>{ r }</li>
 											}
@@ -92,8 +88,8 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 
 								if len(v.Requirements) > 0 {
 									<div class="space-y-2">
-										<span class="font-bold text-content uppercase tracking-wider text-[11px] block">Требования:</span>
-										<ul class="space-y-1.5 list-disc pl-4 text-content-muted leading-relaxed">
+										<span class="font-bold text-content text-xs block">Требования:</span>
+										<ul class="space-y-1 list-disc pl-4 text-content-muted leading-relaxed">
 											for _, req := range v.Requirements {
 												<li>{ req }</li>
 											}
@@ -103,8 +99,8 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 
 								if len(v.Benefits) > 0 {
 									<div class="space-y-2">
-										<span class="font-bold text-content uppercase tracking-wider text-[11px] block">Мы предлагаем:</span>
-										<ul class="space-y-1.5 list-disc pl-4 text-content-muted leading-relaxed">
+										<span class="font-bold text-content text-xs block">Условия:</span>
+										<ul class="space-y-1 list-disc pl-4 text-content-muted leading-relaxed">
 											for _, b := range v.Benefits {
 												<li>{ b }</li>
 											}
@@ -113,13 +109,9 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 								}
 							</div>
 
-							<!-- Форма мгновенного отклика (Zero-Reload HTMX) -->
-							<div
-								id={ "vacancy-form-" + v.ID }
-								class="p-5 rounded-2xl bg-surface border border-content/10 shadow-xs"
-							>
-								<h4 class="font-bold text-xs uppercase tracking-wider text-content mb-3 flex items-center gap-1.5">
-									@icons.Send(templ.Attributes{"class": "w-3.5 h-3.5 text-primary"})
+							<div id={ "vacancy-form-" + v.ID } class="p-5 bg-surface-muted/30 border border-content/10">
+								<h4 class="font-bold text-xs text-content mb-3 flex items-center gap-1.5">
+									@icons.Send(templ.Attributes{"class": "w-3.5 h-3.5 text-accent"})
 									<span>Откликнуться на позицию</span>
 								</h4>
 
@@ -130,7 +122,6 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 									class="grid grid-cols-1 sm:grid-cols-3 gap-3"
 								>
 									<input type="hidden" name="vacancy_title" value={ v.Title }/>
-									<!-- Антиспам-ловушка -->
 									<input type="text" name="company_website_url" class="hidden" tabindex="-1" autocomplete="off"/>
 
 									<div>
@@ -139,7 +130,7 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 											name="name"
 											required
 											placeholder="Ваше имя"
-											class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface-muted text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+											class="form-input text-xs"
 										/>
 									</div>
 									<div>
@@ -148,7 +139,7 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 											name="phone"
 											required
 											placeholder="+7 (___) ___-__-__"
-											class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface-muted text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+											class="form-input text-xs font-mono"
 										/>
 									</div>
 									<div>
@@ -156,17 +147,17 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 											type="text"
 											name="resume_link"
 											placeholder="Ссылка на резюме (hh.ru)"
-											class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface-muted text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+											class="form-input text-xs"
 										/>
 									</div>
 
 									<div class="sm:col-span-3 flex items-center justify-between gap-4 pt-1">
-										<span class="text-[10px] text-content-muted">
-											Нажимая кнопку, вы соглашаетесь с условиями <a href="/privacy" target="_blank" class="text-primary hover:underline">обработки персональных данных</a>.
+										<span class="text-[11px] text-content-muted">
+											Нажимая кнопку, вы подтверждаете согласие на обработку персональных данных.
 										</span>
 										<button
 											type="submit"
-											class="px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark transition shadow-sm active:scale-95 cursor-pointer whitespace-nowrap"
+											class="px-5 py-2 bg-primary text-white text-xs font-medium hover:bg-primary-dark transition cursor-pointer shrink-0"
 										>
 											Отправить отклик
 										</button>
@@ -182,8 +173,8 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 }
 
 templ VacancyApplicationSuccess(name string, vacancyTitle string) {
-	<div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-center text-emerald-900 text-xs">
-		<div class="font-bold text-sm mb-1">✓ Отклик успешно отправлен!</div>
-		<p class="text-emerald-700">Спасибо, { name }! Наш HR-специалист рассмотрит вашу кандидатуру на позицию «{ vacancyTitle }» и свяжется с вами.</p>
+	<div class="p-4 bg-surface border border-content/10 text-left text-xs">
+		<div class="font-bold text-sm text-content mb-1">Отклик успешно зарегистрирован</div>
+		<p class="text-content-muted">Спасибо, { name }! Ваша анкета передана руководству конторы по вакансии «{ vacancyTitle }».</p>
 	</div>
 }

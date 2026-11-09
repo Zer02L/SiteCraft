@@ -12,48 +12,53 @@ import (
 	"strings"
 
 	"github.com/microcosm-cc/bluemonday"
-	"ganigeorgiev.com/pocketbase/pocketbase"
-	"ganigeorgiev.com/pocketbase/pocketbase/core"
+	"sitecraft/internal/db"
 )
 
 var xssPolicy = bluemonday.UGCPolicy()
 
-func HandlePublicFormSubmit(app *pocketbase.PocketBase, e *core.RequestEvent) error {
+func HandlePublicFormSubmit(queries db.Querier, w http.ResponseWriter, r *http.Request) {
 	// 1. Honeypot check (hidden input rendered with opacity-0 / sr-only)
 	// Bot fills field -> return fake success (HTTP 200) silently
-	if honeypot := e.Request.FormValue("website_company_url"); honeypot != "" {
-		return e.HTML(http.StatusOK, `<div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs">Заявка отправлена!</div>`)
+	if honeypot := r.FormValue("website_company_url"); honeypot != "" {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`<div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs">Заявка отправлена!</div>`))
+		return
 	}
 
 	// 2. Extract and sanitize untrusted inputs
-	rawName := strings.TrimSpace(e.Request.FormValue("name"))
-	rawComment := strings.TrimSpace(e.Request.FormValue("comment"))
+	rawName := strings.TrimSpace(r.FormValue("name"))
+	rawComment := strings.TrimSpace(r.FormValue("comment"))
 
 	safeName := xssPolicy.Sanitize(rawName)
 	safeComment := xssPolicy.Sanitize(rawComment)
 
 	// 3. Trust boundary validation
 	if len(safeName) < 2 {
-		return e.HTML(http.StatusUnprocessableEntity, `
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		w.Write([]byte(`
 			<div class="p-3 bg-rose-50 border border-rose-300 rounded-xl text-rose-800 text-xs">
 				Имя должно содержать не менее 2 символов.
 			</div>
-		`)
+		`))
+		return
 	}
 
-	// 4. Save to PocketBase collection
-	col, err := app.FindCollectionByNameOrId("leads")
+	// 4. Save to database via sqlc Querier
+	err := queries.CreateLead(r.Context(), db.CreateLeadParams{
+		ID:      newULID(),
+		Name:    safeName,
+		Message: safeComment,
+		Status:  "new",
+	})
 	if err != nil {
-		return e.HTML(http.StatusInternalServerError, `<div>Ошибка сохранения</div>`)
-	}
-	record := core.NewRecord(col)
-	record.Set("name", safeName)
-	record.Set("message", safeComment)
-	if err := app.Save(record); err != nil {
-		return e.HTML(http.StatusInternalServerError, `<div>Ошибка сохранения</div>`)
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`<div>Ошибка сохранения</div>`))
+		return
 	}
 
-	return e.HTML(http.StatusOK, `<div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs">Заявка успешно принята!</div>`)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`<div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs">Заявка успешно принята!</div>`))
 }
 ```
 

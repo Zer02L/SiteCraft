@@ -17,6 +17,15 @@ var httpClient = &http.Client{
 	Timeout: 5 * time.Second,
 }
 
+// SetHTTPClient overrides the internal http client (primarily for testing) and returns a cleanup function.
+func SetHTTPClient(client *http.Client) func() {
+	prev := httpClient
+	httpClient = client
+	return func() {
+		httpClient = prev
+	}
+}
+
 // Notifier defines the interface for outbound lead notifications.
 type Notifier interface {
 	NotifyLead(ctx context.Context, settings models.SiteSettings, lead models.Lead) error

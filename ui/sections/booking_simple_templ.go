@@ -34,14 +34,14 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\t\t\t\tphone: '',\n\t\t\t\t\t\tformatPhone(val) {\n\t\t\t\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\t\t\t\tif (!digits) return '';\n\t\t\t\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\t\t\t\tlet res = '+7';\n\t\t\t\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\t\t\t\treturn res;\n\t\t\t\t\t\t},\n\t\t\t\t\t\tonPhoneInput(e) {\n\t\t\t\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"max-w-xl mx-auto card-base p-6 sm:p-8\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка (скрыта от людей) --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-component=\"hallmark-booking-simple\" data-source=\"ui/sections/booking_simple.templ\" x-data=\"{\n\t\t\tphone: '',\n\t\t\tformatPhone(val) {\n\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\tif (!digits) return '';\n\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\tlet res = '+7';\n\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\treturn res;\n\t\t\t},\n\t\t\tonPhoneInput(e) {\n\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t}\n\t\t}\" class=\"max-w-xl mx-auto bg-surface border border-content/10 p-6 sm:p-8\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.name_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 45, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 47, Col: 98}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -54,20 +54,20 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.name_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 53, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 55, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"form-input\"></div><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"form-input text-xs\"></div><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.phone_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 59, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 61, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -80,20 +80,20 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.phone_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 67, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 69, Col: 59}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"form-input\"></div><div><label class=\"form-label\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"form-input text-xs font-mono\"></div><div><label class=\"form-label text-xs font-medium text-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.comment_label"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 73, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 75, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -106,20 +106,20 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.comment_placeholder")).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 78, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 80, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-input\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 rounded border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-input text-xs\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.consent_text"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 94, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 96, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -164,7 +164,7 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.submit_simple"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 109, Col: 51}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 111, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -180,12 +180,12 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 			Variant: base.BtnPrimary,
 			Size:    base.BtnSizeLg,
 			Type:    "submit",
-			Class:   "w-full font-bold shadow gap-2",
+			Class:   "w-full font-medium gap-2",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</form><div id=\"booking-response\" class=\"mt-4\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</form><div id=\"booking-response\" class=\"mt-4 text-xs\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

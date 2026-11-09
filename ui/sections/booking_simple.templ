@@ -9,107 +9,108 @@ import (
 )
 
 templ BookingSimple(content models.SiteContent, settings models.SiteSettings) {
-				<div
-					x-data="{
-						phone: '',
-						formatPhone(val) {
-							let digits = (val || '').replace(/\D/g, '');
-							if (!digits) return '';
-							if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
-							let res = '+7';
-							if (digits.length > 0) res += ' (' + digits.substring(0, 3);
-							if (digits.length >= 4) res += ') ' + digits.substring(3, 6);
-							if (digits.length >= 7) res += '-' + digits.substring(6, 8);
-							if (digits.length >= 9) res += '-' + digits.substring(8, 10);
-							return res;
-						},
-						onPhoneInput(e) {
-							this.phone = this.formatPhone(e.target.value);
-						}
-					}"
-					class="max-w-xl mx-auto card-base p-6 sm:p-8"
-				>
-					<form
-						hx-post="/api/leads"
-						hx-target="#booking-response"
-						hx-swap="innerHTML transition:true"
-						@htmx:after-request="if ($event.detail.successful) { $el.reset(); phone = ''; }"
-						class="space-y-4"
-					>
-						<!-- Honeypot антиспам-ловушка (скрыта от людей) -->
-						<div class="hidden" aria-hidden="true">
-							<label>URL: <input type="text" name="company_website_url" tabindex="-1" autocomplete="off"/></label>
-						</div>
+	<div
+		data-component="hallmark-booking-simple"
+		data-source="ui/sections/booking_simple.templ"
+		x-data="{
+			phone: '',
+			formatPhone(val) {
+				let digits = (val || '').replace(/\D/g, '');
+				if (!digits) return '';
+				if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);
+				let res = '+7';
+				if (digits.length > 0) res += ' (' + digits.substring(0, 3);
+				if (digits.length >= 4) res += ') ' + digits.substring(3, 6);
+				if (digits.length >= 7) res += '-' + digits.substring(6, 8);
+				if (digits.length >= 9) res += '-' + digits.substring(8, 10);
+				return res;
+			},
+			onPhoneInput(e) {
+				this.phone = this.formatPhone(e.target.value);
+			}
+		}"
+		class="max-w-xl mx-auto bg-surface border border-content/10 p-6 sm:p-8"
+	>
+		<form
+			hx-post="/api/leads"
+			hx-target="#booking-response"
+			hx-swap="innerHTML transition:true"
+			@htmx:after-request="if ($event.detail.successful) { $el.reset(); phone = ''; }"
+			class="space-y-4"
+		>
+			<!-- Honeypot антиспам-ловушка -->
+			<div class="hidden" aria-hidden="true">
+				<label>URL: <input type="text" name="company_website_url" tabindex="-1" autocomplete="off"/></label>
+			</div>
 
-						<div>
-							<label class="form-label">{ i18n.T(ctx, "booking.name_label") }</label>
-							<input
-								type="text"
-								name="name"
-								required
-								minlength="2"
-								maxlength="100"
-								autocomplete="name"
-								placeholder={ i18n.T(ctx, "booking.name_placeholder") }
-								class="form-input"
-							/>
-						</div>
+			<div>
+				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.name_label") }</label>
+				<input
+					type="text"
+					name="name"
+					required
+					minlength="2"
+					maxlength="100"
+					autocomplete="name"
+					placeholder={ i18n.T(ctx, "booking.name_placeholder") }
+					class="form-input text-xs"
+				/>
+			</div>
 
-						<div>
-							<label class="form-label">{ i18n.T(ctx, "booking.phone_label") }</label>
-							<input
-								type="tel"
-								name="phone"
-								x-model="phone"
-								@input="onPhoneInput($event)"
-								required
-								autocomplete="tel"
-								placeholder={ i18n.T(ctx, "booking.phone_placeholder") }
-								class="form-input"
-							/>
-						</div>
+			<div>
+				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.phone_label") }</label>
+				<input
+					type="tel"
+					name="phone"
+					x-model="phone"
+					@input="onPhoneInput($event)"
+					required
+					autocomplete="tel"
+					placeholder={ i18n.T(ctx, "booking.phone_placeholder") }
+					class="form-input text-xs font-mono"
+				/>
+			</div>
 
-						<div>
-							<label class="form-label">{ i18n.T(ctx, "booking.comment_label") }</label>
-							<textarea
-								name="comment"
-								rows="3"
-								maxlength="1000"
-								placeholder={ i18n.T(ctx, "booking.comment_placeholder") }
-								class="form-input"
-							></textarea>
-						</div>
+			<div>
+				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.comment_label") }</label>
+				<textarea
+					name="comment"
+					rows="3"
+					maxlength="1000"
+					placeholder={ i18n.T(ctx, "booking.comment_placeholder") }
+					class="form-input text-xs"
+				></textarea>
+			</div>
 
-						<div class="pt-1">
-							<label class="flex items-start gap-2.5 cursor-pointer select-none">
-								<input
-									type="checkbox"
-									name="consent"
-									value="on"
-									checked
-									required
-									class="mt-0.5 rounded border-content/20 text-primary focus:ring-accent"
-								/>
-								<span class="text-xs text-content-muted leading-snug">
-									{ i18n.T(ctx, "booking.consent_text") } *
-								</span>
-							</label>
-						</div>
+			<div class="pt-1">
+				<label class="flex items-start gap-2.5 cursor-pointer select-none">
+					<input
+						type="checkbox"
+						name="consent"
+						value="on"
+						checked
+						required
+						class="mt-0.5 border-content/20 text-primary focus:ring-accent"
+					/>
+					<span class="text-xs text-content-muted leading-snug">
+						{ i18n.T(ctx, "booking.consent_text") } *
+					</span>
+				</label>
+			</div>
 
-						@base.Button(base.ButtonProps{
-							Variant: base.BtnPrimary,
-							Size:    base.BtnSizeLg,
-							Type:    "submit",
-							Class:   "w-full font-bold shadow gap-2",
-						}) {
-							<span class="htmx-indicator">
-								@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
-							</span>
-							@icons.Send(templ.Attributes{"class": "w-4 h-4 mr-1"})
-							<span>{ i18n.T(ctx, "booking.submit_simple") }</span>
-						}
-					</form>
-					<div id="booking-response" class="mt-4"></div>
-				</div>
-
+			@base.Button(base.ButtonProps{
+				Variant: base.BtnPrimary,
+				Size:    base.BtnSizeLg,
+				Type:    "submit",
+				Class:   "w-full font-medium gap-2",
+			}) {
+				<span class="htmx-indicator">
+					@icons.Loader2(templ.Attributes{"class": "animate-spin w-4 h-4 mr-2"})
+				</span>
+				@icons.Send(templ.Attributes{"class": "w-4 h-4 mr-1"})
+				<span>{ i18n.T(ctx, "booking.submit_simple") }</span>
+			}
+		</form>
+		<div id="booking-response" class="mt-4 text-xs"></div>
+	</div>
 }

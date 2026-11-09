@@ -104,6 +104,32 @@
 * **Каталог макроструктур:** `.agents/skills/hallmark-craft/references/macrostructures_catalog.md`
 * **Лаборатория тестов Floor:** `.agents/skills/hallmark-craft/references/floor_bans_evaluation.md`
 
+---
+
+### 10. `stageshow-craft` (Faux Product UI, мокапы и интерактивные демо с курсором)
+* **Оригинал:** [benjitaylor/skills](https://github.com/benjitaylor/skills/tree/main) (скилл `stageshow`)
+* **Автор оригинала:** Benji Taylor (`@benjitaylor`)
+* **Назначение:** Создание кинематографичных мокапов интерфейсов продуктов (Hero-шоты SaaS, окна приложений с кнопками macOS, мобильные телефоны с Dynamic Island, терминалы, Bento-сетки фичей). Исключает «AI slop» за счет бюджета реального текста (3–7 строк, остальное — аккуратные плашки-плейсхолдеры `PlaceholderBar`), принципа естественного среза краев (`Edge Bleed`), нависающих сателлитов (`MockSatellite`) и интерактивного виртуального курсора (`MockCursor`).
+* **Адаптация в SiteCraft:**
+  - **Локальный скил:** `.agents/skills/stageshow-craft/SKILL.md`
+  - **Кукбук:** `.agents/cookbooks/stageshow_craft.md`
+  - **Templ-компоненты:** `ui/components/cinematic/stageshow.templ` (`StageshowStage`, `MockWindow`, `MockPhone`, `MockTerminal`, `PlaceholderBar`, `MockRow`, `MockSatellite`, `MockCursor`)
+  - **Архитектура:** 100% Zero-Node.js, Zero-Playwright, автономный Go + Templ + Tailwind v4 + Alpine.js, ГОСТ a11y & `prefers-reduced-motion` фоллбэк.
+
+---
+
+### 11. `impeccable-craft` (Фронтенд-крафт, Anti-Slop линтинг и модификаторы стиля)
+* **Оригинал:** [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
+* **Автор оригинала:** Paul Bakaus
+* **Назначение:** Оснащение агента точным дизайн-вокабуляром (`shape`, `critique`, `audit`, `polish`, `bolder`, `quieter`, `distill`, `typeset`) и детерминированным Anti-Slop чекером. Предотвращает появление шаблонного «AI slop» (дефолтные фиолетово-синие градиенты, случайные размытые сферы `blur-3xl`, захардкоженные HEX-цвета, тесные отступы, карточки-матрешки, абстрактный маркетинговый мусор).
+* **Адаптация в SiteCraft:**
+  - **Локальный скилл:** `.agents/skills/impeccable-craft/SKILL.md`
+  - **Кукбук:** `.agents/cookbooks/impeccable_craft.md`
+  - **Детерминированный статический чекер (0 токенов):** `.agents/skills/impeccable-craft/scripts/check_slop.py`
+  - **Справочник 60+ правил Anti-Slop:** `.agents/skills/impeccable-craft/references/slop_heuristics.md`
+  - **Плейбук команд:** `.agents/skills/impeccable-craft/references/commands_playbook.md`
+  - **Архитектура:** Строгая типизация Go Templ (`*.templ`), Tailwind CSS v4 токены (`bg-surface`, `border-content/10`), ГОСТ Р 52872-2019 a11y, Zero-Node.js.
+
 
 Если вы не используете CLI `skills`, структуру можно подключить вручную:
 
