@@ -53,6 +53,35 @@ html[data-theme="main-day"] {
   --color-surface-muted: color-mix(in srgb, var(--color-primary) 3%, white);
   --color-content: #0f172a;
   --color-content-muted: #64748b;
+
+  /* =========================================
+     CLIENT ADMIN WORKBENCH DESIGN TOKENS
+     Выделенные токены клиентской панели управления
+     Светлый гармоничный workbench (WCAG AA >= 4.5:1)
+     ========================================= */
+  --admin-bg: transparent;
+  --admin-surface: #ffffff;
+  --admin-surface-muted: #f8fafc;
+  --admin-surface-hover: #f1f5f9;
+  --admin-surface-active: #f1f5f9;
+  --admin-header: rgba(255, 255, 255, 0.9);
+  --admin-sidebar: #ffffff;
+  --admin-border: #e2e8f0;
+  --admin-border-subtle: #f1f5f9;
+  --admin-border-focus: #2563eb;
+  --admin-content: #0f172a;
+  --admin-content-muted: #475569;
+  --admin-content-subtle: #64748b;
+  --admin-accent: var(--color-accent, #e65a40);
+  --admin-accent-hover: color-mix(in srgb, var(--admin-accent), black 12%);
+  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 10%, white);
+  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 25%, white);
+  --admin-danger: #dc2626;
+  --admin-danger-muted: #fef2f2;
+  --admin-success: #059669;
+  --admin-success-muted: #ecfdf5;
+  --admin-warning: #d97706;
+  --admin-warning-muted: #fffbeb;
 }
 
 html[data-theme="main-night"],

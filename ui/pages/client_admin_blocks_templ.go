@@ -12,8 +12,59 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
-	"sitecraft/ui/components/base"
+	"strings"
 )
+
+func humanBlockType(bType string) (name string, icon string) {
+	lower := strings.ToLower(strings.TrimSpace(bType))
+	switch lower {
+	case "hero":
+		return "Главный экран (Hero)", "⚡"
+	case "cinematic_odometer", "cinematic_sticky_scroll_odometer", "odometer":
+		return "Интерактивный счётчик", "⏱"
+	case "cinematic_spotlight", "spotlight":
+		return "Световой прожектор", "💡"
+	case "comparison", "before_after", "cinematic_comparison":
+		return "Сравнение до / после", "⚖️"
+	case "cinematic_sticky_stack", "cinematic_sticky_cards":
+		return "Каскадные карточки", "📑"
+	case "cinematic_accordion":
+		return "Аккордеон с подсветкой", "☰"
+	case "cinematic_marquee":
+		return "Бегущая строка", "⇄"
+	case "cinematic_text_mask":
+		return "Кинетическая типографика", "🔤"
+	case "features":
+		return "Преимущества", "✦"
+	case "services":
+		return "Услуги и цены", "💼"
+	case "booking":
+		return "Онлайн-запись", "📅"
+	case "quiz", "calculator":
+		return "Калькулятор / Квиз", "🧮"
+	case "steps":
+		return "Этапы работы", "🪜"
+	case "reviews":
+		return "Отзывы клиентов", "★"
+	case "team":
+		return "Команда специалистов", "👥"
+	case "faq":
+		return "Вопросы и ответы", "💬"
+	case "gallery":
+		return "Фотогалерея", "🖼"
+	case "map", "contacts", "branches":
+		return "Контакты и карта", "📍"
+	case "showcase":
+		return "Витрина проектов", "🖥"
+	default:
+		clean := strings.TrimPrefix(lower, "cinematic_")
+		clean = strings.ReplaceAll(clean, "_", " ")
+		if len(clean) > 0 {
+			clean = strings.ToUpper(clean[:1]) + clean[1:]
+		}
+		return clean, "❖"
+	}
+}
 
 func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -32,133 +83,40 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tactiveSubTab: 'blocks',\n\t\t\tcanvasDevice: 'desktop',\n\t\t\teditModalOpen: false,\n\t\t\teditBlock: {\n\t\t\t\tid: '',\n\t\t\t\ttitle: '',\n\t\t\t\tcontent: '',\n\t\t\t\ttype: '',\n\t\t\t\tvariant: ''\n\t\t\t},\n\t\t\tthemePreset: 'default',\n\t\t\ttokens: {\n\t\t\t\tprimary: '#1e293b',\n\t\t\t\taccent: '#2563eb',\n\t\t\t\tradiusBtn: '8px',\n\t\t\t\tradiusCard: '24px'\n\t\t\t},\n\t\t\topenEdit(id, title, content, bType, variant) {\n\t\t\t\tthis.editBlock = {\n\t\t\t\t\tid: id,\n\t\t\t\t\ttitle: title,\n\t\t\t\t\tcontent: content,\n\t\t\t\t\ttype: bType,\n\t\t\t\t\tvariant: variant\n\t\t\t\t};\n\t\t\t\tconst dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) dlg.showModal();\n\t\t\t},\n\t\t\tsetDevice(dev) {\n\t\t\t\tthis.canvasDevice = dev;\n\t\t\t},\n\t\t\tsendTokenUpdate(key, val) {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\tsendThemeUpdate(theme) {\n\t\t\t\tthis.themePreset = theme;\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\trefreshCanvas() {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame) {\n\t\t\t\t\tframe.src = frame.src;\n\t\t\t\t}\n\t\t\t}\n\t\t}\" class=\"space-y-4\"><!-- Верхний тулбар визуального редактора --><div class=\"flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 pb-4 border-b border-slate-800\"><div><div class=\"flex items-center gap-2\"><h2 class=\"text-xl font-bold text-white\">Визуальный редактор & Конструктор</h2><span class=\"px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\">Live Preview</span></div><p class=\"text-xs text-slate-400 mt-0.5\">Управление структурой секций, текстами и живой дизайн-системой лендинга</p></div><!-- Панель переключения устройств (Responsive Canvas Switcher) --><div class=\"flex items-center gap-2 bg-slate-900/90 border border-slate-800 p-1 rounded-xl self-start lg:self-auto shadow-inner\"><button type=\"button\" @click=\"setDevice('desktop')\" :class=\"canvasDevice === 'desktop' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-400 hover:text-white'\" class=\"px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Десктоп (100% ширина)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> <span class=\"hidden sm:inline\">Десктоп</span></button> <button type=\"button\" @click=\"setDevice('tablet')\" :class=\"canvasDevice === 'tablet' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-400 hover:text-white'\" class=\"px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Планшет (768px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span class=\"hidden sm:inline\">Планшет (768px)</span></button> <button type=\"button\" @click=\"setDevice('mobile')\" :class=\"canvasDevice === 'mobile' ? 'bg-amber-500 text-slate-950 font-bold shadow-sm' : 'text-slate-400 hover:text-white'\" class=\"px-3 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Мобильный (390px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span class=\"hidden sm:inline\">Мобильный (390px)</span></button></div><!-- Кнопки действий --><div class=\"flex items-center gap-2\"><button type=\"button\" @click=\"refreshCanvas()\" class=\"p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-all cursor-pointer\" title=\"Обновить холст\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg></button> <a href=\"/?preview=true\" target=\"_blank\" class=\"px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 text-xs font-semibold transition-all flex items-center gap-1.5\"><span>Открыть сайт</span> <svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a> <button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all shadow-md shadow-amber-500/20 flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить блок</span></button></div></div><!-- Сплит-экран: Левая панель настроек + Правый интерактивный холст --><div class=\"grid grid-cols-1 lg:grid-cols-12 gap-6 items-start\"><!-- Левая колонка: Структура и Токены (4 из 12 колонок) --><div class=\"lg:col-span-5 xl:col-span-4 space-y-4\"><!-- Переключатель подвкладок --><div class=\"flex items-center gap-1 p-1 bg-slate-900/90 border border-slate-800 rounded-xl\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'bg-slate-800 text-white font-bold shadow-xs' : 'text-slate-400 hover:text-white'\" class=\"flex-1 py-1.5 text-xs rounded-lg transition-all text-center cursor-pointer\">📑 Секции лендинга (")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tactiveSubTab: 'blocks',\n\t\t\tcanvasDevice: 'desktop',\n\t\t\tcontainerWidth: 900,\n\t\t\tselectedBlockId: '',\n\t\t\tresponsiveView: 'both',\n\t\t\teditBlock: {\n\t\t\t\tid: '',\n\t\t\t\ttitle: '',\n\t\t\t\tcontent: '',\n\t\t\t\ttype: '',\n\t\t\t\tvariant: ''\n\t\t\t},\n\t\t\tthemePreset: 'default',\n\t\t\ttokens: {\n\t\t\t\tprimary: '#1e293b',\n\t\t\t\taccent: '#2563eb',\n\t\t\t\tradiusBtn: '8px',\n\t\t\t\tradiusCard: '24px'\n\t\t\t},\n\t\t\tinit() {\n\t\t\t\tthis.$nextTick(() => { this.updateContainerWidth(); });\n\t\t\t\twindow.addEventListener('resize', () => { this.updateContainerWidth(); });\n\t\t\t\twindow.addEventListener('message', (e) => {\n\t\t\t\t\tif (e.data && e.data.type === 'PREVIEW_BLOCK_CLICKED') {\n\t\t\t\t\t\tif (e.data.blockId) {\n\t\t\t\t\t\t\tthis.selectBlock(e.data.blockId, e.data.blockType, false);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t},\n\t\t\tupdateContainerWidth() {\n\t\t\t\tconst el = this.$refs.canvasContainer;\n\t\t\t\tif (el) {\n\t\t\t\t\tthis.containerWidth = el.clientWidth || 800;\n\t\t\t\t}\n\t\t\t},\n\t\t\tget scaleFactor() {\n\t\t\t\tif (this.canvasDevice === 'desktop') {\n\t\t\t\t\tconst targetWidth = 1280;\n\t\t\t\t\tconst available = Math.max(300, (this.containerWidth || 800) - 8);\n\t\t\t\t\treturn Math.min(1, Math.max(0.2, available / targetWidth));\n\t\t\t\t}\n\t\t\t\treturn 1;\n\t\t\t},\n\t\t\tsetDevice(dev) {\n\t\t\t\tthis.canvasDevice = dev;\n\t\t\t\tthis.$nextTick(() => { this.updateContainerWidth(); });\n\t\t\t},\n\t\t\tselectBlock(id, bType, scrollIframe = true) {\n\t\t\t\tthis.selectedBlockId = id;\n\t\t\t\tconst card = document.getElementById('block-card-' + id);\n\t\t\t\tif (card) {\n\t\t\t\t\tcard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });\n\t\t\t\t}\n\t\t\t\tif (scrollIframe) {\n\t\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\t\tframe.contentWindow.postMessage({\n\t\t\t\t\t\t\ttype: 'SITE_SCROLL_TO_BLOCK',\n\t\t\t\t\t\t\tblockId: id,\n\t\t\t\t\t\t\tblockType: bType\n\t\t\t\t\t\t}, '*');\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t},\n\t\t\topenEdit(id, title, content, bType, variant) {\n\t\t\t\tthis.editBlock = {\n\t\t\t\t\tid: id,\n\t\t\t\t\ttitle: title,\n\t\t\t\t\tcontent: content,\n\t\t\t\t\ttype: bType,\n\t\t\t\t\tvariant: variant\n\t\t\t\t};\n\t\t\t\tconst dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) dlg.showModal();\n\t\t\t},\n\t\t\tsendTokenUpdate(key, val) {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\tsendThemeUpdate(theme) {\n\t\t\t\tthis.themePreset = theme;\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\trefreshCanvas() {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame) {\n\t\t\t\t\tframe.src = frame.src;\n\t\t\t\t}\n\t\t\t}\n\t\t}\" class=\"space-y-5\"><!-- 1. Компактная шапка конструктора с возвращённым ярким бейджем Live Preview --><div class=\"flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200\"><div><div class=\"flex items-center gap-3\"><h2 class=\"text-xl sm:text-2xl font-bold text-slate-900 tracking-tight\">Конструктор</h2><a href=\"/?preview=true\" target=\"_blank\" class=\"inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer\" title=\"Открыть живой сайт в отдельной вкладке\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Live Preview</span> <svg class=\"w-3 h-3 text-emerald-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div><p class=\"text-xs sm:text-sm text-slate-500 mt-0.5\">Управление структурой секций и живой дизайн-системой лендинга</p></div><!-- Верхняя панель по смысловым группам (Issue 1, 9) --><div class=\"flex items-center gap-2.5 sm:gap-3 flex-wrap\"><!-- Группа 0: Переключатель режима отображения (Сплит / Секции / Превью) --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"responsiveView = 'both'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'both' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Сплит-режим: Список + Живой предпросмотр\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 4v16M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z\"></path></svg> <span class=\"hidden sm:inline\">Сплит</span></button> <button type=\"button\" @click=\"responsiveView = 'blocks'\" :class=\"responsiveView === 'blocks' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только список секций\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg> <span class=\"hidden sm:inline\">Секции</span></button> <button type=\"button\" @click=\"responsiveView = 'preview'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'preview' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только Live Preview\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span class=\"hidden sm:inline\">Превью</span></button></div><!-- Группа 1: Сегментированный переключатель экранов с явной подсветкой --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"setDevice('desktop')\" :class=\"canvasDevice === 'desktop' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Десктоп (1280–1440px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> <span>Десктоп</span></button> <button type=\"button\" @click=\"setDevice('tablet')\" :class=\"canvasDevice === 'tablet' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Планшет (768px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Планшет (768px)</span></button> <button type=\"button\" @click=\"setDevice('mobile')\" :class=\"canvasDevice === 'mobile' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Мобильный (390px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Мобильный (390px)</span></button></div><!-- Группа 2: Кнопка обновления холста --><button type=\"button\" @click=\"refreshCanvas()\" class=\"p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer\" title=\"Перезагрузить превью\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg></button><!-- Группа 3: Индикатор статуса синхронизации --><div class=\"hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-medium text-slate-700\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Все изменения сохранены</span></div><!-- Группа 4: Главное действие добавления секции --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs transition-all shadow-xs flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-4 h-4 text-white\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить секцию</span></button></div></div><!-- 2. Основная рабочая область: Список секций слева (340-380px) + Прикрепленный холст Live Preview справа --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Полноценные табы с аккуратным подчёркиванием (Minor) --><div class=\"flex items-center gap-6 border-b border-slate-200 px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(blocks)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 168, Col: 74}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 323, Col: 39}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, ")</button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'bg-slate-800 text-white font-bold shadow-xs' : 'text-slate-400 hover:text-white'\" class=\"flex-1 py-1.5 text-xs rounded-lg transition-all text-center cursor-pointer\">🎨 Дизайн-система</button></div><!-- Вкладка 1: Список блоков страницы --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-2.5 max-h-[calc(100vh-230px)] overflow-y-auto pr-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\"><!-- Кнопка быстрого добавления всегда на виду --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs\"><span class=\"w-4 h-4 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] leading-none\">+</span> <span>Добавить новую секцию в лендинг</span></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(blocks) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"p-8 text-center bg-slate-900/60 rounded-2xl border border-slate-800/80\"><p class=\"text-slate-400 text-xs\">Блоки страницы пока не добавлены.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"p-8 text-center bg-white rounded-2xl border border-slate-200\"><p class=\"text-slate-500 text-xs\">Секции лендинга пока не добавлены.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"space-y-2.5 max-h-[calc(100vh-260px)] overflow-y-auto pr-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
 		for idx, b := range blocks {
+			typeName, typeIcon := humanBlockType(b.Type)
 			variantStr := ""
 			if v, ok := b.Payload["variant"].(string); ok {
 				variantStr = v
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition-all flex items-center justify-between gap-3 group\"><div class=\"flex items-center gap-3 min-w-0\"><!-- Номер порядка --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-slate-800 text-slate-400 text-[11px] font-mono font-bold flex items-center justify-center\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", idx+1))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 198, Col: 35}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div class=\"min-w-0\"><div class=\"flex items-center gap-1.5 flex-wrap\"><span class=\"font-bold text-white text-xs truncate max-w-[150px]\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(b.Title)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 202, Col: 85}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span> <span class=\"px-1.5 py-0.2 rounded text-[9px] font-mono uppercase bg-slate-800 text-amber-400 border border-amber-500/20\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(b.Type)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 204, Col: 19}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span> ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			if variantStr != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<span class=\"px-1.5 py-0.2 rounded text-[9px] font-mono text-slate-400 bg-slate-800/60\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(variantStr)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 208, Col: 24}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			if b.Content != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<p class=\"text-[11px] text-slate-400 truncate mt-0.5\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(b.Content)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 213, Col: 75}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</p>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div></div><!-- Панель действий над блоком --><div class=\"flex items-center gap-1 shrink-0\"><!-- Редактировать (карандаш) --><button type=\"button\" @click=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("window.openBlockEditor('%s', '%s', '%s', '%s', '%s')", b.ID, b.Title, b.Content, b.Type, variantStr)).Resolve(ctx)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 223, Col: 131}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" class=\"p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer\" title=\"Редактировать текст и вариант\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg></button><!-- Переключить видимость -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Двухстрочная просторная карточка (Issues 2, 3, 4, 5, 6) --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -166,40 +124,66 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 				templ_7745c5c3_Buffer := templ.GetBuffer()
 				var templ_7745c5c3_ElementScripts []templ.ComponentScript
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<button type=\"button\" hx-post=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/toggle", b.ID)).Resolve(ctx)
+				var templ_7745c5c3_Var3 string
+				templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression("block-card-" + b.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 235, Col: 63}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 366, Col: 33}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 = []any{"p-1.5 rounded-lg transition-all cursor-pointer",
-					templ.KV("text-emerald-400 hover:bg-emerald-500/10", b.Active),
-					templ.KV("text-slate-500 hover:bg-slate-800", !b.Active)}
-				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var10...)
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" @click=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var11 string
-				templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var10).String()).Resolve(ctx)
+				var templ_7745c5c3_Var4 string
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectBlock('%s', '%s')", b.ID, b.Type)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 367, Col: 69}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" :class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var5 string
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50/20' : ''", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 368, Col: 122}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var6 = []any{"p-3.5 rounded-2xl border transition-all cursor-pointer relative group",
+					templ.KV("bg-white border-slate-200 hover:border-slate-300 shadow-2xs", b.Active),
+					templ.KV("opacity-55 bg-slate-50 border-dashed border-slate-300", !b.Active)}
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var6...)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var6).String()).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 1, Col: 0}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" title=\"Включить / скрыть блок\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -213,117 +197,257 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, ">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "><div class=\"flex items-start justify-between gap-3\"><!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип --><div class=\"flex items-start gap-2.5 min-w-0 flex-1\"><!-- Ручка перетаскивания drag-and-drop --><div class=\"pt-0.5 text-slate-300 group-hover:text-slate-500 cursor-grab shrink-0 select-none\" title=\"Перетащить блок\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9h.01M8 15h.01M16 9h.01M16 15h.01\"></path></svg></div><!-- Порядковый номер --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold flex items-center justify-center select-none\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if b.Active {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", idx+1))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 385, Col: 37}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</button><!-- Поднять выше -->")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if idx > 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<button type=\"button\" hx-post=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-up", b.ID)).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 259, Col: 65}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer\" title=\"Поднять выше\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg></button>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Опустить ниже -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><!-- Текстовое описание блока (полная ширина, без обрезания) --><div class=\"min-w-0 flex-1\"><!-- Заголовок секции: переносится до 2 строк, не режется --><h4 class=\"font-bold text-slate-900 text-sm leading-snug break-words\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if idx < len(blocks)-1 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<button type=\"button\" hx-post=\"")
+			var templ_7745c5c3_Var9 string
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(b.Title)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 392, Col: 21}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</h4><!-- Вторая строка: Понятное человеческое имя типа + вариант --><div class=\"flex items-center gap-1.5 mt-1.5 flex-wrap\"><span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 font-sans\" title=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Технический код: " + b.Type).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 399, Col: 63}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"><span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(typeIcon)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 401, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span> <span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var12 string
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(typeName)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 402, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span></span> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if variantStr != "" {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<span class=\"px-2 py-0.5 rounded-md text-[11px] font-mono text-slate-500 bg-slate-50 border border-slate-200\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-down", b.ID)).Resolve(ctx)
+				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(variantStr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 275, Col: 67}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 407, Col: 26}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer\" title=\"Опустить ниже\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<!-- Удалить --><button type=\"button\" hx-delete=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div></div></div><!-- Правая группа: Заметный бейдж-переключатель видимости + Меню действий (...) --><div class=\"flex items-center gap-2 shrink-0 pt-0.5\" @click.stop><!-- Заметная контрастная кнопка переключения видимости (Issue: 'Щас выглядит слишком незаметно') -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var14 string
-			templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s", b.ID)).Resolve(ctx)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 290, Col: 58}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" hx-confirm=\"Удалить этот блок лендинга?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer\" title=\"Удалить блок\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></div></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</div><!-- Вкладка 2: Дизайн-система и Live Токены --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs\"><div><label class=\"block font-semibold uppercase tracking-wider text-slate-400 mb-1.5 text-[11px]\">Готовые пресеты индустрий</label> <select @change=\"sendThemeUpdate($event.target.value)\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500\"><option value=\"main\">Основная тема (Default Day)</option> <option value=\"main-night\">Основная ночь (Default Night)</option> <option value=\"cyber\">B2B Cyber & High-Tech</option> <option value=\"legal\">B2B Legal & Consulting</option> <option value=\"medical\">B2C Medical & Health</option> <option value=\"beauty\">B2C Beauty & Salon</option> <option value=\"auto\">B2C Auto & Service</option></select></div><div class=\"pt-2 border-t border-slate-800 space-y-3\"><div class=\"font-bold text-white text-xs\">Интерактивная палитра (Live Bridge)</div><!-- Primary Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-300\">Основной цвет (Primary)</span> <input type=\"color\" value=\"#1e293b\" @input=\"sendTokenUpdate('--color-primary', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-700\"></div><!-- Accent Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-300\">Акцентный цвет (Accent)</span> <input type=\"color\" value=\"#2563eb\" @input=\"sendTokenUpdate('--color-accent', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-700\"></div><!-- Radius Card --><div><div class=\"flex justify-between text-slate-300 mb-1\"><span>Скругление карточек</span> <span class=\"font-mono text-amber-400\">--radius-card</span></div><input type=\"range\" min=\"4\" max=\"32\" value=\"24\" @input=\"sendTokenUpdate('--radius-card', $event.target.value + 'px')\" class=\"w-full accent-amber-500 cursor-pointer\"></div><!-- Radius Button --><div><div class=\"flex justify-between text-slate-300 mb-1\"><span>Скругление кнопок</span> <span class=\"font-mono text-amber-400\">--radius-btn</span></div><input type=\"range\" min=\"2\" max=\"24\" value=\"8\" @input=\"sendTokenUpdate('--radius-btn', $event.target.value + 'px')\" class=\"w-full accent-amber-500 cursor-pointer\"></div></div><div class=\"p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300/90 text-[11px] leading-relaxed\">⚡ Изменения ползунков и цветов передаются на холст по безопасному мосту postMessage мгновенно со скоростью 60 FPS.</div></div></div><!-- Правая колонка: Интерактивный холст (8 из 12 колонок) --><div class=\"lg:col-span-7 xl:col-span-8 flex flex-col items-center\"><div :class=\"{\n\t\t\t\t\t\t'w-full': canvasDevice === 'desktop',\n\t\t\t\t\t\t'w-[768px] max-w-full': canvasDevice === 'tablet',\n\t\t\t\t\t\t'w-[390px] max-w-full': canvasDevice === 'mobile'\n\t\t\t\t\t}\" class=\"transition-all duration-300 ease-out\"><!-- Рамка устройства --><div :class=\"{\n\t\t\t\t\t\t\t'rounded-xl border border-slate-800 shadow-xl': canvasDevice === 'desktop',\n\t\t\t\t\t\t\t'rounded-[24px] border-4 border-slate-800 shadow-2xl': canvasDevice === 'tablet',\n\t\t\t\t\t\t\t'rounded-[36px] border-[6px] border-slate-800 shadow-2xl': canvasDevice === 'mobile'\n\t\t\t\t\t\t}\" class=\"bg-slate-900 overflow-hidden relative\"><!-- Верхняя строка мобильного фрейма --><div x-show=\"canvasDevice === 'mobile'\" class=\"h-6 bg-slate-950 flex items-center justify-center\"><div class=\"w-20 h-3.5 bg-slate-800 rounded-full\"></div></div><!-- iFrame живого сайта --><iframe id=\"preview-canvas\" src=\"/?preview=true\" class=\"w-full h-[calc(100vh-210px)] min-h-[640px] bg-surface\" title=\"Предпросмотр сайта\"></iframe></div><div class=\"mt-2 text-center text-[11px] text-slate-500\">Живой серверный холст • Изоляция в iframe исключает конфликты стилей</div></div></div></div><!-- Диалог добавления нового блока --><dialog id=\"new-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white backdrop:bg-slate-950/80 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-4 border-b border-slate-800\"><h3 class=\"text-base font-bold\">Добавить блок в конструктор</h3><button class=\"text-slate-400 hover:text-white cursor-pointer\">&times;</button></div></form><form hx-post=\"/admin/blocks/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('new-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Тип секции</label> <select name=\"type\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm\"><option value=\"hero\">Hero (Главный экран)</option> <option value=\"features\">Features (Ключевые преимущества)</option> <option value=\"services\">Services (Услуги и цены)</option> <option value=\"booking\">Booking (Форма онлайн-заявки)</option> <option value=\"quiz\">Quiz (Интерактивный калькулятор стоимости)</option> <option value=\"steps\">Steps (Этапы работы)</option> <option value=\"reviews\">Reviews (Отзывы клиентов)</option> <option value=\"team\">Team (Команда специалистов)</option> <option value=\"faq\">FAQ (Вопросы и ответы)</option> <option value=\"gallery\">Gallery (Фотогалерея)</option> <option value=\"map\">Map (Интерактивная карта филиалов)</option></select></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Заголовок блока</label> <input type=\"text\" name=\"title\" required placeholder=\"Например: Наши ключевые услуги\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Описание / Подзаголовок</label> <textarea name=\"content\" rows=\"3\" placeholder=\"Краткое описание блока...\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm\"></textarea></div><div class=\"flex items-center justify-end gap-3 pt-4 border-t border-slate-800\"><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-md shadow-amber-500/20 cursor-pointer\">Создать блок</button></div></form></dialog><!-- Диалог быстрого редактирования блока (Безопасное редактирование свойств) --><dialog id=\"edit-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 text-white backdrop:bg-slate-950/80 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-4 border-b border-slate-800\"><h3 class=\"text-base font-bold\">Редактирование секции</h3><button class=\"text-slate-400 hover:text-white cursor-pointer\">&times;</button></div></form><form hx-post=\"/admin/blocks/edit\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('edit-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><input type=\"hidden\" name=\"id\" id=\"edit-block-id\" :value=\"editBlock.id\"> <input type=\"hidden\" name=\"type\" id=\"edit-block-type\" :value=\"editBlock.type\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Заголовок секции</label> <input type=\"text\" name=\"title\" id=\"edit-block-title\" x-model=\"editBlock.title\" required class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Текст / Описание</label> <textarea name=\"content\" id=\"edit-block-content\" x-model=\"editBlock.content\" rows=\"3\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500\"></textarea></div><div id=\"edit-variant-row\" x-show=\"editBlock.type === 'hero'\"><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1\">Стилевой вариант (Variant)</label> <select name=\"variant\" id=\"edit-block-variant\" x-model=\"editBlock.variant\" class=\"w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm cursor-pointer\"><option value=\"classic\">Classic (Лаконичный)</option> <option value=\"split\">Split (Разделенный с формой/акцентом)</option> <option value=\"cyber\">Cyber (High-Tech неон)</option> <option value=\"legal\">Legal (Архитектурный строгий)</option></select></div><div class=\"flex items-center justify-end gap-3 pt-4 border-t border-slate-800\"><button type=\"button\" onclick=\"document.getElementById('edit-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all cursor-pointer\">Отмена</button>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var15 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
-			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
-			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
-			if !templ_7745c5c3_IsBuffer {
-				defer func() {
-					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
-					if templ_7745c5c3_Err == nil {
-						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+			{
+				templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
+				templ_7745c5c3_Buffer := templ.GetBuffer()
+				var templ_7745c5c3_ElementScripts []templ.ComponentScript
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<button type=\"button\" hx-post=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var14 string
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/toggle", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 419, Col: 65}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var15 = []any{"cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border",
+					templ.KV("bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 ring-2 ring-emerald-500/20", b.Active),
+					templ.KV("bg-slate-200 hover:bg-slate-300 text-slate-700 border-slate-300", !b.Active)}
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var15...)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var16 string
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var15).String()).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 1, Col: 0}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" title=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var17 string
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("%s", func() string {
+					if b.Active {
+						return "Секция видна на сайте (кликните, чтобы скрыть)"
+					} else {
+						return "Секция скрыта (кликните, чтобы включить)"
 					}
-				}()
+				}())).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 425, Col: 258}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_ElementScripts...)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_ElementWriter)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<span>Сохранить изменения</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, ">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			return nil
-		})
-		templ_7745c5c3_Err = base.Button(base.ButtonProps{
-			Variant: base.BtnAccent,
-			Type:    "submit",
-			Size:    base.BtnSizeSm,
-			Class:   "font-bold",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
+			if b.Active {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<span class=\"w-2.5 h-2.5 rounded-full bg-emerald-200 shadow-xs animate-pulse\"></span> <svg class=\"w-4 h-4 text-emerald-100\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.5\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span>Видна</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<span class=\"w-2.5 h-2.5 rounded-full bg-slate-400\"></span> <svg class=\"w-4 h-4 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыта</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</button><!-- Кнопка действий '⋯' --><div x-data=\"{ menuOpen: false }\" class=\"relative\"><button type=\"button\" @click.stop=\"menuOpen = !menuOpen\" class=\"p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 shadow-2xs transition-colors cursor-pointer\" title=\"Действия над секцией\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 5v.01M12 12v.01M12 19v.01\"></path></svg></button><div x-show=\"menuOpen\" x-cloak @click.away=\"menuOpen = false\" class=\"absolute right-0 top-full mt-1 w-44 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-30 text-xs text-slate-700 font-medium\"><button type=\"button\" @click=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var18 string
+			templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); menuOpen = false;", b.ID, b.Title, b.Content, b.Type, variantStr)).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 464, Col: 140}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg> <span>Свойства блока</span></button> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if idx > 0 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<button type=\"button\" hx-post=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var19 string
+				templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-up", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 476, Col: 69}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg> <span>Поднять выше</span></button> ")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			if idx < len(blocks)-1 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<button type=\"button\" hx-post=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var20 string
+				templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-down", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 491, Col: 71}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg> <span>Опустить ниже</span></button>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div class=\"my-1 border-t border-slate-100\"></div><button type=\"button\" hx-post=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var21 string
+			templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/delete", b.ID)).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 507, Col: 67}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" hx-confirm=\"Удалить этот блок лендинга безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Удалить блок</span></button></div></div></div></div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></form></dialog><script>\n\t\t\twindow.openBlockEditor = function(id, title, content, bType, variant) {\n\t\t\t\tvar idInp = document.getElementById('edit-block-id');\n\t\t\t\tif (idInp) idInp.value = id;\n\t\t\t\tvar typeInp = document.getElementById('edit-block-type');\n\t\t\t\tif (typeInp) typeInp.value = bType;\n\t\t\t\tvar titleInp = document.getElementById('edit-block-title');\n\t\t\t\tif (titleInp) titleInp.value = title;\n\t\t\t\tvar contentInp = document.getElementById('edit-block-content');\n\t\t\t\tif (contentInp) contentInp.value = content;\n\t\t\t\tvar variantRow = document.getElementById('edit-variant-row');\n\t\t\t\tvar variantSelect = document.getElementById('edit-block-variant');\n\t\t\t\tif (variantRow && variantSelect) {\n\t\t\t\t\tif (bType === 'hero') {\n\t\t\t\t\t\tvariantRow.style.display = 'block';\n\t\t\t\t\t\tvariantSelect.value = variant || 'classic';\n\t\t\t\t\t} else {\n\t\t\t\t\t\tvariantRow.style.display = 'none';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tvar dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) {\n\t\t\t\t\tvar root = dlg.closest('[x-data]');\n\t\t\t\t\tif (root && window.Alpine) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar d = Alpine.$data(root);\n\t\t\t\t\t\t\tif (d) {\n\t\t\t\t\t\t\t\td.editBlock = { id: id, title: title, content: content, type: bType, variant: variant || 'classic' };\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t}\n\t\t\t\t\tdlg.showModal();\n\t\t\t\t}\n\t\t\t};\n\t\t</script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div><!-- Вкладка 2: Дизайн-система и Live Токены --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs\"><div><label class=\"block font-semibold uppercase tracking-wider text-slate-700 mb-1.5 text-xs\">Готовые пресеты индустрий</label> <select @change=\"sendThemeUpdate($event.target.value)\" class=\"w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500\"><option value=\"main\">Основная тема (Default Day)</option> <option value=\"coral\">Stationery Coral (Hallmark Modern-Minimal)</option> <option value=\"main-night\">Основная ночь (Default Night)</option> <option value=\"cyber\">B2B Cyber & High-Tech</option> <option value=\"legal\">B2B Legal & Consulting</option> <option value=\"medical\">B2C Medical & Health</option> <option value=\"beauty\">B2C Beauty & Salon</option> <option value=\"auto\">B2C Auto & Service</option></select></div><div class=\"pt-3 border-t border-slate-100 space-y-3\"><div class=\"font-bold text-slate-900 text-xs\">Интерактивная палитра (Live Bridge)</div><!-- Primary Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-600\">Основной цвет (Primary)</span> <input type=\"color\" value=\"#1e293b\" @input=\"sendTokenUpdate('--color-primary', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300\"></div><!-- Accent Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-600\">Акцентный цвет (Accent)</span> <input type=\"color\" value=\"#e65a40\" @input=\"sendTokenUpdate('--color-accent', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300\"></div><!-- Radius Card --><div><div class=\"flex justify-between text-slate-600 mb-1\"><span>Скругление карточек</span> <span class=\"font-mono text-blue-600\">--radius-card</span></div><input type=\"range\" min=\"4\" max=\"32\" value=\"24\" @input=\"sendTokenUpdate('--radius-card', $event.target.value + 'px')\" class=\"w-full accent-blue-600 cursor-pointer\"></div><!-- Radius Button --><div><div class=\"flex justify-between text-slate-600 mb-1\"><span>Скругление кнопок</span> <span class=\"font-mono text-blue-600\">--radius-btn</span></div><input type=\"range\" min=\"2\" max=\"24\" value=\"8\" @input=\"sendTokenUpdate('--radius-btn', $event.target.value + 'px')\" class=\"w-full accent-blue-600 cursor-pointer\"></div></div><div class=\"p-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-[11px] leading-relaxed\">⚡ Изменения ползунков и цветов передаются на холст по безопасному мосту postMessage мгновенно со скоростью 60 FPS.</div></div></div><!-- Правая колонка: Прикрепленный масштабированный холст Live Preview (Issue 10, 11) --><div x-show=\"responsiveView === 'both' || responsiveView === 'preview'\" x-ref=\"canvasContainer\" class=\"flex-1 w-full min-w-0 md:sticky md:top-20 flex flex-col items-center justify-start\"><!-- Заголовочная панель холста предпросмотра --><div class=\"w-full flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-200\"><div class=\"flex items-center gap-2\"><span class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300\"><span class=\"w-2 h-2 rounded-full bg-emerald-600 animate-pulse\"></span> <span>Холст Live Preview</span></span> <span class=\"text-xs text-slate-500 hidden sm:inline\">• Клик по секции в окне выбирает её в списке</span></div><div class=\"flex items-center gap-2 text-xs text-slate-500 font-mono\"><span x-text=\"canvasDevice === 'desktop' ? '1280px (Масштаб: ' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')\"></span> <a href=\"/?preview=true\" target=\"_blank\" class=\"text-blue-600 hover:text-blue-800 flex items-center gap-0.5 ml-1 cursor-pointer\" title=\"Открыть в новой вкладке\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div></div><!-- Контейнер масштабирования --><div class=\"w-full flex justify-center transition-all duration-300 overflow-hidden\"><div :class=\"{\n\t\t\t\t\t\t\t'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',\n\t\t\t\t\t\t\t'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',\n\t\t\t\t\t\t\t'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'\n\t\t\t\t\t\t}\" class=\"overflow-hidden transition-all duration-300 relative flex justify-center\" :style=\"canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'\"><!-- Верхняя полоска мобильного острова/камеры --><div x-show=\"canvasDevice === 'mobile'\" class=\"absolute top-0 left-0 right-0 h-6 bg-slate-900 flex items-center justify-center z-10\"><div class=\"w-24 h-4 bg-slate-950 rounded-full\"></div></div><!-- Обёртка масштабирования: для десктопа рендерим в 1280px и масштабируем --><div :style=\"canvasDevice === 'desktop' ? ('width: 1280px; height: 760px; transform: scale(' + scaleFactor + '); transform-origin: top left;') : 'width: 100%; height: 100%;'\" :class=\"canvasDevice === 'desktop' ? 'absolute top-0 left-0' : 'w-full h-full'\"><iframe id=\"preview-canvas\" src=\"/?preview=true\" class=\"bg-surface border-0 block w-full h-full\" title=\"Предпросмотр сайта\"></iframe></div></div></div><div class=\"mt-2 text-center text-xs text-slate-500 flex items-center gap-2\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> <span>Живой холст предпросмотра: клик по секции в окне превью выбирает её в списке</span></div></div></div><!-- Диалог добавления новой секции --><dialog id=\"new-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Добавить секцию в лендинг</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('new-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Тип секции</label> <select name=\"type\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"hero\">⚡ Главный экран (Hero)</option> <option value=\"cinematic_odometer\">⏱ Интерактивный счётчик (Odometer)</option> <option value=\"cinematic_spotlight\">💡 Световой прожектор (Spotlight)</option> <option value=\"comparison\">⚖️ Сравнение до / после (Comparison)</option> <option value=\"cinematic_sticky_stack\">📑 Каскадные карточки (Sticky Stack)</option> <option value=\"cinematic_marquee\">⇄ Бегущая строка (Marquee)</option> <option value=\"features\">✦ Ключевые преимущества (Features)</option> <option value=\"services\">💼 Услуги и цены (Services)</option> <option value=\"booking\">📅 Форма онлайн-записи (Booking)</option> <option value=\"quiz\">🧮 Калькулятор / Квиз (Quiz)</option> <option value=\"steps\">🪜 Этапы работы (Steps)</option> <option value=\"reviews\">★ Отзывы клиентов (Reviews)</option> <option value=\"team\">👥 Команда специалистов (Team)</option> <option value=\"faq\">💬 Вопросы и ответы (FAQ)</option> <option value=\"gallery\">🖼 Фотогалерея (Gallery)</option> <option value=\"map\">📍 Интерактивная карта (Map)</option></select></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" required placeholder=\"Например: Ключевые преимущества нотариата\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Описание / Подзаголовок</label> <textarea name=\"content\" rows=\"3\" placeholder=\"Краткое описание назначения секции...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Создать секцию</button></div></form></dialog><!-- Диалог редактирования свойств секции --><dialog id=\"edit-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Свойства секции</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/edit\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('edit-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><input type=\"hidden\" name=\"id\" id=\"edit-block-id\" :value=\"editBlock.id\"> <input type=\"hidden\" name=\"type\" id=\"edit-block-type\" :value=\"editBlock.type\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" id=\"edit-block-title\" x-model=\"editBlock.title\" required class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Текст / Описание</label> <textarea name=\"content\" id=\"edit-block-content\" x-model=\"editBlock.content\" rows=\"3\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div id=\"edit-variant-row\" x-show=\"editBlock.type === 'hero'\"><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Стилевой вариант (Variant)</label> <select name=\"variant\" id=\"edit-block-variant\" x-model=\"editBlock.variant\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"classic\">Classic (Лаконичный)</option> <option value=\"split\">Split (Разделенный с формой / акцентом)</option> <option value=\"cyber\">Cyber (High-Tech неон)</option> <option value=\"legal\">Legal (Архитектурный строгий)</option></select></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('edit-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Сохранить изменения</button></div></form></dialog><script>\n\t\t\twindow.openBlockEditor = function(id, title, content, bType, variant) {\n\t\t\t\tvar idInp = document.getElementById('edit-block-id');\n\t\t\t\tif (idInp) idInp.value = id;\n\t\t\t\tvar typeInp = document.getElementById('edit-block-type');\n\t\t\t\tif (typeInp) typeInp.value = bType;\n\t\t\t\tvar titleInp = document.getElementById('edit-block-title');\n\t\t\t\tif (titleInp) titleInp.value = title;\n\t\t\t\tvar contentInp = document.getElementById('edit-block-content');\n\t\t\t\tif (contentInp) contentInp.value = content;\n\t\t\t\tvar variantRow = document.getElementById('edit-variant-row');\n\t\t\t\tvar variantSelect = document.getElementById('edit-block-variant');\n\t\t\t\tif (variantRow && variantSelect) {\n\t\t\t\t\tif (bType === 'hero') {\n\t\t\t\t\t\tvariantRow.style.display = 'block';\n\t\t\t\t\t\tvariantSelect.value = variant || 'classic';\n\t\t\t\t\t} else {\n\t\t\t\t\t\tvariantRow.style.display = 'none';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tvar dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) {\n\t\t\t\t\tvar root = dlg.closest('[x-data]');\n\t\t\t\t\tif (root && window.Alpine) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar d = Alpine.$data(root);\n\t\t\t\t\t\t\tif (d) {\n\t\t\t\t\t\t\t\td.editBlock = { id: id, title: title, content: content, type: bType, variant: variant || 'classic' };\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t}\n\t\t\t\t\tdlg.showModal();\n\t\t\t\t}\n\t\t\t};\n\t\t</script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

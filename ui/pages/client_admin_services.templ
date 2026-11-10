@@ -41,24 +41,24 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
 			<div>
 				<div class="flex items-center gap-3 flex-wrap">
-					<h2 class="text-xl font-bold text-white tracking-tight">Каталог услуг и прайс-лист</h2>
+					<h2 class="text-xl font-bold text-admin-content tracking-tight">Каталог услуг и прайс-лист</h2>
 					<div class="flex items-center gap-2">
-						<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+						<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-success-muted text-admin-success border border-admin-success/20">
 							Активно: <strong class="font-bold">{ fmt.Sprintf("%d", activeCount) }</strong>
 						</span>
 						if hiddenCount > 0 {
-							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700">
+							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-mono">
 								Скрыто: <strong class="font-bold">{ fmt.Sprintf("%d", hiddenCount) }</strong>
 							</span>
 						}
 						if len(trashServices) > 0 {
-							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+							<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-danger-muted text-admin-danger border border-admin-danger/20 font-mono">
 								В корзине: <strong class="font-bold">{ fmt.Sprintf("%d", len(trashServices)) }</strong>
 							</span>
 						}
 					</div>
 				</div>
-				<p class="text-xs text-slate-400 mt-1">Управление прайсом, складскими остатками, порядком вывода и безопасное двухэтапное удаление</p>
+				<p class="text-xs text-admin-content-muted mt-1">Управление прайсом, складскими остатками, порядком вывода и безопасное двухэтапное удаление</p>
 			</div>
 			<div class="flex items-center gap-3">
 				if isTrashView && len(trashServices) > 0 {
@@ -68,7 +68,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 						hx-target="#admin-tab-content"
 						hx-swap="innerHTML"
 						hx-confirm="Вы уверены, что хотите окончательно очистить корзину? Все удаленные услуги будут стёрты безвозвратно."
-						class="px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+						class="px-3.5 py-2 rounded-xl bg-admin-danger-muted hover:bg-admin-danger/20 text-admin-danger border border-admin-danger/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
 					>
 						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -81,7 +81,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 					hx-get="/client/services/new"
 					hx-target="#admin-tab-content"
 					hx-swap="innerHTML"
-					class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer"
+					class="px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -92,15 +92,15 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 		</div>
 
 		<!-- Фильтры и Корзина -->
-		<div class="flex items-center gap-2 mb-4 border-b border-slate-800 pb-3 flex-wrap">
+		<div class="flex items-center gap-2 mb-4 border-b border-admin-border pb-3 flex-wrap">
 			<button
 				type="button"
 				hx-get="/client/tab/services?filter=all"
 				hx-target="#admin-tab-content"
 				hx-swap="innerHTML"
 				class={ "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-					templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "" || filter == "all"),
-					templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "" && filter != "all") }
+					templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "" || filter == "all"),
+					templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "" && filter != "all") }
 			>
 				Все позиции ({ fmt.Sprintf("%d", len(services)) })
 			</button>
@@ -110,8 +110,8 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 				hx-target="#admin-tab-content"
 				hx-swap="innerHTML"
 				class={ "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-					templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "active"),
-					templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "active") }
+					templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "active"),
+					templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "active") }
 			>
 				Только активные ({ fmt.Sprintf("%d", activeCount) })
 			</button>
@@ -122,8 +122,8 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 					hx-target="#admin-tab-content"
 					hx-swap="innerHTML"
 					class={ "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-						templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "hidden"),
-						templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "hidden") }
+						templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "hidden"),
+						templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "hidden") }
 				>
 					Скрытые ({ fmt.Sprintf("%d", hiddenCount) })
 				</button>
@@ -135,8 +135,8 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 					hx-target="#admin-tab-content"
 					hx-swap="innerHTML"
 					class={ "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5",
-						templ.KV("bg-rose-500/15 text-rose-400 border border-rose-500/30 font-semibold", isTrashView),
-						templ.KV("text-rose-400/80 hover:text-rose-300 hover:bg-rose-500/10 border border-transparent", !isTrashView) }
+						templ.KV("bg-admin-danger-muted text-admin-danger border border-admin-danger/30 font-semibold", isTrashView),
+						templ.KV("text-admin-danger/80 hover:text-admin-danger hover:bg-admin-danger-muted border border-transparent", !isTrashView) }
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -147,22 +147,22 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 		</div>
 
 		if len(displayList) == 0 {
-			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center">
-				<div class="w-12 h-12 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center mx-auto mb-3 text-xl">
+			<div class="bg-admin-surface border border-admin-border rounded-2xl p-12 text-center shadow-xs">
+				<div class="w-12 h-12 rounded-full bg-admin-surface-muted text-admin-content-muted flex items-center justify-center mx-auto mb-3 text-xl">
 					if isTrashView {
 						🗑️
 					} else {
 						💼
 					}
 				</div>
-				<h3 class="text-white font-bold text-base mb-1">
+				<h3 class="text-admin-content font-bold text-base mb-1">
 					if isTrashView {
 						Корзина пуста
 					} else {
 						Позиций не найдено
 					}
 				</h3>
-				<p class="text-xs text-slate-400 max-w-sm mx-auto mb-4">
+				<p class="text-xs text-admin-content-muted max-w-sm mx-auto mb-4">
 					if isTrashView {
 						Удаленные услуги отсутствуют. Все созданные позиции находятся в активном каталоге.
 					} else if filter != "" && filter != "all" {
@@ -173,10 +173,10 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 				</p>
 			</div>
 		} else {
-			<div class="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+			<div class="bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xl">
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-xs sm:text-sm">
-						<thead class="bg-slate-950/60 border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider">
+						<thead class="bg-admin-surface-muted/50 border-b border-admin-border text-admin-content-muted text-[11px] font-mono uppercase tracking-wider">
 							<tr>
 								if !isTrashView {
 									<th class="py-3.5 px-3 font-semibold text-center w-24">Порядок</th>
@@ -188,31 +188,31 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 								<th class="py-3.5 px-4 font-semibold text-right">Действия</th>
 							</tr>
 						</thead>
-						<tbody class="divide-y divide-slate-800/60 text-slate-300">
+						<tbody class="divide-y divide-admin-border text-admin-content">
 							for i, s := range displayList {
-								<tr class="hover:bg-slate-800/30 transition-colors" id={ "service-row-" + s.ID }>
+								<tr class="hover:bg-admin-surface-muted/30 transition-colors" id={ "service-row-" + s.ID }>
 									if !isTrashView {
 										<td class="py-3.5 px-3 text-center whitespace-nowrap">
-											<div class="inline-flex items-center gap-1 font-mono text-xs text-slate-400">
+											<div class="inline-flex items-center gap-1 font-mono text-xs text-admin-content-muted">
 												<button
 													type="button"
 													hx-post={ "/client/services/" + s.ID + "/reorder?dir=up" }
 													hx-target="#admin-tab-content"
 													hx-swap="innerHTML"
 													disabled?={ i == 0 }
-													class="p-1 rounded text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-20 disabled:hover:text-slate-400 disabled:cursor-not-allowed cursor-pointer transition-colors"
+													class="p-1 rounded text-admin-content-muted hover:text-admin-accent hover:bg-admin-surface-muted disabled:opacity-20 disabled:hover:text-admin-content-muted disabled:cursor-not-allowed cursor-pointer transition-colors"
 													title="Переместить выше"
 												>
 													▲
 												</button>
-												<span class="w-5 text-center font-bold">{ fmt.Sprintf("%d", s.Order) }</span>
+												<span class="w-5 text-center font-bold text-admin-content">{ fmt.Sprintf("%d", s.Order) }</span>
 												<button
 													type="button"
 													hx-post={ "/client/services/" + s.ID + "/reorder?dir=down" }
 													hx-target="#admin-tab-content"
 													hx-swap="innerHTML"
 													disabled?={ i == len(displayList)-1 }
-													class="p-1 rounded text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-20 disabled:hover:text-slate-400 disabled:cursor-not-allowed cursor-pointer transition-colors"
+													class="p-1 rounded text-admin-content-muted hover:text-admin-accent hover:bg-admin-surface-muted disabled:opacity-20 disabled:hover:text-admin-content-muted disabled:cursor-not-allowed cursor-pointer transition-colors"
 													title="Переместить ниже"
 												>
 													▼
@@ -221,51 +221,51 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 										</td>
 									}
 									<td class="py-3.5 px-4 max-w-sm">
-										<div class="font-semibold text-white">{ s.Title }</div>
+										<div class="font-semibold text-admin-content">{ s.Title }</div>
 										if s.Description != "" {
-											<div class="text-[11px] text-slate-400 mt-0.5 line-clamp-1">{ s.Description }</div>
+											<div class="text-[11px] text-admin-content-muted mt-0.5 line-clamp-1">{ s.Description }</div>
 										}
 										if isTrashView && s.DeletedAt != "" {
-											<div class="text-[10px] text-rose-400/80 mt-1">Удалено: { s.DeletedAt }</div>
+											<div class="text-[10px] text-admin-danger/80 mt-1 font-mono">Удалено: { s.DeletedAt }</div>
 										}
 									</td>
-									<td class="py-3.5 px-4 font-medium text-amber-300 whitespace-nowrap">
+									<td class="py-3.5 px-4 font-medium text-admin-content whitespace-nowrap font-mono">
 										if s.Price != "" {
 											<span>{ s.Price }</span>
 										} else {
-											<span class="text-slate-500 text-xs">—</span>
+											<span class="text-admin-content-subtle text-xs">—</span>
 										}
 									</td>
 									<td class="py-3.5 px-4 whitespace-nowrap">
 										if s.StockCount > 0 {
-											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success/20 font-mono">
 												Остаток: { fmt.Sprintf("%d шт.", s.StockCount) }
 											</span>
 										} else if s.StockCount == 0 {
-											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-danger-muted text-admin-danger border border-admin-danger/20 font-mono">
 												Нет в наличии
 											</span>
 										} else if s.IsPreorder {
-											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20">
+											<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-mono">
 												Под заказ
 											</span>
 										} else {
-											<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-400 border border-slate-700">
+											<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-mono">
 												Неограниченно
 											</span>
 										}
 									</td>
 									<td class="py-3.5 px-4 whitespace-nowrap">
 										if isTrashView {
-											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20">
+											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-danger-muted text-admin-danger border border-admin-danger/20">
 												В корзине
 											</span>
 										} else if s.Active {
-											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-success-muted text-admin-success border border-admin-success/20">
 												Активна
 											</span>
 										} else {
-											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+											<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-surface-muted text-admin-content-muted border border-admin-border">
 												Скрыта
 											</span>
 										}
@@ -278,7 +278,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 												hx-post={ "/client/services/" + s.ID + "/restore" }
 												hx-target="#admin-tab-content"
 												hx-swap="innerHTML"
-												class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/20 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors cursor-pointer"
+												class="text-xs font-semibold text-admin-success hover:text-admin-success px-2.5 py-1 rounded-lg border border-admin-success/20 bg-admin-success-muted hover:bg-admin-success/20 transition-colors cursor-pointer"
 											>
 												Восстановить
 											</button>
@@ -289,7 +289,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 												hx-target="#admin-tab-content"
 												hx-swap="innerHTML"
 												hx-confirm={ fmt.Sprintf("Удалить позицию «%s» навсегда? Это действие нельзя отменить.", s.Title) }
-												class="text-xs font-medium text-rose-400 hover:text-rose-300 px-2 py-1 rounded-lg border border-rose-500/20 hover:bg-rose-500/10 transition-colors cursor-pointer"
+												class="text-xs font-medium text-admin-danger hover:text-admin-danger px-2 py-1 rounded-lg border border-admin-danger/20 hover:bg-admin-danger-muted transition-colors cursor-pointer"
 											>
 												Удалить навсегда
 											</button>
@@ -301,8 +301,8 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 												hx-target="#admin-tab-content"
 												hx-swap="innerHTML"
 												class={ "text-xs font-medium cursor-pointer transition-colors px-2 py-1 rounded-lg border",
-													templ.KV("border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-amber-400", s.Active),
-													templ.KV("border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20", !s.Active) }
+													templ.KV("border-admin-border text-admin-content-muted hover:bg-admin-surface-muted hover:text-admin-content", s.Active),
+													templ.KV("border-admin-success/20 bg-admin-success-muted text-admin-success hover:bg-admin-success/20", !s.Active) }
 											>
 												if s.Active {
 													<span>Скрыть</span>
@@ -316,7 +316,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 												hx-get={ "/client/services/edit/" + s.ID }
 												hx-target="#admin-tab-content"
 												hx-swap="innerHTML"
-												class="text-xs font-medium text-amber-400 hover:text-amber-300 px-2 py-1 rounded-lg border border-amber-500/20 bg-amber-500/10 hover:bg-amber-500/20 transition-colors cursor-pointer"
+												class="text-xs font-medium text-admin-accent hover:text-admin-accent-hover px-2 py-1 rounded-lg border border-admin-accent-border bg-admin-accent-muted hover:bg-admin-accent/20 transition-colors cursor-pointer"
 											>
 												Изменить
 											</button>
@@ -327,7 +327,7 @@ templ ClientServicesTab(services []models.ServiceItem, trashServices []models.Se
 												hx-target="#admin-tab-content"
 												hx-swap="innerHTML"
 												hx-confirm={ fmt.Sprintf("Переместить услугу «%s» в корзину? Вы сможете восстановить её в любой момент.", s.Title) }
-												class="text-xs font-medium text-rose-400 hover:text-rose-300 px-2 py-1 rounded-lg border border-rose-500/20 hover:bg-rose-500/10 transition-colors cursor-pointer"
+												class="text-xs font-medium text-admin-danger hover:text-admin-danger px-2 py-1 rounded-lg border border-admin-danger/20 hover:bg-admin-danger-muted transition-colors cursor-pointer"
 												title="Переместить в корзину"
 											>
 												В корзину

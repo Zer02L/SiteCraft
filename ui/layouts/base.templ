@@ -105,7 +105,7 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 			}
 
 			<!-- Скомпилированные стили Tailwind с семантическими токенами -->
-			<link rel="stylesheet" href="/assets/styles.css?v=coral2"/>
+			<link rel="stylesheet" href="/assets/styles.css?v=preview_live_v2"/>
 			<!-- No-JS Progressive Enhancement: если JavaScript выключен или недоступен, контент отображается сразу -->
 			<noscript>
 				<style>
@@ -267,7 +267,46 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 							root.setAttribute('data-theme', e.data.theme);
 							window.SiteTokens.clearCache();
 						}
+						if (e.data.type === 'SITE_SCROLL_TO_BLOCK') {
+							var target = null;
+							if (e.data.blockId) {
+								target = document.getElementById(e.data.blockId) ||
+									document.querySelector('[data-block-id="' + e.data.blockId + '"]');
+							}
+							if (!target && e.data.blockType) {
+								target = document.querySelector('[data-block="' + e.data.blockType + '"]') ||
+									document.querySelector('section[data-component="' + e.data.blockType + '"]') ||
+									document.querySelector('[data-block*="' + e.data.blockType.toLowerCase() + '"]');
+							}
+							if (target) {
+								target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+								target.style.outline = '3px solid #2563eb';
+								target.style.outlineOffset = '4px';
+								target.style.boxShadow = '0 0 25px rgba(37,99,235,0.35)';
+								target.style.transition = 'outline 0.2s, box-shadow 0.2s';
+								setTimeout(function() {
+									target.style.outline = '';
+									target.style.outlineOffset = '';
+									target.style.boxShadow = '';
+								}, 2200);
+							}
+						}
 					});
+
+					if (window.location.search.indexOf('preview=true') !== -1 && window.parent !== window) {
+						document.addEventListener('click', function(e) {
+							var blockEl = e.target.closest('[data-block], section, [data-component]');
+							if (blockEl) {
+								var bType = blockEl.getAttribute('data-block') || blockEl.getAttribute('data-component') || '';
+								var bId = blockEl.getAttribute('data-block-id') || blockEl.id || '';
+								window.parent.postMessage({
+									type: 'PREVIEW_BLOCK_CLICKED',
+									blockType: bType,
+									blockId: bId
+								}, '*');
+							}
+						}, true);
+					}
 
 					// ----------------------------------------------------
 					// ⚡ Микро-движок Scroll Reveal (IntersectionObserver < 0.5 КБ)

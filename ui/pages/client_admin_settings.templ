@@ -6,15 +6,15 @@ import (
 
 templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent, successMsg string) {
 	<div class="space-y-6">
-		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-800">
+		<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-admin-border">
 			<div>
-				<h2 class="text-xl font-bold text-white">Настройки сайта и SEO</h2>
-				<p class="text-xs text-slate-400 mt-1">Глобальная конфигурация, мета-теги, фавиконка, реквизиты и внешние сервисы</p>
+				<h2 class="text-xl font-bold text-admin-content">Настройки сайта и SEO</h2>
+				<p class="text-xs text-admin-content-muted mt-1">Глобальная конфигурация, мета-теги, фавиконка, реквизиты и внешние сервисы</p>
 			</div>
 		</div>
 
 		if successMsg != "" {
-			<div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
+			<div class="p-4 rounded-xl bg-admin-success-muted border border-admin-success/20 text-admin-success text-xs flex items-center gap-2">
 				<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 				</svg>
@@ -29,20 +29,20 @@ templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent,
 			class="space-y-8"
 		>
 			<!-- 1. Основное и Тема -->
-			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
-				<h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">1. Бренд и Визуальный стиль</h3>
+			<div class="bg-admin-surface border border-admin-border rounded-2xl p-6 space-y-4">
+				<h3 class="text-sm font-bold text-admin-accent uppercase tracking-wider">1. Бренд и Визуальный стиль</h3>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Название сайта / Компании</label>
-						<input type="text" name="site_name" value={ settings.SiteName } required class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Название сайта / Компании</label>
+						<input type="text" name="site_name" value={ settings.SiteName } required class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Слоган (Tagline)</label>
-						<input type="text" name="tagline" value={ settings.Tagline } class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Слоган (Tagline)</label>
+						<input type="text" name="tagline" value={ settings.Tagline } class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Цветовая тема</label>
-						<select name="theme" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm">
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Цветовая тема</label>
+						<select name="theme" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus">
 							<option value="main" selected?={ settings.Theme == "main" }>Main / Классическая</option>
 							<option value="legal" selected?={ settings.Theme == "legal" }>Legal / Строгая юридическая</option>
 							<option value="medical" selected?={ settings.Theme == "medical" }>Medical / Чистая медицинская</option>
@@ -53,8 +53,8 @@ templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent,
 						</select>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Вариант шапки (Header)</label>
-						<select name="header_variant" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm">
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Вариант шапки (Header)</label>
+						<select name="header_variant" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus">
 							<option value="classic" selected?={ settings.HeaderVariant == "classic" }>Classic (Лого слева, меню по центру)</option>
 							<option value="minimal" selected?={ settings.HeaderVariant == "minimal" }>Minimal (Компактная)</option>
 							<option value="centered" selected?={ settings.HeaderVariant == "centered" }>Centered (Центрированное лого)</option>
@@ -64,47 +64,47 @@ templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent,
 			</div>
 
 			<!-- 2. SEO и Аналитика -->
-			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
-				<h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">2. Поисковая оптимизация (SEO) и Аналитика</h3>
+			<div class="bg-admin-surface border border-admin-border rounded-2xl p-6 space-y-4">
+				<h3 class="text-sm font-bold text-admin-accent uppercase tracking-wider">2. Поисковая оптимизация (SEO) и Аналитика</h3>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Яндекс.Метрика ID</label>
-						<input type="text" name="yandex_metrika_id" value={ settings.YandexMetrikaID } placeholder="Например: 98765432" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Яндекс.Метрика ID</label>
+						<input type="text" name="yandex_metrika_id" value={ settings.YandexMetrikaID } placeholder="Например: 98765432" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Webhook URL для заявок</label>
-						<input type="text" name="webhook_url" value={ settings.WebhookURL } placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Webhook URL для заявок</label>
+						<input type="text" name="webhook_url" value={ settings.WebhookURL } placeholder="https://..." class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Telegram Bot Token</label>
-						<input type="text" name="telegram_bot_token" value={ settings.TelegramBotToken } placeholder="bot123456:ABC..." class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Telegram Bot Token</label>
+						<input type="text" name="telegram_bot_token" value={ settings.TelegramBotToken } placeholder="bot123456:ABC..." class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Telegram Chat ID</label>
-						<input type="text" name="telegram_chat_id" value={ settings.TelegramChatID } placeholder="-100..." class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Telegram Chat ID</label>
+						<input type="text" name="telegram_chat_id" value={ settings.TelegramChatID } placeholder="-100..." class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 				</div>
 			</div>
 
 			<!-- 3. Контакты и 152-ФЗ -->
-			<div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
-				<h3 class="text-sm font-bold text-amber-400 uppercase tracking-wider">3. Контакты и Юридические данные</h3>
+			<div class="bg-admin-surface border border-admin-border rounded-2xl p-6 space-y-4">
+				<h3 class="text-sm font-bold text-admin-accent uppercase tracking-wider">3. Контакты и Юридические данные</h3>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Основной телефон</label>
-						<input type="text" name="phone1" value={ content.Phone1 } placeholder="+7 (999) 000-00-00" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Основной телефон</label>
+						<input type="text" name="phone1" value={ content.Phone1 } placeholder="+7 (999) 000-00-00" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Контактный Email</label>
-						<input type="email" name="contact_email" value={ settings.ContactEmail } placeholder="info@domain.ru" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Контактный Email</label>
+						<input type="email" name="contact_email" value={ settings.ContactEmail } placeholder="info@domain.ru" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">Юридическое лицо</label>
-						<input type="text" name="legal_entity" value={ settings.LegalEntity } placeholder="ООО или ИП" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Юридическое лицо</label>
+						<input type="text" name="legal_entity" value={ settings.LegalEntity } placeholder="ООО или ИП" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 					<div>
-						<label class="block text-xs font-semibold text-slate-400 mb-1">ИНН</label>
-						<input type="text" name="inn" value={ settings.INN } placeholder="7701234567" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm font-mono"/>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">ИНН</label>
+						<input type="text" name="inn" value={ settings.INN } placeholder="7701234567" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
 					</div>
 				</div>
 			</div>
@@ -113,7 +113,7 @@ templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent,
 			<div class="flex items-center justify-end">
 				<button
 					type="submit"
-					class="px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+					class="px-6 py-3 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-sm transition-all shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

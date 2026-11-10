@@ -60,7 +60,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 		} else {
 			displayList = services
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><div class=\"flex items-center gap-3 flex-wrap\"><h2 class=\"text-xl font-bold text-white tracking-tight\">Каталог услуг и прайс-лист</h2><div class=\"flex items-center gap-2\"><span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\">Активно: <strong class=\"font-bold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><div class=\"flex items-center gap-3 flex-wrap\"><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Каталог услуг и прайс-лист</h2><div class=\"flex items-center gap-2\"><span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-success-muted text-admin-success border border-admin-success/20\">Активно: <strong class=\"font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -78,7 +78,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 			return templ_7745c5c3_Err
 		}
 		if hiddenCount > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-400 border border-slate-700\">Скрыто: <strong class=\"font-bold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-mono\">Скрыто: <strong class=\"font-bold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +97,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 			}
 		}
 		if len(trashServices) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20\">В корзине: <strong class=\"font-bold\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-admin-danger-muted text-admin-danger border border-admin-danger/20 font-mono\">В корзине: <strong class=\"font-bold\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -115,17 +115,17 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></div><p class=\"text-xs text-slate-400 mt-1\">Управление прайсом, складскими остатками, порядком вывода и безопасное двухэтапное удаление</p></div><div class=\"flex items-center gap-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></div><p class=\"text-xs text-admin-content-muted mt-1\">Управление прайсом, складскими остатками, порядком вывода и безопасное двухэтапное удаление</p></div><div class=\"flex items-center gap-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if isTrashView && len(trashServices) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<button type=\"button\" hx-post=\"/client/services/trash/empty\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"Вы уверены, что хотите окончательно очистить корзину? Все удаленные услуги будут стёрты безвозвратно.\" class=\"px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Очистить корзину</span></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<button type=\"button\" hx-post=\"/client/services/trash/empty\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"Вы уверены, что хотите окончательно очистить корзину? Все удаленные услуги будут стёрты безвозвратно.\" class=\"px-3.5 py-2 rounded-xl bg-admin-danger-muted hover:bg-admin-danger/20 text-admin-danger border border-admin-danger/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Очистить корзину</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<button type=\"button\" hx-get=\"/client/services/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить услугу</span></button></div></div><!-- Фильтры и Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-slate-800 pb-3 flex-wrap\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<button type=\"button\" hx-get=\"/client/services/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить услугу</span></button></div></div><!-- Фильтры и Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-admin-border pb-3 flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -138,8 +138,8 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 = []any{"px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-				templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "" || filter == "all"),
-				templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "" && filter != "all")}
+				templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "" || filter == "all"),
+				templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "" && filter != "all")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var5...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -193,8 +193,8 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 = []any{"px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-				templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "active"),
-				templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "active")}
+				templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "active"),
+				templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "active")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var8...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -249,8 +249,8 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 = []any{"px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer",
-					templ.KV("bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold", filter == "hidden"),
-					templ.KV("text-slate-400 hover:text-slate-200 hover:bg-slate-800/40", filter != "hidden")}
+					templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", filter == "hidden"),
+					templ.KV("text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted", filter != "hidden")}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var11...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -306,8 +306,8 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 = []any{"px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center gap-1.5",
-					templ.KV("bg-rose-500/15 text-rose-400 border border-rose-500/30 font-semibold", isTrashView),
-					templ.KV("text-rose-400/80 hover:text-rose-300 hover:bg-rose-500/10 border border-transparent", !isTrashView)}
+					templ.KV("bg-admin-danger-muted text-admin-danger border border-admin-danger/30 font-semibold", isTrashView),
+					templ.KV("text-admin-danger/80 hover:text-admin-danger hover:bg-admin-danger-muted border border-transparent", !isTrashView)}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var14...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -358,7 +358,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 			return templ_7745c5c3_Err
 		}
 		if len(displayList) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center\"><div class=\"w-12 h-12 rounded-full bg-slate-800 text-slate-500 flex items-center justify-center mx-auto mb-3 text-xl\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl p-12 text-center shadow-xs\"><div class=\"w-12 h-12 rounded-full bg-admin-surface-muted text-admin-content-muted flex items-center justify-center mx-auto mb-3 text-xl\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -373,7 +373,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div><h3 class=\"text-white font-bold text-base mb-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</div><h3 class=\"text-admin-content font-bold text-base mb-1\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -388,7 +388,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</h3><p class=\"text-xs text-slate-400 max-w-sm mx-auto mb-4\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</h3><p class=\"text-xs text-admin-content-muted max-w-sm mx-auto mb-4\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -413,7 +413,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-slate-950/60 border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider\"><tr>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted/50 border-b border-admin-border text-admin-content-muted text-[11px] font-mono uppercase tracking-wider\"><tr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -423,19 +423,19 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<th class=\"py-3.5 px-4 font-semibold\">Услуга / Товар</th><th class=\"py-3.5 px-4 font-semibold\">Стоимость</th><th class=\"py-3.5 px-4 font-semibold\">Склад / Наличие</th><th class=\"py-3.5 px-4 font-semibold\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-slate-800/60 text-slate-300\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<th class=\"py-3.5 px-4 font-semibold\">Услуга / Товар</th><th class=\"py-3.5 px-4 font-semibold\">Стоимость</th><th class=\"py-3.5 px-4 font-semibold\">Склад / Наличие</th><th class=\"py-3.5 px-4 font-semibold\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border text-admin-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for i, s := range displayList {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<tr class=\"hover:bg-slate-800/30 transition-colors\" id=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<tr class=\"hover:bg-admin-surface-muted/30 transition-colors\" id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression("service-row-" + s.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 193, Col: 86}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 193, Col: 96}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 				if templ_7745c5c3_Err != nil {
@@ -446,7 +446,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				if !isTrashView {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<td class=\"py-3.5 px-3 text-center whitespace-nowrap\"><div class=\"inline-flex items-center gap-1 font-mono text-xs text-slate-400\"><button type=\"button\" hx-post=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<td class=\"py-3.5 px-3 text-center whitespace-nowrap\"><div class=\"inline-flex items-center gap-1 font-mono text-xs text-admin-content-muted\"><button type=\"button\" hx-post=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -469,14 +469,14 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, " class=\"p-1 rounded text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-20 disabled:hover:text-slate-400 disabled:cursor-not-allowed cursor-pointer transition-colors\" title=\"Переместить выше\">▲</button> <span class=\"w-5 text-center font-bold\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, " class=\"p-1 rounded text-admin-content-muted hover:text-admin-accent hover:bg-admin-surface-muted disabled:opacity-20 disabled:hover:text-admin-content-muted disabled:cursor-not-allowed cursor-pointer transition-colors\" title=\"Переместить выше\">▲</button> <span class=\"w-5 text-center font-bold text-admin-content\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var19 string
 					templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", s.Order))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 208, Col: 80}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 208, Col: 99}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 					if templ_7745c5c3_Err != nil {
@@ -505,19 +505,19 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, " class=\"p-1 rounded text-slate-400 hover:text-amber-400 hover:bg-slate-800 disabled:opacity-20 disabled:hover:text-slate-400 disabled:cursor-not-allowed cursor-pointer transition-colors\" title=\"Переместить ниже\">▼</button></div></td>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, " class=\"p-1 rounded text-admin-content-muted hover:text-admin-accent hover:bg-admin-surface-muted disabled:opacity-20 disabled:hover:text-admin-content-muted disabled:cursor-not-allowed cursor-pointer transition-colors\" title=\"Переместить ниже\">▼</button></div></td>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<td class=\"py-3.5 px-4 max-w-sm\"><div class=\"font-semibold text-white\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "<td class=\"py-3.5 px-4 max-w-sm\"><div class=\"font-semibold text-admin-content\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var21 string
 				templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(s.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 224, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 224, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 				if templ_7745c5c3_Err != nil {
@@ -528,14 +528,14 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				if s.Description != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<div class=\"text-[11px] text-slate-400 mt-0.5 line-clamp-1\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<div class=\"text-[11px] text-admin-content-muted mt-0.5 line-clamp-1\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var22 string
 					templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(s.Description)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 226, Col: 86}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 226, Col: 96}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 					if templ_7745c5c3_Err != nil {
@@ -547,14 +547,14 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					}
 				}
 				if isTrashView && s.DeletedAt != "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div class=\"text-[10px] text-rose-400/80 mt-1\">Удалено: ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div class=\"text-[10px] text-admin-danger/80 mt-1 font-mono\">Удалено: ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var23 string
 					templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(s.DeletedAt)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 229, Col: 87}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_services.templ`, Line: 229, Col: 101}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 					if templ_7745c5c3_Err != nil {
@@ -565,7 +565,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</td><td class=\"py-3.5 px-4 font-medium text-amber-300 whitespace-nowrap\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</td><td class=\"py-3.5 px-4 font-medium text-admin-content whitespace-nowrap font-mono\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -588,7 +588,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<span class=\"text-slate-500 text-xs\">—</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<span class=\"text-admin-content-subtle text-xs\">—</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -598,7 +598,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				if s.StockCount > 0 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\">Остаток: ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success/20 font-mono\">Остаток: ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -616,17 +616,17 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 						return templ_7745c5c3_Err
 					}
 				} else if s.StockCount == 0 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20\">Нет в наличии</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-danger-muted text-admin-danger border border-admin-danger/20 font-mono\">Нет в наличии</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if s.IsPreorder {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20\">Под заказ</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "<span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-mono\">Под заказ</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "<span class=\"inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-800 text-slate-400 border border-slate-700\">Неограниченно</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "<span class=\"inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-mono\">Неограниченно</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -636,17 +636,17 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					return templ_7745c5c3_Err
 				}
 				if isTrashView {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/20\">В корзине</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-danger-muted text-admin-danger border border-admin-danger/20\">В корзине</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else if s.Active {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\">Активна</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-success-muted text-admin-success border border-admin-success/20\">Активна</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-slate-800 text-slate-400 border border-slate-700\">Скрыта</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, "<span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-admin-surface-muted text-admin-content-muted border border-admin-border\">Скрыта</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -669,7 +669,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs font-semibold text-emerald-400 hover:text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/20 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors cursor-pointer\">Восстановить</button> <button type=\"button\" hx-delete=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs font-semibold text-admin-success hover:text-admin-success px-2.5 py-1 rounded-lg border border-admin-success/20 bg-admin-success-muted hover:bg-admin-success/20 transition-colors cursor-pointer\">Восстановить</button> <button type=\"button\" hx-delete=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -695,7 +695,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "\" class=\"text-xs font-medium text-rose-400 hover:text-rose-300 px-2 py-1 rounded-lg border border-rose-500/20 hover:bg-rose-500/10 transition-colors cursor-pointer\">Удалить навсегда</button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "\" class=\"text-xs font-medium text-admin-danger hover:text-admin-danger px-2 py-1 rounded-lg border border-admin-danger/20 hover:bg-admin-danger-muted transition-colors cursor-pointer\">Удалить навсегда</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -726,8 +726,8 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var30 = []any{"text-xs font-medium cursor-pointer transition-colors px-2 py-1 rounded-lg border",
-							templ.KV("border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-amber-400", s.Active),
-							templ.KV("border-emerald-500/20 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20", !s.Active)}
+							templ.KV("border-admin-border text-admin-content-muted hover:bg-admin-surface-muted hover:text-admin-content", s.Active),
+							templ.KV("border-admin-success/20 bg-admin-success-muted text-admin-success hover:bg-admin-success/20", !s.Active)}
 						templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var30...)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -783,7 +783,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 84, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs font-medium text-amber-400 hover:text-amber-300 px-2 py-1 rounded-lg border border-amber-500/20 bg-amber-500/10 hover:bg-amber-500/20 transition-colors cursor-pointer\">Изменить</button> <button type=\"button\" hx-post=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 84, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs font-medium text-admin-accent hover:text-admin-accent-hover px-2 py-1 rounded-lg border border-admin-accent-border bg-admin-accent-muted hover:bg-admin-accent/20 transition-colors cursor-pointer\">Изменить</button> <button type=\"button\" hx-post=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -809,7 +809,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 86, "\" class=\"text-xs font-medium text-rose-400 hover:text-rose-300 px-2 py-1 rounded-lg border border-rose-500/20 hover:bg-rose-500/10 transition-colors cursor-pointer\" title=\"Переместить в корзину\">В корзину</button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 86, "\" class=\"text-xs font-medium text-admin-danger hover:text-admin-danger px-2 py-1 rounded-lg border border-admin-danger/20 hover:bg-admin-danger-muted transition-colors cursor-pointer\" title=\"Переместить в корзину\">В корзину</button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

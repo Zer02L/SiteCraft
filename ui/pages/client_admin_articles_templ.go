@@ -31,17 +31,17 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><h2 class=\"text-xl font-bold text-white tracking-tight\">Статьи и Новости блога</h2><p class=\"text-xs text-slate-400 mt-1\">Публикация экспертных материалов, отложенный постинг и управление контентом</p></div><div class=\"flex items-center gap-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Статьи и Новости блога</h2><p class=\"text-xs text-admin-content-muted mt-1\">Публикация экспертных материалов, отложенный постинг и управление контентом</p></div><div class=\"flex items-center gap-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if showTrash && len(trashArticles) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<button hx-post=\"/client/articles/trash/empty\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"Вы уверены, что хотите окончательно очистить корзину? Все удаленные статьи будут стёрты навсегда.\" class=\"px-3.5 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Очистить корзину</span></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<button hx-post=\"/client/articles/trash/empty\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"Вы уверены, что хотите окончательно очистить корзину? Все удалённые статьи будут стёрты навсегда.\" class=\"px-3.5 py-2 rounded-xl bg-admin-danger-muted hover:bg-admin-danger/20 text-admin-danger border border-admin-danger/20 font-semibold text-xs transition-colors flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Очистить корзину</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<button hx-get=\"/client/articles/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Написать новую статью</span></button></div></div><!-- Вкладки-фильтры: Все публикации / Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-slate-800 pb-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<button hx-get=\"/client/articles/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Написать новую статью</span></button></div></div><!-- Вкладки-фильтры: Все публикации / Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-admin-border pb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,8 +54,8 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 = []any{"px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-2 cursor-pointer",
-				templ.KV("bg-amber-500/15 text-amber-300 border border-amber-500/30", !showTrash),
-				templ.KV("text-slate-400 hover:text-white bg-slate-800/40 border border-transparent", showTrash)}
+				templ.KV("bg-admin-accent-muted text-admin-accent border border-admin-accent-border font-semibold", !showTrash),
+				templ.KV("text-admin-content-muted hover:text-admin-content bg-admin-surface border border-transparent", showTrash)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -95,9 +95,9 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 = []any{"px-1.5 py-0.2 rounded-full text-[10px]",
-				templ.KV("bg-amber-500/30 text-amber-200", !showTrash),
-				templ.KV("bg-slate-700 text-slate-300", showTrash)}
+			var templ_7745c5c3_Var4 = []any{"px-1.5 py-0.2 rounded-full text-[10px] font-mono",
+				templ.KV("bg-admin-accent/20 text-admin-accent", !showTrash),
+				templ.KV("bg-admin-surface-muted text-admin-content-muted", showTrash)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var4...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -151,8 +151,8 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 = []any{"px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-2 cursor-pointer",
-				templ.KV("bg-red-500/15 text-red-300 border border-red-500/30", showTrash),
-				templ.KV("text-slate-400 hover:text-white bg-slate-800/40 border border-transparent", !showTrash)}
+				templ.KV("bg-admin-danger-muted text-admin-danger border border-admin-danger/30 font-semibold", showTrash),
+				templ.KV("text-admin-content-muted hover:text-admin-content bg-admin-surface border border-transparent", !showTrash)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var7...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -193,9 +193,9 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var9 = []any{"px-1.5 py-0.2 rounded-full text-[10px]",
-					templ.KV("bg-red-500/30 text-red-200", showTrash),
-					templ.KV("bg-red-500/20 text-red-400", !showTrash)}
+				var templ_7745c5c3_Var9 = []any{"px-1.5 py-0.2 rounded-full text-[10px] font-mono",
+					templ.KV("bg-admin-danger/30 text-admin-danger", showTrash),
+					templ.KV("bg-admin-danger-muted text-admin-danger", !showTrash)}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var9...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -251,17 +251,17 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				return templ_7745c5c3_Err
 			}
 			if len(trashArticles) == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center\"><div class=\"w-12 h-12 mx-auto rounded-xl bg-slate-800/50 border border-slate-700 text-slate-400 flex items-center justify-center mb-3\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></div><h3 class=\"text-base font-semibold text-white mb-1\">Корзина пуста</h3><p class=\"text-xs text-slate-400 max-w-sm mx-auto\">Удалённые материалы временно хранятся здесь. Вы можете восстановить их в любой момент.</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl p-12 text-center\"><div class=\"w-12 h-12 mx-auto rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content-muted flex items-center justify-center mb-3\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></div><h3 class=\"text-base font-semibold text-admin-content mb-1\">Корзина пуста</h3><p class=\"text-xs text-admin-content-muted max-w-sm mx-auto\">Удалённые материалы временно хранятся здесь. Вы можете восстановить их в любой момент.</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-slate-950/60 border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Удалено</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-slate-800/60 text-slate-300\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-sm\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted border-b border-admin-border text-admin-content-subtle text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Удалено</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border/60 text-admin-content\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				for _, a := range trashArticles {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<tr class=\"hover:bg-slate-800/30 transition-colors\"><td class=\"py-3.5 px-4 font-semibold max-w-sm truncate text-slate-400 line-through\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<tr class=\"hover:bg-admin-surface-hover transition-colors\"><td class=\"py-3.5 px-4 font-semibold max-w-sm truncate text-admin-content-muted line-through\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -274,7 +274,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</td><td class=\"py-3.5 px-4 font-mono text-xs text-slate-500\">/blog/")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-content-subtle\">/blog/")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -287,7 +287,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</td><td class=\"py-3.5 px-4 text-slate-400 text-xs\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</td><td class=\"py-3.5 px-4 text-admin-content-muted text-xs\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -325,7 +325,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-emerald-400 hover:text-emerald-300 hover:underline cursor-pointer font-medium\">Восстановить</button> <button hx-delete=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-admin-success hover:underline cursor-pointer font-medium\">Восстановить</button> <button hx-delete=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -351,7 +351,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"text-xs text-red-400 hover:text-red-300 hover:underline cursor-pointer font-medium\">Удалить навсегда</button></td></tr>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"text-xs text-admin-danger hover:underline cursor-pointer font-medium\">Удалить навсегда</button></td></tr>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -367,17 +367,17 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				return templ_7745c5c3_Err
 			}
 			if len(articles) == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center\"><h3 class=\"text-base font-semibold text-white mb-1\">Статей пока нет</h3><p class=\"text-xs text-slate-400 max-w-sm mx-auto mb-4\">Нажмите кнопку выше, чтобы создать первую экспертную публикацию.</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl p-12 text-center\"><h3 class=\"text-base font-semibold text-admin-content mb-1\">Статей пока нет</h3><p class=\"text-xs text-admin-content-muted max-w-sm mx-auto mb-4\">Нажмите кнопку выше, чтобы создать первую экспертную публикацию.</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-slate-950/60 border-b border-slate-800 text-slate-400 text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Дата публикации</th><th class=\"py-3.5 px-4 font-semibold\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-slate-800/60 text-slate-300\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-sm\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted border-b border-admin-border text-admin-content-subtle text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Дата публикации</th><th class=\"py-3.5 px-4 font-semibold\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border/60 text-admin-content\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				for _, a := range articles {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<tr class=\"hover:bg-slate-800/30 transition-colors\"><td class=\"py-3.5 px-4 font-semibold text-white max-w-sm truncate\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<tr class=\"hover:bg-admin-surface-hover transition-colors\"><td class=\"py-3.5 px-4 font-semibold text-admin-content max-w-sm truncate\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -390,7 +390,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</td><td class=\"py-3.5 px-4 font-mono text-xs text-amber-400/80\">/blog/")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-accent\">/blog/")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -403,7 +403,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</td><td class=\"py-3.5 px-4 text-slate-300 text-xs\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</td><td class=\"py-3.5 px-4 text-admin-content-muted text-xs\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -421,17 +421,17 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						return templ_7745c5c3_Err
 					}
 					if a.IsScheduled() {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-amber-500/10 text-amber-300 border border-amber-500/20\" title=\"Публикация запланирована на будущее\"><svg class=\"w-3 h-3 text-amber-400 animate-pulse\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>Запланирована</span></span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning/20\" title=\"Публикация запланирована на будущее\"><svg class=\"w-3 h-3 text-admin-warning animate-pulse\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>Запланирована</span></span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else if a.IsPublished {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20\">Опубликована</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success/20\">Опубликована</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-800 text-slate-400 border border-slate-700\">Черновик / Скрыта</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border\">Черновик / Скрыта</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -462,8 +462,8 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var23 = []any{"text-xs font-medium cursor-pointer transition-colors",
-							templ.KV("text-slate-400 hover:text-amber-400", a.IsPublished),
-							templ.KV("text-emerald-400 hover:text-emerald-300", !a.IsPublished)}
+							templ.KV("text-admin-content-muted hover:text-admin-accent", a.IsPublished),
+							templ.KV("text-admin-success hover:underline", !a.IsPublished)}
 						templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var23...)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
@@ -538,7 +538,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-amber-400 hover:underline cursor-pointer\">Редактировать</button> ")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-admin-accent hover:underline cursor-pointer\">Редактировать</button> ")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -556,7 +556,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\" target=\"_blank\" class=\"text-xs text-slate-400 hover:text-white\">Просмотр</a>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\" target=\"_blank\" class=\"text-xs text-admin-content-muted hover:text-admin-content\">Просмотр</a>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -587,7 +587,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "\" title=\"Переместить в корзину\" class=\"text-xs text-red-400 hover:text-red-300 hover:underline cursor-pointer\">В корзину</button></td></tr>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "\" title=\"Переместить в корзину\" class=\"text-xs text-admin-danger hover:underline cursor-pointer\">В корзину</button></td></tr>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}

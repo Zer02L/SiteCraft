@@ -1060,6 +1060,12 @@ func (r *Repository) ApproveReview(ctx context.Context, id string) error {
 	return err
 }
 
+// ToggleReview toggles is_published between 1 and 0.
+func (r *Repository) ToggleReview(ctx context.Context, id string) error {
+	_, err := r.rawDB.ExecContext(ctx, "UPDATE reviews SET is_published = CASE WHEN is_published = 1 THEN 0 ELSE 1 END WHERE id = ?", id)
+	return err
+}
+
 // DeleteReview deletes a review by ID.
 func (r *Repository) DeleteReview(ctx context.Context, id string) error {
 	_, err := r.rawDB.ExecContext(ctx, "DELETE FROM reviews WHERE id = ?", id)

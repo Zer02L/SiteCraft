@@ -31,7 +31,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-2xl mx-auto\"><div class=\"flex items-center justify-between mb-6 pb-4 border-b border-slate-800\"><div><h2 class=\"text-xl font-bold text-white tracking-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-2xl mx-auto\"><div class=\"flex items-center justify-between mb-6 pb-4 border-b border-admin-border\"><div><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -55,7 +55,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h2><p class=\"text-xs text-slate-400 mt-1\">Заполните данные для отображения в блоке услуг и каталоге сайта</p></div><button type=\"button\" hx-get=\"/client/tab/services\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-800/60 hover:bg-slate-800 transition-colors cursor-pointer flex items-center gap-1.5\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 19l-7-7m0 0l7-7m-7 7h18\"></path></svg> <span>Назад к списку</span></button></div><form hx-post=\"/client/services/save\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"space-y-5 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl\"><input type=\"hidden\" name=\"id\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</h2><p class=\"text-xs text-admin-content-muted mt-1\">Заполните данные для отображения в блоке услуг и каталоге сайта</p></div><button type=\"button\" hx-get=\"/client/tab/services\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-admin-content-muted hover:text-admin-content px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface-muted hover:bg-admin-surface-hover transition-colors cursor-pointer flex items-center gap-1.5\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 19l-7-7m0 0l7-7m-7 7h18\"></path></svg> <span>Назад к списку</span></button></div><form hx-post=\"/client/services/save\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"space-y-5 bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 shadow-sm\"><input type=\"hidden\" name=\"id\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -68,7 +68,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><!-- Название услуги --><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2\">Название услуги или товара <span class=\"text-amber-400\">*</span></label> <input type=\"text\" name=\"title\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><!-- Название услуги --><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2\">Название услуги или товара <span class=\"text-admin-accent\">*</span></label> <input type=\"text\" name=\"title\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -81,7 +81,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" required placeholder=\"Например: Замена масла и фильтров, Экспресс-консультация...\" class=\"w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm\"></div><!-- Стоимость и Порядок сортировки в 2 колонки --><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2\">Стоимость / Тариф</label> <input type=\"text\" name=\"price\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" required placeholder=\"Например: Замена масла и фильтров, Экспресс-консультация...\" class=\"w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm\"></div><!-- Стоимость и Порядок сортировки в 2 колонки --><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2\">Стоимость / Тариф</label> <input type=\"text\" name=\"price\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -94,7 +94,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" placeholder=\"от 2 500 ₽, 1 900 ₽/мес, Бесплатно...\" class=\"w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm\"><p class=\"text-[11px] text-slate-500 mt-1\">Произвольный текстовый формат или точная сумма с валютой</p></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2\">Порядок вывода (сортировка)</label> <input type=\"number\" name=\"order\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" placeholder=\"от 2 500 ₽, 1 900 ₽/мес, Бесплатно...\" class=\"w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Произвольный текстовый формат или точная сумма с валютой</p></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2\">Порядок вывода (сортировка)</label> <input type=\"number\" name=\"order\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -107,7 +107,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" min=\"0\" step=\"1\" placeholder=\"1\" class=\"w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm\"><p class=\"text-[11px] text-slate-500 mt-1\">Меньшее число выводится выше в списке</p></div></div><!-- Складской учет и доступность --><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2\">Остаток на складе (шт.)</label> <input type=\"number\" name=\"stock_count\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" min=\"0\" step=\"1\" placeholder=\"1\" class=\"w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Меньшее число выводится выше в списке</p></div></div><!-- Складской учет и доступность --><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2\">Остаток на складе (шт.)</label> <input type=\"number\" name=\"stock_count\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -120,7 +120,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" placeholder=\"-1\" class=\"w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm\"><p class=\"text-[11px] text-slate-500 mt-1\">-1 для неограниченного запаса, 0 при отсутствии</p></div><div class=\"flex flex-col justify-end space-y-3 pb-1\"><label class=\"flex items-center gap-2.5 cursor-pointer\"><input type=\"checkbox\" name=\"is_preorder\" value=\"true\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" placeholder=\"-1\" class=\"w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">-1 для неограниченного запаса, 0 при отсутствии</p></div><div class=\"flex flex-col justify-end space-y-3 pb-1\"><label class=\"flex items-center gap-2.5 cursor-pointer\"><input type=\"checkbox\" name=\"is_preorder\" value=\"true\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -130,7 +130,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " class=\"w-4 h-4 rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-amber-500 focus:ring-offset-slate-900\"> <span class=\"text-xs text-slate-300 font-medium\">Доступно под заказ (Preorder)</span></label> <label class=\"flex items-center gap-2.5 cursor-pointer\"><input type=\"checkbox\" name=\"active\" value=\"true\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " class=\"w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-accent focus:ring-admin-accent\"> <span class=\"text-xs text-admin-content-muted font-medium\">Доступно под заказ (Preorder)</span></label> <label class=\"flex items-center gap-2.5 cursor-pointer\"><input type=\"checkbox\" name=\"active\" value=\"true\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -140,7 +140,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " class=\"w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-emerald-500 focus:ring-offset-slate-900\"> <span class=\"text-xs text-slate-300 font-medium\">Активна (показывать на витрине сайта)</span></label></div></div><!-- Подробное описание --><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2\">Краткое описание / Особенности</label> <textarea name=\"description\" rows=\"3\" placeholder=\"Укажите, что входит в услугу, сроки исполнения, гарантию...\" class=\"w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm resize-none\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, " class=\"w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-success focus:ring-admin-success\"> <span class=\"text-xs text-admin-content-muted font-medium\">Активна (показывать на витрине сайта)</span></label></div></div><!-- Подробное описание --><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2\">Краткое описание / Особенности</label> <textarea name=\"description\" rows=\"3\" placeholder=\"Укажите, что входит в услугу, сроки исполнения, гарантию...\" class=\"w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm resize-none\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -153,7 +153,7 @@ func ClientServiceForm(service models.ServiceItem, isNew bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</textarea></div><div class=\"pt-4 border-t border-slate-800 flex items-center justify-end gap-3\"><button type=\"button\" hx-get=\"/client/tab/services\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2.5 rounded-xl border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 text-xs font-medium transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Сохранить позицию</span></button></div></form></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</textarea></div><div class=\"pt-4 border-t border-admin-border flex items-center justify-end gap-3\"><button type=\"button\" hx-get=\"/client/tab/services\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2.5 rounded-xl border border-admin-border text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted text-xs font-medium transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-xs transition-all shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Сохранить позицию</span></button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

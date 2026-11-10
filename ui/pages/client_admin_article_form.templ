@@ -7,20 +7,20 @@ import (
 
 templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 	<div class="max-w-4xl">
-		<div class="flex items-center justify-between mb-6">
+		<div class="flex items-center justify-between mb-6 pb-4 border-b border-admin-border">
 			<div>
 				if isNew {
-					<h2 class="text-xl font-bold text-white tracking-tight">Новая статья</h2>
+					<h2 class="text-xl font-bold text-admin-content tracking-tight">Новая статья</h2>
 				} else {
-					<h2 class="text-xl font-bold text-white tracking-tight">Редактирование статьи</h2>
+					<h2 class="text-xl font-bold text-admin-content tracking-tight">Редактирование статьи</h2>
 				}
-				<p class="text-xs text-slate-400 mt-1">Визуальный редактор публикаций с автогенерацией URL и тегами</p>
+				<p class="text-xs text-admin-content-muted mt-1">Визуальный редактор публикаций с автогенерацией URL и тегами</p>
 			</div>
 			<button
 				hx-get="/client/tab/articles"
 				hx-target="#admin-tab-content"
 				hx-swap="innerHTML"
-				class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 transition-colors cursor-pointer"
+				class="px-3.5 py-1.5 rounded-xl bg-admin-surface-muted hover:bg-admin-surface-hover border border-admin-border text-xs text-admin-content transition-colors cursor-pointer"
 			>
 				Назад к списку
 			</button>
@@ -40,7 +40,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				isNew,
 			) }
 			x-init="init()"
-			class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl"
+			class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm"
 		>
 			<input type="hidden" name="id" value={ article.ID }/>
 			<input type="hidden" name="tags" :value="tags.join(',')"/>
@@ -50,10 +50,10 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				<!-- Заголовок статьи с транслитерацией -->
 				<div>
 					<div class="flex items-center justify-between mb-2">
-						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-							Заголовок статьи <span class="text-amber-400">*</span>
+						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+							Заголовок статьи <span class="text-admin-accent">*</span>
 						</label>
-						<span class="text-[11px] text-slate-500">Автоматически формирует понятный адрес ссылки</span>
+						<span class="text-[11px] text-admin-content-subtle">Автоматически формирует понятный адрес ссылки</span>
 					</div>
 					<input
 						type="text"
@@ -62,7 +62,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						x-on:input="onTitleInput()"
 						required
 						placeholder="Например: Как подготовить документы для сделки в 2026 году..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
 					/>
 				</div>
 
@@ -70,14 +70,14 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 					<div>
 						<div class="flex items-center justify-between mb-2">
-							<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-								URL-адрес (Slug) <span class="text-amber-400">*</span>
+							<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+								URL-адрес (Slug) <span class="text-admin-accent">*</span>
 							</label>
 							<button
 								type="button"
 								x-on:click="regenerateSlug()"
 								title="Обновить ссылку по текущему названию статьи"
-								class="text-[11px] text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1 cursor-pointer"
+								class="text-[11px] text-admin-accent hover:underline flex items-center gap-1 cursor-pointer"
 							>
 								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -86,7 +86,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							</button>
 						</div>
 						<div class="relative">
-							<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-slate-500 font-mono select-none">
+							<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-admin-content-subtle font-mono select-none">
 								/blog/
 							</span>
 							<input
@@ -96,16 +96,16 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 								x-on:input="onSlugInput()"
 								required
 								placeholder="kak-podgotovit-dokumenty"
-								class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-amber-400 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+								class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-accent font-mono text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
 							/>
 						</div>
-						<p class="text-[11px] text-slate-500 mt-1 truncate">
-							Адрес на сайте: /blog/<span class="text-slate-300 font-mono" x-text="slug || 'vasha-statya'"></span>
+						<p class="text-[11px] text-admin-content-subtle mt-1 truncate">
+							Адрес на сайте: /blog/<span class="text-admin-content font-mono" x-text="slug || 'vasha-statya'"></span>
 						</p>
 					</div>
 
 					<div>
-						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
 							Автор публикации
 						</label>
 						<input
@@ -113,14 +113,14 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							name="author_name"
 							value={ article.AuthorName }
 							placeholder="Владислав Захаров"
-							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
 						/>
 					</div>
 				</div>
 
 				<!-- Обложка статьи (Drag & Drop + Preview) -->
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+					<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
 						Обложка статьи
 					</label>
 
@@ -134,17 +134,17 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 					/>
 
 					<!-- Если обложка выбрана / существует -->
-					<div x-show="coverPreview" class="relative group rounded-2xl overflow-hidden border border-slate-700 bg-slate-950 max-w-lg shadow-md">
+					<div x-show="coverPreview" class="relative group rounded-2xl overflow-hidden border border-admin-border bg-admin-bg max-w-lg shadow-sm">
 						<img
 							:src="coverPreview"
 							alt="Обложка статьи"
 							class="w-full h-48 sm:h-56 object-cover"
 						/>
-						<div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-xs">
+						<div class="absolute inset-0 bg-admin-bg/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-xs">
 							<button
 								type="button"
 								x-on:click="$refs.coverFileInput.click()"
-								class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs shadow cursor-pointer transition-colors flex items-center gap-1.5"
+								class="px-3 py-1.5 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-semibold text-xs shadow-sm cursor-pointer transition-colors flex items-center gap-1.5"
 							>
 								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -154,7 +154,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							<button
 								type="button"
 								x-on:click="clearCover()"
-								class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-semibold text-xs cursor-pointer transition-colors flex items-center gap-1.5"
+								class="px-3 py-1.5 rounded-lg bg-admin-danger-muted hover:bg-admin-danger/30 text-admin-danger border border-admin-danger/30 font-semibold text-xs cursor-pointer transition-colors flex items-center gap-1.5"
 							>
 								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
@@ -171,18 +171,18 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						x-on:dragover.prevent="isDragging = true"
 						x-on:dragleave.prevent="isDragging = false"
 						x-on:drop.prevent="handleDrop($event)"
-						:class="isDragging ? 'border-amber-400 bg-amber-400/10' : 'border-slate-700 hover:border-slate-600 bg-slate-800/40 hover:bg-slate-800/60'"
+						:class="isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus bg-admin-surface-muted/40'"
 						class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all max-w-lg"
 					>
-						<div class="w-12 h-12 mx-auto rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
+						<div class="w-12 h-12 mx-auto rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center mb-3">
 							<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
 							</svg>
 						</div>
-						<p class="text-xs font-semibold text-white mb-1">
+						<p class="text-xs font-semibold text-admin-content mb-1">
 							Нажмите для выбора или перетащите фото сюда
 						</p>
-						<p class="text-[11px] text-slate-400">
+						<p class="text-[11px] text-admin-content-muted">
 							Поддерживаются WebP, PNG, JPG до 5 МБ (16:9 рекомендуется)
 						</p>
 					</div>
@@ -190,20 +190,20 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 				<!-- Теги / Рубрикатор (Badge Chips) -->
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+					<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
 						Теги и рубрики публикации
 					</label>
 
 					<!-- Контейнер чипсов -->
-					<div class="p-3 rounded-xl bg-slate-800/80 border border-slate-700 min-h-[46px] flex flex-wrap items-center gap-2">
+					<div class="p-3 rounded-xl bg-admin-surface-muted border border-admin-border min-h-[46px] flex flex-wrap items-center gap-2">
 						<template x-for="(tag, idx) in tags" :key="idx">
-							<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-amber-500/15 text-amber-300 border border-amber-500/30 shadow-xs">
+							<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border shadow-xs">
 								<span x-text="'#' + tag"></span>
 								<button
 									type="button"
 									x-on:click="removeTag(idx)"
 									title="Удалить тег"
-									class="hover:text-red-400 text-amber-400/80 transition-colors cursor-pointer"
+									class="hover:text-admin-danger text-admin-accent/80 transition-colors cursor-pointer"
 								>
 									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -218,18 +218,18 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							x-on:keydown.enter.prevent="addTag()"
 							x-on:keydown.comma.prevent="addTag()"
 							placeholder="+ Напишите тег и нажмите Enter..."
-							class="flex-1 min-w-[200px] bg-transparent text-white text-xs placeholder-slate-500 focus:outline-none py-1"
+							class="flex-1 min-w-[200px] bg-transparent text-admin-content text-xs placeholder-admin-content-subtle focus:outline-none py-1"
 						/>
 					</div>
 
 					<!-- Готовые подсказки тегов -->
 					<div class="flex items-center gap-1.5 flex-wrap mt-2">
-						<span class="text-[11px] text-slate-500 mr-1">Быстрый выбор:</span>
+						<span class="text-[11px] text-admin-content-subtle mr-1">Быстрый выбор:</span>
 						for _, suggested := range []string{"Полезное", "Инструкция", "Советы", "Законодательство", "Кейс", "Новости"} {
 							<button
 								type="button"
 								x-on:click={ fmt.Sprintf("suggestTag('%s')", suggested) }
-								class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-amber-400 text-[11px] transition-colors cursor-pointer border border-slate-700"
+								class="px-2 py-0.5 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content-muted hover:text-admin-accent text-[11px] transition-colors cursor-pointer border border-admin-border"
 							>
 								{ "+" + suggested }
 							</button>
@@ -239,24 +239,24 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 				<!-- Краткий анонс (Лид-абзац) -->
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+					<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
 						Краткий анонс (Лид-абзац для карточки в каталоге)
 					</label>
 					<textarea
 						name="excerpt"
 						rows="2"
 						placeholder="Краткое описание сути статьи в 1-2 предложениях..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
 					>{ article.Excerpt }</textarea>
 				</div>
 
 				<!-- Визуальный редактор текста статьи (Quill.js) -->
 				<div class="space-y-2">
 					<div class="flex items-center justify-between">
-						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
 							Текст статьи (Визуальный редактор)
 						</label>
-						<span class="text-[11px] text-amber-400/90 font-medium flex items-center gap-1">
+						<span class="text-[11px] text-admin-accent font-medium flex items-center gap-1">
 							<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
 							</svg>
@@ -271,9 +271,9 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						class="hidden"
 					>{ article.Content }</textarea>
 
-					<!-- Контейнер Quill.js со стилизацией под Dark Slate тему -->
-					<div class="quill-dark-wrapper rounded-xl overflow-hidden border border-slate-700 bg-slate-900/90 shadow-inner">
-						<div x-ref="quillEditor" class="min-h-[340px] text-white"></div>
+					<!-- Контейнер Quill.js со стилизацией под Client Admin -->
+					<div class="quill-dark-wrapper rounded-xl overflow-hidden border border-admin-border bg-admin-surface shadow-inner">
+						<div x-ref="quillEditor" class="min-h-[340px] text-admin-content"></div>
 					</div>
 				</div>
 
@@ -281,53 +281,53 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
 					<div>
 						<div class="flex items-center justify-between mb-2">
-							<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+							<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
 								Дата и время публикации
 							</label>
-							<span class="text-[11px] text-amber-400/90 font-medium">Отложенная публикация</span>
+							<span class="text-[11px] text-admin-accent font-medium">Отложенная публикация</span>
 						</div>
 						<input
 							type="datetime-local"
 							name="published_at"
 							id="published_at_input"
 							value={ article.PublishedAtInput() }
-							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-mono"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus font-mono"
 						/>
-						<p class="text-[11px] text-slate-500 mt-1">
+						<p class="text-[11px] text-admin-content-subtle mt-1">
 							Если указать дату и время в будущем — материал станет запланированным и появится на сайте автоматически.
 						</p>
 					</div>
 
 					<div>
-						<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
 							Быстрый выбор времени
 						</label>
 						<div class="flex flex-wrap gap-2 pt-1">
 							<button
 								type="button"
 								onclick="const now = new Date(); const offset = now.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(now - offset).toISOString().slice(0, 16);"
-								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition-colors cursor-pointer"
+								class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-content border border-admin-border transition-colors cursor-pointer"
 							>
 								Сейчас
 							</button>
 							<button
 								type="button"
 								onclick="const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+								class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
 							>
 								Завтра в 09:00
 							</button>
 							<button
 								type="button"
 								onclick="const d = new Date(); d.setDate(d.getDate() + 3); d.setHours(10, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+								class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
 							>
 								Через 3 дня
 							</button>
 							<button
 								type="button"
 								onclick="const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(12, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-								class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-amber-400 border border-slate-700 transition-colors cursor-pointer"
+								class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
 							>
 								Через неделю
 							</button>
@@ -343,18 +343,18 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						name="is_published"
 						value="true"
 						checked?={ article.IsPublished }
-						class="w-4 h-4 rounded text-amber-500 bg-slate-800 border-slate-700 focus:ring-amber-500 cursor-pointer"
+						class="w-4 h-4 rounded text-admin-accent bg-admin-surface-muted border-admin-border focus:ring-admin-accent cursor-pointer"
 					/>
-					<label for="is_published" class="text-sm font-medium text-slate-300 cursor-pointer">
+					<label for="is_published" class="text-sm font-medium text-admin-content-muted cursor-pointer">
 						Опубликовать статью на сайте (если указано будущее время — будет запланирована)
 					</label>
 				</div>
 			</div>
 
-			<div class="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+			<div class="pt-4 border-t border-admin-border flex items-center justify-end gap-3">
 				<button
 					type="submit"
-					class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-sm transition-all shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -367,21 +367,21 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 		<!-- Стили Dark Theme для Quill Editor -->
 		<style>
 			.quill-dark-wrapper .ql-toolbar.ql-snow {
-				background-color: #0b1120;
-				border-color: #334155;
+				background-color: var(--admin-surface-muted, #0f172a);
+				border-color: var(--admin-border, #334155);
 				border-top-left-radius: 0.75rem;
 				border-top-right-radius: 0.75rem;
-				border-bottom: 1px solid #334155;
+				border-bottom: 1px solid var(--admin-border, #334155);
 				padding: 0.75rem;
 			}
 			.quill-dark-wrapper .ql-container.ql-snow {
-				background-color: #0b1120;
-				border-color: #334155;
+				background-color: var(--admin-surface, #0f172a);
+				border-color: var(--admin-border, #334155);
 				border-bottom-left-radius: 0.75rem;
 				border-bottom-right-radius: 0.75rem;
 				font-size: 0.95rem;
 				font-family: inherit;
-				color: #e2e8f0;
+				color: var(--admin-content, #f1f5f9);
 			}
 			.quill-dark-wrapper .ql-editor {
 				min-height: 320px;
@@ -389,63 +389,63 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				padding: 1rem 1.25rem;
 			}
 			.quill-dark-wrapper .ql-editor.ql-blank::before {
-				color: #64748b;
+				color: var(--admin-content-subtle, #64748b);
 				font-style: normal;
 			}
 			.quill-dark-wrapper .ql-snow .ql-stroke {
-				stroke: #94a3b8;
+				stroke: var(--admin-content-muted, #94a3b8);
 			}
 			.quill-dark-wrapper .ql-snow .ql-fill {
-				fill: #94a3b8;
+				fill: var(--admin-content-muted, #94a3b8);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker {
-				color: #94a3b8;
+				color: var(--admin-content-muted, #94a3b8);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-options {
-				background-color: #1e293b;
-				border: 1px solid #334155;
+				background-color: var(--admin-surface, #1e293b);
+				border: 1px solid var(--admin-border, #334155);
 				border-radius: 0.5rem;
 				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-item:hover,
 			.quill-dark-wrapper .ql-snow .ql-picker-item.ql-selected {
-				color: #fbbf24;
+				color: var(--admin-accent, #f59e0b);
 			}
 			.quill-dark-wrapper .ql-snow button:hover .ql-stroke,
 			.quill-dark-wrapper .ql-snow button.ql-active .ql-stroke,
 			.quill-dark-wrapper .ql-snow .ql-picker-label:hover .ql-stroke {
-				stroke: #fbbf24 !important;
+				stroke: var(--admin-accent, #f59e0b) !important;
 			}
 			.quill-dark-wrapper .ql-snow button:hover .ql-fill,
 			.quill-dark-wrapper .ql-snow button.ql-active .ql-fill {
-				fill: #fbbf24 !important;
+				fill: var(--admin-accent, #f59e0b) !important;
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-label:hover {
-				color: #fbbf24 !important;
+				color: var(--admin-accent, #f59e0b) !important;
 			}
 			.quill-dark-wrapper .ql-editor h2 {
 				font-size: 1.4rem;
 				font-weight: 700;
-				color: #ffffff;
+				color: var(--admin-content, #ffffff);
 				margin-top: 1rem;
 				margin-bottom: 0.5rem;
 			}
 			.quill-dark-wrapper .ql-editor h3 {
 				font-size: 1.2rem;
 				font-weight: 600;
-				color: #ffffff;
+				color: var(--admin-content, #ffffff);
 				margin-top: 0.75rem;
 				margin-bottom: 0.5rem;
 			}
 			.quill-dark-wrapper .ql-editor blockquote {
-				border-left: 3px solid #fbbf24;
+				border-left: 3px solid var(--admin-accent, #f59e0b);
 				padding-left: 0.85rem;
-				color: #94a3b8;
+				color: var(--admin-content-muted, #94a3b8);
 				font-style: italic;
 				margin: 0.75rem 0;
 			}
 			.quill-dark-wrapper .ql-editor a {
-				color: #fbbf24;
+				color: var(--admin-accent, #f59e0b);
 				text-decoration: underline;
 			}
 			.quill-dark-wrapper .ql-editor img {

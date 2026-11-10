@@ -130,16 +130,9 @@ func (s *Server) initAdminModules() {
 
 	// 2. Visual Editor & Blocks (Конструктор & Дизайн)
 	s.AdminModules.Register(AdminModule{
-		ID:    "blocks",
-		Title: "Конструктор & Дизайн",
-		Order: 15,
-		Badge: func(ctx context.Context, s *Server) (int, string) {
-			blocks, err := s.Repo.GetAllPageBlocks(ctx)
-			if err != nil {
-				return 0, ""
-			}
-			return len(blocks), "bg-slate-800/90 text-amber-400 border-amber-500/20"
-		},
+		ID:         "blocks",
+		Title:      "Конструктор & Дизайн",
+		Order:      15,
 		TabHandler: s.HandleAdminTabBlocks,
 	})
 
@@ -161,7 +154,7 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			return len(services), "bg-slate-800/90 text-slate-300 border-slate-700/60"
+			return len(services), "bg-slate-100 text-slate-700 border-slate-200"
 		},
 		TabHandler: s.HandleAdminTabServices,
 	})
@@ -179,7 +172,7 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			return len(articles), "bg-slate-800/90 text-slate-300 border-slate-700/60"
+			return len(articles), "bg-slate-100 text-slate-700 border-slate-200"
 		},
 		TabHandler: s.HandleAdminTabArticles,
 	})
@@ -194,7 +187,7 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			return len(reviews), "bg-slate-800/90 text-slate-300 border-slate-700/60"
+			return len(reviews), "bg-slate-100 text-slate-700 border-slate-200"
 		},
 		TabHandler: s.HandleAdminTabReviews,
 	})

@@ -38,4 +38,6 @@ mise.local.toml
 *.swo
 *~
 .DS_Store
+.lycheecache
+.rumdl_cache/
 # Documentation & analysis drafts

@@ -37,14 +37,14 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-6\"><div class=\"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-slate-800\"><div><h2 class=\"text-xl font-bold text-white\">Медиатека</h2><p class=\"text-xs text-slate-400 mt-1\">Загрузка и организация изображений сайта с автоматической генерацией превью</p></div></div><!-- Drag and Drop Upload Area --><div x-data=\"{ isDragging: false }\" @dragover.prevent=\"isDragging = true\" @dragleave.prevent=\"isDragging = false\" @drop.prevent=\"isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.uploadForm.dispatchEvent(new Event('submit', { cancelable: true }))\" class=\"border-2 border-dashed rounded-2xl p-8 text-center transition-all bg-slate-900/40\" :class=\"isDragging ? 'border-amber-400 bg-amber-500/5' : 'border-slate-800 hover:border-slate-700'\"><form x-ref=\"uploadForm\" hx-post=\"/admin/media/upload\" hx-encoding=\"multipart/form-data\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"flex flex-col items-center justify-center gap-3\"><div class=\"w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg></div><div><p class=\"text-sm font-semibold text-white\">Перетащите изображения сюда или нажмите для выбора</p><p class=\"text-xs text-slate-400 mt-1\">Поддерживаются PNG, JPG, WebP, GIF, SVG до 25 МБ</p></div><input type=\"file\" name=\"file\" x-ref=\"fileInput\" accept=\"image/*\" class=\"hidden\" onchange=\"this.form.dispatchEvent(new Event('submit', { cancelable: true }))\"> <button type=\"button\" onclick=\"this.previousElementSibling.click()\" class=\"mt-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition-colors cursor-pointer\">Выбрать файл на компьютере</button></form></div><!-- Gallery Grid --><div class=\"space-y-4\"><div class=\"flex items-center justify-between\"><h3 class=\"text-sm font-bold text-slate-300\">Загруженные файлы (")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"space-y-6\"><div class=\"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-admin-border\"><div><h2 class=\"text-xl font-bold text-admin-content\">Медиатека</h2><p class=\"text-xs text-admin-content-muted mt-1\">Загрузка и организация изображений сайта с автоматической генерацией превью</p></div></div><!-- Drag and Drop Upload Area --><div x-data=\"{ isDragging: false }\" @dragover.prevent=\"isDragging = true\" @dragleave.prevent=\"isDragging = false\" @drop.prevent=\"isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.uploadForm.dispatchEvent(new Event('submit', { cancelable: true }))\" class=\"border-2 border-dashed rounded-2xl p-8 text-center transition-all bg-admin-surface/40\" :class=\"isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus'\"><form x-ref=\"uploadForm\" hx-post=\"/admin/media/upload\" hx-encoding=\"multipart/form-data\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"flex flex-col items-center justify-center gap-3\"><div class=\"w-12 h-12 rounded-2xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg></div><div><p class=\"text-sm font-semibold text-admin-content\">Перетащите изображения сюда или нажмите для выбора</p><p class=\"text-xs text-admin-content-muted mt-1\">Поддерживаются PNG, JPG, WebP, GIF, SVG до 25 МБ</p></div><input type=\"file\" name=\"file\" x-ref=\"fileInput\" accept=\"image/*\" class=\"hidden\" onchange=\"this.form.dispatchEvent(new Event('submit', { cancelable: true }))\"> <button type=\"button\" onclick=\"this.previousElementSibling.click()\" class=\"mt-2 px-4 py-2 rounded-xl bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content text-xs font-semibold border border-admin-border transition-colors cursor-pointer\">Выбрать файл на компьютере</button></form></div><!-- Gallery Grid --><div class=\"space-y-4\"><div class=\"flex items-center justify-between\"><h3 class=\"text-sm font-bold text-admin-content-muted\">Загруженные файлы (")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(files)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_media.templ`, Line: 70, Col: 115}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_media.templ`, Line: 70, Col: 125}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -55,7 +55,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if len(files) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"p-8 text-center bg-slate-900/40 rounded-2xl border border-slate-800/80\"><p class=\"text-slate-400 text-sm\">В медиатеке пока нет загруженных файлов.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"p-8 text-center bg-admin-surface/40 rounded-2xl border border-admin-border/80\"><p class=\"text-admin-content-muted text-sm\">В медиатеке пока нет загруженных файлов.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -65,7 +65,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			for _, f := range files {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div x-data=\"{ copied: false }\" class=\"group relative rounded-xl bg-slate-900 border border-slate-800 overflow-hidden hover:border-slate-700 transition-all flex flex-col\"><div class=\"aspect-square bg-slate-950 flex items-center justify-center overflow-hidden\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div x-data=\"{ copied: false }\" class=\"group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition-all flex flex-col\"><div class=\"aspect-square bg-admin-bg flex items-center justify-center overflow-hidden\"><img src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -91,14 +91,14 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" loading=\"lazy\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform duration-300\"></div><div class=\"p-3 bg-slate-900/90 flex flex-col justify-between flex-1\"><div class=\"truncate text-[11px] font-medium text-slate-300\" title=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" loading=\"lazy\" class=\"w-full h-full object-cover group-hover:scale-105 transition-transform duration-300\"></div><div class=\"p-3 bg-admin-surface flex flex-col justify-between flex-1\"><div class=\"truncate text-[11px] font-medium text-admin-content-muted\" title=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(f.Filename).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_media.templ`, Line: 94, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_media.templ`, Line: 94, Col: 97}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 				if templ_7745c5c3_Err != nil {
@@ -117,7 +117,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"mt-2 flex items-center justify-between gap-2 pt-2 border-t border-slate-800\"><button type=\"button\" @click=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"mt-2 flex items-center justify-between gap-2 pt-2 border-t border-admin-border\"><button type=\"button\" @click=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -130,7 +130,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer\"><span x-text=\"copied ? 'Скопировано!' : 'Копировать'\">Копировать</span></button> <a href=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"px-2 py-1 rounded bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content text-[10px] font-semibold flex items-center gap-1 transition-colors cursor-pointer\"><span x-text=\"copied ? 'Скопировано!' : 'Копировать'\">Копировать</span></button> <a href=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -143,7 +143,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" target=\"_blank\" class=\"p-1 rounded text-slate-400 hover:text-white transition-colors\" title=\"Открыть оригинал\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" target=\"_blank\" class=\"p-1 rounded text-admin-content-muted hover:text-admin-content transition-colors\" title=\"Открыть оригинал\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

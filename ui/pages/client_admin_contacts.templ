@@ -7,8 +7,8 @@ import (
 templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings) {
 	<div class="max-w-4xl">
 		<div class="mb-6">
-			<h2 class="text-xl font-bold text-white tracking-tight">Контакты и реквизиты</h2>
-			<p class="text-xs text-slate-400 mt-1">Изменение телефонов, адреса и рабочего графика на сайте</p>
+			<h2 class="text-xl font-bold text-admin-content tracking-tight">Контакты и реквизиты</h2>
+			<p class="text-xs text-admin-content-muted mt-1">Управление телефонами, адресом и рабочим графиком на сайте</p>
 		</div>
 
 		<form
@@ -16,12 +16,12 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 			hx-post="/client/contacts"
 			hx-target="#contacts-save-status"
 			hx-swap="innerHTML"
-			class="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl"
+			class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs"
 		>
 			<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-						Название компании / Сайта <span class="text-amber-400">*</span>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">
+						Название компании / Сайта <span class="text-admin-accent">*</span>
 					</label>
 					<input
 						type="text"
@@ -33,27 +33,27 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						pattern=".*\S+.*"
 						title="Название сайта должно содержать от 2 до 100 символов"
 						placeholder="Моя Компания"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Обязательное поле (от 2 до 100 символов)</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Обязательное поле (от 2 до 100 символов)</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Слоган / Деятельность</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Слоган / Деятельность</label>
 					<input
 						type="text"
 						name="tagline"
 						value={ settings.Tagline }
 						maxlength="150"
 						placeholder="Например: Надежная защита ваших интересов"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Краткое описание деятельности (до 150 символов)</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Краткое описание деятельности (до 150 символов)</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-						Основной телефон <span class="text-amber-400">*</span>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">
+						Основной телефон <span class="text-admin-accent">*</span>
 					</label>
 					<input
 						type="tel"
@@ -65,13 +65,13 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$"
 						title="Формат номера: +7 (999) 999-99-99"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Формат: +7 (XXX) XXX-XX-XX</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Формат: +7 (XXX) XXX-XX-XX</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Дополнительный телефон</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Дополнительный телефон</label>
 					<input
 						type="tel"
 						name="phone2"
@@ -81,13 +81,13 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^(\+7 \(\d{3}\) \d{3}-\d{2}-\d{2})?$"
 						title="Формат номера: +7 (999) 999-99-99 или оставьте пустым"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Необязательно. Формат: +7 (XXX) XXX-XX-XX</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Необязательно. Формат: +7 (XXX) XXX-XX-XX</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">WhatsApp (номер для чата)</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">WhatsApp (номер для чата)</label>
 					<input
 						type="tel"
 						name="whatsapp_phone"
@@ -97,13 +97,13 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^(\+7 \(\d{3}\) \d{3}-\d{2}-\d{2})?$"
 						title="Формат номера WhatsApp: +7 (999) 999-99-99 или оставьте пустым"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Для прямой ссылки wa.me</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Для прямой ссылки wa.me</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Telegram (юзернейм или ссылка)</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Telegram (юзернейм или ссылка)</label>
 					<input
 						type="text"
 						name="telegram_contact"
@@ -112,14 +112,14 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						maxlength="60"
 						pattern="^(@[a-zA-Z0-9_]{3,32}|(https?:\/\/)?t\.me\/[a-zA-Z0-9_]{3,32}|[a-zA-Z0-9_]{3,32})?$"
 						title="Юзернейм Telegram (@username или t.me/username)"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Формат: &#64;username или t.me/username</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Формат: &#64;username или t.me/username</p>
 				</div>
 
 				<div class="sm:col-span-2">
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-						Адрес офиса / филиала <span class="text-amber-400">*</span>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">
+						Адрес офиса / филиала <span class="text-admin-accent">*</span>
 					</label>
 					<input
 						type="text"
@@ -131,56 +131,56 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						pattern=".*\S+.*"
 						title="Фактический адрес (от 5 до 200 символов)"
 						placeholder="г. Москва, ул. Ленина, д. 10"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Обязательное поле для отображения на сайте и картах</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Обязательное поле для отображения на сайте и картах</p>
 				</div>
 
 				<div class="sm:col-span-2">
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Уточнение адреса (этаж, ориентир, город)</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Уточнение адреса (этаж, ориентир, город)</label>
 					<input
 						type="text"
 						name="address_sub"
 						value={ content.AddressSub }
 						maxlength="100"
 						placeholder="Офис 302, 3 этаж, БЦ Плаза"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Дополнительные ориентиры для клиентов</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Дополнительные ориентиры для клиентов</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">График работы</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">График работы</label>
 					<input
 						type="text"
 						name="work_hours"
 						value={ content.WorkHours }
 						maxlength="60"
 						placeholder="Пн-Пт: 09:00 - 18:00"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Рабочие часы в будние дни</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Рабочие часы в будние дни</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Выходные дни</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Выходные дни</label>
 					<input
 						type="text"
 						name="days_off"
 						value={ content.DaysOff }
 						maxlength="60"
 						placeholder="Сб, Вс"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
 					/>
-					<p class="text-[11px] text-slate-500 mt-1">Дни отдыха или праздники</p>
+					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Дни отдыха или праздники</p>
 				</div>
 			</div>
 
-			<div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+			<div class="pt-4 border-t border-admin-border flex items-center justify-between">
 				<div id="contacts-save-status"></div>
 				<button
 					type="submit"
-					class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2"
+					class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -195,23 +195,23 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 templ ClientSecurityTab(msg string, errMsg string) {
 	<div class="max-w-2xl">
 		<div class="mb-6">
-			<h2 class="text-xl font-bold text-white tracking-tight">Безопасность и доступ</h2>
-			<p class="text-xs text-slate-400 mt-1">Управление паролем доступа к клиентской панели управления</p>
+			<h2 class="text-xl font-bold text-admin-content tracking-tight">Безопасность и доступ</h2>
+			<p class="text-xs text-admin-content-muted mt-1">Управление паролем доступа к клиентской панели управления</p>
 		</div>
 
-		<div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8">
+		<div class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 shadow-xs">
 			<div id="security-feedback">
 				if msg != "" {
-					<div class="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-3">
-						<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<div class="mb-6 p-3.5 rounded-xl bg-admin-success-muted border border-admin-success/20 text-admin-success text-xs flex items-center gap-2.5">
+						<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
 						</svg>
 						<span>{ msg }</span>
 					</div>
 				}
 				if errMsg != "" {
-					<div class="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-center gap-3">
-						<svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<div class="mb-6 p-3.5 rounded-xl bg-admin-danger-muted border border-admin-danger/20 text-admin-danger text-xs flex items-center gap-2.5">
+						<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 						</svg>
 						<span>{ errMsg }</span>
@@ -223,48 +223,48 @@ templ ClientSecurityTab(msg string, errMsg string) {
 				hx-post="/client/security/password"
 				hx-target="#admin-tab-content"
 				hx-swap="innerHTML"
-				class="space-y-5"
+				class="space-y-4"
 			>
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Текущий пароль</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Текущий пароль</label>
 					<input
 						type="password"
 						name="current_password"
 						required
 						placeholder="Введите текущий пароль..."
-						class="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
 					/>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Новый пароль</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Новый пароль</label>
 					<input
 						type="password"
 						name="new_password"
 						required
 						minlength="8"
 						placeholder="Минимум 8 символов..."
-						class="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
 					/>
-					<p class="mt-1 text-[11px] text-slate-500">Пароль должен содержать не менее 8 символов</p>
+					<p class="mt-1 text-[11px] font-mono text-admin-content-subtle">Пароль должен содержать не менее 8 знаков</p>
 				</div>
 
 				<div>
-					<label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Подтверждение нового пароля</label>
+					<label class="block text-xs font-medium text-admin-content-muted mb-1.5">Подтверждение нового пароля</label>
 					<input
 						type="password"
 						name="confirm_password"
 						required
 						minlength="8"
 						placeholder="Повторите новый пароль..."
-						class="w-full px-4 py-3 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
 					/>
 				</div>
 
 				<div class="pt-2">
 					<button
 						type="submit"
-						class="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-amber-500/20 active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+						class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

@@ -1,6 +1,6 @@
 ---
 name: hallmark-craft
-description: Architectural & editorial layout design skill for SiteCraft (Go + Templ + Tailwind v4 + Alpine.js + HTMX). Integrates Hallmark's 21 macrostructures, 17 compositions, and 50 reference themes with visual assets and specs into SiteCraft without Node.js or Puppeteer dependencies. Features dual-mode support (Commercial CRO vs Strict Aesthetic) for testing Floor bans.
+description: Architectural & editorial layout design skill for SiteCraft (Go + Templ + Tailwind v4 + Alpine.js + HTMX). Use when designing, creating, scaffolding, or auditing page layouts, macrostructures, and editorial themes in SiteCraft without Node.js or Puppeteer dependencies. Features dual-mode support (Commercial CRO vs Strict Aesthetic) for testing Floor bans.
 argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commercial|strict>"
 ---
 
@@ -12,13 +12,13 @@ argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commerci
 
 ## 🛠️ АРХИТЕКТУРНЫЙ СТЕК SITECRAFT (СТРОГИЕ ПРАВИЛА)
 
-1. **Шаблонизация:** Строго Go Templ (`*.templ`). Никогда не генерировать сырой HTML-код или компоненты React/Next.js. Запрещено напрямую редактировать `*_templ.go` — сборка только через `templ generate`.
+1. **Шаблонизация:** Строго Go Templ (`*.templ`). Никогда не генерировать сырой HTML-код или компоненты React/Next.js. Запрещено напрямую редактировать `*_templ.go` — сборка только через `templ generate` (или `mise run generate`).
 2. **DOM Source Mapping:** Все генерируемые блоки и базовые компоненты обязаны содержать атрибуты:
    * `data-component="<name>"` (напр., `data-component="hallmark-bento"`)
    * `data-source="ui/sections/<name>.templ"`
-   * `data-field="<title|desc|...>" `
+   * `data-field="<title|desc|...>"`
    Это обеспечивает 1:1 инспекцию элементов в панели T3 Code.
-3. **Zero-Node.js & Zero-Puppeteer:** Никаких зависимостей от Node.js, `sloplint.mjs` и Puppeteer. Верификация проводится через канонический `make check` (Templ + Tailwind CLI + `go test`).
+3. **Zero-Node.js & Zero-Puppeteer:** Никаких зависимостей от Node.js, `sloplint.mjs` и Puppeteer. Верификация проводится через канонический `mise run check` (Templ + Tailwind CLI + `go test` + архитектурные линтеры + `scripts/lint-tokens.sh`).
 4. **Семантические токены:** Стилизация исключительно через утилиты Tailwind v4 и семантические токены (`bg-surface`, `text-content`, `text-accent`, `border-content/10`). Никаких жестко закодированных HEX-цветов.
 5. **Zero-GSAP & 60 FPS:** Анимации только на аппаратных свойствах `transform` и `opacity` (150–200ms) с полной поддержкой `prefers-reduced-motion` и `<noscript>` фоллбэка.
 
@@ -94,7 +94,7 @@ argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commerci
 ## 🚀 РАБОЧИЙ ПРОЦЕСС (WORKFLOW)
 
 1. **Определение задачи:**
-   * Прочитай бриф заказчика ([brief.md](file:///home/zerg/Projects/web/SiteCreator/brief.md)) или пользовательский запрос.
+   * Прочитай бриф заказчика ([brief.md](../../../brief.md)) или пользовательский запрос.
    * Выбери подходящую **макроструктуру** из каталога (например, `16-feature-stack` или `01-bento-grid`).
    * Определи режим: `COMMERCIAL_CRO_MODE` (по умолчанию) или `STRICT_AESTHETIC_MODE`.
 2. **Генерация Templ-компонента:**
@@ -102,8 +102,8 @@ argument-hint: "<prompt> | macrostructure <name> | theme <name> | mode <commerci
    * Обязательно добавь атрибуты DOM Source Mapping (`data-component`, `data-source`).
    * Используй CVA-кнопки и бейджи из `ui/components/base/`.
 3. **Регистрация в движке:**
-   * Зарегистрируй новый блок в [ui/registry/registry.go](file:///home/zerg/Projects/web/SiteCreator/ui/registry/registry.go), если блок динамический.
+   * Зарегистрируй новый блок в [ui/registry/registry.go](../../../ui/registry/registry.go), если блок динамический.
 4. **Компиляция и верификация:**
-   * Скомпилируй шаблоны: `templ generate`.
-   * Собери стили: `tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`.
-   * Запусти верификацию: `make check`.
+   * Сгенерируй код и стили: `mise run generate` (выполняет `heavy -- templ generate` и `heavy -- tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`).
+   * Проверь соблюдение семантических дизайн-токенов: `mise run lint:tokens`.
+   * Запусти полный прогон Quality Gates: `mise run check` (или `mise run test`).
