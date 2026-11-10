@@ -45,8 +45,6 @@ components:
     in: internal/exporter/**
   i18n:
     in: internal/i18n/**
-  bot:
-    in: internal/bot/**
   server:
     in: internal/server/**
 
@@ -63,7 +61,6 @@ deps:
       - cache
       - exporter
       - notifications
-      - bot
       - auth
       - media
 
@@ -133,12 +130,6 @@ deps:
   i18n:
     anyVendorDeps: true
 
-  bot:
-    anyVendorDeps: true
-    mayDependOn:
-      - data
-      - notifications
-
   server:
     anyVendorDeps: true
     mayDependOn:
@@ -152,5 +143,4 @@ deps:
       - media
       - modules
       - notifications
-      - bot
       - ui
