@@ -1,0 +1,23 @@
+# SiteCraft Engine (Rootless Podman Quadlet)
+# Place in ~/.config/containers/systemd/ (rootless) or /etc/containers/systemd/ (system)
+# Then run: systemctl --user daemon-reload && systemctl --user start sitecraft.service
+
+[Unit]
+Description=SiteCraft Engine (Rootless Podman Container)
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+Image=sitecraft:latest
+ContainerName=sitecraft
+PublishPort=8090:8090
+Volume=sitecraft_data:/data:Z
+Environment=TZ=Europe/Moscow
+Environment=PORT=:8090
+
+[Service]
+Restart=always
+TimeoutStartSec=300
+
+[Install]
+WantedBy=default.target

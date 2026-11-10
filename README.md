@@ -366,7 +366,7 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 | **TTFB (отклик)** | **0.8–3.5 мс** | 150–500 мс | 100–300 мс | 50–150 мс |
 | **Пропускная способность (RPS)** | **4 000 – 45 000+ req/s** | 50 – 300 req/s | Ограничено тарифом | 500 – 2 500 req/s |
 | **Параллельный онлайн** | **15 000 – 250 000+ польз.** | 300 – 1 500 польз. | 1 000 – 5 000 польз. | 3 000 – 15 000 польз. |
-| **Сложность деплоя** | **1 бинарник** (или Docker) | LAMP/LEMP стек + плагины | 0 (кнопка в облаке) | Node.js рантайм + БД + Redis |
+| **Сложность деплоя** | **1 бинарник** (или Podman) | LAMP/LEMP стек + плагины | 0 (кнопка в облаке) | Node.js рантайм + БД + Redis |
 | **Встроенная админка** | **Да (`/admin` Templ+HTMX)** | Да (тяжелая CMS) | Да (визуальный редактор) | Да (в Headless CMS) |
 | **Стоимость владения** | **$0** (до 60 сайтов на VPS за $10) | $5–15/мес за сайт | $12–25/мес за сайт | $15–30/мес |
 | **Контроль данных** | **100% On-Premise (SQLite / Postgres)** | 100% On-Premise | 0% (Vendor lock-in) | 100% On-Premise |
@@ -415,11 +415,36 @@ eventBus.Publish(ctx, events.LeadCreatedEvent{
 
 ---
 
-## 🐳 Развертывание в Docker
+## 🦭 Развертывание в Podman (Rootless OCI)
+
+Проект полностью переведен на контейнерный рантайм **Podman** с поддержкой rootless-режима, монтированием томов с флагом SELinux (`:Z`) и каноническим `Containerfile`.
+
+### Запуск через Compose (Podman)
 ```bash
-docker compose up -d --build
+# Через podman compose:
+podman compose up -d --build
+
+# Либо через podman-compose:
+podman-compose up -d --build
 ```
-Все данные (база SQLite и загруженные файлы) сохраняются в томе `pb_data`.
+Все постоянные данные (база данных SQLite в режиме WAL и загруженные медиафайлы) сохраняются в томе `sitecraft_data` (путь `/data` внутри контейнера).
+
+### Запуск через CLI Podman
+```bash
+# Сборка образа
+podman build -t sitecraft:latest -f Containerfile .
+
+# Запуск rootless контейнера
+podman run -d \
+  --name sitecraft \
+  -p 8090:8090 \
+  -v sitecraft_data:/data:Z \
+  --restart unless-stopped \
+  sitecraft:latest
+```
+
+### Автозапуск через Systemd Quadlet
+Готовый юнит-файл доступен в [deploy/podman/sitecraft.container](deploy/podman/sitecraft.container). Подробная инструкция — в [deploy/podman/README.md](deploy/podman/README.md).
 
 ---
 

@@ -36,13 +36,15 @@ usage() {
     echo "  $0 restart <site-id>"
     echo "  $0 list"
     echo "  $0 backup <site-id>"
-    echo "  $0 docker-up"
+    echo "  $0 podman-up"
+    echo "  $0 podman-down"
     echo ""
     echo -e "${BOLD}Примеры:${RESET}"
     echo "  $0 create auto-master --preset=auto --theme=auto --port=8091"
     echo "  $0 create stomatolog-plus --preset=medical --theme=medical --port=8092"
     echo "  $0 list"
     echo "  $0 backup auto-master"
+    echo "  $0 podman-up"
     exit 1
 }
 
@@ -56,7 +58,7 @@ ensure_engine() {
         elif command -v devenv &> /dev/null; then
             devenv shell -- bash -c "templ generate && tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify && go build -ldflags='-s -w' -o bin/sitecraft ."
         else
-            echo -e "${RED}❌ Не найден templ/tailwindcss для локальной сборки. Соберите бинарник через Docker или devenv.${RESET}"
+            echo -e "${RED}❌ Не найден templ/tailwindcss для локальной сборки. Соберите бинарник через Podman или devenv.${RESET}"
             exit 1
         fi
         echo -e "${GREEN}✓ Движок успешно собран в bin/sitecraft${RESET}"
@@ -98,6 +100,7 @@ cmd_create() {
     if [ -d "$SITE_PATH" ]; then
         echo -e "${RED}❌ Сайт с ID '${SITE_ID}' уже существует в ${SITE_PATH}${RESET}"
         exit 1
+    fi
     echo -e "${CYAN}🚀 Создание нового изолированного инстанса '${SITE_ID}'...${RESET}"
     mkdir -p "${SITE_PATH}/data"
     mkdir -p "${SITE_PATH}/logs"
@@ -258,6 +261,45 @@ cmd_export() {
     echo -e "${GREEN}✓ Статический сайт готов в папке: ${CYAN}${OUT_DIR}${RESET}"
 }
 
+cmd_podman_up() {
+    print_header
+    echo -e "${CYAN}🦭 Запуск SiteCraft в Podman (Rootless OCI)...${RESET}"
+    if command -v podman &> /dev/null; then
+        if podman compose version &> /dev/null 2>&1; then
+            podman compose up -d --build
+        elif command -v podman-compose &> /dev/null; then
+            podman-compose up -d --build
+        else
+            echo -e "${YELLOW}podman compose/podman-compose не найдены. Выполняю сборку и запуск через podman CLI...${RESET}"
+            podman build -t sitecraft:latest -f Containerfile .
+            podman run -d --name sitecraft -p 8090:8090 -v sitecraft_data:/data:Z --restart unless-stopped sitecraft:latest
+        fi
+        echo -e "${GREEN}✓ Сервис SiteCraft запущен в Podman (порт http://127.0.0.1:8090).${RESET}"
+    else
+        echo -e "${RED}❌ Утилита podman не найдена в системе.${RESET}"
+        exit 1
+    fi
+}
+
+cmd_podman_down() {
+    print_header
+    echo -e "${CYAN}🦭 Остановка сервиса SiteCraft в Podman...${RESET}"
+    if command -v podman &> /dev/null; then
+        if podman compose version &> /dev/null 2>&1; then
+            podman compose down
+        elif command -v podman-compose &> /dev/null; then
+            podman-compose down
+        else
+            podman stop sitecraft 2>/dev/null || true
+            podman rm sitecraft 2>/dev/null || true
+        fi
+        echo -e "${GREEN}✓ Сервис остановлен.${RESET}"
+    else
+        echo -e "${RED}❌ Утилита podman не найдена в системе.${RESET}"
+        exit 1
+    fi
+}
+
 case "$1" in
     create)
         shift
@@ -281,6 +323,12 @@ case "$1" in
         ;;
     export)
         cmd_export "$2" "$3"
+        ;;
+    podman-up|docker-up)
+        cmd_podman_up
+        ;;
+    podman-down|docker-down)
+        cmd_podman_down
         ;;
     *)
         usage

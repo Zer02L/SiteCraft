@@ -1,17 +1,17 @@
-version: '3.8'
-
 services:
   sitecraft:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Containerfile
+    image: sitecraft:latest
+    container_name: sitecraft
     restart: unless-stopped
     ports:
       - "8090:8090"
     volumes:
-      - pb_data:/pb/pb_data
+      - sitecraft_data:/data:Z
     environment:
       - TZ=Europe/Moscow
 
 volumes:
-  pb_data:
+  sitecraft_data:

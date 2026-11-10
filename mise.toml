@@ -118,6 +118,20 @@ description = "Проверить отсутствие незакоммичен�
 depends = ["check"]
 run = "git diff --exit-code ui/assets/styles.css ui/*_templ.go"
 
+# --- Container Tasks (Podman Rootless OCI) ---
+
+[tasks."podman:build"]
+description = "Сборка OCI-образа SiteCraft через Podman"
+run = "podman build -t sitecraft:latest -f Containerfile ."
+
+[tasks."podman:up"]
+description = "Запуск сервиса SiteCraft через podman compose"
+run = "podman compose up -d --build"
+
+[tasks."podman:down"]
+description = "Остановка сервиса SiteCraft в podman compose"
+run = "podman compose down"
+
 [tasks."hooks:install"]
 description = "Установка Git-хуков lefthook"
 run = "lefthook install --force"
