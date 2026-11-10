@@ -1,0 +1,10 @@
+id: no-raw-sql-fmt
+message: "Запрещено форматирование SQL через fmt.Sprintf! Используйте параметризованные запросы (? или $1)."
+severity: error
+language: go
+rule:
+  any:
+    - pattern: $DB.ExecContext($CTX, fmt.Sprintf($$$ARGS), $$$REST)
+    - pattern: $DB.QueryContext($CTX, fmt.Sprintf($$$ARGS), $$$REST)
+    - pattern: $DB.Exec(fmt.Sprintf($$$ARGS), $$$REST)
+    - pattern: $DB.Query(fmt.Sprintf($$$ARGS), $$$REST)

@@ -105,7 +105,7 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 			}
 
 			<!-- Скомпилированные стили Tailwind с семантическими токенами -->
-			<link rel="stylesheet" href="/assets/styles.css?v=coral"/>
+			<link rel="stylesheet" href="/assets/styles.css?v=coral2"/>
 			<!-- No-JS Progressive Enhancement: если JavaScript выключен или недоступен, контент отображается сразу -->
 			<noscript>
 				<style>
@@ -256,6 +256,19 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 					};
 					window.addEventListener('themechanged', function() { window.SiteTokens.clearCache(); });
 
+					// Visual Editor Live Bridge (Zero-Reload preview)
+					window.addEventListener('message', function(e) {
+						if (!e.data) return;
+						if (e.data.type === 'SITE_TOKEN_UPDATE' && e.data.key && e.data.value) {
+							root.style.setProperty(e.data.key, e.data.value);
+							window.SiteTokens.clearCache();
+						}
+						if (e.data.type === 'SITE_THEME_UPDATE' && e.data.theme) {
+							root.setAttribute('data-theme', e.data.theme);
+							window.SiteTokens.clearCache();
+						}
+					});
+
 					// ----------------------------------------------------
 					// ⚡ Микро-движок Scroll Reveal (IntersectionObserver < 0.5 КБ)
 					// ----------------------------------------------------
@@ -297,10 +310,10 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 					});
 
 					// Бесшовный перезапуск при HTMX Swap (фрагментарные обновления)
-					document.addEventListener('htmx:after:swap', function(evt) {
-						initScrollReveal(evt.detail.target);
-					});
 					document.addEventListener('htmx:afterSwap', function(evt) {
+						if (window.Alpine && evt.detail && evt.detail.target) {
+							window.Alpine.initTree(evt.detail.target);
+						}
 						initScrollReveal(evt.detail.target);
 					});
 				})();

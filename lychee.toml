@@ -1,0 +1,14 @@
+# Lychee configuration for SiteCreator
+cache = true
+max_cache_age = "1d"
+timeout = 5
+max_retries = 1
+
+exclude = [
+    '^https?://example\.com',
+    '^https?://localhost',
+    '^https?://127\.0\.0\.1',
+    '^https?://domain:port',
+    '^https?://t\.me/',
+    '^file:///home/zerg/',
+]

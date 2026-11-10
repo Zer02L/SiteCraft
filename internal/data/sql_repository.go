@@ -358,6 +358,32 @@ func (r *Repository) GetPageBlocks(ctx context.Context) ([]models.PageBlock, err
 	return blocks, nil
 }
 
+// GetAllPageBlocks returns all page blocks (both active and inactive) ordered by index for admin panel.
+func (r *Repository) GetAllPageBlocks(ctx context.Context) ([]models.PageBlock, error) {
+	rows, err := r.queries.ListAllPageBlocks(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	blocks := make([]models.PageBlock, len(rows))
+	for i, row := range rows {
+		var payload map[string]interface{}
+		if row.Payload != "" {
+			_ = json.Unmarshal([]byte(row.Payload), &payload)
+		}
+		blocks[i] = models.PageBlock{
+			ID:      row.ID,
+			Type:    row.Type,
+			Title:   row.Title,
+			Content: row.Content,
+			Order:   int(row.OrderIndex),
+			Active:  row.Active == 1,
+			Payload: payload,
+		}
+	}
+	return blocks, nil
+}
+
 // GetLeads returns recent leads.
 func (r *Repository) GetLeads(ctx context.Context) ([]models.Lead, error) {
 	rows, err := r.queries.ListLeads(ctx)
@@ -817,6 +843,47 @@ func (r *Repository) TogglePageBlock(ctx context.Context, id string) error {
 		OrderIndex: block.OrderIndex,
 		Active:     newActive,
 		Payload:    block.Payload,
+	})
+	if err != nil {
+		return err
+	}
+	r.Cache().InvalidateBlocks()
+	return nil
+}
+
+// UpdatePageBlock updates title, content, type, or payload of a page block and invalidates cache.
+func (r *Repository) UpdatePageBlock(ctx context.Context, block models.PageBlock) error {
+	existing, err := r.queries.GetPageBlockByID(ctx, block.ID)
+	if err != nil {
+		return err
+	}
+	payloadStr := existing.Payload
+	if block.Payload != nil {
+		if b, err := json.Marshal(block.Payload); err == nil {
+			payloadStr = string(b)
+		}
+	}
+	active := int64(0)
+	if block.Active {
+		active = 1
+	}
+	blockType := block.Type
+	if blockType == "" {
+		blockType = existing.Type
+	}
+	title := block.Title
+	if title == "" {
+		title = existing.Title
+	}
+
+	_, err = r.queries.UpdatePageBlock(ctx, db.UpdatePageBlockParams{
+		ID:         block.ID,
+		Type:       blockType,
+		Title:      title,
+		Content:    block.Content,
+		OrderIndex: existing.OrderIndex,
+		Active:     active,
+		Payload:    payloadStr,
 	})
 	if err != nil {
 		return err

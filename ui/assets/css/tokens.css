@@ -45,6 +45,7 @@ html[data-theme="main-day"] {
   --color-primary: #1e293b;            /* slate-800 */
   --color-primary-dark: color-mix(in srgb, var(--color-primary), black 30%);
   --color-primary-light: color-mix(in srgb, var(--color-primary), white 25%);
+  --color-on-primary: #ffffff;
   --color-accent: #2563eb;             /* blue-600 */
   --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
   --color-accent-light: color-mix(in srgb, var(--color-accent) 12%, white);

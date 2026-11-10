@@ -65,10 +65,19 @@ func (s *Server) setupAdminRoutes() {
 
 		// Block Builder actions (Phase 5.2)
 		admin.Post("/admin/blocks/new", s.HandleAdminCreateBlock)
+		admin.Post("/client/blocks/new", s.HandleAdminCreateBlock)
+		admin.Post("/admin/blocks/edit", s.HandleAdminUpdateBlock)
+		admin.Post("/client/blocks/edit", s.HandleAdminUpdateBlock)
+		admin.Post("/admin/blocks/{id}/edit", s.HandleAdminUpdateBlock)
+		admin.Post("/client/blocks/{id}/edit", s.HandleAdminUpdateBlock)
 		admin.Post("/admin/blocks/{id}/toggle", s.HandleAdminToggleBlock)
+		admin.Post("/client/blocks/{id}/toggle", s.HandleAdminToggleBlock)
 		admin.Post("/admin/blocks/{id}/move-up", s.HandleAdminMoveBlockUp)
+		admin.Post("/client/blocks/{id}/move-up", s.HandleAdminMoveBlockUp)
 		admin.Post("/admin/blocks/{id}/move-down", s.HandleAdminMoveBlockDown)
+		admin.Post("/client/blocks/{id}/move-down", s.HandleAdminMoveBlockDown)
 		admin.Delete("/admin/blocks/{id}", s.HandleAdminDeleteBlock)
+		admin.Delete("/client/blocks/{id}", s.HandleAdminDeleteBlock)
 
 		// Leads actions (protected by RequireModuleGroup)
 		admin.Group(func(ld chi.Router) {
@@ -187,6 +196,7 @@ func (s *Server) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
 	articles, _ := s.Repo.GetArticles(ctx)
 	reviews, _ := s.Repo.GetReviews(ctx)
 	services, _ := s.Repo.GetServices(ctx)
+	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
 
 	// Fetch active modules dynamically from registry
 	modules := s.AdminModules.GetActive(ctx, s, settings)
@@ -195,7 +205,7 @@ func (s *Server) HandleAdminDashboard(w http.ResponseWriter, r *http.Request) {
 	activeTab = s.ResolveActiveTab(activeTab, modules)
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = pages.ClientDashboard(settings, content, leads, articles, nil, reviews, services, nil, activeTab, modules).Render(ctx, w)
+	_ = pages.ClientDashboard(settings, content, leads, articles, nil, reviews, services, nil, activeTab, modules, blocks).Render(ctx, w)
 }
 
 // Tab handlers for HTMX partial swap
@@ -208,9 +218,10 @@ func (s *Server) HandleAdminTabLeads(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) HandleAdminTabBlocks(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	blocks, _ := s.Repo.GetPageBlocks(ctx)
+	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
+	settings, _ := s.Repo.GetSiteSettings(ctx)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = pages.AdminBlocksTab(blocks).Render(ctx, w)
+	_ = pages.AdminBlocksTab(blocks, settings).Render(ctx, w)
 }
 
 func (s *Server) HandleAdminTabMedia(w http.ResponseWriter, r *http.Request) {
@@ -305,7 +316,7 @@ func (s *Server) HandleAdminCreateBlock(w http.ResponseWriter, r *http.Request) 
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 
-	blocks, _ := s.Repo.GetPageBlocks(ctx)
+	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
 	order := len(blocks) + 1
 
 	_, err := s.Repo.CreatePageBlock(ctx, models.PageBlock{
@@ -320,7 +331,55 @@ func (s *Server) HandleAdminCreateBlock(w http.ResponseWriter, r *http.Request) 
 		slog.Error("failed to create page block", "error", err)
 	}
 
-	s.HandleAdminTabBlocks(w, r)
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
+}
+
+func (s *Server) HandleAdminUpdateBlock(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_ = r.ParseForm()
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		id = r.FormValue("id")
+	}
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+	blockType := r.FormValue("type")
+	variant := r.FormValue("variant")
+	slog.Info("HandleAdminUpdateBlock called", "id", id, "title", title, "type", blockType, "variant", variant)
+
+	if id != "" {
+		block, err := s.Repo.GetPageBlockByID(ctx, id)
+		if err == nil {
+			if title != "" {
+				block.Title = title
+			}
+			block.Content = content
+			if blockType != "" {
+				block.Type = blockType
+			}
+			if variant != "" {
+				if block.Payload == nil {
+					block.Payload = make(map[string]interface{})
+				}
+				block.Payload["variant"] = variant
+			}
+			if err := s.Repo.UpdatePageBlock(ctx, block); err != nil {
+				slog.Error("failed to update page block", "id", id, "error", err)
+			}
+		} else {
+			slog.Error("page block not found for update", "id", id, "error", err)
+		}
+	}
+
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
 }
 
 func (s *Server) HandleAdminToggleBlock(w http.ResponseWriter, r *http.Request) {
@@ -329,13 +388,17 @@ func (s *Server) HandleAdminToggleBlock(w http.ResponseWriter, r *http.Request) 
 	if err := s.Repo.TogglePageBlock(ctx, id); err != nil {
 		slog.Error("failed to toggle page block", "id", id, "error", err)
 	}
-	s.HandleAdminTabBlocks(w, r)
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
 }
 
 func (s *Server) HandleAdminMoveBlockUp(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	blocks, _ := s.Repo.GetPageBlocks(ctx)
+	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
 	for i, b := range blocks {
 		if b.ID == id && i > 0 {
 			prev := blocks[i-1]
@@ -345,13 +408,17 @@ func (s *Server) HandleAdminMoveBlockUp(w http.ResponseWriter, r *http.Request) 
 			break
 		}
 	}
-	s.HandleAdminTabBlocks(w, r)
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
 }
 
 func (s *Server) HandleAdminMoveBlockDown(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id := chi.URLParam(r, "id")
-	blocks, _ := s.Repo.GetPageBlocks(ctx)
+	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
 	for i, b := range blocks {
 		if b.ID == id && i < len(blocks)-1 {
 			next := blocks[i+1]
@@ -361,7 +428,11 @@ func (s *Server) HandleAdminMoveBlockDown(w http.ResponseWriter, r *http.Request
 			break
 		}
 	}
-	s.HandleAdminTabBlocks(w, r)
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
 }
 
 func (s *Server) HandleAdminDeleteBlock(w http.ResponseWriter, r *http.Request) {
@@ -370,7 +441,11 @@ func (s *Server) HandleAdminDeleteBlock(w http.ResponseWriter, r *http.Request) 
 	if err := s.Repo.DeletePageBlock(ctx, id); err != nil {
 		slog.Error("failed to delete page block", "id", id, "error", err)
 	}
-	s.HandleAdminTabBlocks(w, r)
+	if r.Header.Get("HX-Request") == "true" {
+		s.HandleAdminTabBlocks(w, r)
+		return
+	}
+	http.Redirect(w, r, "/admin?tab=blocks", http.StatusSeeOther)
 }
 
 // Leads actions (Phase 5.3)

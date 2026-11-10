@@ -1,0 +1,195 @@
+[tools]
+go = "1.27.3"
+"github:a-h/templ" = "0.3.1100"
+"github:tailwindlabs/tailwindcss" = "4.3.5"
+"github:air-verse/air" = "1.67.4"
+"github:golangci/golangci-lint" = "2.15.0"
+"github:fe3dback/go-arch-lint" = "1.19.1"
+"github:mokevnin/heavy" = "0.1.2"
+"github:agent-sh/agnix" = "0.61.0"
+"go:golang.org/x/vuln/cmd/govulncheck" = "1.9.0"
+"github:betterleaks/betterleaks" = "1.10.0"
+"github:evilmartians/lefthook" = "2.2.2"
+"github:crate-ci/typos" = "1.52.0"
+"github:rvben/rumdl" = "0.3.2"
+"github:rhysd/actionlint" = "1.7.12"
+"github:ast-grep/ast-grep" = "0.51.1"
+"github:lycheeverse/lychee" = "lychee-v0.24.2"
+"go:github.com/tetrafolium/mermaid-check/cmd/mermaid-check" = "latest"
+
+[env]
+PORT = "8080"
+_.path = ["./bin"]
+
+# --- Core Development Tasks ---
+
+[tasks.generate]
+description = "Сгенерировать Templ шаблоны и скомпилировать Tailwind CSS v4"
+run = """
+heavy -- templ generate
+heavy -- tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify
+"""
+
+[tasks.dev]
+description = "Запустить dev-сервер с hot-reload через air"
+run = "air"
+
+[tasks.test]
+description = "Запустить Go тесты через семафор heavy"
+run = "heavy -- go test ./..."
+
+[tasks.vet]
+description = "Запустить статический анализ go vet"
+run = "go vet ./..."
+
+[tasks.build]
+description = "Сборка production бинарника"
+depends = ["generate"]
+run = "go build -ldflags=\"-s -w\" -o bin/server main.go"
+
+[tasks.clean]
+description = "Удалить скомпилированные бинарники и временные файлы"
+run = "rm -rf bin/ tmp/"
+
+# --- Quality Gates (Levels 1, 2, 3) ---
+
+[tasks."arch:lint"]
+description = "Проверка архитектурных слоев (go-arch-lint)"
+run = "go-arch-lint check"
+
+[tasks."ast:lint"]
+description = "Проверка кастомных AST-правил и анти-слопа (ast-grep)"
+run = "ast-grep scan"
+
+[tasks.secrets]
+description = "Сканирование утечек секретов и API-ключей (betterleaks)"
+run = "betterleaks detect --no-git"
+
+[tasks.typos]
+description = "Проверка опечаток в коде и шаблонах (typos)"
+run = "typos"
+
+[tasks.lint]
+description = "Запустить golangci-lint"
+run = "golangci-lint run ./..."
+
+[tasks."vuln:check"]
+description = "Проверка уязвимостей зависимостей (govulncheck)"
+run = "govulncheck ./..."
+
+[tasks."mermaid:check"]
+description = "Проверка синтаксиса диаграмм Mermaid (mermaid-check)"
+run = "mermaid-check README.md FLEET_ARCHITECTURE.md"
+
+[tasks."md:lint"]
+description = "Линтинг Markdown-документации (rumdl)"
+run = "rumdl check ."
+
+[tasks."links:check"]
+description = "Проверка ссылок в документации (lychee)"
+run = "lychee --offline --config lychee.toml '*.md' '.agents/**/*.md'"
+
+[tasks."agnix:check"]
+description = "Проверка спецификаций и инструкций AI-агентов (agnix)"
+run = "agnix validate ."
+
+[tasks."lint:tokens"]
+description = "Проверка семантических токенов Tailwind (anti-slop)"
+run = "./scripts/lint-tokens.sh"
+
+[tasks.check]
+description = "Полный канонический прогон Quality Gates (Уровни 1 + 2 + 3)"
+depends = ["generate"]
+run = """
+go-arch-lint check
+ast-grep scan
+betterleaks detect --no-git
+typos
+golangci-lint run ./...
+govulncheck ./...
+mermaid-check README.md FLEET_ARCHITECTURE.md
+heavy -- go test ./...
+./scripts/lint-tokens.sh
+echo '==> All Quality Gates (Levels 1 + 2 + 3) passed successfully.'
+"""
+
+[tasks."check:clean"]
+description = "Проверить отсутствие незакоммиченных сгенерированных файлов"
+depends = ["check"]
+run = "git diff --exit-code ui/assets/styles.css ui/*_templ.go"
+
+[tasks."hooks:install"]
+description = "Установка Git-хуков lefthook"
+run = "lefthook install --force"
+
+# --- Git & Parallel Multi-Agent Workflow ---
+
+[tasks.feature]
+description = "Создать новую feature-ветку из актуального main (mise run feature <name>)"
+run = """
+if [ -z "$1" ]; then echo "Ошибка: укажите имя ветки, например: mise run feature cart"; exit 1; fi
+git checkout main
+git pull origin main
+BRANCH=$(echo "$1" | grep -q '/' && echo "$1" || echo "feat/$1")
+git checkout -b "$BRANCH"
+"""
+
+[tasks.done]
+description = "Запушить текущую ветку, создать PR, смержить в main и очистить ветку"
+run = """
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$BRANCH" = "main" ]; then echo "Ошибка: вы находитесь на ветке main"; exit 1; fi
+echo "==> Отправка ветки $BRANCH..."
+git push -u origin "$BRANCH"
+echo "==> Создание и слияние Pull Request..."
+gh pr create --fill
+gh pr merge --merge --delete-branch
+echo "==> Переключение обратно на main..."
+git checkout main
+git pull origin main
+echo "==> Удаление локальной ветки $BRANCH..."
+git branch -d "$BRANCH"
+echo "==> Готово! Актуальный main обновлен."
+"""
+
+[tasks.sync]
+description = "Обновить локальный main и удалить удаленные ветки"
+run = """
+git checkout main
+git pull origin main
+git fetch --prune
+DEAD=$(git branch -vv | grep ': gone]' | awk '{print $1}')
+if [ -n "$DEAD" ]; then
+  echo "Очистка удаленных локальных веток: $DEAD"
+  echo "$DEAD" | xargs git branch -D
+else
+  echo "Все локальные ветки актуальны."
+fi
+"""
+
+[tasks."worktree:add"]
+description = "Создать изолированный worktree для параллельного агента (mise run worktree:add <name>)"
+run = """
+if [ -z "$1" ]; then echo "Ошибка: укажите имя worktree, например: mise run worktree:add cart"; exit 1; fi
+BRANCH=$(echo "$1" | grep -q '/' && echo "$1" || echo "feat/$1")
+WT=".worktrees/$1"
+echo "==> Создание worktree в $WT на ветке $BRANCH..."
+git worktree add -b "$BRANCH" "$WT" main
+if [ -f .env ]; then cp .env "$WT/.env"; fi
+echo "==> Worktree готово в $WT. Запустите автономного AI-агента в $WT"
+"""
+
+[tasks."worktree:list"]
+description = "Список всех активных Git worktrees"
+run = "git worktree list"
+
+[tasks."worktree:rm"]
+description = "Удалить отработавший worktree (mise run worktree:rm <name>)"
+run = """
+if [ -z "$1" ]; then echo "Ошибка: укажите имя worktree, например: mise run worktree:rm cart"; exit 1; fi
+WT=".worktrees/$1"
+echo "==> Удаление worktree $WT..."
+git worktree remove --force "$WT"
+git worktree prune
+echo "==> Worktree $WT успешно удалено."
+"""

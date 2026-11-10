@@ -1,0 +1,30 @@
+version: "2"
+
+linters:
+  enable:
+    - govet
+    - errcheck
+    - staticcheck
+    - ineffassign
+    - unused
+
+  exclusions:
+    generated: lax
+    presets:
+      - std-error-handling
+      - common-false-positives
+
+    paths:
+      - "tmp/"
+      - "bin/"
+      - "pb_data/"
+      - ".worktrees/"
+      - ".*_templ\\.go$"
+
+    rules:
+      - linters:
+          - errcheck
+        source: "^\\s*defer\\s+"
+      - linters:
+          - staticcheck
+        text: "QF10.*"

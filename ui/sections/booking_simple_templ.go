@@ -34,102 +34,68 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-component=\"hallmark-booking-simple\" data-source=\"ui/sections/booking_simple.templ\" x-data=\"{\n\t\t\tphone: '',\n\t\t\tformatPhone(val) {\n\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\tif (!digits) return '';\n\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\tlet res = '+7';\n\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\treturn res;\n\t\t\t},\n\t\t\tonPhoneInput(e) {\n\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t}\n\t\t}\" class=\"max-w-xl mx-auto bg-surface border border-content/10 p-6 sm:p-8\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div><div><label class=\"form-label text-xs font-medium text-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div data-component=\"hallmark-booking-simple\" data-source=\"ui/sections/booking_simple.templ\" x-data=\"{\n\t\t\tphone: '',\n\t\t\tformatPhone(val) {\n\t\t\t\tlet digits = (val || '').replace(/\\D/g, '');\n\t\t\t\tif (!digits) return '';\n\t\t\t\tif (digits.startsWith('7') || digits.startsWith('8')) digits = digits.substring(1);\n\t\t\t\tlet res = '+7';\n\t\t\t\tif (digits.length > 0) res += ' (' + digits.substring(0, 3);\n\t\t\t\tif (digits.length >= 4) res += ') ' + digits.substring(3, 6);\n\t\t\t\tif (digits.length >= 7) res += '-' + digits.substring(6, 8);\n\t\t\t\tif (digits.length >= 9) res += '-' + digits.substring(8, 10);\n\t\t\t\treturn res;\n\t\t\t},\n\t\t\tonPhoneInput(e) {\n\t\t\t\tthis.phone = this.formatPhone(e.target.value);\n\t\t\t}\n\t\t}\" class=\"max-w-xl mx-auto bg-surface border border-content/10 p-6 sm:p-8\"><form hx-post=\"/api/leads\" hx-target=\"#booking-response\" hx-swap=\"innerHTML transition:true\" @htmx:after-request=\"if ($event.detail.successful) { $el.reset(); phone = ''; }\" class=\"space-y-4\"><!-- Honeypot антиспам-ловушка --><div class=\"hidden\" aria-hidden=\"true\"><label>URL: <input type=\"text\" name=\"company_website_url\" tabindex=\"-1\" autocomplete=\"off\"></label></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = base.Input(base.InputProps{
+			Label:       i18n.T(ctx, "booking.name_label"),
+			Name:        "name",
+			Required:    true,
+			Placeholder: i18n.T(ctx, "booking.name_placeholder"),
+			Attrs: templ.Attributes{
+				"minlength":    "2",
+				"maxlength":    "100",
+				"autocomplete": "name",
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = base.Input(base.InputProps{
+			Label:       i18n.T(ctx, "booking.phone_label"),
+			Name:        "phone",
+			Type:        "tel",
+			Required:    true,
+			Placeholder: i18n.T(ctx, "booking.phone_placeholder"),
+			Class:       "font-mono",
+			Attrs: templ.Attributes{
+				"x-model":      "phone",
+				"@input":       "onPhoneInput($event)",
+				"autocomplete": "tel",
+			},
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = base.Textarea(base.TextareaProps{
+			Label:       i18n.T(ctx, "booking.comment_label"),
+			Name:        "comment",
+			Rows:        3,
+			MaxLength:   1000,
+			Placeholder: i18n.T(ctx, "booking.comment_placeholder"),
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.name_label"))
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.consent_text"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 47, Col: 98}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 91, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</label> <input type=\"text\" name=\"name\" required minlength=\"2\" maxlength=\"100\" autocomplete=\"name\" placeholder=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " *</span></label></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.name_placeholder")).Resolve(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 55, Col: 58}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"form-input text-xs\"></div><div><label class=\"form-label text-xs font-medium text-content\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.phone_label"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 61, Col: 99}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</label> <input type=\"tel\" name=\"phone\" x-model=\"phone\" @input=\"onPhoneInput($event)\" required autocomplete=\"tel\" placeholder=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.phone_placeholder")).Resolve(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 69, Col: 59}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" class=\"form-input text-xs font-mono\"></div><div><label class=\"form-label text-xs font-medium text-content\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.comment_label"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 75, Col: 101}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</label> <textarea name=\"comment\" rows=\"3\" maxlength=\"1000\" placeholder=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "booking.comment_placeholder")).Resolve(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 80, Col: 61}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-input text-xs\"></textarea></div><div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.consent_text"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 96, Col: 43}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " *</span></label></div>")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Var9 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var3 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -141,7 +107,7 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<span class=\"htmx-indicator\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<span class=\"htmx-indicator\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -149,7 +115,7 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -157,20 +123,20 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.submit_simple"))
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "booking.submit_simple"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 111, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/sections/booking_simple.templ`, Line: 106, Col: 48}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -181,11 +147,11 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 			Size:    base.BtnSizeLg,
 			Type:    "submit",
 			Class:   "w-full font-medium gap-2",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var3), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</form><div id=\"booking-response\" class=\"mt-4 text-xs\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</form><div id=\"booking-response\" class=\"mt-4 text-xs\"></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

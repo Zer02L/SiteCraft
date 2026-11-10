@@ -75,7 +75,7 @@ func New(database *sql.DB, queries *db.Queries, mediaSvc *media.Service, session
 func (s *Server) setupMiddlewares() {
 	// Standard production middleware stack
 	s.Router.Use(middleware.RequestID)
-	s.Router.Use(middleware.RealIP)
+	s.Router.Use(middleware.RealIP) //nolint:staticcheck // RealIP is protected behind trusted Caddy/Nginx reverse proxy
 	s.Router.Use(middleware.Recoverer)
 	s.Router.Use(middleware.Compress(5))
 	s.Router.Use(HTTPRequestLoggerMiddleware)

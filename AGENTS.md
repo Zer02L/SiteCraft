@@ -99,9 +99,24 @@ Default section order:
 
 ## Verification
 
-- Canonical check command: `make check` (runs Templ code generation, Tailwind CSS v4 compilation, `go vet ./...`, and `go test ./...`)
-- Full production build: `make build`
-- Dev server with live reload: `make dev`
+- Canonical check command: `mise run check` (runs Templ code generation, Tailwind CSS v4 compilation, `go-arch-lint check`, `ast-grep scan`, `betterleaks detect`, `typos`, `golangci-lint run`, `go vet ./...`, `go test ./...` via `heavy`, `govulncheck ./...`, `mermaid-check`, and `lint-tokens`)
+- Quality Gates & Tooling (managed via `mise` in [mise.toml](mise.toml)):
+  - **Architecture Guard**: [`.go-arch-lint.yml`](.go-arch-lint.yml) enforces strict layer isolation (`server`, `data`, `db`, `models`, `ui`).
+  - **Structural & Anti-Slop Guard**: [`.ast-grep-rules/`](.ast-grep-rules/) and [`sgconfig.yml`](sgconfig.yml) (`ast-grep`) enforce custom AST patterns (e.g. banning raw SQL `fmt.Sprintf` and enforcing safe context usage).
+  - **Secret Leak Guard**: `betterleaks` (with drop-in `.gitleaks.toml` compatibility and BPE tokenization) stops credential leaks.
+  - **Typo & Spell Checker**: [`.typos.toml`](.typos.toml) prevents misspellings in code, templates, and dictionaries.
+  - **Code Quality**: [`.golangci.yml`](.golangci.yml) enforces static analysis, error checking, and code hygiene.
+  - **Vulnerability Scanner**: `govulncheck` checks reachable CVEs in dependencies.
+  - **Documentation & Links Linter**: [`.rumdl.toml`](.rumdl.toml) (`rumdl`) ensures Markdown hygiene, while [`lychee.toml`](lychee.toml) (`lychee`) verifies documentation and SSG links.
+  - **Diagram Validator**: `mermaid-check` validates embedded Mermaid diagram syntax without Node.js.
+  - **CI Workflow Validator**: `actionlint` validates GitHub Actions workflows.
+  - **Git Hook Orchestration**: [`lefthook.yml`](lefthook.yml) runs sub-200ms parallel pre-commit checks (`secrets`, `arch`, `ast`, `tokens`, `typos`) and pre-push quality gates.
+  - **Parallelism Semaphore**: `heavy` throttles builds and tests to prevent workstation/VPS freeze during multi-agent workflows.
+  - **Agent Specs Linter**: [`.agnix.toml`](.agnix.toml) (`agnix`) validates `AGENTS.md`, `CLAUDE.md`, and `.agents/skills/`.
+  - **Multi-Agent Worktrees**: `mise run worktree:add <name>`, `mise run worktree:list`, `mise run worktree:rm <name>` manage isolated workspaces.
+  - **Future Horizon**: Design-First API via `TypeSpec` + `vacuum` reserved in [MIGRATION_ROADMAP.md](MIGRATION_ROADMAP.md) for future public partner REST APIs.
+- Full production build: `mise run build`
+- Dev server with live reload: `mise run dev`
 
 ## Child DOX Index
 

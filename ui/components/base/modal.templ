@@ -1,0 +1,96 @@
+package base
+
+import (
+	"github.com/Oudwins/tailwind-merge-go"
+	icons "sitecraft/ui/components/icons"
+)
+
+type ModalSize uint8
+
+const (
+	ModalSizeDefault ModalSize = iota // max-w-md
+	ModalSizeSm                       // max-w-sm
+	ModalSizeLg                       // max-w-lg
+	ModalSizeXl                       // max-w-2xl
+)
+
+type ModalProps struct {
+	// Alpine.js expression that controls visibility (defaults to "modalOpen")
+	ModelExpression string
+	Title           string
+	Description     string
+	Size            ModalSize
+	Class           string
+	Attrs           templ.Attributes
+}
+
+func (p ModalProps) DialogClasses() string {
+	const base = "bg-surface border border-content/15 rounded-card p-6 sm:p-8 w-full shadow-2xl relative transition-all"
+
+	var size string
+	switch p.Size {
+	case ModalSizeSm:
+		size = "max-w-sm"
+	case ModalSizeLg:
+		size = "max-w-lg"
+	case ModalSizeXl:
+		size = "max-w-2xl"
+	default: // ModalSizeDefault
+		size = "max-w-md"
+	}
+
+	if p.Class == "" {
+		return base + " " + size
+	}
+	return twmerge.Merge(base, size, p.Class)
+}
+
+func (p ModalProps) model() string {
+	if p.ModelExpression != "" {
+		return p.ModelExpression
+	}
+	return "modalOpen"
+}
+
+templ Modal(props ModalProps) {
+	<div
+		x-show={ props.model() }
+		x-transition:enter="transition ease-out duration-200"
+		x-transition:enter-start="opacity-0"
+		x-transition:enter-end="opacity-100"
+		x-transition:leave="transition ease-in duration-150"
+		x-transition:leave-start="opacity-100"
+		x-transition:leave-end="opacity-0"
+		@keydown.escape.window={ props.model() + " = false" }
+		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+		style="display: none;"
+		role="dialog"
+		aria-modal="true"
+		data-component="Modal"
+		data-source="ui/components/base/modal.templ"
+		{ props.Attrs... }
+	>
+		<div
+			x-on:click.outside={ props.model() + " = false" }
+			class={ props.DialogClasses() }
+		>
+			<button
+				type="button"
+				x-on:click={ props.model() + " = false" }
+				class="absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
+				aria-label="Закрыть"
+			>
+				@icons.X(templ.Attributes{"class": "w-4 h-4"})
+			</button>
+			if props.Title != "" {
+				<div class="mb-4 pr-8">
+					<h3 class="font-bold text-lg text-content tracking-tight">{ props.Title }</h3>
+					if props.Description != "" {
+						<p class="text-xs text-content-muted mt-0.5">{ props.Description }</p>
+					}
+				</div>
+			}
+			{ children... }
+		</div>
+	</div>
+}

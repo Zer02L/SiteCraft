@@ -1,0 +1,256 @@
+package base
+
+import (
+	"strconv"
+
+	"github.com/Oudwins/tailwind-merge-go"
+)
+
+type InputVariant uint8
+
+const (
+	InputDefault InputVariant = iota
+	InputError
+)
+
+type InputSize uint8
+
+const (
+	InputSizeDefault InputSize = iota
+	InputSizeSm
+	InputSizeLg
+)
+
+type InputProps struct {
+	Variant     InputVariant
+	Size        InputSize
+	Type        string // "text", "tel", "email", "number", "password", etc.
+	Name        string
+	ID          string
+	Value       string
+	Placeholder string
+	Label       string
+	HelperText  string
+	ErrorText   string
+	Required    bool
+	Disabled    bool
+	ReadOnly    bool
+	Class       string
+	Attrs       templ.Attributes
+}
+
+func (p InputProps) Classes() string {
+	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60"
+
+	var variant string
+	if p.Variant == InputError || p.ErrorText != "" {
+		variant = "border-rose-500 text-rose-900 dark:text-rose-100 focus:ring-rose-500 focus:border-rose-500"
+	} else {
+		variant = "border-content/20 hover:border-content/40 focus:border-accent"
+	}
+
+	var size string
+	switch p.Size {
+	case InputSizeSm:
+		size = "px-3 py-1.5 text-xs"
+	case InputSizeLg:
+		size = "px-4.5 py-3 text-base"
+	default: // InputSizeDefault
+		size = "px-4 py-2.5 text-sm"
+	}
+
+	if p.Class == "" {
+		return base + " " + variant + " " + size
+	}
+	return twmerge.Merge(base, variant, size, p.Class)
+}
+
+templ Input(props InputProps) {
+	<div class="w-full">
+		if props.Label != "" {
+			<label
+				if props.ID != "" {
+				for={ props.ID }
+			}
+				class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1"
+			>
+				{ props.Label }
+				if props.Required {
+					<span class="text-rose-500 ml-0.5" aria-hidden="true">*</span>
+				}
+			</label>
+		}
+		<input
+			if props.Type != "" {
+				type={ props.Type }
+			} else {
+				type="text"
+			}
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Name != "" {
+				name={ props.Name }
+			}
+			if props.Value != "" {
+				value={ props.Value }
+			}
+			if props.Placeholder != "" {
+				placeholder={ props.Placeholder }
+			}
+			if props.Required {
+				required="required"
+			}
+			if props.Disabled {
+				disabled="disabled"
+				aria-disabled="true"
+			}
+			if props.ReadOnly {
+				readonly="readonly"
+			}
+			if props.ErrorText != "" {
+				aria-invalid="true"
+				if props.ID != "" {
+					aria-describedby={ props.ID + "-error" }
+				}
+			} else if props.HelperText != "" && props.ID != "" {
+				aria-describedby={ props.ID + "-helper" }
+			}
+			data-component="Input"
+			data-source="ui/components/base/input.templ"
+			class={ props.Classes() }
+			{ props.Attrs... }
+		/>
+		if props.ErrorText != "" {
+			<p
+				if props.ID != "" {
+				id={ props.ID + "-error" }
+			}
+				role="alert"
+				class="mt-1 text-xs text-rose-500 font-medium"
+			>
+				{ props.ErrorText }
+			</p>
+		} else if props.HelperText != "" {
+			<p
+				if props.ID != "" {
+				id={ props.ID + "-helper" }
+			}
+				class="mt-1 text-xs text-content-muted"
+			>
+				{ props.HelperText }
+			</p>
+		}
+	</div>
+}
+
+type TextareaProps struct {
+	Name        string
+	ID          string
+	Value       string
+	Placeholder string
+	Label       string
+	HelperText  string
+	ErrorText   string
+	Rows        int
+	MaxLength   int
+	Required    bool
+	Disabled    bool
+	ReadOnly    bool
+	Class       string
+	Attrs       templ.Attributes
+}
+
+func (p TextareaProps) Classes() string {
+	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60 text-sm px-4 py-2.5 resize-y"
+	var variant string
+	if p.ErrorText != "" {
+		variant = "border-rose-500 text-rose-900 dark:text-rose-100 focus:ring-rose-500 focus:border-rose-500"
+	} else {
+		variant = "border-content/20 hover:border-content/40 focus:border-accent"
+	}
+	if p.Class == "" {
+		return base + " " + variant
+	}
+	return twmerge.Merge(base, variant, p.Class)
+}
+
+templ Textarea(props TextareaProps) {
+	<div class="w-full">
+		if props.Label != "" {
+			<label
+				if props.ID != "" {
+				for={ props.ID }
+			}
+				class="block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1"
+			>
+				{ props.Label }
+				if props.Required {
+					<span class="text-rose-500 ml-0.5" aria-hidden="true">*</span>
+				}
+			</label>
+		}
+		<textarea
+			if props.ID != "" {
+				id={ props.ID }
+			}
+			if props.Name != "" {
+				name={ props.Name }
+			}
+			if props.Placeholder != "" {
+				placeholder={ props.Placeholder }
+			}
+			if props.Rows > 0 {
+				rows={ strconv.Itoa(props.Rows) }
+			} else {
+				rows="3"
+			}
+			if props.MaxLength > 0 {
+				maxlength={ strconv.Itoa(props.MaxLength) }
+			}
+			if props.Required {
+				required="required"
+			}
+			if props.Disabled {
+				disabled="disabled"
+				aria-disabled="true"
+			}
+			if props.ReadOnly {
+				readonly="readonly"
+			}
+			if props.ErrorText != "" {
+				aria-invalid="true"
+				if props.ID != "" {
+					aria-describedby={ props.ID + "-error" }
+				}
+			} else if props.HelperText != "" && props.ID != "" {
+				aria-describedby={ props.ID + "-helper" }
+			}
+			data-component="Textarea"
+			data-source="ui/components/base/input.templ"
+			class={ props.Classes() }
+			{ props.Attrs... }
+		>{ props.Value }</textarea>
+		if props.ErrorText != "" {
+			<p
+				if props.ID != "" {
+				id={ props.ID + "-error" }
+			}
+				role="alert"
+				class="mt-1 text-xs text-rose-500 font-medium"
+			>
+				{ props.ErrorText }
+			</p>
+		} else if props.HelperText != "" {
+			<p
+				if props.ID != "" {
+				id={ props.ID + "-helper" }
+			}
+				class="mt-1 text-xs text-content-muted"
+			>
+				{ props.HelperText }
+			</p>
+		}
+	</div>
+}
+

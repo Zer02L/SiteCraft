@@ -12,6 +12,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"sitecraft/ui/components/base"
 	"strings"
 
 	icons "sitecraft/ui/components/icons"
@@ -94,7 +95,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("tel:" + cleanPhone)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 95, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 96, Col: 46}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 			if templ_7745c5c3_Err != nil {
@@ -107,7 +108,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(phone)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 100, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 101, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -138,7 +139,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(fmt.Sprintf("https://wa.me/%s?text=Здравствуйте!%%20Хочу%%20получить%%20консультацию", waDigits))).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 111, Col: 159}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 112, Col: 159}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 			if templ_7745c5c3_Err != nil {
@@ -164,7 +165,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(tgLink)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 128, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/floating_contact.templ`, Line: 129, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
@@ -194,31 +195,98 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</template></button><!-- Модальное окно экспресс-звонка за 30 секунд --><div x-show=\"modalOpen\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm\" style=\"display: none;\"><div x-on:click.outside=\"modalOpen = false\" class=\"bg-surface border border-content/15 rounded-card p-6 sm:p-8 max-w-md w-full shadow-2xl relative\" role=\"dialog\" aria-modal=\"true\"><button type=\"button\" x-on:click=\"modalOpen = false\" class=\"absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer\" aria-label=\"Закрыть\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</template></button><!-- Модальное окно экспресс-звонка за 30 секунд -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = icons.X(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Var6 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div id=\"quick-callback-container\"><div class=\"flex items-center gap-3 mb-4\"><div class=\"w-10 h-10 rounded-xl bg-accent/15 text-accent flex items-center justify-center\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = icons.PhoneCall(templ.Attributes{"class": "w-5 h-5"}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div><h3 class=\"font-bold text-lg text-content tracking-tight\">Экспресс-звонок</h3><p class=\"text-xs text-content-muted\">Перезвоним и ответим на вопросы за 30 секунд</p></div></div><form hx-post=\"/api/leads\" hx-target=\"#quick-callback-container\" hx-swap=\"innerHTML transition:true\" class=\"space-y-4\"><input type=\"hidden\" name=\"source\" value=\"quick_callback\"> <input type=\"hidden\" name=\"action_type\" value=\"Запрос обратного экспресс-звонка\"> <input type=\"hidden\" name=\"company_website_url\" value=\"\"><!-- Honeypot --><input type=\"hidden\" name=\"consent\" value=\"on\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = base.Input(base.InputProps{
+				Label:       "Ваше имя",
+				Name:        "name",
+				Required:    true,
+				Placeholder: "Иван",
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = base.Input(base.InputProps{
+				Label:       "Номер телефона",
+				Name:        "phone",
+				Type:        "tel",
+				Required:    true,
+				Placeholder: "+7 (___) ___-__-__",
+				Class:       "font-mono",
+				Attrs:       templ.Attributes{"x-mask": "+7 (999) 999-99-99"},
+			}).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Var7 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = icons.Zap(templ.Attributes{"class": "w-4 h-4 mr-2"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span>Жду звонка прямо сейчас</span>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = base.Button(base.ButtonProps{
+				Variant: base.BtnAccent,
+				Type:    "submit",
+				Class:   "w-full py-3",
+			}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var7), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</form></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = base.Modal(base.ModalProps{
+			ModelExpression: "modalOpen",
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var6), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</button><div id=\"quick-callback-container\"><div class=\"flex items-center gap-3 mb-4\"><div class=\"w-10 h-10 rounded-xl bg-accent/15 text-accent flex items-center justify-center\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.PhoneCall(templ.Attributes{"class": "w-5 h-5"}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><div><h3 class=\"font-bold text-lg text-content tracking-tight\">Экспресс-звонок</h3><p class=\"text-xs text-content-muted\">Перезвоним и ответим на вопросы за 30 секунд</p></div></div><form hx-post=\"/api/leads\" hx-target=\"#quick-callback-container\" hx-swap=\"innerHTML transition:true\" class=\"space-y-4\"><input type=\"hidden\" name=\"source\" value=\"quick_callback\"> <input type=\"hidden\" name=\"action_type\" value=\"Запрос обратного экспресс-звонка\"> <input type=\"hidden\" name=\"company_website_url\" value=\"\"><!-- Honeypot --><input type=\"hidden\" name=\"consent\" value=\"on\"><div><label class=\"block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1\">Ваше имя</label> <input type=\"text\" name=\"name\" required placeholder=\"Иван\" class=\"w-full px-4 py-2.5 rounded-input border border-content/20 hover:border-content/40 bg-surface-muted hover:bg-surface text-content text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all\"></div><div><label class=\"block text-xs font-semibold text-content-muted uppercase tracking-wider mb-1\">Номер телефона</label> <input type=\"tel\" name=\"phone\" required x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (___) ___-__-__\" class=\"w-full px-4 py-2.5 rounded-input border border-content/20 hover:border-content/40 bg-surface-muted hover:bg-surface text-content text-sm font-mono focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all\"></div><button type=\"submit\" class=\"w-full py-3 rounded-btn bg-accent text-surface font-semibold text-sm hover:bg-accent-hover shadow-xs active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = icons.Zap(templ.Attributes{"class": "w-4 h-4"}).Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span>Жду звонка прямо сейчас</span></button></form></div></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

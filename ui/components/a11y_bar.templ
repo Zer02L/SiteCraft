@@ -11,7 +11,7 @@ templ A11yBar() {
 	<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) -->
 	<div
 		id="a11y-toolbar"
-		class="hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down"
+		class="hidden bg-surface-muted text-content border-b-2 border-content/30 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down"
 	>
 		<div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
 			<!-- Размер шрифта -->
@@ -24,7 +24,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setFont('normal')"
 					data-a11y-btn-font="normal"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
+					class="px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer"
 				>
 					{ i18n.T(ctx, "a11y.font_normal") }
 				</button>
@@ -32,7 +32,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setFont('large')"
 					data-a11y-btn-font="large"
-					class="px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
+					class="px-2.5 py-1 border border-content/30 text-sm font-bold rounded bg-surface hover:bg-surface-muted transition cursor-pointer"
 				>
 					{ i18n.T(ctx, "a11y.font_large") }
 				</button>
@@ -40,7 +40,7 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setFont('xlarge')"
 					data-a11y-btn-font="xlarge"
-					class="px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
+					class="px-2.5 py-1 border border-content/30 text-base font-extrabold rounded bg-surface hover:bg-surface-muted transition cursor-pointer"
 				>
 					{ i18n.T(ctx, "a11y.font_xlarge") }
 				</button>
@@ -84,7 +84,7 @@ templ A11yBar() {
 					type="button"
 					id="a11y-spacing-btn"
 					onclick="window.A11Y.toggleSpacing()"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
+					class="px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer"
 				>
 					Интервал: Обычный
 				</button>
@@ -92,7 +92,7 @@ templ A11yBar() {
 					type="button"
 					id="a11y-images-btn"
 					onclick="window.A11Y.toggleImages()"
-					class="px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer"
+					class="px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer"
 				>
 					{ i18n.T(ctx, "a11y.images") } { i18n.T(ctx, "a11y.images_on") }
 				</button>

@@ -1,0 +1,18 @@
+[files]
+extend-exclude = [
+    ".worktrees/",
+    "ui/assets/js/*.min.js",
+    "ui/assets/js/ogl.mjs",
+    "ui/assets/styles.css",
+    "*_templ.go",
+    "pb_data/",
+    "bin/",
+    "tmp/",
+]
+
+[default.extend-words]
+Tilda = "Tilda"
+LOD = "LOD"
+fior = "fior"
+BA = "BA"
+GOST = "GOST"
