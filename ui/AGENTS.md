@@ -10,7 +10,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 - `ui/assets/` — Tailwind CSS entry point (`input.css`), runtime tokens (`tokens.css`), client scripts, icons, and `images/`.
 - `ui/components/` — Reusable Templ components (base primitives, headers, footers, drawers, modals, widgets).
-- `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, and card primitives.
+- `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, card, input, and modal primitives.
 - `ui/components/cinematic/` — 31 Zero-GSAP cinematic animation and scrollytelling modules.
 - `ui/components/icons/` — Self-contained type-safe Lucide SVG icon components compiled via Templ.
 - `ui/components/cinematic_2/` — Screen 1 & Screen 2 components adapted from jhill.com (cinematic video hero and tilted ArtStation marquee collage).

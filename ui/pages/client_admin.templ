@@ -166,6 +166,10 @@ templ AdminTabIcon(id string) {
 			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
 			</svg>
+		case "blocks", "editor":
+			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+			</svg>
 		case "fleet":
 			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
@@ -222,7 +226,7 @@ templ renderFallbackTab(modules []models.AdminTabModule, leads []models.Lead, co
 	}
 }
 
-templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule) {
+templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule, blocks []models.PageBlock) {
 	@layouts.Base("Кабинет управления — "+settings.SiteName, "Управление контактами, заявками и контентом", settings) {
 		{{
 			initialTab := activeTab
@@ -341,7 +345,9 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 
 				<!-- Основная контентная область с HTMX-свопом -->
 				<main class="flex-1 min-w-0 w-full" id="admin-tab-content">
-					if activeTab == "contacts" && isTabActive("contacts", modules) {
+					if (activeTab == "blocks" || activeTab == "editor") && isTabActive("blocks", modules) {
+						@AdminBlocksTab(blocks, settings)
+					} else if activeTab == "contacts" && isTabActive("contacts", modules) {
 						@ClientContactsTab(content, settings)
 					} else if activeTab == "services" && isTabActive("services", modules) {
 						@ClientServicesTab(services, trashServices, "")

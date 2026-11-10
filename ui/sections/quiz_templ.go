@@ -427,7 +427,31 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span>Звонок</span></button></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"form-label text-xs font-medium text-content mb-1\">Ваше имя</label> <input type=\"text\" name=\"name\" required placeholder=\"Иван Петров\" class=\"form-input text-xs\"></div><div><label class=\"form-label text-xs font-medium text-content mb-1\">Телефон для связи</label> <input type=\"tel\" name=\"phone\" required placeholder=\"+7 (___) ___-__-__\" class=\"form-input text-xs font-mono\"></div></div><div class=\"pt-4 flex items-center justify-between gap-4 border-t border-content/10\"><button type=\"button\" x-on:click=\"step--\" class=\"px-4 py-2 border border-content/15 text-content-muted hover:text-content text-xs font-medium transition cursor-pointer\">Назад</button>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span>Звонок</span></button></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = base.Input(base.InputProps{
+			Label:       "Ваше имя",
+			Name:        "name",
+			Required:    true,
+			Placeholder: "Иван Петров",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = base.Input(base.InputProps{
+			Label:       "Телефон для связи",
+			Name:        "phone",
+			Type:        "tel",
+			Required:    true,
+			Placeholder: "+7 (___) ___-__-__",
+			Class:       "font-mono",
+		}).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div><div class=\"pt-4 flex items-center justify-between gap-4 border-t border-content/10\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -443,7 +467,34 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span>Получить предварительный расчёт</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span>Назад</span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = base.Button(base.ButtonProps{
+			Variant: base.BtnOutline,
+			Size:    base.BtnSizeSm,
+			Type:    "button",
+			Attrs:   templ.Attributes{"x-on:click": "step--"},
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<span>Получить предварительный расчёт</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -454,11 +505,11 @@ func Quiz(payload models.QuizPayload, settings models.SiteSettings) templ.Compon
 			Size:    base.BtnSizeDefault,
 			Type:    "submit",
 			Class:   "font-medium",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</div></form></div></div></section>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div></form></div></div></section>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -1,0 +1,26 @@
+pre-commit:
+  parallel: true
+  commands:
+    secrets:
+      tags: security
+      run: mise exec -- betterleaks git --staged
+    arch:
+      tags: architecture
+      glob: "**/*.go"
+      run: mise exec -- go-arch-lint check
+    ast:
+      tags: quality
+      glob: "**/*.go"
+      run: mise exec -- ast-grep scan
+    tokens:
+      tags: ui
+      glob: "ui/**/*.templ"
+      run: ./scripts/lint-tokens.sh
+    typos:
+      tags: hygiene
+      run: mise exec -- typos
+
+pre-push:
+  commands:
+    quality-gates:
+      run: mise run check

@@ -128,7 +128,22 @@ func (s *Server) initAdminModules() {
 		TabHandler: s.HandleAdminTabLeads,
 	})
 
-	// 2. Contacts
+	// 2. Visual Editor & Blocks (Конструктор & Дизайн)
+	s.AdminModules.Register(AdminModule{
+		ID:    "blocks",
+		Title: "Конструктор & Дизайн",
+		Order: 15,
+		Badge: func(ctx context.Context, s *Server) (int, string) {
+			blocks, err := s.Repo.GetAllPageBlocks(ctx)
+			if err != nil {
+				return 0, ""
+			}
+			return len(blocks), "bg-slate-800/90 text-amber-400 border-amber-500/20"
+		},
+		TabHandler: s.HandleAdminTabBlocks,
+	})
+
+	// 3. Contacts
 	s.AdminModules.Register(AdminModule{
 		ID:         "contacts",
 		Title:      "Контакты и реквизиты",

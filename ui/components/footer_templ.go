@@ -69,20 +69,20 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Footer Classic: 3 колонки --><footer class=\"bg-primary-dark text-stone-300 py-12 mt-auto text-sm border-t-2 border-accent\"><div class=\"max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8\"><div><div class=\"text-white font-serif-title font-bold text-lg mb-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Footer Classic: 3 колонки --><footer class=\"bg-primary-dark text-on-primary/80 py-12 mt-auto text-sm border-t-2 border-accent\"><div class=\"max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8\"><div><div class=\"text-on-primary font-serif-title font-bold text-lg mb-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 24, Col: 87}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 24, Col: 92}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><p class=\"text-xs text-content-muted\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><p class=\"text-xs text-on-primary/60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -95,7 +95,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p><p class=\"text-xs text-content-muted mt-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</p><p class=\"text-xs text-on-primary/60 mt-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -108,14 +108,14 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</p></div><div><div class=\"text-white font-semibold text-sm mb-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</p></div><div><div class=\"text-on-primary font-semibold text-sm mb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.contacts_title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 29, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 29, Col: 98}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -126,14 +126,14 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			return templ_7745c5c3_Err
 		}
 		if content.Phone1 != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p class=\"text-xs text-stone-300\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<p class=\"text-xs text-on-primary/80\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.phone_main"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 77}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -146,7 +146,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("tel:" + content.Phone1)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 120}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 124}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
@@ -159,7 +159,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 176}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 31, Col: 180}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -171,14 +171,14 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			}
 		}
 		if content.Phone2 != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<p class=\"text-xs text-stone-300 mt-1\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<p class=\"text-xs text-on-primary/80 mt-1\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.phone_add"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 77}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 81}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -191,7 +191,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("tel:" + content.Phone2)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 124}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 128}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 			if templ_7745c5c3_Err != nil {
@@ -204,7 +204,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone2)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 180}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 34, Col: 184}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -216,7 +216,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			}
 		}
 		if content.Address != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p class=\"text-xs text-content-muted mt-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<p class=\"text-xs text-on-primary/60 mt-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -234,27 +234,27 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div><div class=\"text-white font-semibold text-sm mb-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div><div class=\"text-on-primary font-semibold text-sm mb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.hours_title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 41, Col: 90}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 41, Col: 95}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><p class=\"text-xs text-stone-300\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><p class=\"text-xs text-on-primary/80\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(content.WorkHours)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 42, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 42, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -265,7 +265,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 			return templ_7745c5c3_Err
 		}
 		if content.LunchBreak != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<p class=\"text-xs text-content-muted\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<p class=\"text-xs text-on-primary/60\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -296,7 +296,7 @@ func FooterClassic(content models.SiteContent, settings models.SiteSettings) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<p class=\"text-xs text-content-muted mt-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<p class=\"text-xs text-on-primary/60 mt-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -334,27 +334,27 @@ func FooterMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Footer Minimal: компактная элегантная полоса с кнопкой 'Наверх' --><footer class=\"bg-primary-dark text-stone-300 py-6 mt-auto text-xs border-t border-accent/40\"><div class=\"max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4\"><div class=\"flex items-center space-x-2\"><span class=\"font-serif-title font-bold text-white text-sm\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<!-- Footer Minimal: компактная элегантная полоса с кнопкой 'Наверх' --><footer class=\"bg-primary-dark text-on-primary/80 py-6 mt-auto text-xs border-t border-accent/40\"><div class=\"max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4\"><div class=\"flex items-center space-x-2\"><span class=\"font-serif-title font-bold text-on-primary text-sm\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 57, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 57, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</span> <span class=\"text-stone-500\">•</span> <span class=\"text-stone-400\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</span> <span class=\"text-on-primary/40\">•</span> <span class=\"text-on-primary/60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.rights", ""))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 59, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 59, Col: 71}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
@@ -378,7 +378,7 @@ func FooterMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"hover:text-accent font-medium transition text-stone-300\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"hover:text-accent font-medium transition text-on-primary/80\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -447,14 +447,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<!-- Footer Columns: расширенный 4-колоночный подвал с полными ссылками --><footer class=\"bg-primary-dark text-stone-300 pt-14 pb-8 mt-auto text-xs border-t-2 border-accent\"><div class=\"max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10\"><!-- Колонка 1: Бренд и миссия --><div class=\"space-y-3\"><div class=\"text-white font-serif-title font-bold text-lg tracking-wide\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<!-- Footer Columns: расширенный 4-колоночный подвал с полными ссылками --><footer class=\"bg-primary-dark text-on-primary/80 pt-14 pb-8 mt-auto text-xs border-t-2 border-accent\"><div class=\"max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10\"><!-- Колонка 1: Бренд и миссия --><div class=\"space-y-3\"><div class=\"text-on-primary font-serif-title font-bold text-lg tracking-wide\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var27 string
 		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 88, Col: 96}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 88, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
@@ -473,27 +473,27 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</p><p class=\"text-stone-400 leading-relaxed text-[11px] line-clamp-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</p><p class=\"text-on-primary/60 leading-relaxed text-[11px] line-clamp-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroSubtitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 90, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 90, Col: 97}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</p></div><!-- Колонка 2: Навигация --><div><div class=\"text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</p></div><!-- Колонка 2: Навигация --><div><div class=\"text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.home"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 95, Col: 117}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 95, Col: 122}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -574,14 +574,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<li><a href=\"/privacy\" class=\"hover:text-accent transition text-stone-400\">Конфиденциальность (152-ФЗ)</a></li><li><a href=\"/terms\" class=\"hover:text-accent transition text-stone-400\">Оферта и соглашение</a></li></ul></div><!-- Колонка 3: Контакты & Адрес --><div><div class=\"text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<li><a href=\"/privacy\" class=\"hover:text-accent transition text-on-primary/60\">Конфиденциальность (152-ФЗ)</a></li><li><a href=\"/terms\" class=\"hover:text-accent transition text-on-primary/60\">Оферта и соглашение</a></li></ul></div><!-- Колонка 3: Контакты & Адрес --><div><div class=\"text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var36 string
 		templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.contacts_title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 112, Col: 130}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 112, Col: 135}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 		if templ_7745c5c3_Err != nil {
@@ -618,14 +618,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\" class=\"text-white hover:text-accent font-medium transition\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\" class=\"text-on-primary hover:text-accent font-medium transition\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var39 string
 			templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 115, Col: 169}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 115, Col: 174}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 			if templ_7745c5c3_Err != nil {
@@ -663,14 +663,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "\" class=\"text-white hover:text-accent font-medium transition\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "\" class=\"text-on-primary hover:text-accent font-medium transition\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var42 string
 			templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone2)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 118, Col: 168}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 118, Col: 173}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 			if templ_7745c5c3_Err != nil {
@@ -682,14 +682,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 			}
 		}
 		if content.Address != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "<p class=\"text-stone-400 mt-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "<p class=\"text-on-primary/60 mt-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var43 string
 			templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(content.Address)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 121, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 121, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 			if templ_7745c5c3_Err != nil {
@@ -700,14 +700,14 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<p class=\"text-stone-400\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<p class=\"text-on-primary/60\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var44 string
 		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "footer.hours_title"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 123, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 123, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
 		if templ_7745c5c3_Err != nil {
@@ -720,20 +720,20 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 		var templ_7745c5c3_Var45 string
 		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(content.WorkHours)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 123, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 123, Col: 92}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</p></div></div><!-- Колонка 4: Сервис и доступность --><div><div class=\"text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</p></div></div><!-- Колонка 4: Сервис и доступность --><div><div class=\"text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var46 string
 		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.version"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 129, Col: 121}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/footer.templ`, Line: 129, Col: 126}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
 		if templ_7745c5c3_Err != nil {
@@ -744,7 +744,7 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"text-left hover:text-accent transition flex items-center gap-1.5 cursor-pointer text-stone-300\"><span>👁️</span> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"text-left hover:text-accent transition flex items-center gap-1.5 cursor-pointer text-on-primary/80\"><span>👁️</span> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -762,7 +762,7 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<p class=\"text-stone-400 text-[11px] leading-relaxed\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "<p class=\"text-on-primary/60 text-[11px] leading-relaxed\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -775,7 +775,7 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "</p><div class=\"pt-2\"><button type=\"button\" onclick=\"window.scrollTo({top: 0, behavior: 'smooth'})\" class=\"px-3 py-1.5 rounded bg-white/10 hover:bg-accent hover:text-primary-dark transition text-white font-medium cursor-pointer\">↑ ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "</p><div class=\"pt-2\"><button type=\"button\" onclick=\"window.scrollTo({top: 0, behavior: 'smooth'})\" class=\"px-3 py-1.5 rounded bg-white/10 hover:bg-accent hover:text-primary-dark transition text-on-primary font-medium cursor-pointer\">↑ ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -788,7 +788,7 @@ func FooterColumns(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</button></div></div></div></div><!-- Нижняя полоса с копирайтом и 152-ФЗ --><div class=\"max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-stone-400\"><div class=\"flex items-center gap-3 flex-wrap\"><span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</button></div></div></div></div><!-- Нижняя полоса с копирайтом и 152-ФЗ --><div class=\"max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-on-primary/60\"><div class=\"flex items-center gap-3 flex-wrap\"><span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

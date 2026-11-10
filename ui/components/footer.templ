@@ -18,32 +18,32 @@ templ Footer(content models.SiteContent, settings models.SiteSettings) {
 
 templ FooterClassic(content models.SiteContent, settings models.SiteSettings) {
 	<!-- Footer Classic: 3 колонки -->
-	<footer class="bg-primary-dark text-stone-300 py-12 mt-auto text-sm border-t-2 border-accent">
+	<footer class="bg-primary-dark text-on-primary/80 py-12 mt-auto text-sm border-t-2 border-accent">
 		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
 			<div>
-				<div class="text-white font-serif-title font-bold text-lg mb-2">{ content.HeroTitle }</div>
-				<p class="text-xs text-content-muted">{ content.OwnerName }</p>
-				<p class="text-xs text-content-muted mt-2">{ content.HeroSubtitle }</p>
+				<div class="text-on-primary font-serif-title font-bold text-lg mb-2">{ content.HeroTitle }</div>
+				<p class="text-xs text-on-primary/60">{ content.OwnerName }</p>
+				<p class="text-xs text-on-primary/60 mt-2">{ content.HeroSubtitle }</p>
 			</div>
 			<div>
-				<div class="text-white font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.contacts_title") }</div>
+				<div class="text-on-primary font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.contacts_title") }</div>
 				if content.Phone1 != "" {
-					<p class="text-xs text-stone-300">{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent transition">{ content.Phone1 }</a></p>
+					<p class="text-xs text-on-primary/80">{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent transition">{ content.Phone1 }</a></p>
 				}
 				if content.Phone2 != "" {
-					<p class="text-xs text-stone-300 mt-1">{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="hover:text-accent transition">{ content.Phone2 }</a></p>
+					<p class="text-xs text-on-primary/80 mt-1">{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="hover:text-accent transition">{ content.Phone2 }</a></p>
 				}
 				if content.Address != "" {
-					<p class="text-xs text-content-muted mt-2">{ content.Address }</p>
+					<p class="text-xs text-on-primary/60 mt-2">{ content.Address }</p>
 				}
 			</div>
 			<div>
-				<div class="text-white font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.hours_title") }</div>
-				<p class="text-xs text-stone-300">{ content.WorkHours }</p>
+				<div class="text-on-primary font-semibold text-sm mb-3">{ i18n.T(ctx, "footer.hours_title") }</div>
+				<p class="text-xs text-on-primary/80">{ content.WorkHours }</p>
 				if content.LunchBreak != "" {
-					<p class="text-xs text-content-muted">{ i18n.T(ctx, "footer.lunch") } { content.LunchBreak }</p>
+					<p class="text-xs text-on-primary/60">{ i18n.T(ctx, "footer.lunch") } { content.LunchBreak }</p>
 				}
-				<p class="text-xs text-content-muted mt-2">{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</p>
+				<p class="text-xs text-on-primary/60 mt-2">{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</p>
 			</div>
 		</div>
 	</footer>
@@ -51,17 +51,17 @@ templ FooterClassic(content models.SiteContent, settings models.SiteSettings) {
 
 templ FooterMinimal(content models.SiteContent, settings models.SiteSettings) {
 	<!-- Footer Minimal: компактная элегантная полоса с кнопкой 'Наверх' -->
-	<footer class="bg-primary-dark text-stone-300 py-6 mt-auto text-xs border-t border-accent/40">
+	<footer class="bg-primary-dark text-on-primary/80 py-6 mt-auto text-xs border-t border-accent/40">
 		<div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
 			<div class="flex items-center space-x-2">
-				<span class="font-serif-title font-bold text-white text-sm">{ content.HeroTitle }</span>
-				<span class="text-stone-500">•</span>
-				<span class="text-stone-400">{ i18n.T(ctx, "footer.rights", "") }</span>
+				<span class="font-serif-title font-bold text-on-primary text-sm">{ content.HeroTitle }</span>
+				<span class="text-on-primary/40">•</span>
+				<span class="text-on-primary/60">{ i18n.T(ctx, "footer.rights", "") }</span>
 			</div>
 
 			<div class="flex items-center space-x-4">
 				if content.Phone1 != "" {
-					<a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent font-medium transition text-stone-300">
+					<a href={ templ.URL("tel:" + content.Phone1) } class="hover:text-accent font-medium transition text-on-primary/80">
 						{ content.Phone1 }
 					</a>
 				}
@@ -81,18 +81,18 @@ templ FooterMinimal(content models.SiteContent, settings models.SiteSettings) {
 
 templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 	<!-- Footer Columns: расширенный 4-колоночный подвал с полными ссылками -->
-	<footer class="bg-primary-dark text-stone-300 pt-14 pb-8 mt-auto text-xs border-t-2 border-accent">
+	<footer class="bg-primary-dark text-on-primary/80 pt-14 pb-8 mt-auto text-xs border-t-2 border-accent">
 		<div class="max-w-6xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
 			<!-- Колонка 1: Бренд и миссия -->
 			<div class="space-y-3">
-				<div class="text-white font-serif-title font-bold text-lg tracking-wide">{ content.HeroTitle }</div>
+				<div class="text-on-primary font-serif-title font-bold text-lg tracking-wide">{ content.HeroTitle }</div>
 				<p class="text-xs text-accent font-medium">{ content.OwnerName }</p>
-				<p class="text-stone-400 leading-relaxed text-[11px] line-clamp-4">{ content.HeroSubtitle }</p>
+				<p class="text-on-primary/60 leading-relaxed text-[11px] line-clamp-4">{ content.HeroSubtitle }</p>
 			</div>
 
 			<!-- Колонка 2: Навигация -->
 			<div>
-				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "nav.home") }</div>
+				<div class="text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "nav.home") }</div>
 				<ul class="space-y-2">
 					<li><a href="/#about" class="hover:text-accent transition">{ i18n.T(ctx, "nav.about") }</a></li>
 					<li><a href="/#services" class="hover:text-accent transition">{ i18n.T(ctx, "nav.services_full") }</a></li>
@@ -102,49 +102,49 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 					if settings.EnableCareers {
 						<li><a href="/careers" class="hover:text-accent transition">Вакансии и найм</a></li>
 					}
-					<li><a href="/privacy" class="hover:text-accent transition text-stone-400">Конфиденциальность (152-ФЗ)</a></li>
-					<li><a href="/terms" class="hover:text-accent transition text-stone-400">Оферта и соглашение</a></li>
+					<li><a href="/privacy" class="hover:text-accent transition text-on-primary/60">Конфиденциальность (152-ФЗ)</a></li>
+					<li><a href="/terms" class="hover:text-accent transition text-on-primary/60">Оферта и соглашение</a></li>
 				</ul>
 			</div>
 
 			<!-- Колонка 3: Контакты & Адрес -->
 			<div>
-				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "footer.contacts_title") }</div>
+				<div class="text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "footer.contacts_title") }</div>
 				<div class="space-y-2">
 					if content.Phone1 != "" {
-						<p>{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="text-white hover:text-accent font-medium transition">{ content.Phone1 }</a></p>
+						<p>{ i18n.T(ctx, "footer.phone_main") } <a href={ templ.URL("tel:" + content.Phone1) } class="text-on-primary hover:text-accent font-medium transition">{ content.Phone1 }</a></p>
 					}
 					if content.Phone2 != "" {
-						<p>{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="text-white hover:text-accent font-medium transition">{ content.Phone2 }</a></p>
+						<p>{ i18n.T(ctx, "footer.phone_add") } <a href={ templ.URL("tel:" + content.Phone2) } class="text-on-primary hover:text-accent font-medium transition">{ content.Phone2 }</a></p>
 					}
 					if content.Address != "" {
-						<p class="text-stone-400 mt-2">{ content.Address }</p>
+						<p class="text-on-primary/60 mt-2">{ content.Address }</p>
 					}
-					<p class="text-stone-400">{ i18n.T(ctx, "footer.hours_title") } { content.WorkHours }</p>
+					<p class="text-on-primary/60">{ i18n.T(ctx, "footer.hours_title") } { content.WorkHours }</p>
 				</div>
 			</div>
 
 			<!-- Колонка 4: Сервис и доступность -->
 			<div>
-				<div class="text-white font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "a11y.version") }</div>
+				<div class="text-on-primary font-semibold text-xs uppercase tracking-wider mb-3 text-accent">{ i18n.T(ctx, "a11y.version") }</div>
 				<div class="space-y-2.5">
 					if settings.EnableA11y {
 						<button
 							type="button"
 							onclick="window.A11Y.toggle()"
-							class="text-left hover:text-accent transition flex items-center gap-1.5 cursor-pointer text-stone-300"
+							class="text-left hover:text-accent transition flex items-center gap-1.5 cursor-pointer text-on-primary/80"
 						>
 							<span>👁️</span> { i18n.T(ctx, "a11y.toggle") }
 						</button>
 					}
-					<p class="text-stone-400 text-[11px] leading-relaxed">
+					<p class="text-on-primary/60 text-[11px] leading-relaxed">
 						{ i18n.T(ctx, "footer.disclaimer") }
 					</p>
 					<div class="pt-2">
 						<button
 							type="button"
 							onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
-							class="px-3 py-1.5 rounded bg-white/10 hover:bg-accent hover:text-primary-dark transition text-white font-medium cursor-pointer"
+							class="px-3 py-1.5 rounded bg-white/10 hover:bg-accent hover:text-primary-dark transition text-on-primary font-medium cursor-pointer"
 						>
 							↑ { i18n.T(ctx, "btn.to_top") }
 						</button>
@@ -154,7 +154,7 @@ templ FooterColumns(content models.SiteContent, settings models.SiteSettings) {
 		</div>
 
 		<!-- Нижняя полоса с копирайтом и 152-ФЗ -->
-		<div class="max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-stone-400">
+		<div class="max-w-6xl mx-auto px-4 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-2 text-[11px] text-on-primary/60">
 			<div class="flex items-center gap-3 flex-wrap">
 				<span>{ i18n.T(ctx, "footer.rights", content.HeroTitle) }</span>
 				<span>•</span>

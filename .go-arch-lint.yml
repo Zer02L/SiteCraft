@@ -1,0 +1,156 @@
+version: 3
+
+workdir: .
+
+allow:
+  depOnAnyVendor: true
+
+exclude:
+  - internal/testutil/**
+  - tmp/**
+  - bin/**
+  - .worktrees/**
+
+excludeFiles:
+  - "^.*_test\\.go$"
+
+components:
+  app:
+    in: .
+  cmd:
+    in: cmd/**
+  sql:
+    in: sql/**
+  ui:
+    in: ui/**
+  models:
+    in: internal/models/**
+  data:
+    in: internal/data/**
+  db:
+    in: internal/db/**
+  cache:
+    in: internal/cache/**
+  auth:
+    in: internal/auth/**
+  events:
+    in: internal/events/**
+  media:
+    in: internal/media/**
+  notifications:
+    in: internal/notifications/**
+  modules:
+    in: internal/modules/**
+  exporter:
+    in: internal/exporter/**
+  i18n:
+    in: internal/i18n/**
+  bot:
+    in: internal/bot/**
+  server:
+    in: internal/server/**
+
+commonComponents:
+  - models
+
+deps:
+  app:
+    anyVendorDeps: true
+    mayDependOn:
+      - server
+      - db
+      - data
+      - cache
+      - exporter
+      - notifications
+      - bot
+      - auth
+      - media
+
+  cmd:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+
+  sql:
+    anyVendorDeps: true
+
+  ui:
+    anyVendorDeps: true
+    anyProjectDeps: true
+
+  models:
+    anyVendorDeps: true
+
+  db:
+    anyVendorDeps: true
+    mayDependOn:
+      - sql
+
+  cache:
+    anyVendorDeps: true
+
+  data:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - cache
+
+  auth:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+
+  events:
+    anyVendorDeps: true
+
+  media:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+
+  notifications:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+      - events
+
+  modules:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - notifications
+
+  exporter:
+    anyVendorDeps: true
+    mayDependOn:
+      - data
+      - ui
+
+  i18n:
+    anyVendorDeps: true
+
+  bot:
+    anyVendorDeps: true
+    mayDependOn:
+      - data
+      - notifications
+
+  server:
+    anyVendorDeps: true
+    mayDependOn:
+      - auth
+      - cache
+      - data
+      - db
+      - events
+      - exporter
+      - i18n
+      - media
+      - modules
+      - notifications
+      - bot
+      - ui

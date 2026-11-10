@@ -43,44 +43,39 @@ templ BookingSimple(content models.SiteContent, settings models.SiteSettings) {
 				<label>URL: <input type="text" name="company_website_url" tabindex="-1" autocomplete="off"/></label>
 			</div>
 
-			<div>
-				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.name_label") }</label>
-				<input
-					type="text"
-					name="name"
-					required
-					minlength="2"
-					maxlength="100"
-					autocomplete="name"
-					placeholder={ i18n.T(ctx, "booking.name_placeholder") }
-					class="form-input text-xs"
-				/>
-			</div>
+			@base.Input(base.InputProps{
+				Label:       i18n.T(ctx, "booking.name_label"),
+				Name:        "name",
+				Required:    true,
+				Placeholder: i18n.T(ctx, "booking.name_placeholder"),
+				Attrs: templ.Attributes{
+					"minlength":    "2",
+					"maxlength":    "100",
+					"autocomplete": "name",
+				},
+			})
 
-			<div>
-				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.phone_label") }</label>
-				<input
-					type="tel"
-					name="phone"
-					x-model="phone"
-					@input="onPhoneInput($event)"
-					required
-					autocomplete="tel"
-					placeholder={ i18n.T(ctx, "booking.phone_placeholder") }
-					class="form-input text-xs font-mono"
-				/>
-			</div>
+			@base.Input(base.InputProps{
+				Label:       i18n.T(ctx, "booking.phone_label"),
+				Name:        "phone",
+				Type:        "tel",
+				Required:    true,
+				Placeholder: i18n.T(ctx, "booking.phone_placeholder"),
+				Class:       "font-mono",
+				Attrs: templ.Attributes{
+					"x-model":      "phone",
+					"@input":       "onPhoneInput($event)",
+					"autocomplete": "tel",
+				},
+			})
 
-			<div>
-				<label class="form-label text-xs font-medium text-content">{ i18n.T(ctx, "booking.comment_label") }</label>
-				<textarea
-					name="comment"
-					rows="3"
-					maxlength="1000"
-					placeholder={ i18n.T(ctx, "booking.comment_placeholder") }
-					class="form-input text-xs"
-				></textarea>
-			</div>
+			@base.Textarea(base.TextareaProps{
+				Label:       i18n.T(ctx, "booking.comment_label"),
+				Name:        "comment",
+				Rows:        3,
+				MaxLength:   1000,
+				Placeholder: i18n.T(ctx, "booking.comment_placeholder"),
+			})
 
 			<div class="pt-1">
 				<label class="flex items-start gap-2.5 cursor-pointer select-none">

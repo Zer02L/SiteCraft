@@ -33,7 +33,7 @@ func A11yBar() templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) --><div id=\"a11y-toolbar\" class=\"hidden bg-surface-muted text-content border-b-2 border-stone-800 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down\"><div class=\"max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3\"><!-- Размер шрифта --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1 flex items-center gap-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Панель управления версией для слабовидящих (ГОСТ Р 52872-2019, Vanilla JS) --><div id=\"a11y-toolbar\" class=\"hidden bg-surface-muted text-content border-b-2 border-content/30 py-2 px-4 shadow-md sticky top-0 z-50 text-sm font-medium animate-fade-in-down\"><div class=\"max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3\"><!-- Размер шрифта --><div class=\"flex items-center gap-1 sm:gap-2\"><span class=\"text-xs uppercase font-bold mr-1 flex items-center gap-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +54,7 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span> <button type=\"button\" onclick=\"window.A11Y.setFont('normal')\" data-a11y-btn-font=\"normal\" class=\"px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -67,7 +67,7 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-stone-800 text-sm font-bold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('large')\" data-a11y-btn-font=\"large\" class=\"px-2.5 py-1 border border-content/30 text-sm font-bold rounded bg-surface hover:bg-surface-muted transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -80,7 +80,7 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-stone-800 text-base font-extrabold rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</button> <button type=\"button\" onclick=\"window.A11Y.setFont('xlarge')\" data-a11y-btn-font=\"xlarge\" class=\"px-2.5 py-1 border border-content/30 text-base font-extrabold rounded bg-surface hover:bg-surface-muted transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -145,7 +145,7 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-stone-800 text-xs rounded bg-surface hover:bg-stone-200 transition cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</button></div><!-- Интервал и Изображения --><div class=\"flex items-center gap-1 sm:gap-2\"><button type=\"button\" id=\"a11y-spacing-btn\" onclick=\"window.A11Y.toggleSpacing()\" class=\"px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer\">Интервал: Обычный</button> <button type=\"button\" id=\"a11y-images-btn\" onclick=\"window.A11Y.toggleImages()\" class=\"px-2.5 py-1 border border-content/30 text-xs rounded bg-surface hover:bg-surface-muted transition cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

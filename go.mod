@@ -1,14 +1,14 @@
 module sitecraft
 
-go 1.27
+go 1.27.3
 
 require (
 	github.com/Oudwins/tailwind-merge-go v0.2.3
 	github.com/a-h/templ v0.3.1100
 	github.com/alexedwards/scs/v2 v2.8.0
-	github.com/go-chi/chi/v5 v5.2.1
+	github.com/go-chi/chi/v5 v5.3.0
 	github.com/google/uuid v1.6.0
-	github.com/jackc/pgx/v5 v5.7.2
+	github.com/jackc/pgx/v5 v5.9.2
 	github.com/justinas/nosurf v1.1.1
 	github.com/pressly/goose/v3 v3.24.1
 	github.com/spf13/cobra v1.10.2

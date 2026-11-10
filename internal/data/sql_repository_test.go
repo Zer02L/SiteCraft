@@ -153,5 +153,23 @@ func TestSQLRepositoryOperations(t *testing.T) {
 	if b1Updated.Order != 2 || b2Updated.Order != 1 {
 		t.Errorf("expected swapped orders (2 and 1), got b1=%d, b2=%d", b1Updated.Order, b2Updated.Order)
 	}
+
+	// Test UpdatePageBlock
+	b1Updated.Title = "Updated Title"
+	b1Updated.Content = "Updated Content"
+	b1Updated.Payload = map[string]interface{}{"variant": "split"}
+	if err := repo.UpdatePageBlock(ctx, b1Updated); err != nil {
+		t.Fatalf("UpdatePageBlock failed: %v", err)
+	}
+	b1Fetched, err := repo.GetPageBlockByID(ctx, b1.ID)
+	if err != nil {
+		t.Fatalf("GetPageBlockByID failed: %v", err)
+	}
+	if b1Fetched.Title != "Updated Title" || b1Fetched.Content != "Updated Content" {
+		t.Errorf("expected updated title and content, got title=%q, content=%q", b1Fetched.Title, b1Fetched.Content)
+	}
+	if v, ok := b1Fetched.Payload["variant"].(string); !ok || v != "split" {
+		t.Errorf("expected payload variant 'split', got %v", b1Fetched.Payload["variant"])
+	}
 }
 
