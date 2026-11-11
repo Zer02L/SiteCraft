@@ -34,7 +34,7 @@ func LanguageSwitcher() templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"inline-flex items-center text-xs rounded-lg border border-white/20 bg-surface/5 p-0.5\" role=\"group\" aria-label=\"Language switcher\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"inline-flex items-center text-xs rounded-lg border border-current/20 bg-surface/5 p-0.5\" role=\"group\" aria-label=\"Language switcher\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -46,7 +46,7 @@ func LanguageSwitcher() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var2 = []any{"px-2 py-0.5 rounded transition text-[11px]", templ.KV("bg-accent text-primary-dark font-bold shadow-sm", i18n.GetLocale(ctx) == "ru"), templ.KV("text-white/70 hover:text-white font-medium", i18n.GetLocale(ctx) != "ru")}
+			var templ_7745c5c3_Var2 = []any{"px-2 py-0.5 rounded transition text-[11px]", templ.KV("bg-accent text-on-accent font-bold shadow-sm", i18n.GetLocale(ctx) == "ru"), templ.KV("text-on-primary/70 hover:text-on-primary font-medium", i18n.GetLocale(ctx) != "ru")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var2...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -86,7 +86,7 @@ func LanguageSwitcher() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var4 = []any{"px-2 py-0.5 rounded transition text-[11px]", templ.KV("bg-accent text-primary-dark font-bold shadow-sm", i18n.GetLocale(ctx) == "en"), templ.KV("text-white/70 hover:text-white font-medium", i18n.GetLocale(ctx) != "en")}
+			var templ_7745c5c3_Var4 = []any{"px-2 py-0.5 rounded transition text-[11px]", templ.KV("bg-accent text-on-accent font-bold shadow-sm", i18n.GetLocale(ctx) == "en"), templ.KV("text-on-primary/70 hover:text-on-primary font-medium", i18n.GetLocale(ctx) != "en")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var4...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -177,7 +177,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Header Classic --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-white sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><!-- Zero-JS CSS Scroll Progress Indicator --><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner animate-pulse-glow\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<!-- Header Classic --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><!-- Zero-JS CSS Scroll Progress Indicator --><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-3.5 flex justify-between items-center\"><div class=\"flex items-center space-x-3\"><div class=\"w-10 h-10 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner animate-pulse-glow\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -185,14 +185,14 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div><div class=\"text-white font-serif-title font-bold text-lg tracking-wide leading-tight\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div><div class=\"text-on-primary font-serif-title font-bold text-lg tracking-wide leading-tight\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 56, Col: 111}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 56, Col: 116}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -310,7 +310,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Переключатель сезонов и день/ночь --><div x-data=\"{ \n\t\t\t\t\t\topen: false, \n\t\t\t\t\t\tseason: 'main', \n\t\t\t\t\t\tisNight: false,\n\t\t\t\t\t\tinit() {\n\t\t\t\t\t\t\tconst st = window.getThemeState ? window.getThemeState() : { base: 'main', isNight: false };\n\t\t\t\t\t\t\tthis.season = st.base;\n\t\t\t\t\t\t\tthis.isNight = st.isNight;\n\t\t\t\t\t\t\twindow.addEventListener('themechanged', (e) => {\n\t\t\t\t\t\t\t\tthis.season = e.detail.season;\n\t\t\t\t\t\t\t\tthis.isNight = e.detail.isNight;\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t},\n\t\t\t\t\t\tchangeSeason(s) {\n\t\t\t\t\t\t\tthis.season = s;\n\t\t\t\t\t\t\tthis.open = false;\n\t\t\t\t\t\t\twindow.setSiteTheme(s);\n\t\t\t\t\t\t},\n\t\t\t\t\t\ttoggleNight() {\n\t\t\t\t\t\t\twindow.toggleNightMode();\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"flex items-center space-x-1 relative\"><button type=\"button\" @click=\"open = !open\" class=\"flex items-center gap-1 px-2.5 py-1 rounded border border-white/20 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Выбрать тему оформления\"><span x-show=\"season === 'coral'\">🪸</span> <span x-show=\"season === 'legal' || season === 'legal-swiss'\">⚖️</span> <span x-show=\"season === 'legal-british'\">🌲</span> <span x-show=\"season === 'legal-corporate'\">💼</span> <span x-show=\"season === 'legal-milano'\">🏛️</span> <span x-show=\"season === 'legal-classic'\">📜</span> <span x-show=\"season === 'main'\">🏛️</span> <span x-show=\"season === 'harmonic'\">🎨</span> <span x-show=\"season === 'spring'\">🌱</span> <span x-show=\"season === 'summer'\">☀️</span> <span x-show=\"season === 'autumn'\">🍁</span> <span x-show=\"season === 'winter'\">❄️</span> <span class=\"capitalize\" x-text=\"season === 'coral' ? 'Coral (Hallmark)' : (season === 'legal' || season === 'legal-swiss' ? 'Швейцария' : (season === 'legal-british' ? 'Британия' : (season === 'legal-corporate' ? 'Корпорат' : (season === 'legal-milano' ? 'Милан' : (season === 'legal-classic' ? 'Оксфорд' : (season === 'main' ? 'Основная' : (season === 'harmonic' ? 'Гармония' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима'))))))))))\"></span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<!-- Переключатель сезонов и день/ночь --><div x-data=\"{ \n\t\t\t\t\t\topen: false, \n\t\t\t\t\t\tseason: 'main', \n\t\t\t\t\t\tisNight: false,\n\t\t\t\t\t\tinit() {\n\t\t\t\t\t\t\tconst st = window.getThemeState ? window.getThemeState() : { base: 'main', isNight: false };\n\t\t\t\t\t\t\tthis.season = st.base;\n\t\t\t\t\t\t\tthis.isNight = st.isNight;\n\t\t\t\t\t\t\twindow.addEventListener('themechanged', (e) => {\n\t\t\t\t\t\t\t\tthis.season = e.detail.season;\n\t\t\t\t\t\t\t\tthis.isNight = e.detail.isNight;\n\t\t\t\t\t\t\t});\n\t\t\t\t\t\t},\n\t\t\t\t\t\tchangeSeason(s) {\n\t\t\t\t\t\t\tthis.season = s;\n\t\t\t\t\t\t\tthis.open = false;\n\t\t\t\t\t\t\twindow.setSiteTheme(s);\n\t\t\t\t\t\t},\n\t\t\t\t\t\ttoggleNight() {\n\t\t\t\t\t\t\twindow.toggleNightMode();\n\t\t\t\t\t\t}\n\t\t\t\t\t}\" class=\"flex items-center space-x-1 relative\"><button type=\"button\" @click=\"open = !open\" class=\"flex items-center gap-1 px-2.5 py-1 rounded border border-current/20 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Выбрать тему оформления\"><span x-show=\"season === 'coral'\">🪸</span> <span x-show=\"season === 'legal' || season === 'legal-swiss'\">⚖️</span> <span x-show=\"season === 'legal-british'\">🌲</span> <span x-show=\"season === 'legal-corporate'\">💼</span> <span x-show=\"season === 'legal-milano'\">🏛️</span> <span x-show=\"season === 'legal-classic'\">📜</span> <span x-show=\"season === 'main'\">🏛️</span> <span x-show=\"season === 'harmonic'\">🎨</span> <span x-show=\"season === 'spring'\">🌱</span> <span x-show=\"season === 'summer'\">☀️</span> <span x-show=\"season === 'autumn'\">🍁</span> <span x-show=\"season === 'winter'\">❄️</span> <span class=\"capitalize\" x-text=\"season === 'coral' ? 'Coral (Hallmark)' : (season === 'legal' || season === 'legal-swiss' ? 'Швейцария' : (season === 'legal-british' ? 'Британия' : (season === 'legal-corporate' ? 'Корпорат' : (season === 'legal-milano' ? 'Милан' : (season === 'legal-classic' ? 'Оксфорд' : (season === 'main' ? 'Основная' : (season === 'harmonic' ? 'Гармония' : (season === 'spring' ? 'Весна' : (season === 'summer' ? 'Лето' : (season === 'autumn' ? 'Осень' : 'Зима'))))))))))\"></span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -318,12 +318,12 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</button><!-- Выпадающий список сезонов и юридических тем --><div x-show=\"open\" x-cloak @click.outside=\"open = false\" class=\"absolute top-full left-0 mt-1.5 w-52 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs animate-fade-in max-h-80 overflow-y-auto\"><div class=\"px-3 py-1 text-[10px] font-bold text-accent uppercase tracking-wider border-b border-content/10\">Hallmark Референсы</div><button type=\"button\" @click=\"changeSeason('coral')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium text-accent\"><span>🪸</span> Coral (Warm Minimal)</button><div class=\"px-3 py-1 text-[10px] font-bold text-content-muted uppercase tracking-wider border-t border-b border-content/10 mt-1\">Темы Advokat-Pro</div><button type=\"button\" @click=\"changeSeason('legal-swiss')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>⚖️</span> Швейцарский Navy</button> <button type=\"button\" @click=\"changeSeason('legal-british')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌲</span> Британский Изумруд</button> <button type=\"button\" @click=\"changeSeason('legal-corporate')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>💼</span> Корпоративный Сапфир</button> <button type=\"button\" @click=\"changeSeason('legal-milano')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Миланский Графит</button> <button type=\"button\" @click=\"changeSeason('legal-classic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium opacity-70\"><span>📜</span> Оксфорд (Классик)</button><div class=\"px-3 py-1 text-[10px] font-bold text-content-muted uppercase tracking-wider border-t border-b border-content/10 mt-1\">Другие темы</div><button type=\"button\" @click=\"changeSeason('main')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Основная</button> <button type=\"button\" @click=\"changeSeason('harmonic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center justify-between cursor-pointer font-medium text-accent\"><span class=\"flex items-center gap-2\"><span>🎨</span> Гармония (Авто)</span> <span class=\"text-[10px] opacity-70\">HSL</span></button> <button type=\"button\" @click=\"changeSeason('spring')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌱</span> Весна</button> <button type=\"button\" @click=\"changeSeason('summer')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>☀️</span> Лето</button> <button type=\"button\" @click=\"changeSeason('autumn')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🍁</span> Осень</button> <button type=\"button\" @click=\"changeSeason('winter')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>❄️</span> Зима</button></div><!-- Переключатель День / Ночь --><button type=\"button\" @click=\"toggleNight()\" class=\"p-1.5 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" :title=\"isNight ? 'Переключить на дневной режим' : 'Переключить на ночной режим'\"><span x-show=\"!isNight\" title=\"Ночной режим\">🌙</span> <span x-show=\"isNight\" title=\"Дневной режим\">☀️</span></button></div><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</button><!-- Выпадающий список сезонов и юридических тем --><div x-show=\"open\" x-cloak @click.outside=\"open = false\" class=\"absolute top-full left-0 mt-1.5 w-52 bg-surface text-content rounded-xl shadow-xl border border-content/10 py-1.5 z-50 text-xs animate-fade-in max-h-80 overflow-y-auto\"><div class=\"px-3 py-1 text-[10px] font-bold text-accent uppercase tracking-wider border-b border-content/10\">Hallmark Референсы</div><button type=\"button\" @click=\"changeSeason('coral')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium text-accent\"><span>🪸</span> Coral (Warm Minimal)</button><div class=\"px-3 py-1 text-[10px] font-bold text-content-muted uppercase tracking-wider border-t border-b border-content/10 mt-1\">Темы Advokat-Pro</div><button type=\"button\" @click=\"changeSeason('legal-swiss')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>⚖️</span> Швейцарский Navy</button> <button type=\"button\" @click=\"changeSeason('legal-british')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌲</span> Британский Изумруд</button> <button type=\"button\" @click=\"changeSeason('legal-corporate')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>💼</span> Корпоративный Сапфир</button> <button type=\"button\" @click=\"changeSeason('legal-milano')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Миланский Графит</button> <button type=\"button\" @click=\"changeSeason('legal-classic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium opacity-70\"><span>📜</span> Оксфорд (Классик)</button><div class=\"px-3 py-1 text-[10px] font-bold text-content-muted uppercase tracking-wider border-t border-b border-content/10 mt-1\">Другие темы</div><button type=\"button\" @click=\"changeSeason('main')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🏛️</span> Основная</button> <button type=\"button\" @click=\"changeSeason('harmonic')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center justify-between cursor-pointer font-medium text-accent\"><span class=\"flex items-center gap-2\"><span>🎨</span> Гармония (Авто)</span> <span class=\"text-[10px] opacity-70\">HSL</span></button> <button type=\"button\" @click=\"changeSeason('spring')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🌱</span> Весна</button> <button type=\"button\" @click=\"changeSeason('summer')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>☀️</span> Лето</button> <button type=\"button\" @click=\"changeSeason('autumn')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>🍁</span> Осень</button> <button type=\"button\" @click=\"changeSeason('winter')\" class=\"w-full text-left px-3 py-1.5 hover:bg-accent/15 flex items-center gap-2 cursor-pointer font-medium\"><span>❄️</span> Зима</button></div><!-- Переключатель День / Ночь --><button type=\"button\" @click=\"toggleNight()\" class=\"p-1.5 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" :title=\"isNight ? 'Переключить на дневной режим' : 'Переключить на ночной режим'\"><span x-show=\"!isNight\" title=\"Ночной режим\">🌙</span> <span x-show=\"isNight\" title=\"Дневной режим\">☀️</span></button></div><!-- Кнопка 'Версия для слабовидящих' (Vanilla JS) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"flex items-center gap-1.5 px-2.5 py-1 rounded border border-current/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -371,7 +371,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-2.5 py-1.5 rounded border border-white/20 text-xs font-semibold bg-black/20 text-white cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"px-2.5 py-1.5 rounded border border-current/20 text-xs font-semibold bg-current/10 text-on-primary cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -424,12 +424,12 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			Variant: base.BtnAccent,
 			Size:    base.BtnSizeSm,
 			Href:    "#booking",
-			Class:   "text-primary-dark text-xs font-semibold px-3 py-1.5 shadow",
+			Class:   "text-on-accent text-xs font-semibold px-3 py-1.5 shadow",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<!-- Alpine.js Hamburger Button --><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-white/20 bg-surface/10 text-white hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\" class=\"flex items-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<!-- Alpine.js Hamburger Button --><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\" class=\"flex items-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -561,7 +561,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<!-- Header Minimal: лаконичный компактный стиль с фокусом на конверсию --><header class=\"bg-primary text-white sticky top-0 z-40 shadow-md border-b border-primary-dark/80 backdrop-blur-md bg-opacity-95\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center\"><!-- Бренд / Название --><a href=\"/\" class=\"flex items-center space-x-2.5 group\"><div class=\"w-8 h-8 rounded-lg bg-accent/20 border border-accent/40 flex items-center justify-center text-accent group-hover:scale-105 transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<!-- Header Minimal: лаконичный компактный стиль с фокусом на конверсию --><header class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-md border-b border-primary-dark/80 backdrop-blur-md bg-opacity-95\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center\"><!-- Бренд / Название --><a href=\"/\" class=\"flex items-center space-x-2.5 group\"><div class=\"w-8 h-8 rounded-lg bg-accent/20 border border-accent/40 flex items-center justify-center text-accent group-hover:scale-105 transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -569,14 +569,14 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div><div><div class=\"text-white font-serif-title font-bold text-base leading-tight tracking-wide group-hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div><div><div class=\"text-on-primary font-serif-title font-bold text-base leading-tight tracking-wide group-hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 278, Col: 148}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 278, Col: 153}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -613,7 +613,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" class=\"hidden sm:flex items-center gap-1.5 text-xs font-semibold text-white/90 hover:text-accent transition bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" class=\"hidden sm:flex items-center gap-1.5 text-xs font-semibold text-on-primary/90 hover:text-accent transition bg-current/5 border border-current/10 px-3 py-1.5 rounded-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -643,12 +643,12 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Переключатель День / Ночь --><button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1.5 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Переключить тему\">🌙</button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Переключатель День / Ночь --><button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1.5 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Переключить тему\">🌙</button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded border border-white/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded border border-current/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -709,7 +709,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			Variant: base.BtnAccent,
 			Size:    base.BtnSizeSm,
 			Href:    "/#booking",
-			Class:   "text-primary-dark text-xs font-bold px-3.5 shadow transition",
+			Class:   "text-on-accent text-xs font-bold px-3.5 shadow transition",
 		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -739,7 +739,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<!-- Header Centered: элегантный центрированный стиль для респектабельных проектов --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-white sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><!-- Верхняя строка: Логотип и название по центру --><div class=\"max-w-6xl mx-auto px-4 pt-3 pb-2 flex flex-col items-center justify-center border-b border-white/10\"><a href=\"/\" class=\"flex items-center space-x-2 text-center group\"><div class=\"w-9 h-9 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<!-- Header Centered: элегантный центрированный стиль для респектабельных проектов --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><!-- Верхняя строка: Логотип и название по центру --><div class=\"max-w-6xl mx-auto px-4 pt-3 pb-2 flex flex-col items-center justify-center border-b border-current/10\"><a href=\"/\" class=\"flex items-center space-x-2 text-center group\"><div class=\"w-9 h-9 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -747,14 +747,14 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div><div class=\"text-left sm:text-center\"><div class=\"text-white font-serif-title font-bold text-lg sm:text-xl tracking-wider leading-tight group-hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div><div class=\"text-left sm:text-center\"><div class=\"text-on-primary font-serif-title font-bold text-lg sm:text-xl tracking-wider leading-tight group-hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 347, Col: 158}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 347, Col: 163}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
@@ -873,7 +873,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"p-1 rounded border border-white/20 text-xs hover:border-accent hover:text-accent transition cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -899,7 +899,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "<button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1 rounded border border-white/20 text-xs hover:border-accent transition cursor-pointer\" title=\"Переключить день/ночь\">🌙</button></div><!-- Мобильная кнопка меню --><div class=\"md:hidden flex items-center justify-between w-full\"><div class=\"flex items-center gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "<button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent transition cursor-pointer\" title=\"Переключить день/ночь\">🌙</button></div><!-- Мобильная кнопка меню --><div class=\"md:hidden flex items-center justify-between w-full\"><div class=\"flex items-center gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -920,7 +920,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "</a></div><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-white/20 bg-surface/10 text-white hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "</a></div><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

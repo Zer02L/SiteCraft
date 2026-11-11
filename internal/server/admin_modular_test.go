@@ -101,3 +101,91 @@ func TestModularAdmin_RegistryAndSecurity(t *testing.T) {
 		t.Errorf("dashboard should NOT display disabled 'Отзывы клиентов' tab")
 	}
 }
+
+func TestAdminSaveThemeTokens_AndTypography(t *testing.T) {
+	srv, conn := setupTestServer(t)
+	defer conn.Close()
+
+	ctx := context.Background()
+	sessionCookie, err := srv.SessionMgr.Load(ctx, "")
+	if err != nil {
+		t.Fatalf("failed to init session: %v", err)
+	}
+	ctx = sessionCookie
+	_ = auth.SetAdminSession(ctx, srv.SessionMgr, "admin@sitecraft.local")
+	_, _, _ = srv.SessionMgr.Commit(ctx)
+
+	// 1. Post to /admin/theme/tokens with custom tokens and flavor
+	bodyStr := "theme=coral&primary_color=%230f172a&accent_color=%23e65a40&design_flavor=sharp&font_family=editorial&background_color=%23ffffff"
+	req := httptest.NewRequest("POST", "/admin/theme/tokens", strings.NewReader(bodyStr))
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req = req.WithContext(ctx)
+
+	w := httptest.NewRecorder()
+	srv.Router.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/theme/tokens, got %d: %s", w.Code, w.Body.String())
+	}
+
+	// 2. Verify settings in repository
+	settings, err := srv.Repo.GetSiteSettings(context.Background())
+	if err != nil {
+		t.Fatalf("failed to get site settings: %v", err)
+	}
+
+	if settings.Theme != "coral" {
+		t.Errorf("expected theme 'coral', got %s", settings.Theme)
+	}
+	if settings.PrimaryColor != "#0f172a" {
+		t.Errorf("expected primary color '#0f172a', got %s", settings.PrimaryColor)
+	}
+	if settings.GetDesignFlavor() != "sharp" {
+		t.Errorf("expected design flavor 'sharp', got %s", settings.GetDesignFlavor())
+	}
+	if settings.GetFontPair() != "editorial" {
+		t.Errorf("expected font pair 'editorial', got %s", settings.GetFontPair())
+	}
+	if settings.GetCustomBgColor() != "#ffffff" {
+		t.Errorf("expected custom bg '#ffffff', got %s", settings.GetCustomBgColor())
+	}
+
+	// 3. Test block creation with typography auto-formatting
+	blockReqBody := "type=hero&title=Юридические+услуги+в+Москве+и+области&content=Компания+\"Лидер\"+-+надежный+партнер"
+	bReq := httptest.NewRequest("POST", "/admin/blocks/new", strings.NewReader(blockReqBody))
+	bReq.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	bReq.Header.Set("HX-Request", "true")
+	bReq = bReq.WithContext(ctx)
+
+	bRec := httptest.NewRecorder()
+	srv.Router.ServeHTTP(bRec, bReq)
+
+	if bRec.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/blocks/new, got %d", bRec.Code)
+	}
+
+	blocks, err := srv.Repo.GetAllPageBlocks(context.Background())
+	if err != nil {
+		t.Fatalf("GetAllPageBlocks failed: %v", err)
+	}
+
+	var createdHero bool
+	for _, b := range blocks {
+		if b.Type == "hero" {
+			createdHero = true
+			if !strings.Contains(b.Title, "в\u00A0Москве") || !strings.Contains(b.Title, "и\u00A0области") {
+				t.Errorf("block title missing typography nbsp: %q", b.Title)
+			}
+			if !strings.Contains(b.Content, "«Лидер»") {
+				t.Errorf("block content missing normalized quotes: %q", b.Content)
+			}
+			if !strings.Contains(b.Content, "—") {
+				t.Errorf("block content missing em-dash: %q", b.Content)
+			}
+		}
+	}
+	if !createdHero {
+		t.Errorf("created hero block not found")
+	}
+}
+

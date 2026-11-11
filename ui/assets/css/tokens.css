@@ -49,6 +49,7 @@ html[data-theme="main-day"] {
   --color-accent: #2563eb;             /* blue-600 */
   --color-accent-hover: color-mix(in srgb, var(--color-accent), black 15%);
   --color-accent-light: color-mix(in srgb, var(--color-accent) 12%, white);
+  --color-on-accent: #ffffff;
   --color-surface: #ffffff;
   --color-surface-muted: color-mix(in srgb, var(--color-primary) 3%, white);
   --color-content: #0f172a;
@@ -83,6 +84,60 @@ html[data-theme="main-day"] {
   --admin-warning: #d97706;
   --admin-warning-muted: #fffbeb;
 }
+
+/* =========================================
+   DESIGN FLAVORS (ХАРАКТЕР ГЕОМЕТРИИ И СТИЛЯ)
+   ========================================= */
+html[data-flavor="sharp"] {
+  --radius-card: 0px;
+  --radius-card-sm: 0px;
+  --radius-btn: 0px;
+  --radius-input: 0px;
+  --radius-badge: 0px;
+}
+
+html[data-flavor="corporate"] {
+  --radius-card: 0.5rem;   /* 8px */
+  --radius-card-sm: 0.375rem; /* 6px */
+  --radius-btn: 0.375rem;  /* 6px */
+  --radius-input: 0.375rem;/* 6px */
+  --radius-badge: 9999px;
+}
+
+html[data-flavor="soft"],
+html:not([data-flavor]) {
+  --radius-card: 1.5rem;   /* 24px */
+  --radius-card-sm: 1rem;  /* 16px */
+  --radius-btn: 0.75rem;   /* 12px */
+  --radius-input: 0.75rem; /* 12px */
+  --radius-badge: 9999px;
+}
+
+html[data-flavor="brutalist"] {
+  --radius-card: 0px;
+  --radius-card-sm: 0px;
+  --radius-btn: 0px;
+  --radius-input: 0px;
+  --radius-badge: 0px;
+}
+
+/* =========================================
+   FONT PAIRS (ШРИФТОВЫЕ СВЯЗКИ)
+   ========================================= */
+html[data-font="editorial"] {
+  --font-serif-title: "Merriweather", Georgia, serif;
+}
+html[data-font="condensed"] {
+  --font-serif-title: "Bebas Neue", "Barlow Condensed", Impact, sans-serif;
+}
+html[data-font="modern"],
+html:not([data-font]) {
+  --font-serif-title: "Inter", system-ui, sans-serif;
+}
+html[data-font="tech"] {
+  --font-serif-title: "Plus Jakarta Sans", "Inter", sans-serif;
+}
+
 
 html[data-theme="main-night"],
 html[data-theme="dark"] {

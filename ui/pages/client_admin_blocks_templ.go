@@ -66,6 +66,455 @@ func humanBlockType(bType string) (name string, icon string) {
 	}
 }
 
+func initialBlocksTabData(settings models.SiteSettings) string {
+	theme := settings.Theme
+	if theme == "" {
+		theme = "main"
+	}
+	primary := settings.PrimaryColor
+	if primary == "" {
+		primary = "#1e293b"
+	}
+	accent := settings.AccentColor
+	if accent == "" {
+		accent = "#2563eb"
+	}
+	surface := settings.GetCustomBgColor()
+	if surface == "" {
+		surface = "#ffffff"
+	}
+	flavor := settings.GetDesignFlavor()
+	fontPair := settings.GetFontPair()
+
+	return fmt.Sprintf(`{
+		activeSubTab: 'blocks',
+		canvasDevice: 'desktop',
+		containerWidth: 900,
+		selectedBlockId: '',
+		responsiveView: 'both',
+		editBlock: {
+			id: '',
+			title: '',
+			content: '',
+			type: '',
+			variant: ''
+		},
+		themePreset: '%s',
+		flavorPreset: '%s',
+		fontPreset: '%s',
+		tokens: {
+			primary: '%s',
+			accent: '%s',
+			surface: '%s',
+			radiusBtn: '8px',
+			radiusCard: '24px'
+		},
+		contrastRatio: 7.2,
+		contrastPass: true,
+		activeTuner: '',
+		inspectRole: 'primary',
+		brandHue: 220,
+		brandChroma: 0.16,
+		brandLightness: 35,
+		lightnessGradient: '',
+		safeZones: {
+			isLightBg: true,
+			aaPercent: 55,
+			aaaPercent: 40
+		},
+		radarStatus: {
+			checked: false,
+			hasOverflow: false,
+			diff: 0,
+			culprits: []
+		},
+		saveStatus: '',
+		seedColor: '%s',
+		isGrayscale: false,
+		harmonyPreset: 'brand',
+		neutralTemp: 'brand',
+		accentScale: [],
+		copiedStep: '',
+		showProTools: false,
+		presetSwatches: {
+			primary: [
+				{ name: 'Slate', hex: '#0f172a' },
+				{ name: 'Midnight', hex: '#09090b' },
+				{ name: 'Navy', hex: '#0f1e36' },
+				{ name: 'Emerald', hex: '#06231a' },
+				{ name: 'Burgundy', hex: '#2c0d16' },
+				{ name: 'Espresso', hex: '#231610' },
+				{ name: 'Zinc', hex: '#18181b' },
+				{ name: 'Indigo', hex: '#1e1b4b' }
+			],
+			accent: [
+				{ name: 'Amber', hex: '#d97706' },
+				{ name: 'Blue', hex: '#2563eb' },
+				{ name: 'Emerald', hex: '#059669' },
+				{ name: 'Crimson', hex: '#dc2626' },
+				{ name: 'Indigo', hex: '#4f46e5' },
+				{ name: 'Rose', hex: '#e11d48' },
+				{ name: 'Cyan', hex: '#0891b2' },
+				{ name: 'Dark', hex: '#0f172a' }
+			],
+			surface: [
+				{ name: 'White', hex: '#ffffff' },
+				{ name: 'Parchment', hex: '#faf8f5' },
+				{ name: 'Ice Slate', hex: '#f8fafc' },
+				{ name: 'Neutral', hex: '#f9fafb' },
+				{ name: 'Night', hex: '#0b0f19' },
+				{ name: 'Dark Zinc', hex: '#18181b' }
+			]
+		},
+		init() {
+			this.$nextTick(() => { this.updateContainerWidth(); });
+			window.addEventListener('resize', () => { this.updateContainerWidth(); });
+			window.addEventListener('message', (e) => {
+				if (e.data && e.data.type === 'PREVIEW_BLOCK_CLICKED') {
+					if (e.data.blockId) {
+						this.selectBlock(e.data.blockId, e.data.blockType, false);
+					}
+				}
+				if (e.data && e.data.type === 'SITE_OVERFLOW_REPORT') {
+					this.radarStatus = {
+						checked: true,
+						hasOverflow: !!e.data.hasOverflow,
+						diff: e.data.diff || 0,
+						culprits: e.data.culprits || []
+					};
+				}
+			});
+			this.$nextTick(() => {
+				this.syncFromHex(this.tokens[this.inspectRole] || this.tokens.primary);
+				this.updateScale();
+			});
+		},
+		updateContainerWidth() {
+			const el = this.$refs.canvasContainer;
+			if (el) {
+				this.containerWidth = el.clientWidth || 800;
+			}
+		},
+		get scaleFactor() {
+			if (this.canvasDevice === 'desktop') {
+				const targetWidth = 1280;
+				const available = Math.max(300, (this.containerWidth || 800) - 8);
+				return Math.min(1, Math.max(0.2, available / targetWidth));
+			}
+			return 1;
+		},
+		setDevice(dev) {
+			this.canvasDevice = dev;
+			this.$nextTick(() => {
+				this.updateContainerWidth();
+				setTimeout(() => { this.triggerRadarCheck(); }, 350);
+			});
+		},
+		triggerRadarCheck() {
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_CHECK_OVERFLOW' }, '*');
+			}
+		},
+		selectBlock(id, bType, scrollIframe = true) {
+			this.selectedBlockId = id;
+			const card = document.getElementById('block-card-' + id);
+			if (card) {
+				card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			}
+			if (scrollIframe) {
+				const frame = document.getElementById('preview-canvas');
+				if (frame && frame.contentWindow) {
+					frame.contentWindow.postMessage({
+						type: 'SITE_SCROLL_TO_BLOCK',
+						blockId: id,
+						blockType: bType
+					}, '*');
+				}
+			}
+		},
+		openEdit(id, title, content, bType, variant) {
+			this.editBlock = {
+				id: id,
+				title: title,
+				content: content,
+				type: bType,
+				variant: variant
+			};
+			const dlg = document.getElementById('edit-block-dialog');
+			if (dlg) dlg.showModal();
+		},
+		sendTokenUpdate(key, val) {
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');
+			}
+			if (key === '--color-accent') {
+				this.updateScale();
+			}
+			this.syncFromHex(this.tokens[this.inspectRole]);
+		},
+		sendThemeUpdate(theme) {
+			this.themePreset = theme;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');
+			}
+		},
+		sendFlavorUpdate(flavor) {
+			this.flavorPreset = flavor;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_FLAVOR_UPDATE', flavor: flavor }, '*');
+			}
+		},
+		sendFontUpdate(font) {
+			this.fontPreset = font;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_FONT_UPDATE', font: font }, '*');
+			}
+		},
+		toggleGrayscale() {
+			this.isGrayscale = !this.isGrayscale;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_GRAYSCALE_UPDATE', enabled: this.isGrayscale }, '*');
+			}
+		},
+		copyHex(hex, step) {
+			if (navigator && navigator.clipboard) {
+				navigator.clipboard.writeText(hex);
+				this.copiedStep = step;
+				setTimeout(() => { if (this.copiedStep === step) this.copiedStep = ''; }, 1600);
+			}
+		},
+		updateScale() {
+			if (!window.SiteOklchGuard) return;
+			var rgb = window.SiteOklchGuard.hexToRgb(this.tokens.accent || '#2563eb');
+			var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+			this.accentScale = window.SiteOklchGuard.generateScale(oklch.h, oklch.c);
+		},
+		getOnAccentContrast() {
+			if (!window.SiteOklchGuard) return { pass: true, ratio: 7.0, label: 'AAA', textColor: '#ffffff' };
+			var onColor = window.SiteOklchGuard.getOnColor(this.tokens.accent);
+			var lumAccent = window.SiteOklchGuard.getLuminanceFromHex(this.tokens.accent);
+			var lumText = window.SiteOklchGuard.getLuminanceFromHex(onColor);
+			var r = window.SiteOklchGuard.calcRatio(lumAccent, lumText);
+			var rounded = Math.round(r * 10) / 10;
+			return {
+				ratio: rounded,
+				pass: rounded >= 4.5,
+				label: rounded >= 7.0 ? 'AAA' : (rounded >= 4.5 ? 'AA' : 'Fail'),
+				textColor: onColor
+			};
+		},
+		applyHarmony(mode) {
+			this.harmonyPreset = mode;
+			this.generate603010(this.tokens.accent);
+		},
+		setNeutralTemp(temp) {
+			this.neutralTemp = temp;
+			this.generate603010(this.tokens.accent);
+		},
+		getRoleContrast(role) {
+			if (!window.SiteOklchGuard) return { ratio: 4.5, pass: true, label: 'AA' };
+			var hex = this.tokens[role] || '#000000';
+			var lum = window.SiteOklchGuard.getLuminanceFromHex(hex);
+			var compareHex = role === 'surface' ? (this.tokens.primary || '#000000') : (this.tokens.surface || '#ffffff');
+			var bgLum = window.SiteOklchGuard.getLuminanceFromHex(compareHex);
+			var r = window.SiteOklchGuard.calcRatio(lum, bgLum);
+			var rounded = Math.round(r * 10) / 10;
+			var target = (role === 'accent') ? 3.0 : 4.5;
+			var aaaTarget = (role === 'accent') ? 4.5 : 7.0;
+			return {
+				ratio: rounded,
+				pass: rounded >= target,
+				label: rounded >= aaaTarget ? 'AAA' : (rounded >= target ? 'AA' : 'Fail')
+			};
+		},
+		applyRoleHex(role, hex) {
+			if (!hex) return;
+			hex = hex.trim();
+			if (!hex.startsWith('#')) hex = '#' + hex;
+			if (hex.length !== 7) return;
+			this.tokens[role] = hex;
+			var key = role === 'primary' ? '--color-primary' : (role === 'accent' ? '--color-accent' : '--color-surface');
+			this.sendTokenUpdate(key, hex);
+			if (this.inspectRole === role) {
+				this.syncFromHex(hex);
+			}
+		},
+		async pickEyeDropper(role) {
+			if (window.EyeDropper) {
+				try {
+					const eyeDropper = new window.EyeDropper();
+					const result = await eyeDropper.open();
+					if (result && result.sRGBHex) {
+						this.applyRoleHex(role, result.sRGBHex);
+					}
+				} catch (e) {}
+			} else {
+				const inp = document.getElementById('native-picker-' + role);
+				if (inp) inp.click();
+			}
+		},
+		toggleTuner(role) {
+			if (this.activeTuner === role) {
+				this.activeTuner = '';
+			} else {
+				this.activeTuner = role;
+				this.inspectRole = role;
+				this.syncFromHex(this.tokens[role]);
+			}
+		},
+		syncFromHex(hex) {
+			if (!window.SiteOklchGuard) return;
+			var rgb = window.SiteOklchGuard.hexToRgb(hex);
+			var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+			this.brandHue = Math.round(oklch.h);
+			this.brandChroma = Math.max(0.04, Math.min(0.24, Math.round(oklch.c * 100) / 100 || 0.15));
+			this.brandLightness = Math.round(oklch.l * 100);
+			this.recalculateOklch(false);
+		},
+		recalculateOklch(sendUpdate = false) {
+			if (!window.SiteOklchGuard) return;
+			var compareBg = this.inspectRole === 'surface' ? this.tokens.primary : this.tokens.surface;
+			var isAccent = this.inspectRole === 'accent';
+			this.safeZones = window.SiteOklchGuard.getSafeRange(this.brandHue, this.brandChroma, compareBg, isAccent ? 3.0 : 4.5, isAccent ? 4.5 : 7.0);
+			this.lightnessGradient = window.SiteOklchGuard.getGradientCss(this.brandHue, this.brandChroma);
+			var res = window.SiteOklchGuard.oklchToRgb(this.brandLightness / 100, this.brandChroma, this.brandHue);
+			this.tokens[this.inspectRole] = res.hex;
+			var bgLum = window.SiteOklchGuard.getLuminanceFromHex(compareBg);
+			var ratio = window.SiteOklchGuard.calcRatio(res.lum, bgLum);
+			this.contrastRatio = Math.round(ratio * 10) / 10;
+			this.contrastPass = ratio >= (isAccent ? 3.0 : 4.5);
+			if (sendUpdate) {
+				var key = this.inspectRole === 'primary' ? '--color-primary' : (this.inspectRole === 'accent' ? '--color-accent' : '--color-surface');
+				const frame = document.getElementById('preview-canvas');
+				if (frame && frame.contentWindow) {
+					frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: res.hex }, '*');
+				}
+				if (this.inspectRole === 'accent') {
+					this.updateScale();
+				}
+			}
+		},
+		onHueChange(val) {
+			this.brandHue = parseInt(val);
+			this.recalculateOklch(true);
+		},
+		onLightnessChange(val) {
+			this.brandLightness = parseInt(val);
+			this.recalculateOklch(true);
+		},
+		snapTo(level) {
+			if (!window.SiteOklchGuard) return;
+			var compareBg = this.inspectRole === 'surface' ? this.tokens.primary : this.tokens.surface;
+			var minRatio = (this.inspectRole === 'accent') ? (level === 'aaa' ? 4.5 : 3.0) : (level === 'aaa' ? 7.0 : 4.5);
+			var res = window.SiteOklchGuard.snapToTarget(this.brandHue, this.brandChroma, compareBg, level, minRatio);
+			if (res) {
+				this.brandLightness = Math.round(res.l * 100);
+				this.recalculateOklch(true);
+			}
+		},
+		setInspectRole(role) {
+			this.inspectRole = role;
+			this.activeTuner = role;
+			this.syncFromHex(this.tokens[role]);
+		},
+		autoFixRole(role) {
+			this.inspectRole = role;
+			this.activeTuner = role;
+			this.syncFromHex(this.tokens[role]);
+			this.snapTo('aa');
+		},
+		autoFixContrast() {
+			this.snapTo('aa');
+		},
+		generate603010(seed) {
+			if (!seed) return;
+			this.tokens.accent = seed;
+			if (window.SiteOklchGuard) {
+				var rgb = window.SiteOklchGuard.hexToRgb(seed);
+				var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+				var h = oklch.h;
+				var isDarkTheme = this.themePreset === 'main-night';
+
+				// 1. Harmonies are only a start (угол hue для текста)
+				var textHue = h;
+				if (this.harmonyPreset === 'complementary') textHue = (h + 180) %% 360;
+				else if (this.harmonyPreset === 'analogous') textHue = (h + 30) %% 360;
+				else if (this.harmonyPreset === 'split') textHue = (h + 150) %% 360;
+				else if (this.harmonyPreset === 'triadic') textHue = (h + 120) %% 360;
+
+				// 2. Neutrals with a temperature (угол и примесь для фона)
+				var bgHue = h;
+				var bgChroma = 0.008;
+				var textChroma = 0.035; // One Loud Color: умеренная насыщенность текста
+				if (this.neutralTemp === 'clean') {
+					bgChroma = 0.0;
+					textChroma = 0.0;
+				} else if (this.neutralTemp === 'warm') {
+					bgHue = 65;
+					bgChroma = 0.012;
+				} else if (this.neutralTemp === 'cool') {
+					bgHue = 220;
+					bgChroma = 0.012;
+				}
+
+				if (isDarkTheme) {
+					// Темная тема: глубокий брендовый фон и светлый читаемый текст
+					var bgRes = window.SiteOklchGuard.oklchToRgb(0.12, Math.max(0.01, bgChroma * 2), bgHue);
+					var primRes = window.SiteOklchGuard.oklchToRgb(0.96, textChroma, textHue);
+					this.tokens.surface = bgRes.hex;
+					this.tokens.primary = primRes.hex;
+				} else {
+					// Светлая тема: чистый/тонированный светлый фон и глубокий читаемый текст
+					var bgRes = window.SiteOklchGuard.oklchToRgb(0.985, bgChroma, bgHue);
+					// Светлота 18%% с тонким оттенком дает статус AAA (≥7:1)
+					var primRes = window.SiteOklchGuard.oklchToRgb(0.18, textChroma, textHue);
+					this.tokens.surface = bgRes.hex;
+					this.tokens.primary = primRes.hex;
+				}
+			} else {
+				this.tokens.surface = '#ffffff';
+				this.tokens.primary = '#0f172a';
+			}
+			this.sendTokenUpdate('--color-accent', this.tokens.accent);
+			this.sendTokenUpdate('--color-primary', this.tokens.primary);
+			this.sendTokenUpdate('--color-surface', this.tokens.surface);
+			this.updateScale();
+			this.syncFromHex(this.tokens[this.inspectRole]);
+		},
+		saveThemeTokens() {
+			var fd = new FormData();
+			fd.append('theme', this.themePreset);
+			fd.append('primary_color', this.tokens.primary);
+			fd.append('accent_color', this.tokens.accent);
+			fd.append('design_flavor', this.flavorPreset);
+			fd.append('font_family', this.fontPreset);
+			fd.append('background_color', this.tokens.surface);
+			this.saveStatus = 'Сохранение...';
+			fetch('/admin/theme/tokens', { method: 'POST', body: fd })
+				.then(r => r.text())
+				.then(txt => {
+					this.saveStatus = 'Сохранено в БД ✓';
+					setTimeout(() => { this.saveStatus = ''; }, 3500);
+				})
+				.catch(e => {
+					this.saveStatus = 'Ошибка сохранения';
+				});
+		},
+		refreshCanvas() {
+			const frame = document.getElementById('preview-canvas');
+			if (frame) {
+				frame.src = frame.src;
+			}
+		}
+	}`, theme, flavor, fontPair, primary, accent, surface, accent)
+}
+
 func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -83,30 +532,43 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tactiveSubTab: 'blocks',\n\t\t\tcanvasDevice: 'desktop',\n\t\t\tcontainerWidth: 900,\n\t\t\tselectedBlockId: '',\n\t\t\tresponsiveView: 'both',\n\t\t\teditBlock: {\n\t\t\t\tid: '',\n\t\t\t\ttitle: '',\n\t\t\t\tcontent: '',\n\t\t\t\ttype: '',\n\t\t\t\tvariant: ''\n\t\t\t},\n\t\t\tthemePreset: 'default',\n\t\t\ttokens: {\n\t\t\t\tprimary: '#1e293b',\n\t\t\t\taccent: '#2563eb',\n\t\t\t\tradiusBtn: '8px',\n\t\t\t\tradiusCard: '24px'\n\t\t\t},\n\t\t\tinit() {\n\t\t\t\tthis.$nextTick(() => { this.updateContainerWidth(); });\n\t\t\t\twindow.addEventListener('resize', () => { this.updateContainerWidth(); });\n\t\t\t\twindow.addEventListener('message', (e) => {\n\t\t\t\t\tif (e.data && e.data.type === 'PREVIEW_BLOCK_CLICKED') {\n\t\t\t\t\t\tif (e.data.blockId) {\n\t\t\t\t\t\t\tthis.selectBlock(e.data.blockId, e.data.blockType, false);\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t});\n\t\t\t},\n\t\t\tupdateContainerWidth() {\n\t\t\t\tconst el = this.$refs.canvasContainer;\n\t\t\t\tif (el) {\n\t\t\t\t\tthis.containerWidth = el.clientWidth || 800;\n\t\t\t\t}\n\t\t\t},\n\t\t\tget scaleFactor() {\n\t\t\t\tif (this.canvasDevice === 'desktop') {\n\t\t\t\t\tconst targetWidth = 1280;\n\t\t\t\t\tconst available = Math.max(300, (this.containerWidth || 800) - 8);\n\t\t\t\t\treturn Math.min(1, Math.max(0.2, available / targetWidth));\n\t\t\t\t}\n\t\t\t\treturn 1;\n\t\t\t},\n\t\t\tsetDevice(dev) {\n\t\t\t\tthis.canvasDevice = dev;\n\t\t\t\tthis.$nextTick(() => { this.updateContainerWidth(); });\n\t\t\t},\n\t\t\tselectBlock(id, bType, scrollIframe = true) {\n\t\t\t\tthis.selectedBlockId = id;\n\t\t\t\tconst card = document.getElementById('block-card-' + id);\n\t\t\t\tif (card) {\n\t\t\t\t\tcard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });\n\t\t\t\t}\n\t\t\t\tif (scrollIframe) {\n\t\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\t\tframe.contentWindow.postMessage({\n\t\t\t\t\t\t\ttype: 'SITE_SCROLL_TO_BLOCK',\n\t\t\t\t\t\t\tblockId: id,\n\t\t\t\t\t\t\tblockType: bType\n\t\t\t\t\t\t}, '*');\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t},\n\t\t\topenEdit(id, title, content, bType, variant) {\n\t\t\t\tthis.editBlock = {\n\t\t\t\t\tid: id,\n\t\t\t\t\ttitle: title,\n\t\t\t\t\tcontent: content,\n\t\t\t\t\ttype: bType,\n\t\t\t\t\tvariant: variant\n\t\t\t\t};\n\t\t\t\tconst dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) dlg.showModal();\n\t\t\t},\n\t\t\tsendTokenUpdate(key, val) {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\tsendThemeUpdate(theme) {\n\t\t\t\tthis.themePreset = theme;\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame && frame.contentWindow) {\n\t\t\t\t\tframe.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');\n\t\t\t\t}\n\t\t\t},\n\t\t\trefreshCanvas() {\n\t\t\t\tconst frame = document.getElementById('preview-canvas');\n\t\t\t\tif (frame) {\n\t\t\t\t\tframe.src = frame.src;\n\t\t\t\t}\n\t\t\t}\n\t\t}\" class=\"space-y-5\"><!-- 1. Компактная шапка конструктора с возвращённым ярким бейджем Live Preview --><div class=\"flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200\"><div><div class=\"flex items-center gap-3\"><h2 class=\"text-xl sm:text-2xl font-bold text-slate-900 tracking-tight\">Конструктор</h2><a href=\"/?preview=true\" target=\"_blank\" class=\"inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer\" title=\"Открыть живой сайт в отдельной вкладке\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Live Preview</span> <svg class=\"w-3 h-3 text-emerald-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div><p class=\"text-xs sm:text-sm text-slate-500 mt-0.5\">Управление структурой секций и живой дизайн-системой лендинга</p></div><!-- Верхняя панель по смысловым группам (Issue 1, 9) --><div class=\"flex items-center gap-2.5 sm:gap-3 flex-wrap\"><!-- Группа 0: Переключатель режима отображения (Сплит / Секции / Превью) --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"responsiveView = 'both'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'both' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Сплит-режим: Список + Живой предпросмотр\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 4v16M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z\"></path></svg> <span class=\"hidden sm:inline\">Сплит</span></button> <button type=\"button\" @click=\"responsiveView = 'blocks'\" :class=\"responsiveView === 'blocks' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только список секций\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg> <span class=\"hidden sm:inline\">Секции</span></button> <button type=\"button\" @click=\"responsiveView = 'preview'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'preview' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только Live Preview\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span class=\"hidden sm:inline\">Превью</span></button></div><!-- Группа 1: Сегментированный переключатель экранов с явной подсветкой --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"setDevice('desktop')\" :class=\"canvasDevice === 'desktop' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Десктоп (1280–1440px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> <span>Десктоп</span></button> <button type=\"button\" @click=\"setDevice('tablet')\" :class=\"canvasDevice === 'tablet' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Планшет (768px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Планшет (768px)</span></button> <button type=\"button\" @click=\"setDevice('mobile')\" :class=\"canvasDevice === 'mobile' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Мобильный (390px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Мобильный (390px)</span></button></div><!-- Группа 2: Кнопка обновления холста --><button type=\"button\" @click=\"refreshCanvas()\" class=\"p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer\" title=\"Перезагрузить превью\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg></button><!-- Группа 3: Индикатор статуса синхронизации --><div class=\"hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-medium text-slate-700\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Все изменения сохранены</span></div><!-- Группа 4: Главное действие добавления секции --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs transition-all shadow-xs flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-4 h-4 text-white\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить секцию</span></button></div></div><!-- 2. Основная рабочая область: Список секций слева (340-380px) + Прикрепленный холст Live Preview справа --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Полноценные табы с аккуратным подчёркиванием (Minor) --><div class=\"flex items-center gap-6 border-b border-slate-200 px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(blocks)))
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(initialBlocksTabData(settings)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 323, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 511, Col: 41}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\"><!-- Кнопка быстрого добавления всегда на виду --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs\"><span class=\"w-4 h-4 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] leading-none\">+</span> <span>Добавить новую секцию в лендинг</span></button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"space-y-5\"><!-- 1. Компактная шапка конструктора с возвращённым ярким бейджем Live Preview --><div class=\"flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200\"><div><div class=\"flex items-center gap-3\"><h2 class=\"text-xl sm:text-2xl font-bold text-slate-900 tracking-tight\">Конструктор</h2><a href=\"/?preview=true\" target=\"_blank\" class=\"inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer\" title=\"Открыть живой сайт в отдельной вкладке\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Live Preview</span> <svg class=\"w-3 h-3 text-emerald-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div><p class=\"text-xs sm:text-sm text-slate-500 mt-0.5\">Управление структурой секций и живой дизайн-системой лендинга</p></div><!-- Верхняя панель по смысловым группам (Issue 1, 9) --><div class=\"flex items-center gap-2.5 sm:gap-3 flex-wrap\"><!-- Группа 0: Переключатель режима отображения (Сплит / Секции / Превью) --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"responsiveView = 'both'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'both' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Сплит-режим: Список + Живой предпросмотр\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 4v16M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z\"></path></svg> <span class=\"hidden sm:inline\">Сплит</span></button> <button type=\"button\" @click=\"responsiveView = 'blocks'\" :class=\"responsiveView === 'blocks' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только список секций\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"></path></svg> <span class=\"hidden sm:inline\">Секции</span></button> <button type=\"button\" @click=\"responsiveView = 'preview'; $nextTick(() => { updateContainerWidth(); });\" :class=\"responsiveView === 'preview' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer\" title=\"Только Live Preview\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span class=\"hidden sm:inline\">Превью</span></button></div><!-- Группа 1: Сегментированный переключатель экранов с явной подсветкой --><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs\"><button type=\"button\" @click=\"setDevice('desktop')\" :class=\"canvasDevice === 'desktop' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Десктоп (1280–1440px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z\"></path></svg> <span>Десктоп</span></button> <button type=\"button\" @click=\"setDevice('tablet')\" :class=\"canvasDevice === 'tablet' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Планшет (768px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Планшет (768px)</span></button> <button type=\"button\" @click=\"setDevice('mobile')\" :class=\"canvasDevice === 'mobile' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer\" title=\"Мобильный (390px)\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z\"></path></svg> <span>Мобильный (390px)</span></button></div><!-- Индикатор Responsive Radar (Tier 1: Детектор вылетов верстки) --><button type=\"button\" @click=\"triggerRadarCheck()\" x-show=\"radarStatus.checked\" class=\"inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition-all shadow-2xs cursor-pointer\" :class=\"radarStatus.hasOverflow ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse' : 'bg-emerald-50 border-emerald-300 text-emerald-800'\" :title=\"radarStatus.hasOverflow ? ('Вылет верстки на ' + radarStatus.diff + 'px! Кликните для повторной проверки') : '100% Fit: горизонтальный скролл отсутствует'\"><span class=\"w-2 h-2 rounded-full\" :class=\"radarStatus.hasOverflow ? 'bg-rose-500' : 'bg-emerald-500'\"></span> <span x-text=\"radarStatus.hasOverflow ? ('Radar: Вылет +' + radarStatus.diff + 'px!') : 'Radar: 100% Fit'\"></span></button><!-- Tool 1: 10-Second Grayscale Test (Value First / Контраст без цвета) --><button type=\"button\" @click=\"toggleGrayscale()\" class=\"inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all shadow-2xs cursor-pointer select-none\" :class=\"isGrayscale ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'\" title=\"Тест иерархии в оттенках серого (Value First): выявляет проблемы контраста и читаемости без цвета\"><span class=\"w-3 h-3 rounded-full border border-slate-400 overflow-hidden flex shrink-0\"><span class=\"w-1/2 h-full bg-slate-900\"></span> <span class=\"w-1/2 h-full bg-white\"></span></span> <span x-text=\"isGrayscale ? 'Ч/Б активен' : 'Ч/Б тест'\"></span></button><!-- Группа 2: Кнопка обновления холста --><button type=\"button\" @click=\"refreshCanvas()\" class=\"p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer\" title=\"Перезагрузить превью\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg></button><!-- Группа 3: Индикатор статуса синхронизации --><div class=\"hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-medium text-slate-700\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>Все изменения сохранены</span></div><!-- Группа 4: Главное действие добавления секции --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs transition-all shadow-xs flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-4 h-4 text-white\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить секцию</span></button></div></div><!-- 2. Основная рабочая область: Список секций слева (340-380px) + Прикрепленный холст Live Preview справа --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Полноценные табы с аккуратным подчёркиванием (Minor) --><div class=\"flex items-center gap-6 border-b border-slate-200 px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(blocks)))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 707, Col: 39}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\"><!-- Кнопка быстрого добавления всегда на виду --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs\"><span class=\"w-4 h-4 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] leading-none\">+</span> <span>Добавить новую секцию в лендинг</span></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(blocks) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"p-8 text-center bg-white rounded-2xl border border-slate-200\"><p class=\"text-slate-500 text-xs\">Секции лендинга пока не добавлены.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"p-8 text-center bg-white rounded-2xl border border-slate-200\"><p class=\"text-slate-500 text-xs\">Секции лендинга пока не добавлены.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"space-y-2.5 max-h-[calc(100vh-260px)] overflow-y-auto pr-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"space-y-2.5 max-h-[calc(100vh-260px)] overflow-y-auto pr-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -116,7 +578,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 			if v, ok := b.Payload["variant"].(string); ok {
 				variantStr = v
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Двухстрочная просторная карточка (Issues 2, 3, 4, 5, 6) --> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Двухстрочная просторная карточка (Issues 2, 3, 4, 5, 6) --> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -124,66 +586,66 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 				templ_7745c5c3_Buffer := templ.GetBuffer()
 				var templ_7745c5c3_ElementScripts []templ.ComponentScript
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div id=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var3 string
-				templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression("block-card-" + b.ID).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 366, Col: 33}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" @click=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<div id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectBlock('%s', '%s')", b.ID, b.Type)).Resolve(ctx)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression("block-card-" + b.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 367, Col: 69}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 750, Col: 33}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" :class=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" @click=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50/20' : ''", b.ID)).Resolve(ctx)
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectBlock('%s', '%s')", b.ID, b.Type)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 368, Col: 122}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 751, Col: 69}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" :class=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var6 = []any{"p-3.5 rounded-2xl border transition-all cursor-pointer relative group",
+				var templ_7745c5c3_Var6 string
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50/20' : ''", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 752, Col: 122}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var7 = []any{"p-3.5 rounded-2xl border transition-all cursor-pointer relative group",
 					templ.KV("bg-white border-slate-200 hover:border-slate-300 shadow-2xs", b.Active),
 					templ.KV("opacity-55 bg-slate-50 border-dashed border-slate-300", !b.Active)}
-				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var6...)
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var7...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var7 string
-				templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var6).String()).Resolve(ctx)
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var7).String()).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
 					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 1, Col: 0}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -197,95 +659,95 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "><div class=\"flex items-start justify-between gap-3\"><!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип --><div class=\"flex items-start gap-2.5 min-w-0 flex-1\"><!-- Ручка перетаскивания drag-and-drop --><div class=\"pt-0.5 text-slate-300 group-hover:text-slate-500 cursor-grab shrink-0 select-none\" title=\"Перетащить блок\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9h.01M8 15h.01M16 9h.01M16 15h.01\"></path></svg></div><!-- Порядковый номер --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold flex items-center justify-center select-none\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", idx+1))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 385, Col: 37}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><!-- Текстовое описание блока (полная ширина, без обрезания) --><div class=\"min-w-0 flex-1\"><!-- Заголовок секции: переносится до 2 строк, не режется --><h4 class=\"font-bold text-slate-900 text-sm leading-snug break-words\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "><div class=\"flex items-start justify-between gap-3\"><!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип --><div class=\"flex items-start gap-2.5 min-w-0 flex-1\"><!-- Ручка перетаскивания drag-and-drop --><div class=\"pt-0.5 text-slate-300 group-hover:text-slate-500 cursor-grab shrink-0 select-none\" title=\"Перетащить блок\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9h.01M8 15h.01M16 9h.01M16 15h.01\"></path></svg></div><!-- Порядковый номер --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold flex items-center justify-center select-none\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(b.Title)
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", idx+1))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 392, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 769, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</h4><!-- Вторая строка: Понятное человеческое имя типа + вариант --><div class=\"flex items-center gap-1.5 mt-1.5 flex-wrap\"><span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 font-sans\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><!-- Текстовое описание блока (полная ширина, без обрезания) --><div class=\"min-w-0 flex-1\"><!-- Заголовок секции: переносится до 2 строк, не режется --><h4 class=\"font-bold text-slate-900 text-sm leading-snug break-words\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Технический код: " + b.Type).Resolve(ctx)
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(b.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 399, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 776, Col: 21}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"><span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</h4><!-- Вторая строка: Понятное человеческое имя типа + вариант --><div class=\"flex items-center gap-1.5 mt-1.5 flex-wrap\"><span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 font-sans\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(typeIcon)
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Технический код: " + b.Type).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 401, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 783, Col: 63}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</span> <span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\"><span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var12 string
-			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(typeName)
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(typeIcon)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 402, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 785, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span></span> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span> <span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var13 string
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(typeName)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 786, Col: 29}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span></span> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if variantStr != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<span class=\"px-2 py-0.5 rounded-md text-[11px] font-mono text-slate-500 bg-slate-50 border border-slate-200\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span class=\"px-2 py-0.5 rounded-md text-[11px] font-mono text-slate-500 bg-slate-50 border border-slate-200\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(variantStr)
+				var templ_7745c5c3_Var14 string
+				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(variantStr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 407, Col: 26}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 791, Col: 26}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div></div></div><!-- Правая группа: Заметный бейдж-переключатель видимости + Меню действий (...) --><div class=\"flex items-center gap-2 shrink-0 pt-0.5\" @click.stop><!-- Заметная контрастная кнопка переключения видимости (Issue: 'Щас выглядит слишком незаметно') -->")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></div><!-- Правая группа: Заметный бейдж-переключатель видимости + Меню действий (...) --><div class=\"flex items-center gap-2 shrink-0 pt-0.5\" @click.stop><!-- Заметная контрастная кнопка переключения видимости (Issue: 'Щас выглядит слишком незаметно') -->")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -293,45 +755,45 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 				templ_7745c5c3_Buffer := templ.GetBuffer()
 				var templ_7745c5c3_ElementScripts []templ.ComponentScript
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<button type=\"button\" hx-post=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<button type=\"button\" hx-post=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/toggle", b.ID)).Resolve(ctx)
+				var templ_7745c5c3_Var15 string
+				templ_7745c5c3_Var15, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/toggle", b.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 419, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 803, Col: 65}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var15 = []any{"cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border",
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var16 = []any{"cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border",
 					templ.KV("bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 ring-2 ring-emerald-500/20", b.Active),
 					templ.KV("bg-slate-200 hover:bg-slate-300 text-slate-700 border-slate-300", !b.Active)}
-				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var15...)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var15).String()).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 1, Col: 0}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" title=\"")
+				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var16...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var17 string
-				templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("%s", func() string {
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var16).String()).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 1, Col: 0}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" title=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var18 string
+				templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("%s", func() string {
 					if b.Active {
 						return "Секция видна на сайте (кликните, чтобы скрыть)"
 					} else {
@@ -339,13 +801,13 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 					}
 				}())).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 425, Col: 258}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 809, Col: 258}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -359,95 +821,95 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, ">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, ">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if b.Active {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<span class=\"w-2.5 h-2.5 rounded-full bg-emerald-200 shadow-xs animate-pulse\"></span> <svg class=\"w-4 h-4 text-emerald-100\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.5\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span>Видна</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<span class=\"w-2.5 h-2.5 rounded-full bg-emerald-200 shadow-xs animate-pulse\"></span> <svg class=\"w-4 h-4 text-emerald-100\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2.5\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg> <span>Видна</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<span class=\"w-2.5 h-2.5 rounded-full bg-slate-400\"></span> <svg class=\"w-4 h-4 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыта</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<span class=\"w-2.5 h-2.5 rounded-full bg-slate-400\"></span> <svg class=\"w-4 h-4 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыта</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</button><!-- Кнопка действий '⋯' --><div x-data=\"{ menuOpen: false }\" class=\"relative\"><button type=\"button\" @click.stop=\"menuOpen = !menuOpen\" class=\"p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 shadow-2xs transition-colors cursor-pointer\" title=\"Действия над секцией\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 5v.01M12 12v.01M12 19v.01\"></path></svg></button><div x-show=\"menuOpen\" x-cloak @click.away=\"menuOpen = false\" class=\"absolute right-0 top-full mt-1 w-44 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-30 text-xs text-slate-700 font-medium\"><button type=\"button\" @click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</button><!-- Кнопка действий '⋯' --><div x-data=\"{ menuOpen: false }\" class=\"relative\"><button type=\"button\" @click.stop=\"menuOpen = !menuOpen\" class=\"p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 shadow-2xs transition-colors cursor-pointer\" title=\"Действия над секцией\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 5v.01M12 12v.01M12 19v.01\"></path></svg></button><div x-show=\"menuOpen\" x-cloak @click.away=\"menuOpen = false\" class=\"absolute right-0 top-full mt-1 w-44 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-30 text-xs text-slate-700 font-medium\"><button type=\"button\" @click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var18 string
-			templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); menuOpen = false;", b.ID, b.Title, b.Content, b.Type, variantStr)).Resolve(ctx)
+			var templ_7745c5c3_Var19 string
+			templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); menuOpen = false;", b.ID, b.Title, b.Content, b.Type, variantStr)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 464, Col: 140}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 848, Col: 140}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg> <span>Свойства блока</span></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg> <span>Свойства блока</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if idx > 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<button type=\"button\" hx-post=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var19 string
-				templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-up", b.ID)).Resolve(ctx)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 476, Col: 69}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg> <span>Поднять выше</span></button> ")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			if idx < len(blocks)-1 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "<button type=\"button\" hx-post=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<button type=\"button\" hx-post=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var20 string
-				templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-down", b.ID)).Resolve(ctx)
+				templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-up", b.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 491, Col: 71}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 860, Col: 69}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg> <span>Опустить ниже</span></button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg> <span>Поднять выше</span></button> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<div class=\"my-1 border-t border-slate-100\"></div><button type=\"button\" hx-post=\"")
+			if idx < len(blocks)-1 {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<button type=\"button\" hx-post=\"")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var21 string
+				templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-down", b.ID)).Resolve(ctx)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 875, Col: 71}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg> <span>Опустить ниже</span></button>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div class=\"my-1 border-t border-slate-100\"></div><button type=\"button\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var21 string
-			templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/delete", b.ID)).Resolve(ctx)
+			var templ_7745c5c3_Var22 string
+			templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/delete", b.ID)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 507, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 891, Col: 67}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" hx-confirm=\"Удалить этот блок лендинга безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Удалить блок</span></button></div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" hx-confirm=\"Удалить этот блок лендинга безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Удалить блок</span></button></div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div><!-- Вкладка 2: Дизайн-система и Live Токены --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs\"><div><label class=\"block font-semibold uppercase tracking-wider text-slate-700 mb-1.5 text-xs\">Готовые пресеты индустрий</label> <select @change=\"sendThemeUpdate($event.target.value)\" class=\"w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500\"><option value=\"main\">Основная тема (Default Day)</option> <option value=\"coral\">Stationery Coral (Hallmark Modern-Minimal)</option> <option value=\"main-night\">Основная ночь (Default Night)</option> <option value=\"cyber\">B2B Cyber & High-Tech</option> <option value=\"legal\">B2B Legal & Consulting</option> <option value=\"medical\">B2C Medical & Health</option> <option value=\"beauty\">B2C Beauty & Salon</option> <option value=\"auto\">B2C Auto & Service</option></select></div><div class=\"pt-3 border-t border-slate-100 space-y-3\"><div class=\"font-bold text-slate-900 text-xs\">Интерактивная палитра (Live Bridge)</div><!-- Primary Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-600\">Основной цвет (Primary)</span> <input type=\"color\" value=\"#1e293b\" @input=\"sendTokenUpdate('--color-primary', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300\"></div><!-- Accent Color --><div class=\"flex items-center justify-between\"><span class=\"text-slate-600\">Акцентный цвет (Accent)</span> <input type=\"color\" value=\"#e65a40\" @input=\"sendTokenUpdate('--color-accent', $event.target.value)\" class=\"w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300\"></div><!-- Radius Card --><div><div class=\"flex justify-between text-slate-600 mb-1\"><span>Скругление карточек</span> <span class=\"font-mono text-blue-600\">--radius-card</span></div><input type=\"range\" min=\"4\" max=\"32\" value=\"24\" @input=\"sendTokenUpdate('--radius-card', $event.target.value + 'px')\" class=\"w-full accent-blue-600 cursor-pointer\"></div><!-- Radius Button --><div><div class=\"flex justify-between text-slate-600 mb-1\"><span>Скругление кнопок</span> <span class=\"font-mono text-blue-600\">--radius-btn</span></div><input type=\"range\" min=\"2\" max=\"24\" value=\"8\" @input=\"sendTokenUpdate('--radius-btn', $event.target.value + 'px')\" class=\"w-full accent-blue-600 cursor-pointer\"></div></div><div class=\"p-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-[11px] leading-relaxed\">⚡ Изменения ползунков и цветов передаются на холст по безопасному мосту postMessage мгновенно со скоростью 60 FPS.</div></div></div><!-- Правая колонка: Прикрепленный масштабированный холст Live Preview (Issue 10, 11) --><div x-show=\"responsiveView === 'both' || responsiveView === 'preview'\" x-ref=\"canvasContainer\" class=\"flex-1 w-full min-w-0 md:sticky md:top-20 flex flex-col items-center justify-start\"><!-- Заголовочная панель холста предпросмотра --><div class=\"w-full flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-200\"><div class=\"flex items-center gap-2\"><span class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300\"><span class=\"w-2 h-2 rounded-full bg-emerald-600 animate-pulse\"></span> <span>Холст Live Preview</span></span> <span class=\"text-xs text-slate-500 hidden sm:inline\">• Клик по секции в окне выбирает её в списке</span></div><div class=\"flex items-center gap-2 text-xs text-slate-500 font-mono\"><span x-text=\"canvasDevice === 'desktop' ? '1280px (Масштаб: ' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')\"></span> <a href=\"/?preview=true\" target=\"_blank\" class=\"text-blue-600 hover:text-blue-800 flex items-center gap-0.5 ml-1 cursor-pointer\" title=\"Открыть в новой вкладке\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div></div><!-- Контейнер масштабирования --><div class=\"w-full flex justify-center transition-all duration-300 overflow-hidden\"><div :class=\"{\n\t\t\t\t\t\t\t'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',\n\t\t\t\t\t\t\t'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',\n\t\t\t\t\t\t\t'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'\n\t\t\t\t\t\t}\" class=\"overflow-hidden transition-all duration-300 relative flex justify-center\" :style=\"canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'\"><!-- Верхняя полоска мобильного острова/камеры --><div x-show=\"canvasDevice === 'mobile'\" class=\"absolute top-0 left-0 right-0 h-6 bg-slate-900 flex items-center justify-center z-10\"><div class=\"w-24 h-4 bg-slate-950 rounded-full\"></div></div><!-- Обёртка масштабирования: для десктопа рендерим в 1280px и масштабируем --><div :style=\"canvasDevice === 'desktop' ? ('width: 1280px; height: 760px; transform: scale(' + scaleFactor + '); transform-origin: top left;') : 'width: 100%; height: 100%;'\" :class=\"canvasDevice === 'desktop' ? 'absolute top-0 left-0' : 'w-full h-full'\"><iframe id=\"preview-canvas\" src=\"/?preview=true\" class=\"bg-surface border-0 block w-full h-full\" title=\"Предпросмотр сайта\"></iframe></div></div></div><div class=\"mt-2 text-center text-xs text-slate-500 flex items-center gap-2\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> <span>Живой холст предпросмотра: клик по секции в окне превью выбирает её в списке</span></div></div></div><!-- Диалог добавления новой секции --><dialog id=\"new-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Добавить секцию в лендинг</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('new-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Тип секции</label> <select name=\"type\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"hero\">⚡ Главный экран (Hero)</option> <option value=\"cinematic_odometer\">⏱ Интерактивный счётчик (Odometer)</option> <option value=\"cinematic_spotlight\">💡 Световой прожектор (Spotlight)</option> <option value=\"comparison\">⚖️ Сравнение до / после (Comparison)</option> <option value=\"cinematic_sticky_stack\">📑 Каскадные карточки (Sticky Stack)</option> <option value=\"cinematic_marquee\">⇄ Бегущая строка (Marquee)</option> <option value=\"features\">✦ Ключевые преимущества (Features)</option> <option value=\"services\">💼 Услуги и цены (Services)</option> <option value=\"booking\">📅 Форма онлайн-записи (Booking)</option> <option value=\"quiz\">🧮 Калькулятор / Квиз (Quiz)</option> <option value=\"steps\">🪜 Этапы работы (Steps)</option> <option value=\"reviews\">★ Отзывы клиентов (Reviews)</option> <option value=\"team\">👥 Команда специалистов (Team)</option> <option value=\"faq\">💬 Вопросы и ответы (FAQ)</option> <option value=\"gallery\">🖼 Фотогалерея (Gallery)</option> <option value=\"map\">📍 Интерактивная карта (Map)</option></select></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" required placeholder=\"Например: Ключевые преимущества нотариата\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Описание / Подзаголовок</label> <textarea name=\"content\" rows=\"3\" placeholder=\"Краткое описание назначения секции...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Создать секцию</button></div></form></dialog><!-- Диалог редактирования свойств секции --><dialog id=\"edit-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Свойства секции</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/edit\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('edit-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><input type=\"hidden\" name=\"id\" id=\"edit-block-id\" :value=\"editBlock.id\"> <input type=\"hidden\" name=\"type\" id=\"edit-block-type\" :value=\"editBlock.type\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" id=\"edit-block-title\" x-model=\"editBlock.title\" required class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Текст / Описание</label> <textarea name=\"content\" id=\"edit-block-content\" x-model=\"editBlock.content\" rows=\"3\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div id=\"edit-variant-row\" x-show=\"editBlock.type === 'hero'\"><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Стилевой вариант (Variant)</label> <select name=\"variant\" id=\"edit-block-variant\" x-model=\"editBlock.variant\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"classic\">Classic (Лаконичный)</option> <option value=\"split\">Split (Разделенный с формой / акцентом)</option> <option value=\"cyber\">Cyber (High-Tech неон)</option> <option value=\"legal\">Legal (Архитектурный строгий)</option></select></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('edit-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Сохранить изменения</button></div></form></dialog><script>\n\t\t\twindow.openBlockEditor = function(id, title, content, bType, variant) {\n\t\t\t\tvar idInp = document.getElementById('edit-block-id');\n\t\t\t\tif (idInp) idInp.value = id;\n\t\t\t\tvar typeInp = document.getElementById('edit-block-type');\n\t\t\t\tif (typeInp) typeInp.value = bType;\n\t\t\t\tvar titleInp = document.getElementById('edit-block-title');\n\t\t\t\tif (titleInp) titleInp.value = title;\n\t\t\t\tvar contentInp = document.getElementById('edit-block-content');\n\t\t\t\tif (contentInp) contentInp.value = content;\n\t\t\t\tvar variantRow = document.getElementById('edit-variant-row');\n\t\t\t\tvar variantSelect = document.getElementById('edit-block-variant');\n\t\t\t\tif (variantRow && variantSelect) {\n\t\t\t\t\tif (bType === 'hero') {\n\t\t\t\t\t\tvariantRow.style.display = 'block';\n\t\t\t\t\t\tvariantSelect.value = variant || 'classic';\n\t\t\t\t\t} else {\n\t\t\t\t\t\tvariantRow.style.display = 'none';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tvar dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) {\n\t\t\t\t\tvar root = dlg.closest('[x-data]');\n\t\t\t\t\tif (root && window.Alpine) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar d = Alpine.$data(root);\n\t\t\t\t\t\t\tif (d) {\n\t\t\t\t\t\t\t\td.editBlock = { id: id, title: title, content: content, type: bType, variant: variant || 'classic' };\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t}\n\t\t\t\t\tdlg.showModal();\n\t\t\t\t}\n\t\t\t};\n\t\t</script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></div><!-- Вкладка 2: Дизайн-система, Эшелон 1 и 2 инструменты --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs\"><!-- 1. Индустриальная тема (Strict Presets) --><div><div class=\"flex items-center justify-between mb-1.5\"><label class=\"block font-semibold uppercase tracking-wider text-slate-700 text-[11px]\">Базовый пресет темы</label> <span class=\"text-[10px] font-mono text-slate-400\">Strict Theme</span></div><select x-model=\"themePreset\" @change=\"sendThemeUpdate($event.target.value)\" class=\"w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium\"><option value=\"main\">Основная тема (Default Day)</option> <option value=\"coral\">Stationery Coral (Modern Minimal)</option> <option value=\"legal\">B2B Legal & Consulting</option> <option value=\"medical\">B2C Medical & Health</option> <option value=\"cyber\">B2B Cyber & IT Service</option> <option value=\"beauty\">B2C Beauty & Premium</option> <option value=\"auto\">B2C Auto & Service</option> <option value=\"main-night\">Dark / Глубокая темная</option></select></div><!-- 2. Дизайн-настроения (Design Flavors) - Tier 1 --><div class=\"pt-3 border-t border-slate-100\"><div class=\"flex items-center justify-between mb-1.5\"><span class=\"font-bold text-slate-900 text-xs\">Характер геометрии (Flavor)</span> <span class=\"text-[10px] font-mono text-blue-600\" x-text=\"flavorPreset\"></span></div><div class=\"grid grid-cols-2 gap-1.5\"><button type=\"button\" @click=\"sendFlavorUpdate('soft')\" :class=\"flavorPreset === 'soft' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Soft / SaaS</div><div class=\"text-[10px] opacity-75\">Радиус 24px</div></button> <button type=\"button\" @click=\"sendFlavorUpdate('corporate')\" :class=\"flavorPreset === 'corporate' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Corporate</div><div class=\"text-[10px] opacity-75\">Радиус 8px</div></button> <button type=\"button\" @click=\"sendFlavorUpdate('sharp')\" :class=\"flavorPreset === 'sharp' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Sharp</div><div class=\"text-[10px] opacity-75\">Радиус 0px</div></button> <button type=\"button\" @click=\"sendFlavorUpdate('brutalist')\" :class=\"flavorPreset === 'brutalist' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Brutalist</div><div class=\"text-[10px] opacity-75\">Контраст 2px</div></button></div></div><!-- 3. Шрифтовые пары (Font Pairs) - Tier 2 --><div class=\"pt-3 border-t border-slate-100\"><div class=\"flex items-center justify-between mb-1.5\"><span class=\"font-bold text-slate-900 text-xs\">Шрифтовая пара (Type Pair)</span> <span class=\"text-[10px] font-mono text-blue-600\" x-text=\"fontPreset\"></span></div><div class=\"grid grid-cols-2 gap-1.5\"><button type=\"button\" @click=\"sendFontUpdate('modern')\" :class=\"fontPreset === 'modern' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Modern</div><div class=\"text-[10px] opacity-75\">Inter + Inter</div></button> <button type=\"button\" @click=\"sendFontUpdate('editorial')\" :class=\"fontPreset === 'editorial' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Editorial</div><div class=\"text-[10px] opacity-75\">Merriweather</div></button> <button type=\"button\" @click=\"sendFontUpdate('condensed')\" :class=\"fontPreset === 'condensed' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Condensed</div><div class=\"text-[10px] opacity-75\">Bebas Neue</div></button> <button type=\"button\" @click=\"sendFontUpdate('tech')\" :class=\"fontPreset === 'tech' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'\" class=\"px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer\"><div class=\"font-medium text-[11px]\">Tech / IT</div><div class=\"text-[10px] opacity-75\">Plus Jakarta</div></button></div></div><!-- 4. Палитра 60-30-10 & Интеллектуальный контроль доступности (WCAG & OKLCH) --><div class=\"pt-3 border-t border-slate-100 space-y-2.5\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-1.5\"><span class=\"font-bold text-slate-900 text-xs\">Палитра 60-30-10 & Доступность</span> <span class=\"px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200\">OKLCH</span></div><button type=\"button\" @click=\"generate603010(tokens.accent)\" class=\"text-[10px] text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer\" title=\"Сгенерировать гармоничную схему от текущего акцента\">⚡ Сгенерировать</button></div><!-- Быстрые правила: Гармонии (Tool 3) и Характер серого (Tool 5) --><div class=\"grid grid-cols-2 gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px]\"><div><label class=\"block text-[10px] font-semibold text-slate-500 mb-1\">Гармония (Harmonies)</label> <select x-model=\"harmonyPreset\" @change=\"applyHarmony($event.target.value)\" class=\"w-full px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-800 text-[10px] cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500\"><option value=\"brand\">Монохром (1 Loud Color)</option> <option value=\"complementary\">Комплемент (+180°)</option> <option value=\"analogous\">Аналоговая (+30°)</option> <option value=\"split\">Сплит (+150°)</option> <option value=\"triadic\">Триада (+120°)</option></select></div><div><label class=\"block text-[10px] font-semibold text-slate-500 mb-1\">Тон нейтрали (Серый)</label> <select x-model=\"neutralTemp\" @change=\"setNeutralTemp($event.target.value)\" class=\"w-full px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-800 text-[10px] cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500\"><option value=\"brand\">В тон бренда (авто)</option> <option value=\"clean\">Чистый серый (0%)</option> <option value=\"warm\">Тёплый серый</option> <option value=\"cool\">Холодный серый</option></select></div></div><!-- Карточка 1: Primary (30% Текст / Заголовки) --><div class=\"p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all\"><div class=\"flex items-center justify-between gap-2\"><div class=\"flex items-center gap-2 min-w-0 cursor-pointer select-none\" @click=\"toggleTuner('primary')\"><button type=\"button\" @click.stop=\"toggleTuner('primary')\" class=\"w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1\" :style=\"{ backgroundColor: tokens.primary }\" title=\"Открыть палитру контента\"><span class=\"w-1.5 h-1.5 rounded-full bg-white/70 opacity-0 hover:opacity-100 transition-opacity\"></span></button><div class=\"min-w-0\"><div class=\"text-slate-800 font-semibold text-[11px] leading-tight\">Контент (Primary 30%)</div><div class=\"text-[10px] font-mono text-slate-400\" x-text=\"tokens.primary\"></div></div></div><div class=\"flex items-center gap-1.5 shrink-0\"><!-- Живой бейдж контраста --><template x-if=\"getRoleContrast('primary')\"><span class=\"px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold\" :class=\"getRoleContrast('primary').pass ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'\" x-text=\"getRoleContrast('primary').label + ' ' + getRoleContrast('primary').ratio + ':1'\"></span></template><!-- Быстрый фикс если не проходит контраст --><button type=\"button\" x-show=\"!getRoleContrast('primary').pass\" @click=\"autoFixRole('primary')\" class=\"px-1.5 py-0.5 rounded bg-rose-600 hover:bg-rose-700 text-white font-semibold text-[9px] transition-colors shadow-2xs cursor-pointer\" title=\"Автоматически подогнать яркость до стандарта читаемости AA\">Fix</button><!-- Кнопка раскрытия Гибридного тюнера --><button type=\"button\" @click=\"toggleTuner('primary')\" class=\"p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer\" :class=\"activeTuner === 'primary' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''\" title=\"Палитра пресетов и OKLCH-тюнер\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4\"></path></svg></button></div></div><!-- Выпадающий Гибридный тюнер для Primary --><div x-show=\"activeTuner === 'primary'\" x-cloak class=\"pt-2 border-t border-slate-200 space-y-2.5\"><!-- 1. Пресеты (Curated Swatches) --><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Готовые строгие палитры</span> <span class=\"text-[9px] text-slate-400\">1 клик</span></div><div class=\"flex items-center gap-1.5 flex-wrap\"><template x-for=\"swatch in presetSwatches.primary\" :key=\"swatch.hex\"><button type=\"button\" @click=\"applyRoleHex('primary', swatch.hex)\" :class=\"tokens.primary.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'\" class=\"w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0\" :style=\"{ backgroundColor: swatch.hex }\" :title=\"swatch.name + ' (' + swatch.hex + ')'\"><span x-show=\"tokens.primary.toLowerCase() === swatch.hex.toLowerCase()\" class=\"w-1.5 h-1.5 rounded-full bg-white\"></span></button></template></div></div><!-- 2. OKLCH Слайдеры --><div class=\"space-y-1 pt-1 border-t border-slate-100\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Оттенок (Hue)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandHue + '°'\"></span></div><input type=\"range\" min=\"0\" max=\"360\" step=\"1\" :value=\"brandHue\" @input=\"onHueChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none\" style=\"background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);\"></div><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Светлота (Lightness)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandLightness + '%'\"></span></div><input type=\"range\" min=\"0\" max=\"100\" step=\"1\" :value=\"brandLightness\" @input=\"onLightnessChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200\" :style=\"{ background: lightnessGradient }\"></div><!-- Шкала безопасных зон --><div class=\"space-y-1\"><div class=\"h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none\"><template x-if=\"safeZones.isLightBg\"><div class=\"flex w-full h-full\"><div :style=\"'width: ' + safeZones.aaaPercent + '%'\" class=\"bg-emerald-500 h-full\" title=\"AAA Safe\"></div><div :style=\"'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'\" class=\"bg-emerald-300 h-full\" title=\"AA Safe\"></div><div :style=\"'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'\" class=\"bg-rose-400 h-full\" title=\"Fail\"></div></div></template><template x-if=\"!safeZones.isLightBg\"><div class=\"flex w-full h-full\"><div :style=\"'width: ' + safeZones.aaPercent + '%'\\\" class=\"bg-rose-400 h-full\" title=\"Fail\"></div><div :style=\"'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'\" class=\"bg-emerald-300 h-full\" title=\"AA Safe\"></div><div :style=\"'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'\" class=\"bg-emerald-500 h-full\" title=\"AAA Safe\"></div></div></template></div></div><!-- 3. Snap кнопки и точный HEX / Пипетка --><div class=\"flex items-center justify-between gap-1.5 pt-1\"><div class=\"flex items-center gap-1\"><button type=\"button\" @click=\"snapTo('aa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AA\">Snap AA</button> <button type=\"button\" @click=\"snapTo('aaa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AAA\">Snap AAA</button></div><div class=\"flex items-center gap-1\"><input type=\"text\" maxlength=\"7\" :value=\"tokens.primary\" @change=\"applyRoleHex('primary', $event.target.value)\" class=\"w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500\" placeholder=\"#000000\" title=\"Ввести точный HEX-код\"> <button type=\"button\" @click=\"pickEyeDropper('primary')\" class=\"p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer\" title=\"Взять пипеткой с экрана\"><svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z\"></path></svg></button> <input type=\"color\" id=\"native-picker-primary\" class=\"sr-only\" :value=\"tokens.primary\" @input=\"applyRoleHex('primary', $event.target.value)\"></div></div></div></div><!-- Карточка 2: Accent (10% Кнопки / Акценты) --><div class=\"p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all\"><div class=\"flex items-center justify-between gap-2\"><div class=\"flex items-center gap-2 min-w-0 cursor-pointer select-none\" @click=\"toggleTuner('accent')\"><button type=\"button\" @click.stop=\"toggleTuner('accent')\" class=\"w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1\" :style=\"{ backgroundColor: tokens.accent }\" title=\"Открыть палитру акцента\"><span class=\"w-1.5 h-1.5 rounded-full bg-white/70 opacity-0 hover:opacity-100 transition-opacity\"></span></button><div class=\"min-w-0\"><div class=\"text-slate-800 font-semibold text-[11px] leading-tight\">Акцент CTA (Accent 10%)</div><div class=\"text-[10px] font-mono text-slate-400\" x-text=\"tokens.accent\"></div></div></div><div class=\"flex items-center gap-1.5 shrink-0\"><!-- Живой бейдж контраста к фону --><template x-if=\"getRoleContrast('accent')\"><span class=\"px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold\" :class=\"getRoleContrast('accent').pass ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'\" x-text=\"getRoleContrast('accent').label + ' ' + getRoleContrast('accent').ratio + ':1'\" title=\"Контраст кнопки к фону страницы\"></span></template><!-- Бейдж контраста надписи внутри кнопки CTA --><template x-if=\"getOnAccentContrast()\"><span class=\"px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold\" :class=\"getOnAccentContrast().pass ? 'bg-sky-100 text-sky-800' : 'bg-rose-100 text-rose-800'\" x-text=\"'CTA ' + (getOnAccentContrast().textColor === '#0f172a' ? 'Тёмн.' : 'Бел.') + ' ' + getOnAccentContrast().ratio + ':1'\" title=\"Контраст текста внутри кнопки CTA к ее фону\"></span></template><!-- Быстрый фикс если не проходит контраст --><button type=\"button\" x-show=\"!getRoleContrast('accent').pass\" @click=\"autoFixRole('accent')\" class=\"px-1.5 py-0.5 rounded bg-rose-600 hover:bg-rose-700 text-white font-semibold text-[9px] transition-colors shadow-2xs cursor-pointer\" title=\"Автоматически подогнать яркость до стандарта читаемости AA\">Fix</button><!-- Кнопка раскрытия Гибридного тюнера --><button type=\"button\" @click=\"toggleTuner('accent')\" class=\"p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer\" :class=\"activeTuner === 'accent' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''\" title=\"Палитра пресетов и OKLCH-тюнер\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4\"></path></svg></button></div></div><!-- Выпадающий Гибридный тюнер для Accent --><div x-show=\"activeTuner === 'accent'\" x-cloak class=\"pt-2 border-t border-slate-200 space-y-2.5\"><!-- 1. Пресеты (Curated Swatches) --><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Конверсионные кнопки (CTA)</span> <span class=\"text-[9px] text-slate-400\">1 клик</span></div><div class=\"flex items-center gap-1.5 flex-wrap\"><template x-for=\"swatch in presetSwatches.accent\" :key=\"swatch.hex\"><button type=\"button\" @click=\"applyRoleHex('accent', swatch.hex)\" :class=\"tokens.accent.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'\" class=\"w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0\" :style=\"{ backgroundColor: swatch.hex }\" :title=\"swatch.name + ' (' + swatch.hex + ')'\"><span x-show=\"tokens.accent.toLowerCase() === swatch.hex.toLowerCase()\" class=\"w-1.5 h-1.5 rounded-full bg-white\"></span></button></template></div></div><!-- 2. OKLCH Слайдеры --><div class=\"space-y-1 pt-1 border-t border-slate-100\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Оттенок бренда (Hue)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandHue + '°'\"></span></div><input type=\"range\" min=\"0\" max=\"360\" step=\"1\" :value=\"brandHue\" @input=\"onHueChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none\" style=\"background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);\"></div><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Светлота (Lightness)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandLightness + '%'\"></span></div><input type=\"range\" min=\"0\" max=\"100\" step=\"1\" :value=\"brandLightness\" @input=\"onLightnessChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200\" :style=\"{ background: lightnessGradient }\"></div><!-- Шкала безопасных зон --><div class=\"space-y-1\"><div class=\"h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none\"><template x-if=\"safeZones.isLightBg\"><div class=\"flex w-full h-full\"><div :style=\"'width: ' + safeZones.aaaPercent + '%'\" class=\"bg-emerald-500 h-full\" title=\"AAA Safe\"></div><div :style=\"'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'\" class=\"bg-emerald-300 h-full\" title=\"AA Safe\"></div><div :style=\"'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'\" class=\"bg-rose-400 h-full\" title=\"Fail\"></div></div></template><template x-if=\"!safeZones.isLightBg\"><div class=\"flex w-full h-full\"><div :style=\"'width: ' + safeZones.aaPercent + '%'\" class=\"bg-rose-400 h-full\" title=\"Fail\"></div><div :style=\"'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'\" class=\"bg-emerald-300 h-full\" title=\"AA Safe\"></div><div :style=\"'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'\" class=\"bg-emerald-500 h-full\" title=\"AAA Safe\"></div></div></template></div></div><!-- 3. Snap кнопки и точный HEX / Пипетка --><div class=\"flex items-center justify-between gap-1.5 pt-1\"><div class=\"flex items-center gap-1\"><button type=\"button\" @click=\"snapTo('aa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AA\">Snap AA</button> <button type=\"button\" @click=\"snapTo('aaa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AAA\">Snap AAA</button></div><div class=\"flex items-center gap-1\"><input type=\"text\" maxlength=\"7\" :value=\"tokens.accent\" @change=\"applyRoleHex('accent', $event.target.value)\" class=\"w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500\" placeholder=\"#000000\" title=\"Ввести точный HEX-код\"> <button type=\"button\" @click=\"pickEyeDropper('accent')\" class=\"p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer\" title=\"Взять пипеткой с экрана\"><svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z\"></path></svg></button> <input type=\"color\" id=\"native-picker-accent\" class=\"sr-only\" :value=\"tokens.accent\" @input=\"applyRoleHex('accent', $event.target.value)\"></div></div></div></div><!-- Карточка 3: Surface (60% Фон страниц) --><div class=\"p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all\"><div class=\"flex items-center justify-between gap-2\"><div class=\"flex items-center gap-2 min-w-0 cursor-pointer select-none\" @click=\"toggleTuner('surface')\"><button type=\"button\" @click.stop=\"toggleTuner('surface')\" class=\"w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1\" :style=\"{ backgroundColor: tokens.surface }\" title=\"Открыть палитру фона\"><span class=\"w-1.5 h-1.5 rounded-full bg-slate-400 opacity-0 hover:opacity-100 transition-opacity\"></span></button><div class=\"min-w-0\"><div class=\"text-slate-800 font-semibold text-[11px] leading-tight\">Фон страниц (Surface 60%)</div><div class=\"text-[10px] font-mono text-slate-400\" x-text=\"tokens.surface\"></div></div></div><div class=\"flex items-center gap-1.5 shrink-0\"><!-- Бейдж роли Surface --><span class=\"text-[9px] font-mono text-slate-500 px-2 py-0.5 rounded-full bg-slate-100 font-semibold border border-slate-200/80\">База 60%</span><!-- Кнопка раскрытия Гибридного тюнера --><button type=\"button\" @click=\"toggleTuner('surface')\" class=\"p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer\" :class=\"activeTuner === 'surface' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''\" title=\"Палитра пресетов и OKLCH-тюнер\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4\"></path></svg></button></div></div><!-- Выпадающий Гибридный тюнер для Surface --><div x-show=\"activeTuner === 'surface'\" x-cloak class=\"pt-2 border-t border-slate-200 space-y-2.5\"><!-- 1. Пресеты фонов --><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Премиальные оттенки фона</span> <span class=\"text-[9px] text-slate-400\">1 клик</span></div><div class=\"flex items-center gap-1.5 flex-wrap\"><template x-for=\"swatch in presetSwatches.surface\" :key=\"swatch.hex\"><button type=\"button\" @click=\"applyRoleHex('surface', swatch.hex)\" :class=\"tokens.surface.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'\" class=\"w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0\" :style=\"{ backgroundColor: swatch.hex }\" :title=\"swatch.name + ' (' + swatch.hex + ')'\"><span x-show=\"tokens.surface.toLowerCase() === swatch.hex.toLowerCase()\" class=\"w-1.5 h-1.5 rounded-full bg-slate-500\"></span></button></template></div></div><!-- 2. OKLCH Слайдеры для фона --><div class=\"space-y-1 pt-1 border-t border-slate-100\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Тон серого / оттенка (Hue)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandHue + '°'\"></span></div><input type=\"range\" min=\"0\" max=\"360\" step=\"1\" :value=\"brandHue\" @input=\"onHueChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none\" style=\"background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);\"></div><div class=\"space-y-1\"><div class=\"flex items-center justify-between text-[10px]\"><span class=\"text-slate-600 font-medium\">Светлота фона (Lightness)</span> <span class=\"font-mono text-slate-500\" x-text=\"brandLightness + '%'\"></span></div><input type=\"range\" min=\"0\" max=\"100\" step=\"1\" :value=\"brandLightness\" @input=\"onLightnessChange($event.target.value)\" class=\"w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200\" :style=\"{ background: lightnessGradient }\"></div><!-- 3. Snap кнопки и точный HEX / Пипетка --><div class=\"flex items-center justify-between gap-1.5 pt-1\"><div class=\"flex items-center gap-1\"><button type=\"button\" @click=\"snapTo('aa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AA\">Snap AA</button> <button type=\"button\" @click=\"snapTo('aaa')\" class=\"px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer\" title=\"Привязать к стандарту читаемости AAA\">Snap AAA</button></div><div class=\"flex items-center gap-1\"><input type=\"text\" maxlength=\"7\" :value=\"tokens.surface\" @change=\"applyRoleHex('surface', $event.target.value)\" class=\"w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500\" placeholder=\"#ffffff\" title=\"Ввести точный HEX-код\"> <button type=\"button\" @click=\"pickEyeDropper('surface')\" class=\"p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer\" title=\"Взять пипеткой с экрана\"><svg class=\"w-3 h-3\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z\"></path></svg></button> <input type=\"color\" id=\"native-picker-surface\" class=\"sr-only\" :value=\"tokens.surface\" @input=\"applyRoleHex('surface', $event.target.value)\"></div></div></div></div><!-- Tool 4: Шкала оттенков 50–900 (Tailwind OKLCH Scale без opacity) --><div class=\"pt-1\"><button type=\"button\" @click=\"showProTools = !showProTools\" class=\"w-full flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 text-[11px] font-medium transition-colors cursor-pointer select-none\"><span class=\"flex items-center gap-1.5\"><span>🎨 Шкала оттенков 50–900 (OKLCH Scale)</span> <span class=\"text-[9px] font-mono text-slate-400 font-normal\">без opacity</span></span> <svg class=\"w-3.5 h-3.5 transform transition-transform\" :class=\"showProTools ? 'rotate-180' : ''\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button><div x-show=\"showProTools\" x-cloak class=\"mt-2 p-2.5 rounded-xl border border-slate-200 bg-white space-y-2\"><div class=\"flex items-center justify-between text-[10px] text-slate-500\"><span>Твердые тона для дизайн-системы:</span> <span x-show=\"copiedStep\" class=\"text-emerald-600 font-mono font-bold\" x-text=\"'Скопирован ' + copiedStep + '!'\"></span></div><div class=\"grid grid-cols-6 sm:grid-cols-11 gap-1\"><template x-for=\"step in accentScale\" :key=\"step.name\"><button type=\"button\" @click=\"copyHex(step.hex, step.name)\" class=\"h-9 rounded-md flex flex-col items-center justify-between p-0.5 transition-transform hover:scale-105 active:scale-95 border border-black/10 shadow-2xs cursor-pointer select-none\" :style=\"{ backgroundColor: step.hex }\" :title=\"'Шаг ' + step.name + ' (' + step.hex + ') — клик для копирования'\"><span class=\"text-[8px] font-mono font-bold leading-none\" :style=\"{ color: step.textColor }\" x-text=\"step.name\"></span> <span class=\"text-[7px] font-mono leading-none opacity-80\" :style=\"{ color: step.textColor }\" x-text=\"step.lPercent + '%'\"></span></button></template></div></div></div></div><!-- 6. Кнопка фиксации токенов в БД --><div class=\"pt-3 border-t border-slate-100\"><button type=\"button\" @click=\"saveThemeTokens()\" class=\"w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Зафиксировать стиль в БД</span></button></div><div x-show=\"saveStatus\" class=\"text-center font-mono text-[11px] font-semibold text-emerald-700\" x-text=\"saveStatus\"></div></div></div><!-- Правая колонка: Прикрепленный масштабированный холст Live Preview (Issue 10, 11) --><div x-show=\"responsiveView === 'both' || responsiveView === 'preview'\" x-ref=\"canvasContainer\" class=\"flex-1 w-full min-w-0 md:sticky md:top-20 flex flex-col items-center justify-start\"><!-- Заголовочная панель холста предпросмотра --><div class=\"w-full flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-200\"><div class=\"flex items-center gap-2\"><span class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300\"><span class=\"w-2 h-2 rounded-full bg-emerald-600 animate-pulse\"></span> <span>Холст Live Preview</span></span> <span class=\"text-xs text-slate-500 hidden sm:inline\">• Клик по секции в окне выбирает её в списке</span></div><div class=\"flex items-center gap-2 text-xs text-slate-500 font-mono\"><span x-text=\"canvasDevice === 'desktop' ? '1280px (Масштаб: ' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')\"></span> <a href=\"/?preview=true\" target=\"_blank\" class=\"text-blue-600 hover:text-blue-800 flex items-center gap-0.5 ml-1 cursor-pointer\" title=\"Открыть в новой вкладке\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a></div></div><!-- Контейнер масштабирования --><div class=\"w-full flex justify-center transition-all duration-300 overflow-hidden\"><div :class=\"{\n\t\t\t\t\t\t\t'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',\n\t\t\t\t\t\t\t'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',\n\t\t\t\t\t\t\t'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'\n\t\t\t\t\t\t}\" class=\"overflow-hidden transition-all duration-300 relative flex justify-center\" :style=\"canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'\"><!-- Верхняя полоска мобильного острова/камеры --><div x-show=\"canvasDevice === 'mobile'\" class=\"absolute top-0 left-0 right-0 h-6 bg-slate-900 flex items-center justify-center z-10\"><div class=\"w-24 h-4 bg-slate-950 rounded-full\"></div></div><!-- Обёртка масштабирования: для десктопа рендерим в 1280px и масштабируем --><div :style=\"canvasDevice === 'desktop' ? ('width: 1280px; height: 760px; transform: scale(' + scaleFactor + '); transform-origin: top left;') : 'width: 100%; height: 100%;'\" :class=\"canvasDevice === 'desktop' ? 'absolute top-0 left-0' : 'w-full h-full'\"><iframe id=\"preview-canvas\" src=\"/?preview=true\" class=\"bg-surface border-0 block w-full h-full\" title=\"Предпросмотр сайта\"></iframe></div></div></div><div class=\"mt-2 text-center text-xs text-slate-500 flex items-center gap-2\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> <span>Живой холст предпросмотра: клик по секции в окне превью выбирает её в списке</span></div></div></div><!-- Диалог добавления новой секции --><dialog id=\"new-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Добавить секцию в лендинг</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('new-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Тип секции</label> <select name=\"type\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"hero\">⚡ Главный экран (Hero)</option> <option value=\"cinematic_odometer\">⏱ Интерактивный счётчик (Odometer)</option> <option value=\"cinematic_spotlight\">💡 Световой прожектор (Spotlight)</option> <option value=\"comparison\">⚖️ Сравнение до / после (Comparison)</option> <option value=\"cinematic_sticky_stack\">📑 Каскадные карточки (Sticky Stack)</option> <option value=\"cinematic_marquee\">⇄ Бегущая строка (Marquee)</option> <option value=\"features\">✦ Ключевые преимущества (Features)</option> <option value=\"services\">💼 Услуги и цены (Services)</option> <option value=\"booking\">📅 Форма онлайн-записи (Booking)</option> <option value=\"quiz\">🧮 Калькулятор / Квиз (Quiz)</option> <option value=\"steps\">🪜 Этапы работы (Steps)</option> <option value=\"reviews\">★ Отзывы клиентов (Reviews)</option> <option value=\"team\">👥 Команда специалистов (Team)</option> <option value=\"faq\">💬 Вопросы и ответы (FAQ)</option> <option value=\"gallery\">🖼 Фотогалерея (Gallery)</option> <option value=\"map\">📍 Интерактивная карта (Map)</option></select></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" required placeholder=\"Например: Ключевые преимущества нотариата\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Описание / Подзаголовок</label> <textarea name=\"content\" rows=\"3\" placeholder=\"Краткое описание назначения секции...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Создать секцию</button></div></form></dialog><!-- Диалог редактирования свойств секции --><dialog id=\"edit-block-dialog\" style=\"margin: auto;\" class=\"fixed inset-0 m-auto bg-white border border-slate-200 rounded-2xl p-6 text-slate-900 backdrop:bg-slate-900/40 max-w-lg w-full shadow-2xl z-50 h-fit\"><form method=\"dialog\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><h3 class=\"text-base font-bold text-slate-900\">Свойства секции</h3><button class=\"text-slate-400 hover:text-slate-600 cursor-pointer p-1 rounded-lg\">&times;</button></div></form><form hx-post=\"/admin/blocks/edit\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" onsubmit=\"document.getElementById('edit-block-dialog').close(); setTimeout(() => { const f = document.getElementById('preview-canvas'); if(f) f.src = f.src; }, 350);\" class=\"space-y-4 mt-4\"><input type=\"hidden\" name=\"id\" id=\"edit-block-id\" :value=\"editBlock.id\"> <input type=\"hidden\" name=\"type\" id=\"edit-block-type\" :value=\"editBlock.type\"><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Заголовок секции</label> <input type=\"text\" name=\"title\" id=\"edit-block-title\" x-model=\"editBlock.title\" required class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></div><div><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Текст / Описание</label> <textarea name=\"content\" id=\"edit-block-content\" x-model=\"editBlock.content\" rows=\"3\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500\"></textarea></div><div id=\"edit-variant-row\" x-show=\"editBlock.type === 'hero'\"><label class=\"block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5\">Стилевой вариант (Variant)</label> <select name=\"variant\" id=\"edit-block-variant\" x-model=\"editBlock.variant\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500\"><option value=\"classic\">Classic (Лаконичный)</option> <option value=\"split\">Split (Разделенный с формой / акцентом)</option> <option value=\"cyber\">Cyber (High-Tech неон)</option> <option value=\"legal\">Legal (Архитектурный строгий)</option></select></div><div class=\"flex items-center justify-end gap-3 pt-3 border-t border-slate-100\"><button type=\"button\" onclick=\"document.getElementById('edit-block-dialog').close()\" class=\"px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors border border-slate-300 cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-xs cursor-pointer\">Сохранить изменения</button></div></form></dialog><script>\n\t\t\twindow.SiteOklchGuard = {\n\t\t\t\tsrgbToLinear: function(c) {\n\t\t\t\t\tc = Math.max(0, Math.min(1, c));\n\t\t\t\t\treturn (c <= 0.04045) ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);\n\t\t\t\t},\n\t\t\t\tlinearToSrgb: function(c) {\n\t\t\t\t\tc = Math.max(0, Math.min(1, c));\n\t\t\t\t\treturn (c <= 0.0031308) ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;\n\t\t\t\t},\n\t\t\t\thexToRgb: function(hex) {\n\t\t\t\t\tif (!hex || hex.length < 7) return { r: 0, g: 0, b: 0 };\n\t\t\t\t\treturn {\n\t\t\t\t\t\tr: parseInt(hex.slice(1, 3), 16),\n\t\t\t\t\t\tg: parseInt(hex.slice(3, 5), 16),\n\t\t\t\t\t\tb: parseInt(hex.slice(5, 7), 16)\n\t\t\t\t\t};\n\t\t\t\t},\n\t\t\t\trgbToHex: function(r, g, b) {\n\t\t\t\t\tvar toHex = function(v) {\n\t\t\t\t\t\tvar s = Math.max(0, Math.min(255, Math.round(v))).toString(16);\n\t\t\t\t\t\treturn s.length === 1 ? '0' + s : s;\n\t\t\t\t\t};\n\t\t\t\t\treturn '#' + toHex(r) + toHex(g) + toHex(b);\n\t\t\t\t},\n\t\t\t\trgbToOklch: function(r, g, b) {\n\t\t\t\t\tvar rL = this.srgbToLinear(r / 255);\n\t\t\t\t\tvar gL = this.srgbToLinear(g / 255);\n\t\t\t\t\tvar bL = this.srgbToLinear(b / 255);\n\n\t\t\t\t\tvar l = 0.4122214708 * rL + 0.5363325363 * gL + 0.0514459929 * bL;\n\t\t\t\t\tvar m = 0.2119034982 * rL + 0.6806995451 * gL + 0.1073969566 * bL;\n\t\t\t\t\tvar s = 0.0883024619 * rL + 0.2817188376 * gL + 0.6299787005 * bL;\n\n\t\t\t\t\tvar l_ = Math.cbrt(l);\n\t\t\t\t\tvar m_ = Math.cbrt(m);\n\t\t\t\t\tvar s_ = Math.cbrt(s);\n\n\t\t\t\t\tvar L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;\n\t\t\t\t\tvar a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;\n\t\t\t\t\tvar bO = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;\n\n\t\t\t\t\tvar C = Math.sqrt(a * a + bO * bO);\n\t\t\t\t\tvar H = (Math.atan2(bO, a) * 180 / Math.PI + 360) % 360;\n\n\t\t\t\t\treturn { l: Math.max(0, Math.min(1, L)), c: C, h: H };\n\t\t\t\t},\n\t\t\t\toklchToRgb: function(L, C, H) {\n\t\t\t\t\tL = Math.max(0, Math.min(1, L));\n\t\t\t\t\tvar toLinear = function(lVal, cVal, hVal) {\n\t\t\t\t\t\tvar a = cVal * Math.cos(hVal * Math.PI / 180);\n\t\t\t\t\t\tvar bO = cVal * Math.sin(hVal * Math.PI / 180);\n\t\t\t\t\t\tvar l_ = lVal + 0.3963377774 * a + 0.2158037573 * bO;\n\t\t\t\t\t\tvar m_ = lVal - 0.1055613458 * a - 0.0638541728 * bO;\n\t\t\t\t\t\tvar s_ = lVal - 0.0894841775 * a - 1.2914855480 * bO;\n\t\t\t\t\t\tvar l = l_ * l_ * l_;\n\t\t\t\t\t\tvar m = m_ * m_ * m_;\n\t\t\t\t\t\tvar s = s_ * s_ * s_;\n\t\t\t\t\t\treturn {\n\t\t\t\t\t\t\trL: +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,\n\t\t\t\t\t\t\tgL: -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,\n\t\t\t\t\t\t\tbL: -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s\n\t\t\t\t\t\t};\n\t\t\t\t\t};\n\t\t\t\t\tvar inGamut = function(t) {\n\t\t\t\t\t\tvar eps = 0.0008;\n\t\t\t\t\t\treturn t.rL >= -eps && t.rL <= (1 + eps) &&\n\t\t\t\t\t\t       t.gL >= -eps && t.gL <= (1 + eps) &&\n\t\t\t\t\t\t       t.bL >= -eps && t.bL <= (1 + eps);\n\t\t\t\t\t};\n\t\t\t\t\tvar safeC = Math.max(0, C);\n\t\t\t\t\tvar test = toLinear(L, safeC, H);\n\t\t\t\t\tif (!inGamut(test)) {\n\t\t\t\t\t\tvar low = 0, high = safeC;\n\t\t\t\t\t\tfor (var iter = 0; iter < 10; iter++) {\n\t\t\t\t\t\t\tvar mid = (low + high) / 2;\n\t\t\t\t\t\t\tif (inGamut(toLinear(L, mid, H))) {\n\t\t\t\t\t\t\t\tlow = mid;\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\thigh = mid;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tsafeC = low;\n\t\t\t\t\t\ttest = toLinear(L, safeC, H);\n\t\t\t\t\t}\n\t\t\t\t\tvar r = Math.round(this.linearToSrgb(test.rL) * 255);\n\t\t\t\t\tvar g = Math.round(this.linearToSrgb(test.gL) * 255);\n\t\t\t\t\tvar b = Math.round(this.linearToSrgb(test.bL) * 255);\n\t\t\t\t\tvar clampedRL = Math.max(0, Math.min(1, test.rL));\n\t\t\t\t\tvar clampedGL = Math.max(0, Math.min(1, test.gL));\n\t\t\t\t\tvar clampedBL = Math.max(0, Math.min(1, test.bL));\n\t\t\t\t\tvar lum = 0.2126 * clampedRL + 0.7152 * clampedGL + 0.0722 * clampedBL;\n\n\t\t\t\t\treturn {\n\t\t\t\t\t\tr: r, g: g, b: b,\n\t\t\t\t\t\thex: this.rgbToHex(r, g, b),\n\t\t\t\t\t\tlum: Math.max(0, lum),\n\t\t\t\t\t\tchroma: safeC\n\t\t\t\t\t};\n\t\t\t\t},\n\t\t\t\tgetOnColor: function(hex) {\n\t\t\t\t\tvar lum = this.getLuminanceFromHex(hex);\n\t\t\t\t\tvar ratioWithDark = this.calcRatio(lum, 0.009);\n\t\t\t\t\tvar ratioWithWhite = this.calcRatio(lum, 1.0);\n\t\t\t\t\treturn (ratioWithDark > ratioWithWhite) ? '#0f172a' : '#ffffff';\n\t\t\t\t},\n\t\t\t\tgenerateScale: function(H, C) {\n\t\t\t\t\tvar steps = [\n\t\t\t\t\t\t{ name: '50', l: 0.98 },\n\t\t\t\t\t\t{ name: '100', l: 0.95 },\n\t\t\t\t\t\t{ name: '200', l: 0.90 },\n\t\t\t\t\t\t{ name: '300', l: 0.82 },\n\t\t\t\t\t\t{ name: '400', l: 0.70 },\n\t\t\t\t\t\t{ name: '500', l: 0.58 },\n\t\t\t\t\t\t{ name: '600', l: 0.48 },\n\t\t\t\t\t\t{ name: '700', l: 0.38 },\n\t\t\t\t\t\t{ name: '800', l: 0.28 },\n\t\t\t\t\t\t{ name: '900', l: 0.18 },\n\t\t\t\t\t\t{ name: '950', l: 0.10 }\n\t\t\t\t\t];\n\t\t\t\t\tvar list = [];\n\t\t\t\t\tfor (var i = 0; i < steps.length; i++) {\n\t\t\t\t\t\tvar s = steps[i];\n\t\t\t\t\t\tvar res = this.oklchToRgb(s.l, C, H);\n\t\t\t\t\t\tlist.push({\n\t\t\t\t\t\t\tname: s.name,\n\t\t\t\t\t\t\tlPercent: Math.round(s.l * 100),\n\t\t\t\t\t\t\thex: res.hex,\n\t\t\t\t\t\t\ttextColor: s.l > 0.65 ? '#0f172a' : '#ffffff'\n\t\t\t\t\t\t});\n\t\t\t\t\t}\n\t\t\t\t\treturn list;\n\t\t\t\t},\n\t\t\t\tgetLuminanceFromHex: function(hex) {\n\t\t\t\t\tvar rgb = this.hexToRgb(hex);\n\t\t\t\t\tvar rL = this.srgbToLinear(rgb.r / 255);\n\t\t\t\t\tvar gL = this.srgbToLinear(rgb.g / 255);\n\t\t\t\t\tvar bL = this.srgbToLinear(rgb.b / 255);\n\t\t\t\t\treturn 0.2126 * rL + 0.7152 * gL + 0.0722 * bL;\n\t\t\t\t},\n\t\t\t\tcalcRatio: function(lum1, lum2) {\n\t\t\t\t\tvar max = Math.max(lum1, lum2);\n\t\t\t\t\tvar min = Math.min(lum1, lum2);\n\t\t\t\t\treturn (max + 0.05) / (min + 0.05);\n\t\t\t\t},\n\t\t\t\tgetSafeRange: function(H, C, bgHex, minAA, minAAA) {\n\t\t\t\t\tvar bgLum = this.getLuminanceFromHex(bgHex);\n\t\t\t\t\tvar isLightBg = bgLum > 0.5;\n\t\t\t\t\tvar targetAA = minAA || 4.5;\n\t\t\t\t\tvar targetAAA = minAAA || 7.0;\n\n\t\t\t\t\tvar findLForRatio = (targetRatio) => {\n\t\t\t\t\t\tvar low = 0.0, high = 1.0;\n\t\t\t\t\t\tfor (var i = 0; i < 20; i++) {\n\t\t\t\t\t\t\tvar mid = (low + high) / 2;\n\t\t\t\t\t\t\tvar res = this.oklchToRgb(mid, C, H);\n\t\t\t\t\t\t\tvar ratio = this.calcRatio(res.lum, bgLum);\n\t\t\t\t\t\t\tif (isLightBg) {\n\t\t\t\t\t\t\t\tif (ratio > targetRatio) low = mid;\n\t\t\t\t\t\t\t\telse high = mid;\n\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\tif (ratio > targetRatio) high = mid;\n\t\t\t\t\t\t\t\telse low = mid;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\treturn (low + high) / 2;\n\t\t\t\t\t};\n\n\t\t\t\t\tvar lAA = findLForRatio(targetAA);\n\t\t\t\t\tvar lAAA = findLForRatio(targetAAA);\n\n\t\t\t\t\treturn {\n\t\t\t\t\t\tisLightBg: isLightBg,\n\t\t\t\t\t\taaPercent: Math.max(0, Math.min(100, Math.round(lAA * 100))),\n\t\t\t\t\t\taaaPercent: Math.max(0, Math.min(100, Math.round(lAAA * 100)))\n\t\t\t\t\t};\n\t\t\t\t},\n\t\t\t\tgetGradientCss: function(H, C) {\n\t\t\t\t\tvar stops = [];\n\t\t\t\t\tfor (var step = 5; step <= 95; step += 15) {\n\t\t\t\t\t\tvar rgb = this.oklchToRgb(step / 100, C, H);\n\t\t\t\t\t\tstops.push(rgb.hex + ' ' + step + '%');\n\t\t\t\t\t}\n\t\t\t\t\treturn 'linear-gradient(to right, #000000 0%, ' + stops.join(', ') + ', #ffffff 100%)';\n\t\t\t\t},\n\t\t\t\tsnapToTarget: function(H, C, bgHex, level, minRatio) {\n\t\t\t\t\tvar targetRatio = minRatio || (level === 'aaa' ? 7.0 : 4.5);\n\t\t\t\t\tvar range = this.getSafeRange(H, C, bgHex, targetRatio, targetRatio);\n\t\t\t\t\tvar targetPercent = range.aaPercent;\n\t\t\t\t\tif (range.isLightBg) {\n\t\t\t\t\t\ttargetPercent = Math.max(5, targetPercent - 3);\n\t\t\t\t\t} else {\n\t\t\t\t\t\ttargetPercent = Math.min(95, targetPercent + 3);\n\t\t\t\t\t}\n\t\t\t\t\tvar L = targetPercent / 100;\n\t\t\t\t\tvar rgb = this.oklchToRgb(L, C, H);\n\t\t\t\t\treturn { l: L, hex: rgb.hex };\n\t\t\t\t}\n\t\t\t};\n\n\t\t\twindow.openBlockEditor = function(id, title, content, bType, variant) {\n\t\t\t\tvar idInp = document.getElementById('edit-block-id');\n\t\t\t\tif (idInp) idInp.value = id;\n\t\t\t\tvar typeInp = document.getElementById('edit-block-type');\n\t\t\t\tif (typeInp) typeInp.value = bType;\n\t\t\t\tvar titleInp = document.getElementById('edit-block-title');\n\t\t\t\tif (titleInp) titleInp.value = title;\n\t\t\t\tvar contentInp = document.getElementById('edit-block-content');\n\t\t\t\tif (contentInp) contentInp.value = content;\n\t\t\t\tvar variantRow = document.getElementById('edit-variant-row');\n\t\t\t\tvar variantSelect = document.getElementById('edit-block-variant');\n\t\t\t\tif (variantRow && variantSelect) {\n\t\t\t\t\tif (bType === 'hero') {\n\t\t\t\t\t\tvariantRow.style.display = 'block';\n\t\t\t\t\t\tvariantSelect.value = variant || 'classic';\n\t\t\t\t\t} else {\n\t\t\t\t\t\tvariantRow.style.display = 'none';\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tvar dlg = document.getElementById('edit-block-dialog');\n\t\t\t\tif (dlg) {\n\t\t\t\t\tvar root = dlg.closest('[x-data]');\n\t\t\t\t\tif (root && window.Alpine) {\n\t\t\t\t\t\ttry {\n\t\t\t\t\t\t\tvar d = Alpine.$data(root);\n\t\t\t\t\t\t\tif (d) {\n\t\t\t\t\t\t\t\td.editBlock = { id: id, title: title, content: content, type: bType, variant: variant || 'classic' };\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t} catch (e) {}\n\t\t\t\t\t}\n\t\t\t\t\tdlg.showModal();\n\t\t\t\t}\n\t\t\t};\n\t\t</script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

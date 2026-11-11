@@ -98,6 +98,47 @@ func (s SiteSettings) IsModuleActive(moduleID string) bool {
 	}
 }
 
+// GetDesignFlavor returns the visual geometry and elevation flavor: "soft", "corporate", "sharp", "brutalist".
+func (s SiteSettings) GetDesignFlavor() string {
+	raw := s.BackgroundColor
+	if strings.Contains(raw, "|") {
+		parts := strings.SplitN(raw, "|", 2)
+		raw = parts[0]
+	}
+	raw = strings.TrimPrefix(raw, "flavor:")
+	raw = strings.ToLower(strings.TrimSpace(raw))
+	switch raw {
+	case "sharp", "corporate", "soft", "brutalist":
+		return raw
+	default:
+		return "soft"
+	}
+}
+
+// GetCustomBgColor returns the custom background color hex/rgb/oklch if set.
+func (s SiteSettings) GetCustomBgColor() string {
+	raw := s.BackgroundColor
+	if strings.Contains(raw, "|") {
+		parts := strings.SplitN(raw, "|", 2)
+		return strings.TrimSpace(parts[1])
+	}
+	if strings.HasPrefix(raw, "#") || strings.HasPrefix(raw, "rgb") || strings.HasPrefix(raw, "oklch") {
+		return raw
+	}
+	return ""
+}
+
+// GetFontPair returns the typography font pairing: "modern", "editorial", "condensed", "tech".
+func (s SiteSettings) GetFontPair() string {
+	raw := strings.ToLower(strings.TrimSpace(s.FontFamily))
+	switch raw {
+	case "editorial", "condensed", "tech", "modern":
+		return raw
+	default:
+		return "modern"
+	}
+}
+
 // AdminTabModule represents a client admin panel tab/module passed to UI templates.
 type AdminTabModule struct {
 	ID         string `json:"id"`

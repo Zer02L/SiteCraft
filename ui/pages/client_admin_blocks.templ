@@ -57,105 +57,458 @@ func humanBlockType(bType string) (name string, icon string) {
 	}
 }
 
-templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
-	<div
-		x-data="{
-			activeSubTab: 'blocks',
-			canvasDevice: 'desktop',
-			containerWidth: 900,
-			selectedBlockId: '',
-			responsiveView: 'both',
-			editBlock: {
-				id: '',
-				title: '',
-				content: '',
-				type: '',
-				variant: ''
-			},
-			themePreset: 'default',
-			tokens: {
-				primary: '#1e293b',
-				accent: '#2563eb',
-				radiusBtn: '8px',
-				radiusCard: '24px'
-			},
-			init() {
-				this.$nextTick(() => { this.updateContainerWidth(); });
-				window.addEventListener('resize', () => { this.updateContainerWidth(); });
-				window.addEventListener('message', (e) => {
-					if (e.data && e.data.type === 'PREVIEW_BLOCK_CLICKED') {
-						if (e.data.blockId) {
-							this.selectBlock(e.data.blockId, e.data.blockType, false);
-						}
+func initialBlocksTabData(settings models.SiteSettings) string {
+	theme := settings.Theme
+	if theme == "" {
+		theme = "main"
+	}
+	primary := settings.PrimaryColor
+	if primary == "" {
+		primary = "#1e293b"
+	}
+	accent := settings.AccentColor
+	if accent == "" {
+		accent = "#2563eb"
+	}
+	surface := settings.GetCustomBgColor()
+	if surface == "" {
+		surface = "#ffffff"
+	}
+	flavor := settings.GetDesignFlavor()
+	fontPair := settings.GetFontPair()
+
+	return fmt.Sprintf(`{
+		activeSubTab: 'blocks',
+		canvasDevice: 'desktop',
+		containerWidth: 900,
+		selectedBlockId: '',
+		responsiveView: 'both',
+		editBlock: {
+			id: '',
+			title: '',
+			content: '',
+			type: '',
+			variant: ''
+		},
+		themePreset: '%s',
+		flavorPreset: '%s',
+		fontPreset: '%s',
+		tokens: {
+			primary: '%s',
+			accent: '%s',
+			surface: '%s',
+			radiusBtn: '8px',
+			radiusCard: '24px'
+		},
+		contrastRatio: 7.2,
+		contrastPass: true,
+		activeTuner: '',
+		inspectRole: 'primary',
+		brandHue: 220,
+		brandChroma: 0.16,
+		brandLightness: 35,
+		lightnessGradient: '',
+		safeZones: {
+			isLightBg: true,
+			aaPercent: 55,
+			aaaPercent: 40
+		},
+		radarStatus: {
+			checked: false,
+			hasOverflow: false,
+			diff: 0,
+			culprits: []
+		},
+		saveStatus: '',
+		seedColor: '%s',
+		isGrayscale: false,
+		harmonyPreset: 'brand',
+		neutralTemp: 'brand',
+		accentScale: [],
+		copiedStep: '',
+		showProTools: false,
+		presetSwatches: {
+			primary: [
+				{ name: 'Slate', hex: '#0f172a' },
+				{ name: 'Midnight', hex: '#09090b' },
+				{ name: 'Navy', hex: '#0f1e36' },
+				{ name: 'Emerald', hex: '#06231a' },
+				{ name: 'Burgundy', hex: '#2c0d16' },
+				{ name: 'Espresso', hex: '#231610' },
+				{ name: 'Zinc', hex: '#18181b' },
+				{ name: 'Indigo', hex: '#1e1b4b' }
+			],
+			accent: [
+				{ name: 'Amber', hex: '#d97706' },
+				{ name: 'Blue', hex: '#2563eb' },
+				{ name: 'Emerald', hex: '#059669' },
+				{ name: 'Crimson', hex: '#dc2626' },
+				{ name: 'Indigo', hex: '#4f46e5' },
+				{ name: 'Rose', hex: '#e11d48' },
+				{ name: 'Cyan', hex: '#0891b2' },
+				{ name: 'Dark', hex: '#0f172a' }
+			],
+			surface: [
+				{ name: 'White', hex: '#ffffff' },
+				{ name: 'Parchment', hex: '#faf8f5' },
+				{ name: 'Ice Slate', hex: '#f8fafc' },
+				{ name: 'Neutral', hex: '#f9fafb' },
+				{ name: 'Night', hex: '#0b0f19' },
+				{ name: 'Dark Zinc', hex: '#18181b' }
+			]
+		},
+		init() {
+			this.$nextTick(() => { this.updateContainerWidth(); });
+			window.addEventListener('resize', () => { this.updateContainerWidth(); });
+			window.addEventListener('message', (e) => {
+				if (e.data && e.data.type === 'PREVIEW_BLOCK_CLICKED') {
+					if (e.data.blockId) {
+						this.selectBlock(e.data.blockId, e.data.blockType, false);
 					}
-				});
-			},
-			updateContainerWidth() {
-				const el = this.$refs.canvasContainer;
-				if (el) {
-					this.containerWidth = el.clientWidth || 800;
 				}
-			},
-			get scaleFactor() {
-				if (this.canvasDevice === 'desktop') {
-					const targetWidth = 1280;
-					const available = Math.max(300, (this.containerWidth || 800) - 8);
-					return Math.min(1, Math.max(0.2, available / targetWidth));
+				if (e.data && e.data.type === 'SITE_OVERFLOW_REPORT') {
+					this.radarStatus = {
+						checked: true,
+						hasOverflow: !!e.data.hasOverflow,
+						diff: e.data.diff || 0,
+						culprits: e.data.culprits || []
+					};
 				}
-				return 1;
-			},
-			setDevice(dev) {
-				this.canvasDevice = dev;
-				this.$nextTick(() => { this.updateContainerWidth(); });
-			},
-			selectBlock(id, bType, scrollIframe = true) {
-				this.selectedBlockId = id;
-				const card = document.getElementById('block-card-' + id);
-				if (card) {
-					card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-				}
-				if (scrollIframe) {
-					const frame = document.getElementById('preview-canvas');
-					if (frame && frame.contentWindow) {
-						frame.contentWindow.postMessage({
-							type: 'SITE_SCROLL_TO_BLOCK',
-							blockId: id,
-							blockType: bType
-						}, '*');
-					}
-				}
-			},
-			openEdit(id, title, content, bType, variant) {
-				this.editBlock = {
-					id: id,
-					title: title,
-					content: content,
-					type: bType,
-					variant: variant
-				};
-				const dlg = document.getElementById('edit-block-dialog');
-				if (dlg) dlg.showModal();
-			},
-			sendTokenUpdate(key, val) {
+			});
+			this.$nextTick(() => {
+				this.syncFromHex(this.tokens[this.inspectRole] || this.tokens.primary);
+				this.updateScale();
+			});
+		},
+		updateContainerWidth() {
+			const el = this.$refs.canvasContainer;
+			if (el) {
+				this.containerWidth = el.clientWidth || 800;
+			}
+		},
+		get scaleFactor() {
+			if (this.canvasDevice === 'desktop') {
+				const targetWidth = 1280;
+				const available = Math.max(300, (this.containerWidth || 800) - 8);
+				return Math.min(1, Math.max(0.2, available / targetWidth));
+			}
+			return 1;
+		},
+		setDevice(dev) {
+			this.canvasDevice = dev;
+			this.$nextTick(() => {
+				this.updateContainerWidth();
+				setTimeout(() => { this.triggerRadarCheck(); }, 350);
+			});
+		},
+		triggerRadarCheck() {
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_CHECK_OVERFLOW' }, '*');
+			}
+		},
+		selectBlock(id, bType, scrollIframe = true) {
+			this.selectedBlockId = id;
+			const card = document.getElementById('block-card-' + id);
+			if (card) {
+				card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			}
+			if (scrollIframe) {
 				const frame = document.getElementById('preview-canvas');
 				if (frame && frame.contentWindow) {
-					frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');
-				}
-			},
-			sendThemeUpdate(theme) {
-				this.themePreset = theme;
-				const frame = document.getElementById('preview-canvas');
-				if (frame && frame.contentWindow) {
-					frame.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');
-				}
-			},
-			refreshCanvas() {
-				const frame = document.getElementById('preview-canvas');
-				if (frame) {
-					frame.src = frame.src;
+					frame.contentWindow.postMessage({
+						type: 'SITE_SCROLL_TO_BLOCK',
+						blockId: id,
+						blockType: bType
+					}, '*');
 				}
 			}
-		}"
+		},
+		openEdit(id, title, content, bType, variant) {
+			this.editBlock = {
+				id: id,
+				title: title,
+				content: content,
+				type: bType,
+				variant: variant
+			};
+			const dlg = document.getElementById('edit-block-dialog');
+			if (dlg) dlg.showModal();
+		},
+		sendTokenUpdate(key, val) {
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: val }, '*');
+			}
+			if (key === '--color-accent') {
+				this.updateScale();
+			}
+			this.syncFromHex(this.tokens[this.inspectRole]);
+		},
+		sendThemeUpdate(theme) {
+			this.themePreset = theme;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: theme }, '*');
+			}
+		},
+		sendFlavorUpdate(flavor) {
+			this.flavorPreset = flavor;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_FLAVOR_UPDATE', flavor: flavor }, '*');
+			}
+		},
+		sendFontUpdate(font) {
+			this.fontPreset = font;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_FONT_UPDATE', font: font }, '*');
+			}
+		},
+		toggleGrayscale() {
+			this.isGrayscale = !this.isGrayscale;
+			const frame = document.getElementById('preview-canvas');
+			if (frame && frame.contentWindow) {
+				frame.contentWindow.postMessage({ type: 'SITE_GRAYSCALE_UPDATE', enabled: this.isGrayscale }, '*');
+			}
+		},
+		copyHex(hex, step) {
+			if (navigator && navigator.clipboard) {
+				navigator.clipboard.writeText(hex);
+				this.copiedStep = step;
+				setTimeout(() => { if (this.copiedStep === step) this.copiedStep = ''; }, 1600);
+			}
+		},
+		updateScale() {
+			if (!window.SiteOklchGuard) return;
+			var rgb = window.SiteOklchGuard.hexToRgb(this.tokens.accent || '#2563eb');
+			var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+			this.accentScale = window.SiteOklchGuard.generateScale(oklch.h, oklch.c);
+		},
+		getOnAccentContrast() {
+			if (!window.SiteOklchGuard) return { pass: true, ratio: 7.0, label: 'AAA', textColor: '#ffffff' };
+			var onColor = window.SiteOklchGuard.getOnColor(this.tokens.accent);
+			var lumAccent = window.SiteOklchGuard.getLuminanceFromHex(this.tokens.accent);
+			var lumText = window.SiteOklchGuard.getLuminanceFromHex(onColor);
+			var r = window.SiteOklchGuard.calcRatio(lumAccent, lumText);
+			var rounded = Math.round(r * 10) / 10;
+			return {
+				ratio: rounded,
+				pass: rounded >= 4.5,
+				label: rounded >= 7.0 ? 'AAA' : (rounded >= 4.5 ? 'AA' : 'Fail'),
+				textColor: onColor
+			};
+		},
+		applyHarmony(mode) {
+			this.harmonyPreset = mode;
+			this.generate603010(this.tokens.accent);
+		},
+		setNeutralTemp(temp) {
+			this.neutralTemp = temp;
+			this.generate603010(this.tokens.accent);
+		},
+		getRoleContrast(role) {
+			if (!window.SiteOklchGuard) return { ratio: 4.5, pass: true, label: 'AA' };
+			var hex = this.tokens[role] || '#000000';
+			var lum = window.SiteOklchGuard.getLuminanceFromHex(hex);
+			var compareHex = role === 'surface' ? (this.tokens.primary || '#000000') : (this.tokens.surface || '#ffffff');
+			var bgLum = window.SiteOklchGuard.getLuminanceFromHex(compareHex);
+			var r = window.SiteOklchGuard.calcRatio(lum, bgLum);
+			var rounded = Math.round(r * 10) / 10;
+			var target = (role === 'accent') ? 3.0 : 4.5;
+			var aaaTarget = (role === 'accent') ? 4.5 : 7.0;
+			return {
+				ratio: rounded,
+				pass: rounded >= target,
+				label: rounded >= aaaTarget ? 'AAA' : (rounded >= target ? 'AA' : 'Fail')
+			};
+		},
+		applyRoleHex(role, hex) {
+			if (!hex) return;
+			hex = hex.trim();
+			if (!hex.startsWith('#')) hex = '#' + hex;
+			if (hex.length !== 7) return;
+			this.tokens[role] = hex;
+			var key = role === 'primary' ? '--color-primary' : (role === 'accent' ? '--color-accent' : '--color-surface');
+			this.sendTokenUpdate(key, hex);
+			if (this.inspectRole === role) {
+				this.syncFromHex(hex);
+			}
+		},
+		async pickEyeDropper(role) {
+			if (window.EyeDropper) {
+				try {
+					const eyeDropper = new window.EyeDropper();
+					const result = await eyeDropper.open();
+					if (result && result.sRGBHex) {
+						this.applyRoleHex(role, result.sRGBHex);
+					}
+				} catch (e) {}
+			} else {
+				const inp = document.getElementById('native-picker-' + role);
+				if (inp) inp.click();
+			}
+		},
+		toggleTuner(role) {
+			if (this.activeTuner === role) {
+				this.activeTuner = '';
+			} else {
+				this.activeTuner = role;
+				this.inspectRole = role;
+				this.syncFromHex(this.tokens[role]);
+			}
+		},
+		syncFromHex(hex) {
+			if (!window.SiteOklchGuard) return;
+			var rgb = window.SiteOklchGuard.hexToRgb(hex);
+			var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+			this.brandHue = Math.round(oklch.h);
+			this.brandChroma = Math.max(0.04, Math.min(0.24, Math.round(oklch.c * 100) / 100 || 0.15));
+			this.brandLightness = Math.round(oklch.l * 100);
+			this.recalculateOklch(false);
+		},
+		recalculateOklch(sendUpdate = false) {
+			if (!window.SiteOklchGuard) return;
+			var compareBg = this.inspectRole === 'surface' ? this.tokens.primary : this.tokens.surface;
+			var isAccent = this.inspectRole === 'accent';
+			this.safeZones = window.SiteOklchGuard.getSafeRange(this.brandHue, this.brandChroma, compareBg, isAccent ? 3.0 : 4.5, isAccent ? 4.5 : 7.0);
+			this.lightnessGradient = window.SiteOklchGuard.getGradientCss(this.brandHue, this.brandChroma);
+			var res = window.SiteOklchGuard.oklchToRgb(this.brandLightness / 100, this.brandChroma, this.brandHue);
+			this.tokens[this.inspectRole] = res.hex;
+			var bgLum = window.SiteOklchGuard.getLuminanceFromHex(compareBg);
+			var ratio = window.SiteOklchGuard.calcRatio(res.lum, bgLum);
+			this.contrastRatio = Math.round(ratio * 10) / 10;
+			this.contrastPass = ratio >= (isAccent ? 3.0 : 4.5);
+			if (sendUpdate) {
+				var key = this.inspectRole === 'primary' ? '--color-primary' : (this.inspectRole === 'accent' ? '--color-accent' : '--color-surface');
+				const frame = document.getElementById('preview-canvas');
+				if (frame && frame.contentWindow) {
+					frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: key, value: res.hex }, '*');
+				}
+				if (this.inspectRole === 'accent') {
+					this.updateScale();
+				}
+			}
+		},
+		onHueChange(val) {
+			this.brandHue = parseInt(val);
+			this.recalculateOklch(true);
+		},
+		onLightnessChange(val) {
+			this.brandLightness = parseInt(val);
+			this.recalculateOklch(true);
+		},
+		snapTo(level) {
+			if (!window.SiteOklchGuard) return;
+			var compareBg = this.inspectRole === 'surface' ? this.tokens.primary : this.tokens.surface;
+			var minRatio = (this.inspectRole === 'accent') ? (level === 'aaa' ? 4.5 : 3.0) : (level === 'aaa' ? 7.0 : 4.5);
+			var res = window.SiteOklchGuard.snapToTarget(this.brandHue, this.brandChroma, compareBg, level, minRatio);
+			if (res) {
+				this.brandLightness = Math.round(res.l * 100);
+				this.recalculateOklch(true);
+			}
+		},
+		setInspectRole(role) {
+			this.inspectRole = role;
+			this.activeTuner = role;
+			this.syncFromHex(this.tokens[role]);
+		},
+		autoFixRole(role) {
+			this.inspectRole = role;
+			this.activeTuner = role;
+			this.syncFromHex(this.tokens[role]);
+			this.snapTo('aa');
+		},
+		autoFixContrast() {
+			this.snapTo('aa');
+		},
+		generate603010(seed) {
+			if (!seed) return;
+			this.tokens.accent = seed;
+			if (window.SiteOklchGuard) {
+				var rgb = window.SiteOklchGuard.hexToRgb(seed);
+				var oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+				var h = oklch.h;
+				var isDarkTheme = this.themePreset === 'main-night';
+
+				// 1. Harmonies are only a start (угол hue для текста)
+				var textHue = h;
+				if (this.harmonyPreset === 'complementary') textHue = (h + 180) %% 360;
+				else if (this.harmonyPreset === 'analogous') textHue = (h + 30) %% 360;
+				else if (this.harmonyPreset === 'split') textHue = (h + 150) %% 360;
+				else if (this.harmonyPreset === 'triadic') textHue = (h + 120) %% 360;
+
+				// 2. Neutrals with a temperature (угол и примесь для фона)
+				var bgHue = h;
+				var bgChroma = 0.008;
+				var textChroma = 0.035; // One Loud Color: умеренная насыщенность текста
+				if (this.neutralTemp === 'clean') {
+					bgChroma = 0.0;
+					textChroma = 0.0;
+				} else if (this.neutralTemp === 'warm') {
+					bgHue = 65;
+					bgChroma = 0.012;
+				} else if (this.neutralTemp === 'cool') {
+					bgHue = 220;
+					bgChroma = 0.012;
+				}
+
+				if (isDarkTheme) {
+					// Темная тема: глубокий брендовый фон и светлый читаемый текст
+					var bgRes = window.SiteOklchGuard.oklchToRgb(0.12, Math.max(0.01, bgChroma * 2), bgHue);
+					var primRes = window.SiteOklchGuard.oklchToRgb(0.96, textChroma, textHue);
+					this.tokens.surface = bgRes.hex;
+					this.tokens.primary = primRes.hex;
+				} else {
+					// Светлая тема: чистый/тонированный светлый фон и глубокий читаемый текст
+					var bgRes = window.SiteOklchGuard.oklchToRgb(0.985, bgChroma, bgHue);
+					// Светлота 18%% с тонким оттенком дает статус AAA (≥7:1)
+					var primRes = window.SiteOklchGuard.oklchToRgb(0.18, textChroma, textHue);
+					this.tokens.surface = bgRes.hex;
+					this.tokens.primary = primRes.hex;
+				}
+			} else {
+				this.tokens.surface = '#ffffff';
+				this.tokens.primary = '#0f172a';
+			}
+			this.sendTokenUpdate('--color-accent', this.tokens.accent);
+			this.sendTokenUpdate('--color-primary', this.tokens.primary);
+			this.sendTokenUpdate('--color-surface', this.tokens.surface);
+			this.updateScale();
+			this.syncFromHex(this.tokens[this.inspectRole]);
+		},
+		saveThemeTokens() {
+			var fd = new FormData();
+			fd.append('theme', this.themePreset);
+			fd.append('primary_color', this.tokens.primary);
+			fd.append('accent_color', this.tokens.accent);
+			fd.append('design_flavor', this.flavorPreset);
+			fd.append('font_family', this.fontPreset);
+			fd.append('background_color', this.tokens.surface);
+			this.saveStatus = 'Сохранение...';
+			fetch('/admin/theme/tokens', { method: 'POST', body: fd })
+				.then(r => r.text())
+				.then(txt => {
+					this.saveStatus = 'Сохранено в БД ✓';
+					setTimeout(() => { this.saveStatus = ''; }, 3500);
+				})
+				.catch(e => {
+					this.saveStatus = 'Ошибка сохранения';
+				});
+		},
+		refreshCanvas() {
+			const frame = document.getElementById('preview-canvas');
+			if (frame) {
+				frame.src = frame.src;
+			}
+		}
+	}`, theme, flavor, fontPair, primary, accent, surface, accent)
+}
+
+templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
+	<div
+		x-data={ initialBlocksTabData(settings) }
 		class="space-y-5"
 	>
 		<!-- 1. Компактная шапка конструктора с возвращённым ярким бейджем Live Preview -->
@@ -269,6 +622,37 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 						<span>Мобильный (390px)</span>
 					</button>
 				</div>
+
+				<!-- Индикатор Responsive Radar (Tier 1: Детектор вылетов верстки) -->
+				<button
+					type="button"
+					@click="triggerRadarCheck()"
+					x-show="radarStatus.checked"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition-all shadow-2xs cursor-pointer"
+					:class="radarStatus.hasOverflow ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse' : 'bg-emerald-50 border-emerald-300 text-emerald-800'"
+					:title="radarStatus.hasOverflow ? ('Вылет верстки на ' + radarStatus.diff + 'px! Кликните для повторной проверки') : '100% Fit: горизонтальный скролл отсутствует'"
+				>
+					<span
+						class="w-2 h-2 rounded-full"
+						:class="radarStatus.hasOverflow ? 'bg-rose-500' : 'bg-emerald-500'"
+					></span>
+					<span x-text="radarStatus.hasOverflow ? ('Radar: Вылет +' + radarStatus.diff + 'px!') : 'Radar: 100% Fit'"></span>
+				</button>
+
+				<!-- Tool 1: 10-Second Grayscale Test (Value First / Контраст без цвета) -->
+				<button
+					type="button"
+					@click="toggleGrayscale()"
+					class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all shadow-2xs cursor-pointer select-none"
+					:class="isGrayscale ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'"
+					title="Тест иерархии в оттенках серого (Value First): выявляет проблемы контраста и читаемости без цвета"
+				>
+					<span class="w-3 h-3 rounded-full border border-slate-400 overflow-hidden flex shrink-0">
+						<span class="w-1/2 h-full bg-slate-900"></span>
+						<span class="w-1/2 h-full bg-white"></span>
+					</span>
+					<span x-text="isGrayscale ? 'Ч/Б активен' : 'Ч/Б тест'"></span>
+				</button>
 
 				<!-- Группа 2: Кнопка обновления холста -->
 				<button
@@ -524,88 +908,760 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 					</div>
 				</div>
 
-				<!-- Вкладка 2: Дизайн-система и Live Токены -->
+				<!-- Вкладка 2: Дизайн-система, Эшелон 1 и 2 инструменты -->
 				<div x-show="activeSubTab === 'theme'" class="space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs">
+					<!-- 1. Индустриальная тема (Strict Presets) -->
 					<div>
-						<label class="block font-semibold uppercase tracking-wider text-slate-700 mb-1.5 text-xs">
-							Готовые пресеты индустрий
-						</label>
+						<div class="flex items-center justify-between mb-1.5">
+							<label class="block font-semibold uppercase tracking-wider text-slate-700 text-[11px]">
+								Базовый пресет темы
+							</label>
+							<span class="text-[10px] font-mono text-slate-400">Strict Theme</span>
+						</div>
 						<select
+							x-model="themePreset"
 							@change="sendThemeUpdate($event.target.value)"
-							class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
+							class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
 						>
 							<option value="main">Основная тема (Default Day)</option>
-							<option value="coral">Stationery Coral (Hallmark Modern-Minimal)</option>
-							<option value="main-night">Основная ночь (Default Night)</option>
-							<option value="cyber">B2B Cyber & High-Tech</option>
+							<option value="coral">Stationery Coral (Modern Minimal)</option>
 							<option value="legal">B2B Legal & Consulting</option>
 							<option value="medical">B2C Medical & Health</option>
-							<option value="beauty">B2C Beauty & Salon</option>
+							<option value="cyber">B2B Cyber & IT Service</option>
+							<option value="beauty">B2C Beauty & Premium</option>
 							<option value="auto">B2C Auto & Service</option>
+							<option value="main-night">Dark / Глубокая темная</option>
 						</select>
 					</div>
 
-					<div class="pt-3 border-t border-slate-100 space-y-3">
-						<div class="font-bold text-slate-900 text-xs">Интерактивная палитра (Live Bridge)</div>
-
-						<!-- Primary Color -->
-						<div class="flex items-center justify-between">
-							<span class="text-slate-600">Основной цвет (Primary)</span>
-							<input
-								type="color"
-								value="#1e293b"
-								@input="sendTokenUpdate('--color-primary', $event.target.value)"
-								class="w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300"
-							/>
+					<!-- 2. Дизайн-настроения (Design Flavors) - Tier 1 -->
+					<div class="pt-3 border-t border-slate-100">
+						<div class="flex items-center justify-between mb-1.5">
+							<span class="font-bold text-slate-900 text-xs">Характер геометрии (Flavor)</span>
+							<span class="text-[10px] font-mono text-blue-600" x-text="flavorPreset"></span>
 						</div>
-
-						<!-- Accent Color -->
-						<div class="flex items-center justify-between">
-							<span class="text-slate-600">Акцентный цвет (Accent)</span>
-							<input
-								type="color"
-								value="#e65a40"
-								@input="sendTokenUpdate('--color-accent', $event.target.value)"
-								class="w-8 h-8 rounded-lg bg-transparent cursor-pointer border border-slate-300"
-							/>
-						</div>
-
-						<!-- Radius Card -->
-						<div>
-							<div class="flex justify-between text-slate-600 mb-1">
-								<span>Скругление карточек</span>
-								<span class="font-mono text-blue-600">--radius-card</span>
-							</div>
-							<input
-								type="range"
-								min="4"
-								max="32"
-								value="24"
-								@input="sendTokenUpdate('--radius-card', $event.target.value + 'px')"
-								class="w-full accent-blue-600 cursor-pointer"
-							/>
-						</div>
-
-						<!-- Radius Button -->
-						<div>
-							<div class="flex justify-between text-slate-600 mb-1">
-								<span>Скругление кнопок</span>
-								<span class="font-mono text-blue-600">--radius-btn</span>
-							</div>
-							<input
-								type="range"
-								min="2"
-								max="24"
-								value="8"
-								@input="sendTokenUpdate('--radius-btn', $event.target.value + 'px')"
-								class="w-full accent-blue-600 cursor-pointer"
-							/>
+						<div class="grid grid-cols-2 gap-1.5">
+							<button
+								type="button"
+								@click="sendFlavorUpdate('soft')"
+								:class="flavorPreset === 'soft' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Soft / SaaS</div>
+								<div class="text-[10px] opacity-75">Радиус 24px</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFlavorUpdate('corporate')"
+								:class="flavorPreset === 'corporate' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Corporate</div>
+								<div class="text-[10px] opacity-75">Радиус 8px</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFlavorUpdate('sharp')"
+								:class="flavorPreset === 'sharp' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Sharp</div>
+								<div class="text-[10px] opacity-75">Радиус 0px</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFlavorUpdate('brutalist')"
+								:class="flavorPreset === 'brutalist' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Brutalist</div>
+								<div class="text-[10px] opacity-75">Контраст 2px</div>
+							</button>
 						</div>
 					</div>
 
-					<div class="p-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-800 text-[11px] leading-relaxed">
-						⚡ Изменения ползунков и цветов передаются на холст по безопасному мосту postMessage мгновенно со скоростью 60 FPS.
+					<!-- 3. Шрифтовые пары (Font Pairs) - Tier 2 -->
+					<div class="pt-3 border-t border-slate-100">
+						<div class="flex items-center justify-between mb-1.5">
+							<span class="font-bold text-slate-900 text-xs">Шрифтовая пара (Type Pair)</span>
+							<span class="text-[10px] font-mono text-blue-600" x-text="fontPreset"></span>
+						</div>
+						<div class="grid grid-cols-2 gap-1.5">
+							<button
+								type="button"
+								@click="sendFontUpdate('modern')"
+								:class="fontPreset === 'modern' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Modern</div>
+								<div class="text-[10px] opacity-75">Inter + Inter</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFontUpdate('editorial')"
+								:class="fontPreset === 'editorial' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Editorial</div>
+								<div class="text-[10px] opacity-75">Merriweather</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFontUpdate('condensed')"
+								:class="fontPreset === 'condensed' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Condensed</div>
+								<div class="text-[10px] opacity-75">Bebas Neue</div>
+							</button>
+							<button
+								type="button"
+								@click="sendFontUpdate('tech')"
+								:class="fontPreset === 'tech' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+								class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+							>
+								<div class="font-medium text-[11px]">Tech / IT</div>
+								<div class="text-[10px] opacity-75">Plus Jakarta</div>
+							</button>
+						</div>
 					</div>
+
+					<!-- 4. Палитра 60-30-10 & Интеллектуальный контроль доступности (WCAG & OKLCH) -->
+					<div class="pt-3 border-t border-slate-100 space-y-2.5">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center gap-1.5">
+								<span class="font-bold text-slate-900 text-xs">Палитра 60-30-10 & Доступность</span>
+								<span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-blue-50 text-blue-700 border border-blue-200">OKLCH</span>
+							</div>
+							<button
+								type="button"
+								@click="generate603010(tokens.accent)"
+								class="text-[10px] text-blue-600 hover:text-blue-800 font-semibold underline cursor-pointer"
+								title="Сгенерировать гармоничную схему от текущего акцента"
+							>
+								⚡ Сгенерировать
+							</button>
+						</div>
+
+						<!-- Быстрые правила: Гармонии (Tool 3) и Характер серого (Tool 5) -->
+						<div class="grid grid-cols-2 gap-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200/80 text-[11px]">
+							<div>
+								<label class="block text-[10px] font-semibold text-slate-500 mb-1">Гармония (Harmonies)</label>
+								<select
+									x-model="harmonyPreset"
+									@change="applyHarmony($event.target.value)"
+									class="w-full px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-800 text-[10px] cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
+								>
+									<option value="brand">Монохром (1 Loud Color)</option>
+									<option value="complementary">Комплемент (+180°)</option>
+									<option value="analogous">Аналоговая (+30°)</option>
+									<option value="split">Сплит (+150°)</option>
+									<option value="triadic">Триада (+120°)</option>
+								</select>
+							</div>
+							<div>
+								<label class="block text-[10px] font-semibold text-slate-500 mb-1">Тон нейтрали (Серый)</label>
+								<select
+									x-model="neutralTemp"
+									@change="setNeutralTemp($event.target.value)"
+									class="w-full px-2 py-1 rounded-lg bg-white border border-slate-300 text-slate-800 text-[10px] cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
+								>
+									<option value="brand">В тон бренда (авто)</option>
+									<option value="clean">Чистый серый (0%)</option>
+									<option value="warm">Тёплый серый</option>
+									<option value="cool">Холодный серый</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- Карточка 1: Primary (30% Текст / Заголовки) -->
+						<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+							<div class="flex items-center justify-between gap-2">
+								<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('primary')">
+									<button
+										type="button"
+										@click.stop="toggleTuner('primary')"
+										class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+										:style="{ backgroundColor: tokens.primary }"
+										title="Открыть палитру контента"
+									>
+										<span class="w-1.5 h-1.5 rounded-full bg-white/70 opacity-0 hover:opacity-100 transition-opacity"></span>
+									</button>
+									<div class="min-w-0">
+										<div class="text-slate-800 font-semibold text-[11px] leading-tight">Контент (Primary 30%)</div>
+										<div class="text-[10px] font-mono text-slate-400" x-text="tokens.primary"></div>
+									</div>
+								</div>
+
+								<div class="flex items-center gap-1.5 shrink-0">
+									<!-- Живой бейдж контраста -->
+									<template x-if="getRoleContrast('primary')">
+										<span
+											class="px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold"
+											:class="getRoleContrast('primary').pass ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
+											x-text="getRoleContrast('primary').label + ' ' + getRoleContrast('primary').ratio + ':1'"
+										></span>
+									</template>
+
+									<!-- Быстрый фикс если не проходит контраст -->
+									<button
+										type="button"
+										x-show="!getRoleContrast('primary').pass"
+										@click="autoFixRole('primary')"
+										class="px-1.5 py-0.5 rounded bg-rose-600 hover:bg-rose-700 text-white font-semibold text-[9px] transition-colors shadow-2xs cursor-pointer"
+										title="Автоматически подогнать яркость до стандарта читаемости AA"
+									>
+										Fix
+									</button>
+
+									<!-- Кнопка раскрытия Гибридного тюнера -->
+									<button
+										type="button"
+										@click="toggleTuner('primary')"
+										class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+										:class="activeTuner === 'primary' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+										title="Палитра пресетов и OKLCH-тюнер"
+									>
+										<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+										</svg>
+									</button>
+								</div>
+							</div>
+
+							<!-- Выпадающий Гибридный тюнер для Primary -->
+							<div x-show="activeTuner === 'primary'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+								<!-- 1. Пресеты (Curated Swatches) -->
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Готовые строгие палитры</span>
+										<span class="text-[9px] text-slate-400">1 клик</span>
+									</div>
+									<div class="flex items-center gap-1.5 flex-wrap">
+										<template x-for="swatch in presetSwatches.primary" :key="swatch.hex">
+											<button
+												type="button"
+												@click="applyRoleHex('primary', swatch.hex)"
+												:class="tokens.primary.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+												class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+												:style="{ backgroundColor: swatch.hex }"
+												:title="swatch.name + ' (' + swatch.hex + ')'"
+											>
+												<span x-show="tokens.primary.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+											</button>
+										</template>
+									</div>
+								</div>
+
+								<!-- 2. OKLCH Слайдеры -->
+								<div class="space-y-1 pt-1 border-t border-slate-100">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Оттенок (Hue)</span>
+										<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="360"
+										step="1"
+										:value="brandHue"
+										@input="onHueChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+										style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+									/>
+								</div>
+
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Светлота (Lightness)</span>
+										<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="100"
+										step="1"
+										:value="brandLightness"
+										@input="onLightnessChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+										:style="{ background: lightnessGradient }"
+									/>
+								</div>
+
+								<!-- Шкала безопасных зон -->
+								<div class="space-y-1">
+									<div class="h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none">
+										<template x-if="safeZones.isLightBg">
+											<div class="flex w-full h-full">
+												<div :style="'width: ' + safeZones.aaaPercent + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+												<div :style="'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+												<div :style="'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+											</div>
+										</template>
+										<template x-if="!safeZones.isLightBg">
+											<div class="flex w-full h-full">
+												<div :style="'width: ' + safeZones.aaPercent + '%'\" class="bg-rose-400 h-full" title="Fail"></div>
+												<div :style="'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+												<div :style="'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+											</div>
+										</template>
+									</div>
+								</div>
+
+								<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+								<div class="flex items-center justify-between gap-1.5 pt-1">
+									<div class="flex items-center gap-1">
+										<button
+											type="button"
+											@click="snapTo('aa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AA"
+										>
+											Snap AA
+										</button>
+										<button
+											type="button"
+											@click="snapTo('aaa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AAA"
+										>
+											Snap AAA
+										</button>
+									</div>
+
+									<div class="flex items-center gap-1">
+										<input
+											type="text"
+											maxlength="7"
+											:value="tokens.primary"
+											@change="applyRoleHex('primary', $event.target.value)"
+											class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+											placeholder="#000000"
+											title="Ввести точный HEX-код"
+										/>
+										<button
+											type="button"
+											@click="pickEyeDropper('primary')"
+											class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+											title="Взять пипеткой с экрана"
+										>
+											<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+											</svg>
+										</button>
+										<input
+											type="color"
+											id="native-picker-primary"
+											class="sr-only"
+											:value="tokens.primary"
+											@input="applyRoleHex('primary', $event.target.value)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Карточка 2: Accent (10% Кнопки / Акценты) -->
+						<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+							<div class="flex items-center justify-between gap-2">
+								<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('accent')">
+									<button
+										type="button"
+										@click.stop="toggleTuner('accent')"
+										class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+										:style="{ backgroundColor: tokens.accent }"
+										title="Открыть палитру акцента"
+									>
+										<span class="w-1.5 h-1.5 rounded-full bg-white/70 opacity-0 hover:opacity-100 transition-opacity"></span>
+									</button>
+									<div class="min-w-0">
+										<div class="text-slate-800 font-semibold text-[11px] leading-tight">Акцент CTA (Accent 10%)</div>
+										<div class="text-[10px] font-mono text-slate-400" x-text="tokens.accent"></div>
+									</div>
+								</div>
+
+								<div class="flex items-center gap-1.5 shrink-0">
+									<!-- Живой бейдж контраста к фону -->
+									<template x-if="getRoleContrast('accent')">
+										<span
+											class="px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold"
+											:class="getRoleContrast('accent').pass ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'"
+											x-text="getRoleContrast('accent').label + ' ' + getRoleContrast('accent').ratio + ':1'"
+											title="Контраст кнопки к фону страницы"
+										></span>
+									</template>
+
+									<!-- Бейдж контраста надписи внутри кнопки CTA -->
+									<template x-if="getOnAccentContrast()">
+										<span
+											class="px-1.5 py-0.5 rounded-full font-mono text-[9px] font-bold"
+											:class="getOnAccentContrast().pass ? 'bg-sky-100 text-sky-800' : 'bg-rose-100 text-rose-800'"
+											x-text="'CTA ' + (getOnAccentContrast().textColor === '#0f172a' ? 'Тёмн.' : 'Бел.') + ' ' + getOnAccentContrast().ratio + ':1'"
+											title="Контраст текста внутри кнопки CTA к ее фону"
+										></span>
+									</template>
+
+									<!-- Быстрый фикс если не проходит контраст -->
+									<button
+										type="button"
+										x-show="!getRoleContrast('accent').pass"
+										@click="autoFixRole('accent')"
+										class="px-1.5 py-0.5 rounded bg-rose-600 hover:bg-rose-700 text-white font-semibold text-[9px] transition-colors shadow-2xs cursor-pointer"
+										title="Автоматически подогнать яркость до стандарта читаемости AA"
+									>
+										Fix
+									</button>
+
+									<!-- Кнопка раскрытия Гибридного тюнера -->
+									<button
+										type="button"
+										@click="toggleTuner('accent')"
+										class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+										:class="activeTuner === 'accent' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+										title="Палитра пресетов и OKLCH-тюнер"
+									>
+										<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+										</svg>
+									</button>
+								</div>
+							</div>
+
+							<!-- Выпадающий Гибридный тюнер для Accent -->
+							<div x-show="activeTuner === 'accent'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+								<!-- 1. Пресеты (Curated Swatches) -->
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Конверсионные кнопки (CTA)</span>
+										<span class="text-[9px] text-slate-400">1 клик</span>
+									</div>
+									<div class="flex items-center gap-1.5 flex-wrap">
+										<template x-for="swatch in presetSwatches.accent" :key="swatch.hex">
+											<button
+												type="button"
+												@click="applyRoleHex('accent', swatch.hex)"
+												:class="tokens.accent.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+												class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+												:style="{ backgroundColor: swatch.hex }"
+												:title="swatch.name + ' (' + swatch.hex + ')'"
+											>
+												<span x-show="tokens.accent.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+											</button>
+										</template>
+									</div>
+								</div>
+
+								<!-- 2. OKLCH Слайдеры -->
+								<div class="space-y-1 pt-1 border-t border-slate-100">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Оттенок бренда (Hue)</span>
+										<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="360"
+										step="1"
+										:value="brandHue"
+										@input="onHueChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+										style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+									/>
+								</div>
+
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Светлота (Lightness)</span>
+										<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="100"
+										step="1"
+										:value="brandLightness"
+										@input="onLightnessChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+										:style="{ background: lightnessGradient }"
+									/>
+								</div>
+
+								<!-- Шкала безопасных зон -->
+								<div class="space-y-1">
+									<div class="h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none">
+										<template x-if="safeZones.isLightBg">
+											<div class="flex w-full h-full">
+												<div :style="'width: ' + safeZones.aaaPercent + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+												<div :style="'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+												<div :style="'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+											</div>
+										</template>
+										<template x-if="!safeZones.isLightBg">
+											<div class="flex w-full h-full">
+												<div :style="'width: ' + safeZones.aaPercent + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+												<div :style="'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+												<div :style="'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+											</div>
+										</template>
+									</div>
+								</div>
+
+								<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+								<div class="flex items-center justify-between gap-1.5 pt-1">
+									<div class="flex items-center gap-1">
+										<button
+											type="button"
+											@click="snapTo('aa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AA"
+										>
+											Snap AA
+										</button>
+										<button
+											type="button"
+											@click="snapTo('aaa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AAA"
+										>
+											Snap AAA
+										</button>
+									</div>
+
+									<div class="flex items-center gap-1">
+										<input
+											type="text"
+											maxlength="7"
+											:value="tokens.accent"
+											@change="applyRoleHex('accent', $event.target.value)"
+											class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+											placeholder="#000000"
+											title="Ввести точный HEX-код"
+										/>
+										<button
+											type="button"
+											@click="pickEyeDropper('accent')"
+											class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+											title="Взять пипеткой с экрана"
+										>
+											<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+											</svg>
+										</button>
+										<input
+											type="color"
+											id="native-picker-accent"
+											class="sr-only"
+											:value="tokens.accent"
+											@input="applyRoleHex('accent', $event.target.value)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Карточка 3: Surface (60% Фон страниц) -->
+						<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+							<div class="flex items-center justify-between gap-2">
+								<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('surface')">
+									<button
+										type="button"
+										@click.stop="toggleTuner('surface')"
+										class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+										:style="{ backgroundColor: tokens.surface }"
+										title="Открыть палитру фона"
+									>
+										<span class="w-1.5 h-1.5 rounded-full bg-slate-400 opacity-0 hover:opacity-100 transition-opacity"></span>
+									</button>
+									<div class="min-w-0">
+										<div class="text-slate-800 font-semibold text-[11px] leading-tight">Фон страниц (Surface 60%)</div>
+										<div class="text-[10px] font-mono text-slate-400" x-text="tokens.surface"></div>
+									</div>
+								</div>
+
+								<div class="flex items-center gap-1.5 shrink-0">
+									<!-- Бейдж роли Surface -->
+									<span class="text-[9px] font-mono text-slate-500 px-2 py-0.5 rounded-full bg-slate-100 font-semibold border border-slate-200/80">База 60%</span>
+
+									<!-- Кнопка раскрытия Гибридного тюнера -->
+									<button
+										type="button"
+										@click="toggleTuner('surface')"
+										class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+										:class="activeTuner === 'surface' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+										title="Палитра пресетов и OKLCH-тюнер"
+									>
+										<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+										</svg>
+									</button>
+								</div>
+							</div>
+
+							<!-- Выпадающий Гибридный тюнер для Surface -->
+							<div x-show="activeTuner === 'surface'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+								<!-- 1. Пресеты фонов -->
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Премиальные оттенки фона</span>
+										<span class="text-[9px] text-slate-400">1 клик</span>
+									</div>
+									<div class="flex items-center gap-1.5 flex-wrap">
+										<template x-for="swatch in presetSwatches.surface" :key="swatch.hex">
+											<button
+												type="button"
+												@click="applyRoleHex('surface', swatch.hex)"
+												:class="tokens.surface.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+												class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+												:style="{ backgroundColor: swatch.hex }"
+												:title="swatch.name + ' (' + swatch.hex + ')'"
+											>
+												<span x-show="tokens.surface.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+											</button>
+										</template>
+									</div>
+								</div>
+
+								<!-- 2. OKLCH Слайдеры для фона -->
+								<div class="space-y-1 pt-1 border-t border-slate-100">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Тон серого / оттенка (Hue)</span>
+										<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="360"
+										step="1"
+										:value="brandHue"
+										@input="onHueChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+										style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+									/>
+								</div>
+
+								<div class="space-y-1">
+									<div class="flex items-center justify-between text-[10px]">
+										<span class="text-slate-600 font-medium">Светлота фона (Lightness)</span>
+										<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+									</div>
+									<input
+										type="range"
+										min="0"
+										max="100"
+										step="1"
+										:value="brandLightness"
+										@input="onLightnessChange($event.target.value)"
+										class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+										:style="{ background: lightnessGradient }"
+									/>
+								</div>
+
+								<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+								<div class="flex items-center justify-between gap-1.5 pt-1">
+									<div class="flex items-center gap-1">
+										<button
+											type="button"
+											@click="snapTo('aa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AA"
+										>
+											Snap AA
+										</button>
+										<button
+											type="button"
+											@click="snapTo('aaa')"
+											class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+											title="Привязать к стандарту читаемости AAA"
+										>
+											Snap AAA
+										</button>
+									</div>
+
+									<div class="flex items-center gap-1">
+										<input
+											type="text"
+											maxlength="7"
+											:value="tokens.surface"
+											@change="applyRoleHex('surface', $event.target.value)"
+											class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+											placeholder="#ffffff"
+											title="Ввести точный HEX-код"
+										/>
+										<button
+											type="button"
+											@click="pickEyeDropper('surface')"
+											class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+											title="Взять пипеткой с экрана"
+										>
+											<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+											</svg>
+										</button>
+										<input
+											type="color"
+											id="native-picker-surface"
+											class="sr-only"
+											:value="tokens.surface"
+											@input="applyRoleHex('surface', $event.target.value)"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Tool 4: Шкала оттенков 50–900 (Tailwind OKLCH Scale без opacity) -->
+						<div class="pt-1">
+							<button
+								type="button"
+								@click="showProTools = !showProTools"
+								class="w-full flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 text-[11px] font-medium transition-colors cursor-pointer select-none"
+							>
+								<span class="flex items-center gap-1.5">
+									<span>🎨 Шкала оттенков 50–900 (OKLCH Scale)</span>
+									<span class="text-[9px] font-mono text-slate-400 font-normal">без opacity</span>
+								</span>
+								<svg class="w-3.5 h-3.5 transform transition-transform" :class="showProTools ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</button>
+
+							<div x-show="showProTools" x-cloak class="mt-2 p-2.5 rounded-xl border border-slate-200 bg-white space-y-2">
+								<div class="flex items-center justify-between text-[10px] text-slate-500">
+									<span>Твердые тона для дизайн-системы:</span>
+									<span x-show="copiedStep" class="text-emerald-600 font-mono font-bold" x-text="'Скопирован ' + copiedStep + '!'"></span>
+								</div>
+								<div class="grid grid-cols-6 sm:grid-cols-11 gap-1">
+									<template x-for="step in accentScale" :key="step.name">
+										<button
+											type="button"
+											@click="copyHex(step.hex, step.name)"
+											class="h-9 rounded-md flex flex-col items-center justify-between p-0.5 transition-transform hover:scale-105 active:scale-95 border border-black/10 shadow-2xs cursor-pointer select-none"
+											:style="{ backgroundColor: step.hex }"
+											:title="'Шаг ' + step.name + ' (' + step.hex + ') — клик для копирования'"
+										>
+											<span class="text-[8px] font-mono font-bold leading-none" :style="{ color: step.textColor }" x-text="step.name"></span>
+											<span class="text-[7px] font-mono leading-none opacity-80" :style="{ color: step.textColor }" x-text="step.lPercent + '%'"></span>
+										</button>
+									</template>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- 6. Кнопка фиксации токенов в БД -->
+					<div class="pt-3 border-t border-slate-100">
+						<button
+							type="button"
+							@click="saveThemeTokens()"
+							class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+						>
+							<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+							</svg>
+							<span>Зафиксировать стиль в БД</span>
+						</button>
+					</div>
+					<div x-show="saveStatus" class="text-center font-mono text-[11px] font-semibold text-emerald-700" x-text="saveStatus"></div>
 				</div>
 			</div>
 
@@ -830,6 +1886,205 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 		</dialog>
 
 		<script>
+			window.SiteOklchGuard = {
+				srgbToLinear: function(c) {
+					c = Math.max(0, Math.min(1, c));
+					return (c <= 0.04045) ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+				},
+				linearToSrgb: function(c) {
+					c = Math.max(0, Math.min(1, c));
+					return (c <= 0.0031308) ? 12.92 * c : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
+				},
+				hexToRgb: function(hex) {
+					if (!hex || hex.length < 7) return { r: 0, g: 0, b: 0 };
+					return {
+						r: parseInt(hex.slice(1, 3), 16),
+						g: parseInt(hex.slice(3, 5), 16),
+						b: parseInt(hex.slice(5, 7), 16)
+					};
+				},
+				rgbToHex: function(r, g, b) {
+					var toHex = function(v) {
+						var s = Math.max(0, Math.min(255, Math.round(v))).toString(16);
+						return s.length === 1 ? '0' + s : s;
+					};
+					return '#' + toHex(r) + toHex(g) + toHex(b);
+				},
+				rgbToOklch: function(r, g, b) {
+					var rL = this.srgbToLinear(r / 255);
+					var gL = this.srgbToLinear(g / 255);
+					var bL = this.srgbToLinear(b / 255);
+
+					var l = 0.4122214708 * rL + 0.5363325363 * gL + 0.0514459929 * bL;
+					var m = 0.2119034982 * rL + 0.6806995451 * gL + 0.1073969566 * bL;
+					var s = 0.0883024619 * rL + 0.2817188376 * gL + 0.6299787005 * bL;
+
+					var l_ = Math.cbrt(l);
+					var m_ = Math.cbrt(m);
+					var s_ = Math.cbrt(s);
+
+					var L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_;
+					var a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_;
+					var bO = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_;
+
+					var C = Math.sqrt(a * a + bO * bO);
+					var H = (Math.atan2(bO, a) * 180 / Math.PI + 360) % 360;
+
+					return { l: Math.max(0, Math.min(1, L)), c: C, h: H };
+				},
+				oklchToRgb: function(L, C, H) {
+					L = Math.max(0, Math.min(1, L));
+					var toLinear = function(lVal, cVal, hVal) {
+						var a = cVal * Math.cos(hVal * Math.PI / 180);
+						var bO = cVal * Math.sin(hVal * Math.PI / 180);
+						var l_ = lVal + 0.3963377774 * a + 0.2158037573 * bO;
+						var m_ = lVal - 0.1055613458 * a - 0.0638541728 * bO;
+						var s_ = lVal - 0.0894841775 * a - 1.2914855480 * bO;
+						var l = l_ * l_ * l_;
+						var m = m_ * m_ * m_;
+						var s = s_ * s_ * s_;
+						return {
+							rL: +4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+							gL: -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+							bL: -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+						};
+					};
+					var inGamut = function(t) {
+						var eps = 0.0008;
+						return t.rL >= -eps && t.rL <= (1 + eps) &&
+						       t.gL >= -eps && t.gL <= (1 + eps) &&
+						       t.bL >= -eps && t.bL <= (1 + eps);
+					};
+					var safeC = Math.max(0, C);
+					var test = toLinear(L, safeC, H);
+					if (!inGamut(test)) {
+						var low = 0, high = safeC;
+						for (var iter = 0; iter < 10; iter++) {
+							var mid = (low + high) / 2;
+							if (inGamut(toLinear(L, mid, H))) {
+								low = mid;
+							} else {
+								high = mid;
+							}
+						}
+						safeC = low;
+						test = toLinear(L, safeC, H);
+					}
+					var r = Math.round(this.linearToSrgb(test.rL) * 255);
+					var g = Math.round(this.linearToSrgb(test.gL) * 255);
+					var b = Math.round(this.linearToSrgb(test.bL) * 255);
+					var clampedRL = Math.max(0, Math.min(1, test.rL));
+					var clampedGL = Math.max(0, Math.min(1, test.gL));
+					var clampedBL = Math.max(0, Math.min(1, test.bL));
+					var lum = 0.2126 * clampedRL + 0.7152 * clampedGL + 0.0722 * clampedBL;
+
+					return {
+						r: r, g: g, b: b,
+						hex: this.rgbToHex(r, g, b),
+						lum: Math.max(0, lum),
+						chroma: safeC
+					};
+				},
+				getOnColor: function(hex) {
+					var lum = this.getLuminanceFromHex(hex);
+					var ratioWithDark = this.calcRatio(lum, 0.009);
+					var ratioWithWhite = this.calcRatio(lum, 1.0);
+					return (ratioWithDark > ratioWithWhite) ? '#0f172a' : '#ffffff';
+				},
+				generateScale: function(H, C) {
+					var steps = [
+						{ name: '50', l: 0.98 },
+						{ name: '100', l: 0.95 },
+						{ name: '200', l: 0.90 },
+						{ name: '300', l: 0.82 },
+						{ name: '400', l: 0.70 },
+						{ name: '500', l: 0.58 },
+						{ name: '600', l: 0.48 },
+						{ name: '700', l: 0.38 },
+						{ name: '800', l: 0.28 },
+						{ name: '900', l: 0.18 },
+						{ name: '950', l: 0.10 }
+					];
+					var list = [];
+					for (var i = 0; i < steps.length; i++) {
+						var s = steps[i];
+						var res = this.oklchToRgb(s.l, C, H);
+						list.push({
+							name: s.name,
+							lPercent: Math.round(s.l * 100),
+							hex: res.hex,
+							textColor: s.l > 0.65 ? '#0f172a' : '#ffffff'
+						});
+					}
+					return list;
+				},
+				getLuminanceFromHex: function(hex) {
+					var rgb = this.hexToRgb(hex);
+					var rL = this.srgbToLinear(rgb.r / 255);
+					var gL = this.srgbToLinear(rgb.g / 255);
+					var bL = this.srgbToLinear(rgb.b / 255);
+					return 0.2126 * rL + 0.7152 * gL + 0.0722 * bL;
+				},
+				calcRatio: function(lum1, lum2) {
+					var max = Math.max(lum1, lum2);
+					var min = Math.min(lum1, lum2);
+					return (max + 0.05) / (min + 0.05);
+				},
+				getSafeRange: function(H, C, bgHex, minAA, minAAA) {
+					var bgLum = this.getLuminanceFromHex(bgHex);
+					var isLightBg = bgLum > 0.5;
+					var targetAA = minAA || 4.5;
+					var targetAAA = minAAA || 7.0;
+
+					var findLForRatio = (targetRatio) => {
+						var low = 0.0, high = 1.0;
+						for (var i = 0; i < 20; i++) {
+							var mid = (low + high) / 2;
+							var res = this.oklchToRgb(mid, C, H);
+							var ratio = this.calcRatio(res.lum, bgLum);
+							if (isLightBg) {
+								if (ratio > targetRatio) low = mid;
+								else high = mid;
+							} else {
+								if (ratio > targetRatio) high = mid;
+								else low = mid;
+							}
+						}
+						return (low + high) / 2;
+					};
+
+					var lAA = findLForRatio(targetAA);
+					var lAAA = findLForRatio(targetAAA);
+
+					return {
+						isLightBg: isLightBg,
+						aaPercent: Math.max(0, Math.min(100, Math.round(lAA * 100))),
+						aaaPercent: Math.max(0, Math.min(100, Math.round(lAAA * 100)))
+					};
+				},
+				getGradientCss: function(H, C) {
+					var stops = [];
+					for (var step = 5; step <= 95; step += 15) {
+						var rgb = this.oklchToRgb(step / 100, C, H);
+						stops.push(rgb.hex + ' ' + step + '%');
+					}
+					return 'linear-gradient(to right, #000000 0%, ' + stops.join(', ') + ', #ffffff 100%)';
+				},
+				snapToTarget: function(H, C, bgHex, level, minRatio) {
+					var targetRatio = minRatio || (level === 'aaa' ? 7.0 : 4.5);
+					var range = this.getSafeRange(H, C, bgHex, targetRatio, targetRatio);
+					var targetPercent = range.aaPercent;
+					if (range.isLightBg) {
+						targetPercent = Math.max(5, targetPercent - 3);
+					} else {
+						targetPercent = Math.min(95, targetPercent + 3);
+					}
+					var L = targetPercent / 100;
+					var rgb = this.oklchToRgb(L, C, H);
+					return { l: L, hex: rgb.hex };
+				}
+			};
+
 			window.openBlockEditor = function(id, title, content, bType, variant) {
 				var idInp = document.getElementById('edit-block-id');
 				if (idInp) idInp.value = id;

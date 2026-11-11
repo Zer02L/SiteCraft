@@ -89,7 +89,7 @@ func (p ButtonProps) Classes() string {
 	case BtnSecondary:
 		variant = "bg-surface-muted hover:bg-surface text-content border border-content/10 shadow-xs hover:border-accent/40 active:bg-surface-muted"
 	case BtnAccent:
-		variant = "bg-accent hover:bg-accent-hover text-surface font-semibold shadow-xs hover:shadow-sm active:bg-accent-hover"
+		variant = "bg-accent hover:bg-accent-hover text-[var(--color-on-accent,#ffffff)] font-semibold shadow-xs hover:shadow-sm active:bg-accent-hover"
 	case BtnOutline:
 		variant = "border border-content/20 bg-transparent hover:bg-surface-muted text-content hover:border-content/40 active:bg-surface-muted/80"
 	case BtnGhost:

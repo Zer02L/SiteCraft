@@ -11,6 +11,7 @@ import (
 	"sitecraft/internal/auth"
 	"sitecraft/internal/media"
 	"sitecraft/internal/models"
+	"sitecraft/internal/typography"
 	"sitecraft/ui/pages"
 
 	"github.com/go-chi/chi/v5"
@@ -97,6 +98,8 @@ func (s *Server) setupAdminRoutes() {
 
 		// Settings actions (Phase 5.5)
 		admin.Post("/admin/settings", s.HandleAdminSaveSettings)
+		admin.Post("/admin/theme/tokens", s.HandleAdminSaveThemeTokens)
+		admin.Post("/client/theme/tokens", s.HandleAdminSaveThemeTokens)
 		admin.Post("/admin/contacts", s.HandleAdminSaveContacts)
 		admin.Post("/admin/security/password", s.HandleAdminChangePassword)
 
@@ -320,8 +323,8 @@ func (s *Server) HandleAdminCreateBlock(w http.ResponseWriter, r *http.Request) 
 	ctx := r.Context()
 	_ = r.ParseForm()
 	blockType := r.FormValue("type")
-	title := r.FormValue("title")
-	content := r.FormValue("content")
+	title := typography.Format(r.FormValue("title"))
+	content := typography.Format(r.FormValue("content"))
 
 	blocks, _ := s.Repo.GetAllPageBlocks(ctx)
 	order := len(blocks) + 1
@@ -362,9 +365,9 @@ func (s *Server) HandleAdminUpdateBlock(w http.ResponseWriter, r *http.Request) 
 		block, err := s.Repo.GetPageBlockByID(ctx, id)
 		if err == nil {
 			if title != "" {
-				block.Title = title
+				block.Title = typography.Format(title)
 			}
-			block.Content = content
+			block.Content = typography.Format(content)
 			if blockType != "" {
 				block.Type = blockType
 			}
@@ -508,11 +511,32 @@ func (s *Server) HandleAdminSaveSettings(w http.ResponseWriter, r *http.Request)
 	content, _ := s.Repo.GetSiteContent(ctx)
 
 	if val := r.FormValue("site_name"); val != "" {
-		settings.SiteName = val
+		settings.SiteName = typography.Format(val)
 	}
-	settings.Tagline = r.FormValue("tagline")
+	settings.Tagline = typography.Format(r.FormValue("tagline"))
 	if val := r.FormValue("theme"); val != "" {
 		settings.Theme = val
+	}
+	if val := r.FormValue("primary_color"); val != "" {
+		settings.PrimaryColor = val
+	}
+	if val := r.FormValue("accent_color"); val != "" {
+		settings.AccentColor = val
+	}
+	if val := r.FormValue("font_family"); val != "" {
+		settings.FontFamily = val
+	}
+	flavor := r.FormValue("design_flavor")
+	bgColor := r.FormValue("background_color")
+	if flavor != "" || bgColor != "" {
+		if flavor == "" {
+			flavor = settings.GetDesignFlavor()
+		}
+		if bgColor != "" {
+			settings.BackgroundColor = flavor + "|" + bgColor
+		} else {
+			settings.BackgroundColor = flavor
+		}
 	}
 	settings.HeaderVariant = r.FormValue("header_variant")
 	settings.YandexMetrikaID = r.FormValue("yandex_metrika_id")
@@ -532,6 +556,47 @@ func (s *Server) HandleAdminSaveSettings(w http.ResponseWriter, r *http.Request)
 
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = pages.AdminSettingsTab(settings, content, "Настройки успешно сохранены!").Render(ctx, w)
+}
+
+func (s *Server) HandleAdminSaveThemeTokens(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	_ = r.ParseForm()
+
+	settings, _ := s.Repo.GetSiteSettings(ctx)
+
+	if theme := r.FormValue("theme"); theme != "" {
+		settings.Theme = theme
+	}
+	if primary := r.FormValue("primary_color"); primary != "" {
+		settings.PrimaryColor = primary
+	}
+	if accent := r.FormValue("accent_color"); accent != "" {
+		settings.AccentColor = accent
+	}
+	if font := r.FormValue("font_family"); font != "" {
+		settings.FontFamily = font
+	}
+	flavor := r.FormValue("design_flavor")
+	bgColor := r.FormValue("background_color")
+	if flavor != "" || bgColor != "" {
+		if flavor == "" {
+			flavor = settings.GetDesignFlavor()
+		}
+		if bgColor != "" {
+			settings.BackgroundColor = flavor + "|" + bgColor
+		} else {
+			settings.BackgroundColor = flavor
+		}
+	}
+
+	if err := s.Repo.UpsertSiteSettings(ctx, settings); err != nil {
+		slog.Error("failed to save theme tokens", "error", err)
+		http.Error(w, "Ошибка сохранения токенов", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_, _ = w.Write([]byte(`<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold animate-fade-in"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Тема и токены сохранены в БД!</span>`))
 }
 
 func (s *Server) HandleAdminSaveContacts(w http.ResponseWriter, r *http.Request) {

@@ -8,7 +8,13 @@ import (
 templ Base(title string, description string, settings models.SiteSettings, seoOpt ...models.SEOData) {
 	{{ seo := resolveSEO(title, description, settings, seoOpt...) }}
 	<!DOCTYPE html>
-	<html lang={ i18n.GetLocale(ctx) } class="scroll-smooth" data-theme={ settings.Theme }>
+	<html
+		lang={ i18n.GetLocale(ctx) }
+		class="scroll-smooth"
+		data-theme={ settings.Theme }
+		data-flavor={ settings.GetDesignFlavor() }
+		data-font={ settings.GetFontPair() }
+	>
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -49,6 +55,9 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 			for _, jsonld := range seo.JSONLDScripts() {
 				@RenderJSONLD(jsonld)
 			}
+
+			<!-- Динамические токены темы и цвета -->
+			@RenderCustomTokens(settings)
 
 			<!-- Google Fonts: Merriweather + Inter + Bebas Neue -->
 			<link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -261,11 +270,60 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 						if (!e.data) return;
 						if (e.data.type === 'SITE_TOKEN_UPDATE' && e.data.key && e.data.value) {
 							root.style.setProperty(e.data.key, e.data.value);
+							if (e.data.key === '--color-primary') {
+								root.style.setProperty('--color-content', e.data.value);
+								root.style.setProperty('--color-content-muted', 'color-mix(in srgb, ' + e.data.value + ' 65%, transparent)');
+								root.style.setProperty('--color-primary-dark', 'color-mix(in srgb, ' + e.data.value + ', black 30%)');
+								root.style.setProperty('--color-primary-light', 'color-mix(in srgb, ' + e.data.value + ', white 25%)');
+								var phex = e.data.value.replace('#', '');
+								if (phex.length === 3) phex = phex[0]+phex[0]+phex[1]+phex[1]+phex[2]+phex[2];
+								if (phex.length === 6) {
+									var pr = parseInt(phex.substring(0, 2), 16);
+									var pg = parseInt(phex.substring(2, 4), 16);
+									var pb = parseInt(phex.substring(4, 6), 16);
+									var plum = (0.2126 * pr + 0.7152 * pg + 0.0722 * pb) / 255.0;
+									root.style.setProperty('--color-on-primary', plum > 0.22 ? '#0f172a' : '#ffffff');
+								}
+							}
+							if (e.data.key === '--color-surface') {
+								root.style.setProperty('--color-surface-muted', 'color-mix(in srgb, var(--color-primary, #000) 4%, ' + e.data.value + ')');
+							}
+							if (e.data.key === '--color-accent') {
+								var hex = e.data.value.replace('#', '');
+								if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+								if (hex.length === 6) {
+									var r = parseInt(hex.substring(0, 2), 16);
+									var g = parseInt(hex.substring(2, 4), 16);
+									var b = parseInt(hex.substring(4, 6), 16);
+									var lum = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255.0;
+									root.style.setProperty('--color-on-accent', lum > 0.22 ? '#0f172a' : '#ffffff');
+								}
+								root.style.setProperty('--color-accent-hover', 'color-mix(in srgb, ' + e.data.value + ', black 15%)');
+								root.style.setProperty('--color-accent-light', 'color-mix(in srgb, ' + e.data.value + ' 12%, white)');
+							}
 							window.SiteTokens.clearCache();
+						}
+						if (e.data.type === 'SITE_GRAYSCALE_UPDATE') {
+							if (e.data.enabled) {
+								root.style.filter = 'grayscale(100%) contrast(108%)';
+							} else {
+								root.style.filter = '';
+							}
 						}
 						if (e.data.type === 'SITE_THEME_UPDATE' && e.data.theme) {
 							root.setAttribute('data-theme', e.data.theme);
 							window.SiteTokens.clearCache();
+						}
+						if (e.data.type === 'SITE_FLAVOR_UPDATE' && e.data.flavor) {
+							root.setAttribute('data-flavor', e.data.flavor);
+							window.SiteTokens.clearCache();
+						}
+						if (e.data.type === 'SITE_FONT_UPDATE' && e.data.font) {
+							root.setAttribute('data-font', e.data.font);
+							window.SiteTokens.clearCache();
+						}
+						if (e.data.type === 'SITE_CHECK_OVERFLOW') {
+							checkHorizontalOverflow();
 						}
 						if (e.data.type === 'SITE_SCROLL_TO_BLOCK') {
 							var target = null;
@@ -293,7 +351,49 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 						}
 					});
 
+					// ----------------------------------------------------
+					// 🛰️ Responsive Radar: Детектор горизонтального переполнения верстки
+					// ----------------------------------------------------
+					function checkHorizontalOverflow() {
+						if (window.parent === window) return;
+						var doc = document.documentElement;
+						var winWidth = window.innerWidth;
+						var scrollWidth = doc.scrollWidth;
+						var hasOverflow = scrollWidth > (winWidth + 1);
+						var culprits = [];
+
+						if (hasOverflow) {
+							var elements = document.querySelectorAll('body *');
+							for (var i = 0; i < elements.length; i++) {
+								var el = elements[i];
+								var rect = el.getBoundingClientRect();
+								if (rect.right > (winWidth + 1) || el.scrollWidth > (winWidth + 1)) {
+									var bTag = el.tagName.toLowerCase();
+									var bClass = (el.className && typeof el.className === 'string') ? el.className.split(' ').slice(0, 3).join(' ') : '';
+									var blockName = el.getAttribute('data-block') || el.getAttribute('data-component') || (bTag + (el.id ? ('#' + el.id) : ('.' + bClass)));
+									culprits.push({
+										name: blockName,
+										overflow: Math.round(Math.max(rect.right - winWidth, el.scrollWidth - winWidth))
+									});
+									if (culprits.length >= 3) break;
+								}
+							}
+						}
+
+						window.parent.postMessage({
+							type: 'SITE_OVERFLOW_REPORT',
+							hasOverflow: hasOverflow,
+							scrollWidth: scrollWidth,
+							winWidth: winWidth,
+							diff: hasOverflow ? (scrollWidth - winWidth) : 0,
+							culprits: culprits
+						}, '*');
+					}
+
 					if (window.location.search.indexOf('preview=true') !== -1 && window.parent !== window) {
+						window.addEventListener('load', function() { setTimeout(checkHorizontalOverflow, 400); });
+						window.addEventListener('resize', function() { setTimeout(checkHorizontalOverflow, 200); });
+
 						document.addEventListener('click', function(e) {
 							var blockEl = e.target.closest('[data-block], section, [data-component]');
 							if (blockEl) {

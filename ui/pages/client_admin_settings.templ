@@ -60,6 +60,38 @@ templ AdminSettingsTab(settings models.SiteSettings, content models.SiteContent,
 							<option value="centered" selected?={ settings.HeaderVariant == "centered" }>Centered (Центрированное лого)</option>
 						</select>
 					</div>
+					<div>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Дизайн-настроение (Design Flavor)</label>
+						<select name="design_flavor" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus">
+							<option value="soft" selected?={ settings.GetDesignFlavor() == "soft" }>Soft / Современный SaaS (Скругления 24px, мягкие тени)</option>
+							<option value="corporate" selected?={ settings.GetDesignFlavor() == "corporate" }>Corporate / Строгий деловой (Скругления 8px, деликатные тени)</option>
+							<option value="sharp" selected?={ settings.GetDesignFlavor() == "sharp" }>Sharp / Минимализм (Скругления 0px, строгие линии)</option>
+							<option value="brutalist" selected?={ settings.GetDesignFlavor() == "brutalist" }>Brutalist / Нео-брутализм (Границы 2px, контраст)</option>
+						</select>
+					</div>
+					<div>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Шрифтовая пара (Font Pair)</label>
+						<select name="font_family" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus">
+							<option value="modern" selected?={ settings.GetFontPair() == "modern" }>Modern (Inter / Универсальный чистый)</option>
+							<option value="editorial" selected?={ settings.GetFontPair() == "editorial" }>Editorial (Merriweather / Редакционный премиум)</option>
+							<option value="condensed" selected?={ settings.GetFontPair() == "condensed" }>Condensed (Bebas Neue / Энергичный акцент)</option>
+							<option value="tech" selected?={ settings.GetFontPair() == "tech" }>Tech (Plus Jakarta Sans / IT стиль)</option>
+						</select>
+					</div>
+					<div>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Основной цвет (Primary)</label>
+						<div class="flex items-center gap-2">
+							<input type="text" name="primary_color" value={ settings.PrimaryColor } placeholder="#1e293b" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
+							<input type="color" value={ settings.PrimaryColor } oninput="this.previousElementSibling.value = this.value" class="w-10 h-10 rounded-xl bg-transparent border border-admin-border cursor-pointer shrink-0"/>
+						</div>
+					</div>
+					<div>
+						<label class="block text-xs font-semibold text-admin-content-muted mb-1">Акцентный цвет CTA (Accent)</label>
+						<div class="flex items-center gap-2">
+							<input type="text" name="accent_color" value={ settings.AccentColor } placeholder="#2563eb" class="w-full px-3 py-2 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono focus:border-admin-border-focus focus:ring-1 focus:ring-admin-border-focus"/>
+							<input type="color" value={ settings.AccentColor } oninput="this.previousElementSibling.value = this.value" class="w-10 h-10 rounded-xl bg-transparent border border-admin-border cursor-pointer shrink-0"/>
+						</div>
+					</div>
 				</div>
 			</div>
 

@@ -23,6 +23,8 @@ components:
     in: sql/**
   ui:
     in: ui/**
+  typography:
+    in: internal/typography/**
   models:
     in: internal/models/**
   data:
@@ -50,8 +52,11 @@ components:
 
 commonComponents:
   - models
+  - typography
 
 deps:
+  typography:
+    anyVendorDeps: true
   app:
     anyVendorDeps: true
     mayDependOn:
