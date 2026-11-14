@@ -8,7 +8,7 @@ description: Evaluates scrollytelling narrative flow, Zero-GSAP cinematic animat
 Используй этот скилл для аудита сценарного сторителлинга, темпа анимаций, плавности скролла и доступности в проектах на движке SiteCraft.
 
 ## Стандарты анимаций SiteCraft:
-1. **Zero-GSAP / Zero-Runtime:** никаких тяжелых внешних библиотек (GSAP, ScrollTrigger, Three.js). Анимации строятся на чистом CSS, аппаратных свойствах (`transform`, `opacity`), легковесном Motion One (~3.8 KB) или нативном `IntersectionObserver` / Web Animations API.
+1. **Zero-GSAP / Controlled WebGL Runtime:** никаких тяжелых внешних библиотек в глобальном бандле страницы (GSAP, ScrollTrigger, глобальный Three.js в `<head>`). Анимации строятся на чистом CSS, аппаратных свойствах (`transform`, `opacity`), легковесном Motion One (~3.8 KB), нативном `IntersectionObserver` или OGL WebGL (~39 KB). Three.js допускается ИСКЛЮЧИТЕЛЬНО как изолированный ленивый модуль (`import()`) для специализированных PBR/glTF конфигураторов при соблюдении рендеринга по требованию и очистки ресурсов (`dispose()`) по событиям HTMX.
 2. **Готовые кинематографические модули:** при необходимости используй 31 готовый компонент из каталога [`ui/components/cinematic/`](../../ui/components/cinematic/README.md) (`sticky_stack`, `text_mask`, `zoom_parallax`, `curtain_reveal`, `odometer` и др.).
 3. **Совместимость с HTMX:** анимации не должны ломаться при динамических свопах страниц (`htmx:afterSwap`, совместимость с `hx-alpine-compat`).
 

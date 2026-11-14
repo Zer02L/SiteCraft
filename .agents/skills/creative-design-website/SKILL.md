@@ -17,11 +17,11 @@ description: Senior creative developer and motion designer skill for SiteCraft (
 - **Моушн & Физика**:
   - Аппаратный CSS (`transform`, `opacity`, `scale`, CSS `@keyframes`).
   - Легковесный Motion One (`animate`, `timeline`, `scroll`, `inView`).
-  - WebGL-слой: **OGL** (`/assets/js/ogl.mjs`), локально встроенный ESM.
+  - WebGL-слой: **Гибридная WebGL-архитектура** — базовый **OGL** (`/assets/js/ogl.mjs`, ~39 KB) для шейдеров, волн и процедурных трансформаций Flat-to-3D; изолированный ленивый **Three.js** (`/assets/js/vendor/three.module.min.js`) для специализированных PBR-конфигураторов и сложных glTF/GLB моделей со скелетом.
 - **Жёсткие ограничения стека**:
   - **Zero-Node.js & Zero-NPM в продакшене**: Никаких `npm install` и бандлеров на JS.
   - **Zero External CDN**: Запрещено подключать скрипты со сторонних CDN (`cdn.jsdelivr.net`, `unpkg`). Все ассеты встроены локально (`/assets/js/...`).
-  - **Zero-GSAP**: Никаких ScrollTrigger, Three.js или тяжелых библиотек.
+  - **Zero-GSAP / No Global 3D in Head**: Запрещен GSAP, ScrollTrigger и прямое подключение Three.js в `<head>` страницы. Three.js допустим ТОЛЬКО через динамический `import()` по требованию в специализированных модулях.
   - **Каталог 31 готового модуля**: Перед написанием новой анимации проверь [`ui/components/cinematic/`](../../ui/components/cinematic/README.md) (`sticky_stack`, `zoom_parallax`, `ogl_waves`, `odometer`, `curtain_reveal`, `dock_nav` и др.). Повторно используй готовые модули!
 
 ---
@@ -79,24 +79,70 @@ if (window.SiteTokens.motionEnabled()) {
 
 ---
 
-## 🧊 OGL — ЛОКАЛЬНЫЙ WEBGL-СЛОЙ
+## 🧊 ГИБРИДНАЯ WEBGL-АРХИТЕКТУРА (OGL + ON-DEMAND THREE.JS)
 
-OGL используется точечно для эффектных шейдеров (жидкие фоны, 3D-волны, интерактивные частицы).
+В SiteCraft принята двухуровневая стратегия 3D-графики:
 
+| Слой | Движок | Когда применять | Механизм загрузки |
+|---|---|---|---|
+| **Базовый 3D-слой** | **OGL** (`/assets/js/ogl.mjs`, ~39 KB) | Процедурные шейдеры, жидкие фоны, 3D-волны, частицы, Flat-to-3D плоттерные переходы | Статический ESM-импорт в компонентах |
+| **Специализированный 3D-слой** | **Three.js** (`/assets/js/vendor/three.module.min.js`) | Интерактивные PBR-конфигураторы товаров/домов, сложные glTF/GLB модели со скелетной анимацией (`AnimationMixer`), Draco/Meshopt компрессия, Raycasting хотспоты | **Строго On-Demand**: динамический `import()` по триггеру |
+
+### 1. Базовый WebGL-слой: OGL
+OGL используется для максимальной производительности при минимальном весе:
 1. **Подключение (локальный ESM, без CDN)**:
    ```html
    <script type="module">
      import { Renderer, Camera, Transform, Program, Mesh, Plane } from '/assets/js/ogl.mjs';
-     // инициализация сцены
+     // инициализация легкой сцены
    </script>
    ```
 2. **Правила OGL в SiteCraft**:
    - **Униформы**: инициализируются из токенов `--color-primary`, `--color-accent` один раз при старте.
    - **Производительность**: Не более 1 активного WebGL-холста на странице.
    - **IntersectionObserver**: Отключай RAF/рендер, когда блок уходит из вьюпорта (0% CPU/GPU).
-   - **HTMX Cleanup**: Очищай WebGL-контекст по событию `htmx:beforeCleanup`.
-   - **Fallback**: При `window.SiteTokens.motionEnabled() === false` или на мобильных без WebGL показывай чистый CSS-градиент.
-3. **Шейдерная математика и LYGIA (Zero-Tooling Cherry-picking)**:
+   - **HTMX Cleanup**: Очищай WebGL-контекст по событию `htmx:beforeCleanupElement`.
+   - **Fallback**: При `window.SiteTokens.motionEnabled() === false` показывай чистый CSS-градиент.
+
+### 2. Специализированный WebGL-слой: Three.js On-Demand
+Для модулей, где объективно необходим честный PBR и glTF/GLB со скелетом, Three.js подключается изолированно.
+
+**5 золотых правил Three.js в SiteCraft:**
+1. **Lazy Dynamic Import**: Three.js **НИКОГДА** не грузится в `<head>`. Подгрузка выполняется только при приближении к экрану (`x-intersect.once` с запасом `rootMargin: '200px'`):
+   ```javascript
+   // Ленивая подгрузка внутри Alpine.js контроллера
+   async initViewer() {
+     const [THREE, { GLTFLoader }, { OrbitControls }] = await Promise.all([
+       import('/assets/js/vendor/three.module.min.js'),
+       import('/assets/js/vendor/GLTFLoader.min.js'),
+       import('/assets/js/vendor/OrbitControls.min.js')
+     ]);
+     this.setupScene(THREE, GLTFLoader, OrbitControls);
+   }
+   ```
+2. **Demand-Driven Rendering**: Рендерить кадр **только по изменению состояния** (вращение камеры, выбор детали, смена цвета). Запрещен холостой 60/120 FPS цикл:
+   ```javascript
+   controls.addEventListener('change', () => this.requestRender());
+   ```
+3. **Строгая очистка памяти по HTMX (`dispose`)**:
+   Обязательно слушать `htmx:beforeCleanupElement` и рекурсивно освобождать буферы и видеопамять:
+   ```javascript
+   document.body.addEventListener('htmx:beforeCleanupElement', (e) => {
+     if (e.target.contains(this.$el)) {
+       this.destroyThree();
+     }
+   }, { once: true });
+   ```
+4. **Ограничение плотности пикселей (DPR Cap)**:
+   ```javascript
+   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // защита от перегрева на Retina 3x
+   ```
+5. **a11y & ГОСТ / Reduced Motion**:
+   - При `prefers-reduced-motion` отключать авто-вращение камеры.
+   - Размещать под холстом семантический HTML-блок (`aria-label`, текстовое описание характеристик модели).
+   - Полный канонический рецепт см. в [`.agents/cookbooks/threejs_module.md`](../../.agents/cookbooks/threejs_module.md).
+
+### 3. Шейдерная математика и LYGIA (Zero-Tooling Cherry-picking):
    - **Запрет сборщиков и `#include`**: Никаких Node.js препроцессоров, `lygia-resolve` или тяжелых runtime-парсеров. WebGL-код должен работать нативно в браузере.
    - **LYGIA как кукбук формул**: Используй библиотеку [LYGIA](https://lygia.xyz) как эталонный источник математики (Simplex/Curl noise, FBM, SDF-примитивы, цветовые преобразования Oklab/ACES). Копируй исключительно целевые функции (15–30 строк чистого GLSL) прямо в строковый литерал шейдера в компоненте `.templ`.
    - **Атрибуция**: Помечай инлайненные функции комментарием: `// Source: LYGIA (https://lygia.xyz) - <path/to/module>`.
