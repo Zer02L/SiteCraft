@@ -1,5 +1,5 @@
 [tools]
-go = "1.27.3"
+go = "1.27.4"
 "github:a-h/templ" = "0.3.1100"
 "github:tailwindlabs/tailwindcss" = "4.3.5"
 "github:air-verse/air" = "1.67.4"
