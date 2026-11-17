@@ -47,14 +47,25 @@ components:
     in: internal/exporter/**
   i18n:
     in: internal/i18n/**
+  theme:
+    in: internal/theme/**
+  checker:
+    in: internal/checker/**
+  importer:
+    in: internal/importer/**
+  ai:
+    in: internal/ai/**
   server:
     in: internal/server/**
 
 commonComponents:
   - models
   - typography
+  - theme
 
 deps:
+  theme:
+    anyVendorDeps: true
   typography:
     anyVendorDeps: true
   app:
@@ -135,16 +146,39 @@ deps:
   i18n:
     anyVendorDeps: true
 
+  checker:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+      - events
+
+  importer:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+      - media
+
+  ai:
+    anyVendorDeps: true
+    mayDependOn:
+      - db
+      - data
+
   server:
     anyVendorDeps: true
     mayDependOn:
+      - ai
       - auth
       - cache
+      - checker
       - data
       - db
       - events
       - exporter
       - i18n
+      - importer
       - media
       - modules
       - notifications

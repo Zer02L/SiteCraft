@@ -8,6 +8,7 @@ User=www-data
 Group=www-data
 WorkingDirectory=/var/www/sitecraft
 ExecStart=/var/www/sitecraft/sitecraft serve --http=127.0.0.1:8090
+ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=5s
 

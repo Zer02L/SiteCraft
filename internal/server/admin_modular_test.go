@@ -187,5 +187,134 @@ func TestAdminSaveThemeTokens_AndTypography(t *testing.T) {
 	if !createdHero {
 		t.Errorf("created hero block not found")
 	}
+
+	// 4. Test Theme Preset Apply & Rollback in 1 click
+	applyReq := httptest.NewRequest("POST", "/admin/api/theme/apply", strings.NewReader("preset_id=luxury_editorial"))
+	applyReq.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	applyReq = applyReq.WithContext(ctx)
+	applyRec := httptest.NewRecorder()
+	srv.Router.ServeHTTP(applyRec, applyReq)
+
+	if applyRec.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/api/theme/apply, got %d: %s", applyRec.Code, applyRec.Body.String())
+	}
+	if !strings.Contains(applyRec.Body.String(), "Luxury Editorial") {
+		t.Errorf("expected Luxury Editorial in response, got: %s", applyRec.Body.String())
+	}
+
+	// Verify settings updated atomically
+	st, err := srv.Repo.GetSiteSettings(context.Background())
+	if err != nil {
+		t.Fatalf("GetSiteSettings failed: %v", err)
+	}
+	if st.Theme != "beauty" || st.FontFamily != "editorial" || st.PrimaryColor != "#1c1917" {
+		t.Errorf("expected Luxury Editorial settings applied, got: %+v", st)
+	}
+
+	// Now rollback in 1 click
+	rollReq := httptest.NewRequest("POST", "/admin/api/theme/rollback", nil)
+	rollReq = rollReq.WithContext(ctx)
+	rollRec := httptest.NewRecorder()
+	srv.Router.ServeHTTP(rollRec, rollReq)
+
+	if rollRec.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/api/theme/rollback, got %d", rollRec.Code)
+	}
+	if !strings.Contains(rollRec.Body.String(), "восстановлена") {
+		t.Errorf("expected rollback success message, got: %s", rollRec.Body.String())
+	}
+
+	// Verify previous settings restored
+	stRoll, _ := srv.Repo.GetSiteSettings(context.Background())
+	if stRoll.Theme != "coral" || stRoll.FontFamily != "editorial" || stRoll.PrimaryColor != "#0f172a" {
+		t.Errorf("expected restored settings, got: %+v", stRoll)
+	}
 }
+
+func TestSetupChecklistWidgetAndAPI(t *testing.T) {
+	srv, conn := setupTestServer(t)
+	defer conn.Close()
+
+	ctx := context.Background()
+
+	// Authenticate admin session
+	sessionCookie, err := srv.SessionMgr.Load(ctx, "")
+	if err != nil {
+		t.Fatalf("failed to init session: %v", err)
+	}
+	ctx = sessionCookie
+	_ = auth.SetAdminSession(ctx, srv.SessionMgr, "admin@sitecraft.local")
+	_, _, _ = srv.SessionMgr.Commit(ctx)
+
+	sendAuthReq := func(method, path string, body string) *httptest.ResponseRecorder {
+		var req *http.Request
+		if body != "" {
+			req = httptest.NewRequest(method, path, strings.NewReader(body))
+			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		} else {
+			req = httptest.NewRequest(method, path, nil)
+		}
+		req.Header.Set("HX-Request", "true")
+		req = req.WithContext(ctx)
+		w := httptest.NewRecorder()
+		srv.Router.ServeHTTP(w, req)
+		return w
+	}
+
+	// 1. Verify /admin dashboard renders the setup checklist
+	wDash := sendAuthReq("GET", "/admin", "")
+	if wDash.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin, got %d", wDash.Code)
+	}
+	bodyDash := wDash.Body.String()
+	if !strings.Contains(bodyDash, "admin-setup-checklist") {
+		t.Error("expected dashboard to contain admin-setup-checklist widget ID")
+	}
+	if !strings.Contains(bodyDash, "Чеклист готовности к запуску") {
+		t.Error("expected dashboard to contain setup checklist title")
+	}
+
+	// 2. Verify /admin/api/checklist endpoint returns widget HTML directly
+	wApi := sendAuthReq("GET", "/admin/api/checklist", "")
+	if wApi.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/api/checklist, got %d", wApi.Code)
+	}
+	bodyApi := wApi.Body.String()
+	if !strings.Contains(bodyApi, "id=\"admin-setup-checklist\"") {
+		t.Error("expected /admin/api/checklist to return widget element")
+	}
+	if !strings.Contains(bodyApi, "hx-get=\"/admin/api/checklist\"") {
+		t.Error("expected hx-get attribute in widget")
+	}
+
+	// 3. Mutate contacts and verify HX-Trigger: refreshChecklist header is sent
+	wContacts := sendAuthReq("POST", "/admin/contacts", "phone1=+7 (999) 111-22-33&site_name=СуперСайт&address=г. Москва")
+	if wContacts.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/contacts, got %d", wContacts.Code)
+	}
+	if trig := wContacts.Header().Get("HX-Trigger"); trig != "refreshChecklist" {
+		t.Errorf("expected HX-Trigger: refreshChecklist, got '%s'", trig)
+	}
+
+	// 4. Mutate settings and verify HX-Trigger: refreshChecklist
+	wSettings := sendAuthReq("POST", "/admin/settings", "site_name=СуперСайт&yandex_metrika_id=12345678")
+	if wSettings.Code != http.StatusOK {
+		t.Fatalf("expected 200 from /admin/settings, got %d", wSettings.Code)
+	}
+	if trig := wSettings.Header().Get("HX-Trigger"); trig != "refreshChecklist" {
+		t.Errorf("expected HX-Trigger: refreshChecklist on settings save, got '%s'", trig)
+	}
+
+	// 5. Query checklist API again, should show updated metric
+	wApiUpdated := sendAuthReq("GET", "/admin/api/checklist", "")
+	if wApiUpdated.Code != http.StatusOK {
+		t.Fatalf("expected 200 from updated checklist, got %d", wApiUpdated.Code)
+	}
+	bodyUpdated := wApiUpdated.Body.String()
+	if !strings.Contains(bodyUpdated, "admin-setup-checklist") {
+		t.Error("expected valid updated checklist")
+	}
+}
+
+
 

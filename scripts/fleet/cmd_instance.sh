@@ -1,0 +1,214 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# SiteCraft Fleet Manager — Instance lifecycle commands (create, start, stop, list, status)
+# ==============================================================================
+
+FLEET_SCRIPTS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -z "$BASE_DIR" ] || [ -z "$FLEET_DIR" ]; then
+    # shellcheck source=scripts/fleet/common.sh
+    source "${FLEET_SCRIPTS_DIR}/common.sh"
+fi
+
+cmd_create() {
+    local SITE_ID="$1"
+    shift || true
+
+    if [ -z "$SITE_ID" ]; then
+        echo -e "${RED}❌ Укажите идентификатор сайта: $0 create <site-id>${RESET}"
+        exit 1
+    fi
+
+    local PRESET="legal"
+    local THEME=""
+    local PORT="8091"
+    local ADMIN_EMAIL="admin@${SITE_ID}.local"
+    local ADMIN_PASS="admin123456"
+
+    while [[ "$#" -gt 0 ]]; do
+        case $1 in
+            --preset=*) PRESET="${1#*=}" ;;
+            --theme=*) THEME="${1#*=}" ;;
+            --port=*) PORT="${1#*=}" ;;
+            --admin-email=*) ADMIN_EMAIL="${1#*=}" ;;
+            --admin-pass=*) ADMIN_PASS="${1#*=}" ;;
+            *) echo "Неизвестный флаг: $1"; exit 1 ;;
+        esac
+        shift
+    done
+
+    if [ -z "$THEME" ]; then
+        THEME="$PRESET"
+    fi
+
+    local SITE_PATH="${FLEET_DIR}/${SITE_ID}"
+    if [ -d "$SITE_PATH" ]; then
+        echo -e "${RED}❌ Сайт с ID '${SITE_ID}' уже существует в ${SITE_PATH}${RESET}"
+        exit 1
+    fi
+    echo -e "${CYAN}🚀 Создание нового изолированного инстанса '${SITE_ID}'...${RESET}"
+    mkdir -p "${SITE_PATH}/data"
+    mkdir -p "${SITE_PATH}/logs"
+
+    # Запись метаданных сайта
+    cat <<EOF > "${SITE_PATH}/site.env"
+SITE_ID=${SITE_ID}
+PRESET=${PRESET}
+THEME=${THEME}
+PORT=${PORT}
+ADMIN_EMAIL=${ADMIN_EMAIL}
+CREATED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+EOF
+
+    ensure_engine
+
+    echo -e "📦 Применение пресета [${PRESET}] и инициализация SQLite..."
+    "$ENGINE_BIN" apply-preset "${PRESET}" --theme="${THEME}" --db="${SITE_PATH}/data/sitecraft.db" > "${SITE_PATH}/logs/init.log" 2>&1
+
+    # Генерация автономного скрипта запуска для инстанса
+    cat <<EOF > "${SITE_PATH}/run.sh"
+#!/usr/bin/env bash
+cd "${BASE_DIR}"
+exec "${ENGINE_BIN}" serve --port=":${PORT}" --db="${SITE_PATH}/data/sitecraft.db"
+EOF
+    chmod +x "${SITE_PATH}/run.sh"
+
+    echo -e "${GREEN}${BOLD}✓ Экземпляр '${SITE_ID}' успешно создан!${RESET}"
+    echo -e "  📍 Директория данных: ${CYAN}${SITE_PATH}/data${RESET}"
+    echo -e "  🌐 Порт:              ${CYAN}${PORT}${RESET}"
+    echo -e "  👤 Админка:           ${CYAN}http://127.0.0.1:${PORT}/admin${RESET}"
+    echo -e "  🚀 Запуск инстанса:   ${YELLOW}./fleet.sh start ${SITE_ID}${RESET}"
+}
+
+cmd_start() {
+    local SITE_ID="$1"
+    local SITE_PATH="${FLEET_DIR}/${SITE_ID}"
+
+    if [ ! -d "$SITE_PATH" ]; then
+        echo -e "${RED}❌ Сайт '${SITE_ID}' не найден в ${FLEET_DIR}.${RESET}"
+        exit 1
+    fi
+
+    # shellcheck source=/dev/null
+    source "${SITE_PATH}/site.env"
+
+    local PID_FILE="${SITE_PATH}/app.pid"
+    if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
+        echo -e "${YELLOW}⚠️ Сайт '${SITE_ID}' уже запущен (PID: $(cat "$PID_FILE")).${RESET}"
+        return
+    fi
+
+    ensure_engine
+
+    echo -e "⚡ Запуск сайта '${SITE_ID}' на порту ${PORT}..."
+    setsid "${SITE_PATH}/run.sh" </dev/null > "${SITE_PATH}/logs/stdout.log" 2>&1 &
+    local NEW_PID=$!
+    disown "$NEW_PID" 2>/dev/null || true
+    echo "$NEW_PID" > "$PID_FILE"
+
+    sleep 1
+    if kill -0 "$NEW_PID" 2>/dev/null; then
+        echo -e "${GREEN}✓ Сайт '${SITE_ID}' успешно запущен! PID: ${NEW_PID}${RESET}"
+        echo -e "  👉 Публичный URL:  ${CYAN}http://127.0.0.1:${PORT}${RESET}"
+        echo -e "  👉 Админка:        ${CYAN}http://127.0.0.1:${PORT}/admin${RESET}"
+    else
+        echo -e "${RED}❌ Не удалось запустить процесс. Проверьте ${SITE_PATH}/logs/stdout.log${RESET}"
+    fi
+}
+
+cmd_stop() {
+    local SITE_ID="$1"
+    local SITE_PATH="${FLEET_DIR}/${SITE_ID}"
+    local PID_FILE="${SITE_PATH}/app.pid"
+
+    if [ ! -f "$PID_FILE" ]; then
+        echo -e "${YELLOW}ℹ️ PID файл для '${SITE_ID}' отсутствует.${RESET}"
+        return
+    fi
+
+    local PID
+    PID="$(cat "$PID_FILE")"
+    if kill -0 "$PID" 2>/dev/null; then
+        echo -e "Остановка '${SITE_ID}' (PID: $PID)..."
+        kill "$PID" || true
+        rm -f "$PID_FILE"
+        echo -e "${GREEN}✓ Процесс остановлен.${RESET}"
+    else
+        echo -e "${YELLOW}Процесс не был активен. Удаляю PID-файл.${RESET}"
+        rm -f "$PID_FILE"
+    fi
+}
+
+cmd_list() {
+    print_header
+    echo -e "${BOLD}Список сайтов в Fleet:${RESET}"
+    echo "----------------------------------------------------------------------"
+    printf "%-18s | %-10s | %-6s | %-10s | %-8s\n" "SITE ID" "PRESET" "PORT" "STATUS" "PID"
+    echo "----------------------------------------------------------------------"
+
+    if [ ! -d "$FLEET_DIR" ] || [ -z "$(ls -A "$FLEET_DIR" 2>/dev/null)" ]; then
+        echo "  (нет созданных сайтов)"
+        echo "----------------------------------------------------------------------"
+        return
+    fi
+
+    for site in "$FLEET_DIR"/*; do
+        if [ -d "$site" ] && [ -f "$site/site.env" ]; then
+            # shellcheck source=/dev/null
+            source "$site/site.env"
+            local PID_FILE="$site/app.pid"
+            local STATUS="${RED}STOPPED${RESET}"
+            local CURR_PID="-"
+
+            if [ -f "$PID_FILE" ]; then
+                local P
+                P="$(cat "$PID_FILE")"
+                if kill -0 "$P" 2>/dev/null; then
+                    STATUS="${GREEN}RUNNING${RESET}"
+                    CURR_PID="$P"
+                fi
+            fi
+
+            printf "%-18s | %-10s | %-6s | %-19b | %-8s\n" "$SITE_ID" "$PRESET" "$PORT" "$STATUS" "$CURR_PID"
+        fi
+    done
+    echo "----------------------------------------------------------------------"
+}
+
+cmd_status() {
+    local SITE_ID="$1"
+    if [ -z "$SITE_ID" ]; then
+        cmd_list
+        return
+    fi
+
+    local SITE_PATH="${FLEET_DIR}/${SITE_ID}"
+    if [ ! -d "$SITE_PATH" ]; then
+        echo -e "${RED}❌ Сайт '${SITE_ID}' не найден.${RESET}"
+        exit 1
+    fi
+
+    # shellcheck source=/dev/null
+    source "${SITE_PATH}/site.env"
+    local PID_FILE="${SITE_PATH}/app.pid"
+
+    print_header
+    echo -e "${BOLD}Статус инстанса: ${CYAN}${SITE_ID}${RESET}"
+    echo -e "  📍 Директория:     ${SITE_PATH}"
+    echo -e "  🎨 Пресет / Тема:  ${PRESET} / ${THEME}"
+    echo -e "  🌐 Порт:           ${PORT}"
+
+    if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
+        local PID
+        PID="$(cat "$PID_FILE")"
+        echo -e "  ⚡ Статус:         ${GREEN}RUNNING${RESET} (PID: ${PID})"
+        if command -v curl &> /dev/null; then
+            echo -e "  🩺 Health-Check:   $(curl -s -m 2 "http://127.0.0.1:${PORT}/health" || echo "Не отвечает")"
+        fi
+    else
+        echo -e "  ⚡ Статус:         ${RED}STOPPED${RESET}"
+    fi
+
+    local SNAPSHOT_COUNT
+    SNAPSHOT_COUNT="$(ls -1 "${SITE_PATH}/data/snapshots"/*.db 2>/dev/null | wc -l || echo 0)"
+    echo -e "  📸 Снимков базы:   ${SNAPSHOT_COUNT}"
+}

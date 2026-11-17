@@ -1,0 +1,70 @@
+package admin_blocks
+
+templ PreviewCanvas() {
+	<!-- Правая колонка: Прикрепленный масштабированный холст Live Preview -->
+	<div
+		x-show="responsiveView === 'both' || responsiveView === 'preview'"
+		x-ref="canvasContainer"
+		class="flex-1 w-full min-w-0 md:sticky md:top-20 flex flex-col items-center justify-start"
+	>
+		<!-- Заголовочная панель холста предпросмотра -->
+		<div class="w-full flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-200">
+			<div class="flex items-center gap-2">
+				<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+					<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+					<span>Холст Live Preview</span>
+				</span>
+				<span class="text-xs text-slate-500 hidden sm:inline">• Клик по секции в окне выбирает её в списке</span>
+			</div>
+			<div class="flex items-center gap-2 text-xs text-slate-500 font-mono">
+				<span x-text="canvasDevice === 'desktop' ? '1280px (Масштаб: ' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')"></span>
+				<a
+					href="/?preview=true"
+					target="_blank"
+					class="text-blue-600 hover:text-blue-800 flex items-center gap-0.5 ml-1 cursor-pointer"
+					title="Открыть в новой вкладке"
+				>
+					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+					</svg>
+				</a>
+			</div>
+		</div>
+
+		<!-- Контейнер масштабирования -->
+		<div class="w-full flex justify-center transition-all duration-300 overflow-hidden">
+			<div
+				:class="{
+					'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',
+					'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',
+					'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'
+				}"
+				class="overflow-hidden transition-all duration-300 relative flex justify-center"
+				:style="canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'"
+			>
+				<!-- Верхняя полоска мобильного острова/камеры -->
+				<div x-show="canvasDevice === 'mobile'" class="absolute top-0 left-0 right-0 h-6 bg-slate-900 flex items-center justify-center z-10">
+					<div class="w-24 h-4 bg-slate-950 rounded-full"></div>
+				</div>
+
+				<!-- Обёртка масштабирования: для десктопа рендерим в 1280px и масштабируем -->
+				<div
+					:style="canvasDevice === 'desktop' ? ('width: 1280px; height: 760px; transform: scale(' + scaleFactor + '); transform-origin: top left;') : 'width: 100%; height: 100%;'"
+					:class="canvasDevice === 'desktop' ? 'absolute top-0 left-0' : 'w-full h-full'"
+				>
+					<iframe
+						id="preview-canvas"
+						src="/?preview=true"
+						class="bg-surface border-0 block w-full h-full"
+						title="Предпросмотр сайта"
+					></iframe>
+				</div>
+			</div>
+		</div>
+
+		<div class="mt-2 text-center text-xs text-slate-500 flex items-center gap-2">
+			<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+			<span>Живой холст предпросмотра: клик по секции в окне превью выбирает её в списке</span>
+		</div>
+	</div>
+}

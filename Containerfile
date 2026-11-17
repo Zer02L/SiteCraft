@@ -24,6 +24,7 @@ COPY . .
 # Generate Templ templates & compile Tailwind CSS
 RUN templ generate
 RUN tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
+RUN tailwindcss -i ui/assets/admin_input.css -o ui/assets/admin.css --minify
 
 # Compile pure Go binary (CGO=0)
 RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o /app/bin/sitecraft main.go

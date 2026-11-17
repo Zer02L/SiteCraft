@@ -16,11 +16,13 @@ type Store struct {
 	articles               []models.ArticleItem
 	recentActivity         []models.RecentActivityItem
 	recentActivityExpires  time.Time
+	redirects              map[string]models.RedirectRule
 	settingsSet            bool
 	contentSet             bool
 	servicesSet            bool
 	blocksSet              bool
 	articlesSet            bool
+	redirectsSet           bool
 }
 
 var defaultStore = &Store{}
@@ -168,6 +170,36 @@ func (s *Store) InvalidateRecentActivity() {
 	s.recentActivityExpires = time.Time{}
 }
 
+func (s *Store) GetRedirects() (map[string]models.RedirectRule, bool) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if !s.redirectsSet || s.redirects == nil {
+		return nil, false
+	}
+	out := make(map[string]models.RedirectRule, len(s.redirects))
+	for k, v := range s.redirects {
+		out[k] = v
+	}
+	return out, true
+}
+
+func (s *Store) SetRedirects(rules map[string]models.RedirectRule) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.redirects = make(map[string]models.RedirectRule, len(rules))
+	for k, v := range rules {
+		s.redirects[k] = v
+	}
+	s.redirectsSet = true
+}
+
+func (s *Store) InvalidateRedirects() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.redirects = nil
+	s.redirectsSet = false
+}
+
 func (s *Store) InvalidateAll() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -176,6 +208,8 @@ func (s *Store) InvalidateAll() {
 	s.servicesSet = false
 	s.blocksSet = false
 	s.articlesSet = false
+	s.redirects = nil
+	s.redirectsSet = false
 	s.recentActivity = nil
 	s.recentActivityExpires = time.Time{}
 }

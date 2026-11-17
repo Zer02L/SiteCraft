@@ -6,7 +6,7 @@ import (
 )
 
 templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.ArticleItem, showTrash bool) {
-	<div>
+	<div x-data="articleHoverPreview()" @keydown.escape.window="closePreview()">
 		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
 			<div>
 				<h2 class="text-xl font-bold text-admin-content tracking-tight">Статьи и Новости блога</h2>
@@ -171,9 +171,26 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 							</thead>
 							<tbody class="divide-y divide-admin-border/60 text-admin-content">
 								for _, a := range articles {
-									<tr class="hover:bg-admin-surface-hover transition-colors">
+									<tr
+										class="hover:bg-admin-surface-hover transition-colors group cursor-default"
+										@mouseenter.debounce.400ms={ fmt.Sprintf("showPreview('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title)) }
+										@mouseleave="hidePreview()"
+									>
 										<td class="py-3.5 px-4 font-semibold text-admin-content max-w-sm truncate">
-											{ a.Title }
+											<div class="flex items-center gap-2">
+												<span class="truncate">{ a.Title }</span>
+												<button
+													type="button"
+													@click.stop={ fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title)) }
+													title="Live Preview (Быстрый предпросмотр)"
+													class="opacity-0 group-hover:opacity-100 transition-opacity text-admin-content-subtle hover:text-admin-accent cursor-pointer p-0.5 rounded shrink-0"
+												>
+													<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+													</svg>
+												</button>
+											</div>
 										</td>
 										<td class="py-3.5 px-4 font-mono text-xs text-admin-accent">
 											/blog/{ a.Slug }
@@ -184,7 +201,7 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 										<td class="py-3.5 px-4">
 											if a.IsScheduled() {
 												<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning/20" title="Публикация запланирована на будущее">
-													<svg class="w-3 h-3 text-admin-warning animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+													<svg class="w-3.5 h-3.5 text-admin-warning animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 														<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
 													</svg>
 													<span>Запланирована</span>
@@ -226,9 +243,18 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 												Редактировать
 											</button>
 
+											<button
+												type="button"
+												@click.stop={ fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title)) }
+												class="text-xs text-admin-content-muted hover:text-admin-accent cursor-pointer transition-colors"
+												title="Открыть Live Preview"
+											>
+												Превью
+											</button>
+
 											if a.IsLive() {
 												<a href={ templ.SafeURL("/blog/" + a.Slug) } target="_blank" class="text-xs text-admin-content-muted hover:text-admin-content">
-													Просмотр
+													Вкладка ↗
 												</a>
 											}
 
@@ -252,6 +278,138 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 				</div>
 			}
 		}
+
+		<!-- Live Hover Preview Singleton Container (Фича 5: UX-фокус и Live Preview) -->
+		<div
+			x-show="isOpen"
+			x-cloak
+			@mouseenter="keepPreview()"
+			@mouseleave="hidePreview()"
+			class="hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-200 pointer-events-auto"
+		>
+			<!-- Preview Header / Browser Chrome -->
+			<div class="px-4 py-3 bg-admin-surface-muted border-b border-admin-border flex items-center justify-between shrink-0 select-none">
+				<div class="flex items-center gap-2 min-w-0">
+					<!-- Window traffic lights -->
+					<div class="flex items-center gap-1.5 mr-1.5 shrink-0">
+						<span class="w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block"></span>
+						<span class="w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block"></span>
+						<span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block"></span>
+					</div>
+					<div class="min-w-0">
+						<div class="text-xs font-semibold text-admin-content truncate" x-text="previewTitle || 'Превью публикации'"></div>
+						<div class="text-[10px] font-mono text-admin-accent truncate" x-text="previewUrlDisplay"></div>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-1 shrink-0 ml-2">
+					<!-- Open in new tab -->
+					<a
+						:href="previewUrl"
+						target="_blank"
+						title="Открыть в новой вкладке"
+						class="p-1.5 rounded-lg text-admin-content-muted hover:text-admin-content hover:bg-admin-surface transition-colors"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+						</svg>
+					</a>
+					<!-- Close button -->
+					<button
+						type="button"
+						@click="closePreview()"
+						title="Закрыть превью (Esc)"
+						class="p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Preview Content Area: Loading Skeleton + Singleton Iframe -->
+			<div class="relative flex-1 w-full bg-admin-bg overflow-hidden">
+				<!-- Skeleton / Loader -->
+				<div
+					x-show="isLoading"
+					class="absolute inset-0 flex flex-col items-center justify-center bg-admin-surface/80 backdrop-blur-xs z-10 transition-opacity"
+				>
+					<div class="w-7 h-7 border-2 border-admin-accent border-t-transparent rounded-full animate-spin mb-2"></div>
+					<p class="text-[11px] font-mono text-admin-content-muted">Загрузка превью...</p>
+				</div>
+
+				<!-- Single Iframe in DOM -->
+				<template x-if="previewUrl">
+					<iframe
+						:src="previewUrl"
+						@load="isLoading = false"
+						class="w-full h-full border-0 bg-white"
+						loading="lazy"
+					></iframe>
+				</template>
+			</div>
+		</div>
+
+		<!-- Touch screen disable safeguard -->
+		<style>
+			@media not all and (hover: hover) and (pointer: fine) {
+				.hover-preview-singleton {
+					display: none !important;
+				}
+			}
+		</style>
+
+		<!-- Script for Hover Preview controller -->
+		<script>
+			function articleHoverPreview() {
+				return {
+					previewUrl: '',
+					previewUrlDisplay: '',
+					previewTitle: '',
+					isOpen: false,
+					isLoading: false,
+
+					isFinePointer() {
+						return window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+					},
+
+					showPreview(url, title) {
+						if (!this.isFinePointer() || !url) return;
+						this.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';
+						this.previewUrlDisplay = url;
+						this.previewTitle = title;
+						this.isLoading = true;
+						this.isOpen = true;
+					},
+
+					openPreviewNow(url, title) {
+						if (!url) return;
+						this.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';
+						this.previewUrlDisplay = url;
+						this.previewTitle = title;
+						this.isLoading = true;
+						this.isOpen = true;
+					},
+
+					hidePreview() {
+						this.isOpen = false;
+						this.previewUrl = '';
+						this.isLoading = false;
+					},
+
+					keepPreview() {
+						this.isOpen = true;
+					},
+
+					closePreview() {
+						this.isOpen = false;
+						this.previewUrl = '';
+						this.isLoading = false;
+					}
+				};
+			}
+		</script>
 	</div>
 }
 

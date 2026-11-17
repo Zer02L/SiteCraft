@@ -11,10 +11,13 @@ import (
 	"strings"
 	"time"
 
+	"sitecraft/internal/ai"
+	"sitecraft/internal/checker"
 	"sitecraft/internal/data"
 	"sitecraft/internal/db"
 	"sitecraft/internal/events"
 	"sitecraft/internal/i18n"
+	"sitecraft/internal/importer"
 	"sitecraft/internal/media"
 	"sitecraft/internal/models"
 	"sitecraft/internal/notifications"
@@ -39,6 +42,9 @@ type Server struct {
 	SessionMgr   *scs.SessionManager
 	EventBus     *events.MemoryBus
 	AdminModules *AdminModuleRegistry
+	Checker      *checker.Service
+	Importer     *importer.Importer
+	MCPServer    *ai.MCPServer
 }
 
 // Config holds runtime server options.
@@ -64,9 +70,14 @@ func New(database *sql.DB, queries *db.Queries, mediaSvc *media.Service, session
 		Media:      mediaSvc,
 		SessionMgr: sessionMgr,
 		EventBus:   bus,
+		Importer:   importer.New(repo, mediaSvc),
 	}
+	s.MCPServer = ai.NewMCPServer(repo, s.GetAIProvider)
 
 	s.initAdminModules()
+	s.Checker = checker.NewService(database, repo, bus, func(id string, st models.SiteSettings) bool {
+		return s.AdminModules.IsActive(id, st)
+	})
 	s.setupMiddlewares()
 	s.setupRoutes()
 	return s, nil
@@ -84,6 +95,7 @@ func (s *Server) setupMiddlewares() {
 	s.Router.Use(s.SessionMgr.LoadAndSave)
 
 	// SiteCraft core middlewares
+	s.Router.Use(s.HTTPRedirectMiddleware)
 	s.Router.Use(HTTPCacheControlMiddleware)
 	s.Router.Use(HTTPUTMMiddleware)
 	s.Router.Use(HTTPABTestingMiddleware)
@@ -116,8 +128,12 @@ func (s *Server) setupRoutes() {
 	s.Router.Get("/vip", s.HandleVIPClub)
 	s.Router.Get("/fleet", s.HandleFleetDashboard)
 
+	// Health & Liveness probes for Watchdog & Zero-downtime fleet deployments
+	s.Router.Get("/health", s.HandleHealth)
+
 	// 2. Interactive HTMX & API Endpoints
 	s.Router.Route("/api", func(r chi.Router) {
+		r.Get("/health", s.HandleHealth)
 		r.Get("/map-frame", s.HandleMapFrame)
 		r.Get("/slots", s.HandleSlots)
 		r.Get("/resources", s.HandleResources)
@@ -145,7 +161,17 @@ func (s *Server) setupRoutes() {
 		r.Get("/track/sse/{code}", s.HandleTrackSSE)
 	})
 
-	// 3. Admin & Client Management Panel
+	// 3. Model Context Protocol (MCP) & Universal AI Agent API (Feature 4)
+	s.Router.Get("/api/v1/mcp", s.MCPServer.HandleSSE)
+	s.Router.Post("/api/v1/mcp", s.MCPServer.HandleMessage)
+	s.Router.Post("/api/v1/mcp/message", s.MCPServer.HandleMessage)
+	s.Router.Get("/api/v1/agent/openapi.json", ai.HandleOpenAPI)
+	s.Router.Get("/api/v1/agent/info", s.HandleAgentInfo)
+	s.Router.Get("/api/v1/agent/articles", s.HandleAgentListArticles)
+	s.Router.Post("/api/v1/agent/articles", s.HandleAgentCreateArticle)
+	s.Router.Post("/api/v1/agent/seo/generate", s.HandleAgentGenerateSEO)
+
+	// 4. Admin & Client Management Panel
 	s.setupAdminRoutes()
 }
 
@@ -514,7 +540,12 @@ func (s *Server) HandleBlogPost(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 		return
 	}
-	_ = s.Queries.IncrementArticleViews(ctx, art.ID)
+
+	// Do not increment views on Live Preview
+	isPreview := r.URL.Query().Get("preview") == "1" || r.Header.Get("X-Preview") == "1"
+	if !isPreview {
+		_ = s.Queries.IncrementArticleViews(ctx, art.ID)
+	}
 
 	var tags []string
 	if art.Tags != "" {
@@ -544,6 +575,7 @@ func (s *Server) HandleBlogPost(w http.ResponseWriter, r *http.Request) {
 
 	allArticles, _ := s.Repo.GetArticles(ctx)
 
+	w.Header().Set("X-Frame-Options", "SAMEORIGIN")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = pages.BlogPost(settings, content, articleItem, allArticles).Render(ctx, w)
 }
@@ -664,6 +696,34 @@ func (s *Server) HandleFleetDashboard(w http.ResponseWriter, r *http.Request) {
 	_ = pages.FleetDashboardPage(settings, []models.FleetSite{}, models.FleetStats{}).Render(ctx, w)
 }
 
+var serverStartTime = time.Now()
+
+// HandleHealth returns HTTP 200 OK if server and database are healthy.
+func (s *Server) HandleHealth(w http.ResponseWriter, r *http.Request) {
+	ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
+	defer cancel()
+
+	if err := s.DB.PingContext(ctx); err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusServiceUnavailable)
+		_ = json.NewEncoder(w).Encode(map[string]interface{}{
+			"status":   "error",
+			"database": "disconnected",
+			"error":    err.Error(),
+		})
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	_ = json.NewEncoder(w).Encode(map[string]interface{}{
+		"status":    "ok",
+		"database":  "connected",
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+		"uptime":    time.Since(serverStartTime).String(),
+	})
+}
+
 // Start runs the HTTP listener on the configured address.
 func (s *Server) Start(addr string) error {
 	return s.StartWithContext(context.Background(), addr)
@@ -712,3 +772,28 @@ func (s *Server) StartWithContext(ctx context.Context, addr string) error {
 		return shutdownErr
 	}
 }
+
+// GetAIProvider returns an initialized LLMProvider based on current site settings.
+func (s *Server) GetAIProvider(ctx context.Context) (ai.LLMProvider, error) {
+	settings, err := s.Repo.GetSiteSettings(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	apiKey := settings.AIAPIKeyEncrypted
+	if apiKey != "" {
+		if decrypted, err := ai.Decrypt(apiKey); err == nil {
+			apiKey = decrypted
+		}
+	}
+
+	return ai.NewProvider(ai.Config{
+		Provider:  settings.AIProvider,
+		BaseURL:   settings.AIBaseURL,
+		APIKey:    apiKey,
+		ModelName: settings.AIModelName,
+		ProxyURL:  settings.AIProxyURL,
+		FolderID:  settings.AIFolderID,
+	})
+}
+

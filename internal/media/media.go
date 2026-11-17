@@ -245,6 +245,19 @@ func (s *Service) ServeMediaHandler() http.HandlerFunc {
 
 		// Set long-term immutable cache headers
 		w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+
+		// Automatic WebP content negotiation: if client supports WebP,
+		// serve the WebP duplicate if available, saving bandwidth.
+		if strings.Contains(r.Header.Get("Accept"), "image/webp") {
+			webpPath := strings.TrimSuffix(filePath, filepath.Ext(filePath)) + ".webp"
+			if fi, err := os.Stat(webpPath); err == nil && !fi.IsDir() {
+				w.Header().Set("Vary", "Accept")
+				w.Header().Set("Content-Type", "image/webp")
+				http.ServeFile(w, r, webpPath)
+				return
+			}
+		}
+
 		http.ServeFile(w, r, filePath)
 	}
 }

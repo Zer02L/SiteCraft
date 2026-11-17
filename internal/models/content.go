@@ -73,6 +73,14 @@ type SiteSettings struct {
 	// Пароль для входа в клиентский кабинет (/client)
 	ClientAdminPassword     string `json:"client_admin_password"` // Legacy plain password for auto-migration
 	ClientAdminPasswordHash string `json:"client_admin_password_hash"`
+
+	// Настройки AI и LLM-провайдеров (Фича 4: Мульти-провайдерный AI Engine & Universal MCP)
+	AIProvider        string `json:"ai_provider"`          // openai, anthropic, gemini, deepseek, anymodel, yandex, gigachat, custom
+	AIBaseURL         string `json:"ai_base_url"`          // Custom base URL, e.g. https://api.anymodel.org/v1
+	AIAPIKeyEncrypted string `json:"ai_api_key_encrypted"` // Зашифрованный API ключ
+	AIModelName       string `json:"ai_model_name"`        // e.g. gpt-4o, claude-3-5-sonnet-latest, etc.
+	AIProxyURL        string `json:"ai_proxy_url"`         // HTTP / SOCKS5 proxy URL
+	AIFolderID        string `json:"ai_folder_id"`         // Yandex Cloud Folder ID
 }
 
 // IsModuleActive checks whether an admin/business module is active for the current site.
@@ -178,6 +186,7 @@ type SiteContent struct {
 // PageBlock represents a dynamic section on the page (Block Reordering / Custom Content / Hybrid JSON payload)
 type PageBlock struct {
 	ID      string                 `json:"id"`
+	PageID  string                 `json:"page_id,omitempty"`
 	Type    string                 `json:"type"` // hero, cyber_hero, schedule, services, booking, map, features, faq, steps, reviews, team, gallery, rich_text, html
 	Title   string                 `json:"title"`
 	Content string                 `json:"content"` // Raw HTML or sanitized rich text

@@ -210,6 +210,36 @@ func (s *Server) initAdminModules() {
 		},
 		TabHandler: s.HandleAdminTabFleet,
 	})
+
+	// 8. WordPress Importer & 301 Redirects (Feature 3)
+	s.AdminModules.Register(AdminModule{
+		ID:    "importer",
+		Title: "Миграция & Редиректы",
+		Order: 65,
+		Badge: func(ctx context.Context, s *Server) (int, string) {
+			count, err := s.Repo.CountRedirects(ctx)
+			if err != nil || count == 0 {
+				return 0, ""
+			}
+			return int(count), "bg-blue-500/10 text-blue-400 border-blue-500/30"
+		},
+		TabHandler: s.HandleAdminTabImporter,
+	})
+
+	// 9. AI Engine & Universal MCP (Feature 4)
+	s.AdminModules.Register(AdminModule{
+		ID:    "ai",
+		Title: "ИИ Ассистент & MCP",
+		Order: 45,
+		Badge: func(ctx context.Context, s *Server) (int, string) {
+			settings, err := s.Repo.GetSiteSettings(ctx)
+			if err != nil || settings.AIProvider == "" {
+				return 0, ""
+			}
+			return 1, "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+		},
+		TabHandler: s.HandleAdminTabAI,
+	})
 }
 
 // RequireModule wraps an HTTP handler and checks if the given module is enabled.

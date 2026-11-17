@@ -2,6 +2,7 @@ package server_test
 
 import (
 	"database/sql"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -49,6 +50,8 @@ func TestPublicRoutes(t *testing.T) {
 		"/shop",
 		"/vip",
 		"/fleet",
+		"/health",
+		"/api/health",
 		"/sitemap.xml",
 	}
 
@@ -59,6 +62,16 @@ func TestPublicRoutes(t *testing.T) {
 
 		if rr.Code != http.StatusOK {
 			t.Errorf("route %s returned status %d, expected 200", route, rr.Code)
+		}
+
+		if route == "/" {
+			body := rr.Body.String()
+			if strings.Contains(body, "quill.min.js") || strings.Contains(body, "quill.snow.css") {
+				t.Errorf("public route / should not include Quill assets (Phase 1.1)")
+			}
+			if strings.Contains(body, "fonts.googleapis.com") || strings.Contains(body, "fonts.gstatic.com") {
+				t.Errorf("public route / should not include external Google Fonts (Phase 1.2)")
+			}
 		}
 	}
 }
@@ -130,5 +143,33 @@ func TestAdminAuthProtection(t *testing.T) {
 
 	if authRR.Code != http.StatusOK {
 		t.Errorf("expected status 200 for authenticated admin, got %d", authRR.Code)
+	}
+}
+
+func TestHealthEndpoint(t *testing.T) {
+	srv, conn := setupTestServer(t)
+	defer conn.Close()
+
+	req := httptest.NewRequest("GET", "/health", nil)
+	rr := httptest.NewRecorder()
+	srv.Router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusOK {
+		t.Fatalf("expected status 200 from /health, got %d", rr.Code)
+	}
+
+	var payload map[string]interface{}
+	if err := json.Unmarshal(rr.Body.Bytes(), &payload); err != nil {
+		t.Fatalf("failed to decode health JSON: %v", err)
+	}
+
+	if payload["status"] != "ok" {
+		t.Errorf("expected status 'ok', got %v", payload["status"])
+	}
+	if payload["database"] != "connected" {
+		t.Errorf("expected database 'connected', got %v", payload["database"])
+	}
+	if _, ok := payload["uptime"]; !ok {
+		t.Errorf("expected uptime in health payload")
 	}
 }

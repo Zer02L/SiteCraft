@@ -5,6 +5,7 @@ import "sitecraft/internal/models"
 const (
 	EventLeadCreated = "lead.created"
 	EventOrderPaid   = "order.paid"
+	EventSiteMutated = "site.mutated"
 )
 
 // LeadCreatedEvent is fired when a visitor submits a lead/booking form.
@@ -27,3 +28,13 @@ type OrderPaidEvent struct {
 func (e OrderPaidEvent) EventName() string {
 	return EventOrderPaid
 }
+
+// SiteMutatedEvent is fired when administrative configuration or content changes.
+type SiteMutatedEvent struct {
+	Scope string // "settings", "content", "services", "articles", "blocks", "reviews", "theme"
+}
+
+func (e SiteMutatedEvent) EventName() string {
+	return EventSiteMutated
+}
+

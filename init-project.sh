@@ -137,11 +137,13 @@ else
     templ generate
 fi
 
-echo -e "🎨 ${BOLD}[2/4] Минификация Tailwind CSS...${RESET}"
+echo -e "🎨 ${BOLD}[2/4] Минификация Tailwind CSS (styles.css + admin.css)...${RESET}"
 if [ -n "$RUN_PREFIX" ]; then
     $RUN_PREFIX tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
+    $RUN_PREFIX tailwindcss -i ui/assets/admin_input.css -o ui/assets/admin.css --minify
 else
     tailwindcss -i ui/assets/input.css -o ui/assets/styles.css --minify
+    tailwindcss -i ui/assets/admin_input.css -o ui/assets/admin.css --minify
 fi
 
 echo -e "⚙️  ${BOLD}[3/4] Компиляция единого бинарника Go (Single Binary)...${RESET}"

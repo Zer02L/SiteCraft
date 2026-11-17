@@ -2,7 +2,7 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  cmd = "templ generate && tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css && go build -o ./tmp/main main.go"
+  cmd = "templ generate && tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css && tailwindcss -i ./ui/assets/admin_input.css -o ./ui/assets/admin.css && go build -o ./tmp/main main.go"
   entrypoint = "./tmp/main"
   args_bin = ["serve", "--http=0.0.0.0:8080", "--dir=./pb_data"]
   delay = 200

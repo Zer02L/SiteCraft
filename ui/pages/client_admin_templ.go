@@ -11,6 +11,8 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
+	"sitecraft/internal/ai"
+	"sitecraft/internal/checker"
 	"sitecraft/internal/models"
 	"sitecraft/ui/layouts"
 )
@@ -44,14 +46,14 @@ func ClientLogin(settings models.SiteSettings, errMsg string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12\"><div class=\"w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm\"><div class=\"text-center mb-8\"><div class=\"inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z\"></path></svg></div><h1 class=\"text-xl font-bold tracking-tight text-admin-content mb-1\">Панель управления</h1><p class=\"text-xs text-admin-content-muted font-mono\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<link rel=\"stylesheet\" href=\"/assets/admin.css\"><div class=\"min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12\"><div class=\"w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm\"><div class=\"text-center mb-8\"><div class=\"inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z\"></path></svg></div><h1 class=\"text-xl font-bold tracking-tight text-admin-content mb-1\">Панель управления</h1><p class=\"text-xs text-admin-content-muted font-mono\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(settings.SiteName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 20, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 23, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -69,7 +71,7 @@ func ClientLogin(settings models.SiteSettings, errMsg string) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(errMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 28, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 31, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -123,7 +125,7 @@ func ClientInitialSetup(settings models.SiteSettings, errMsg string) templ.Compo
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12\"><div class=\"w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm\"><div class=\"text-center mb-8\"><div class=\"inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-success-muted border border-admin-success/25 text-admin-success mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\"></path></svg></div><h1 class=\"text-xl font-bold tracking-tight text-admin-content mb-1\">Инициализация доступа</h1><p class=\"text-xs text-admin-content-muted\">Задайте мастер-пароль для входа в панель управления</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<link rel=\"stylesheet\" href=\"/assets/admin.css\"><div class=\"min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12\"><div class=\"w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm\"><div class=\"text-center mb-8\"><div class=\"inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-success-muted border border-admin-success/25 text-admin-success mb-4\"><svg class=\"w-6 h-6\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\"></path></svg></div><h1 class=\"text-xl font-bold tracking-tight text-admin-content mb-1\">Инициализация доступа</h1><p class=\"text-xs text-admin-content-muted\">Задайте мастер-пароль для входа в панель управления</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -135,7 +137,7 @@ func ClientInitialSetup(settings models.SiteSettings, errMsg string) templ.Compo
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(errMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 88, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 92, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -218,8 +220,18 @@ func AdminTabIcon(id string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
+		case "importer", "redirects":
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4\"></path></svg>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		case "ai":
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 10V3L4 14h7v7l9-11h-7z\"></path></svg>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		default:
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z\"></path></svg>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z\"></path></svg>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -245,7 +257,7 @@ func ClientFleetTab() templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "<div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl text-admin-content shadow-sm\"><div class=\"flex items-center gap-3 mb-4\"><div class=\"w-10 h-10 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-sm font-mono\">⚡</div><div><h3 class=\"font-semibold text-admin-content text-base\">Fleet Cluster Management</h3><p class=\"text-xs text-admin-content-muted\">Управление микросайтами и централизованными обновлениями</p></div></div><p class=\"text-xs text-admin-content-muted leading-relaxed\">Управление кластером микросайтов активно в автономном режиме. Инстанс подключен к реестру Fleet Master.</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl text-admin-content shadow-sm\"><div class=\"flex items-center gap-3 mb-4\"><div class=\"w-10 h-10 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-sm font-mono\">⚡</div><div><h3 class=\"font-semibold text-admin-content text-base\">Fleet Cluster Management</h3><p class=\"text-xs text-admin-content-muted\">Управление микросайтами и централизованными обновлениями</p></div></div><p class=\"text-xs text-admin-content-muted leading-relaxed\">Управление кластером микросайтов активно в автономном режиме. Инстанс подключен к реестру Fleet Master.</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -306,14 +318,24 @@ func renderFallbackTab(modules []models.AdminTabModule, leads []models.Lead, con
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+			} else if modules[0].ID == "importer" {
+				templ_7745c5c3_Err = ClientImporterTab(nil, "").Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else if modules[0].ID == "ai" {
+				templ_7745c5c3_Err = ClientAITab(settings, ai.Presets, "", false).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl text-admin-content\"><p class=\"text-sm\">Раздел загружен.</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl text-admin-content\"><p class=\"text-sm\">Раздел загружен.</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"p-8 text-center bg-admin-surface border border-admin-border rounded-2xl text-admin-content-muted\"><p class=\"text-sm\">Нет активных модулей для данной конфигурации.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "<div class=\"p-8 text-center bg-admin-surface border border-admin-border rounded-2xl text-admin-content-muted\"><p class=\"text-sm\">Нет активных модулей для данной конфигурации.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -322,7 +344,7 @@ func renderFallbackTab(modules []models.AdminTabModule, leads []models.Lead, con
 	})
 }
 
-func ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule, blocks []models.PageBlock) templ.Component {
+func ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule, blocks []models.PageBlock, checklist checker.ChecklistResult) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -351,6 +373,10 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<link rel=\"stylesheet\" href=\"/assets/admin.css\"><script defer src=\"/assets/js/admin-blocks-editor.js\"></script> <script defer src=\"/assets/js/admin-article-editor.js\"></script> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 			initialTab := activeTab
 			if initialTab == "" && len(modules) > 0 {
 				initialTab = modules[0].ID
@@ -358,74 +384,74 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				initialTab = "leads"
 			}
 			newLeads, inProgressLeads := countLeadsByStatus(leads)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div x-data=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div x-data=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var13 string
-			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("{ currentTab: '%s' }", initialTab)).Resolve(ctx)
+			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("{ currentTab: '%s', focusMode: false }", initialTab)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 241, Col: 59}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 260, Col: 77}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" @popstate.window=\"currentTab = (new URLSearchParams(window.location.search)).get('tab') || 'leads'\" class=\"min-h-screen bg-admin-bg text-admin-content antialiased flex flex-col font-sans\"><!-- Верхний командный бар (Header) --><header class=\"border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between\"><div class=\"flex items-center gap-3\"><div class=\"w-8 h-8 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-sm font-mono shadow-xs\">SC</div><div><div class=\"font-bold text-admin-content text-sm leading-tight tracking-tight\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" @popstate.window=\"currentTab = (new URLSearchParams(window.location.search)).get('tab') || 'leads'\" @toggle-focus-mode.window=\"focusMode = !focusMode\" @exit-focus-mode.window=\"focusMode = false\" @keydown.escape.window=\"if (focusMode) { focusMode = false; }\" class=\"min-h-screen bg-admin-bg text-admin-content antialiased flex flex-col font-sans transition-colors duration-200\" :class=\"{ 'admin-focus-mode': focusMode }\"><!-- Верхний командный бар (Header) - скрывается в режиме Focus Mode --><header x-show=\"!focusMode\" class=\"border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40 transition-all duration-200\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between\"><div class=\"flex items-center gap-3\"><div class=\"w-8 h-8 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-sm font-mono shadow-xs\">SC</div><div><div class=\"font-bold text-admin-content text-sm leading-tight tracking-tight\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(settings.SiteName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 253, Col: 105}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 279, Col: 105}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"text-[10px] font-mono text-admin-content-muted uppercase tracking-wider\">Клиентская панель</div></div></div><div class=\"flex items-center gap-2.5\"><a href=\"/\" target=\"_blank\" class=\"px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs text-admin-content-muted hover:text-admin-content transition-colors flex items-center gap-1.5 font-medium shadow-2xs\"><span>Открыть сайт</span> <svg class=\"w-3.5 h-3.5 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a> <a href=\"/client/logout\" class=\"px-3 py-1.5 rounded-lg border border-admin-border text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted hover:border-admin-danger/20 text-xs transition-colors flex items-center gap-1.5 font-medium\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v2\"></path></svg> <span>Выход</span></a></div></div><!-- Мобильный селектор вкладок (< md) --><div class=\"px-4 py-2.5 border-t border-admin-border md:hidden bg-admin-surface/60\"><label for=\"admin-mobile-tabs\" class=\"sr-only\">Выберите раздел</label><div class=\"relative\"><select id=\"admin-mobile-tabs\" x-model=\"currentTab\" @change=\"\n\t\t\t\t\t\t\t\thtmx.ajax('GET', '/client/tab/' + currentTab, {\n\t\t\t\t\t\t\t\t\ttarget: '#admin-tab-content',\n\t\t\t\t\t\t\t\t\tswap: 'innerHTML'\n\t\t\t\t\t\t\t\t});\n\t\t\t\t\t\t\t\thistory.pushState(null, '', '/client?tab=' + currentTab);\n\t\t\t\t\t\t\t\" class=\"w-full bg-admin-surface border border-admin-border text-admin-content text-xs sm:text-sm rounded-xl px-3.5 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-admin-border-focus appearance-none font-medium cursor-pointer\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div class=\"text-[10px] font-mono text-admin-content-muted uppercase tracking-wider\">Клиентская панель</div></div></div><div class=\"flex items-center gap-2.5\"><a href=\"/\" target=\"_blank\" class=\"px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs text-admin-content-muted hover:text-admin-content transition-colors flex items-center gap-1.5 font-medium shadow-2xs\"><span>Открыть сайт</span> <svg class=\"w-3.5 h-3.5 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a> <a href=\"/client/logout\" class=\"px-3 py-1.5 rounded-lg border border-admin-border text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted hover:border-admin-danger/20 text-xs transition-colors flex items-center gap-1.5 font-medium\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v2\"></path></svg> <span>Выход</span></a></div></div><!-- Мобильный селектор вкладок (< md) --><div class=\"px-4 py-2.5 border-t border-admin-border md:hidden bg-admin-surface/60\"><label for=\"admin-mobile-tabs\" class=\"sr-only\">Выберите раздел</label><div class=\"relative\"><select id=\"admin-mobile-tabs\" x-model=\"currentTab\" @change=\"\n\t\t\t\t\t\t\t\thtmx.ajax('GET', '/client/tab/' + currentTab, {\n\t\t\t\t\t\t\t\t\ttarget: '#admin-tab-content',\n\t\t\t\t\t\t\t\t\tswap: 'innerHTML'\n\t\t\t\t\t\t\t\t});\n\t\t\t\t\t\t\t\thistory.pushState(null, '', '/client?tab=' + currentTab);\n\t\t\t\t\t\t\t\" class=\"w-full bg-admin-surface border border-admin-border text-admin-content text-xs sm:text-sm rounded-xl px-3.5 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-admin-border-focus appearance-none font-medium cursor-pointer\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, mod := range modules {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<option value=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<option value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 291, Col: 30}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 317, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if mod.ID == initialTab {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, " selected")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, " selected")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, ">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, ">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(mod.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 292, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 318, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, " ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, " ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -433,89 +459,89 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 					var templ_7745c5c3_Var17 string
 					templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf(" (%d)", mod.BadgeCount))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 294, Col: 48}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 320, Col: 48}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</option>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</option>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</select><div class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-admin-content-muted\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div></div></div></header><!-- Основная контентная сетка: Сайдбар слева + Контент справа --><div :class=\"(currentTab === 'blocks' || currentTab === 'editor') ? 'max-w-[1720px]' : 'max-w-7xl'\" class=\"flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start transition-all duration-200\"><!-- Левый вертикальный сайдбар навигации (Desktop / Tablet >= md) --><aside :class=\"(currentTab === 'blocks' || currentTab === 'editor') ? 'w-16' : 'w-72 lg:w-80'\" class=\"hidden md:block shrink-0 transition-all duration-200\"><nav class=\"sticky top-24 bg-admin-sidebar/95 border border-admin-border rounded-2xl p-2 backdrop-blur-md shadow-xs space-y-1\" aria-label=\"Вкладки кабинета\"><div x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\" class=\"text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle px-3 py-1.5 mb-1\">Разделы кабинета</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</select><div class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-admin-content-muted\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></div></div></div></header><!-- Focus Mode Minimalist Top Bar (Фича 5: UX-фокус UltimaPress) --><div x-show=\"focusMode\" x-cloak class=\"sticky top-0 z-40 bg-admin-surface/95 backdrop-blur-md border-b border-admin-border px-4 sm:px-8 py-2.5 flex items-center justify-between shadow-xs transition-all duration-200\"><div class=\"flex items-center gap-3\"><div class=\"w-7 h-7 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-xs font-mono shadow-2xs\">FM</div><div class=\"flex items-center gap-2 text-xs\"><span class=\"font-bold text-admin-content\">Режим Focus Mode</span> <span class=\"hidden sm:inline text-admin-content-muted\">• Чистый Quill.js без отвлекающих элементов</span></div></div><div class=\"flex items-center gap-3\"><span class=\"text-[11px] font-mono text-admin-content-subtle hidden md:inline\">Нажмите Esc для выхода</span> <button type=\"button\" @click=\"focusMode = false\" class=\"px-3 py-1.5 rounded-lg bg-admin-surface-muted hover:bg-admin-surface border border-admin-border text-admin-content-muted hover:text-admin-content text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg> <span>Выйти из фокуса</span></button></div></div><!-- Основная контентная сетка: Сайдбар слева + Контент справа --><div :class=\"{\n\t\t\t\t\t'max-w-4xl mx-auto py-6 sm:py-8': focusMode,\n\t\t\t\t\t'max-w-[1720px]': !focusMode && (currentTab === 'blocks' || currentTab === 'editor'),\n\t\t\t\t\t'max-w-7xl': !focusMode && currentTab !== 'blocks' && currentTab !== 'editor'\n\t\t\t\t}\" class=\"flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start transition-all duration-200\"><!-- Левый вертикальный сайдбар навигации (Desktop / Tablet >= md) - скрывается в Focus Mode --><aside x-show=\"!focusMode\" :class=\"(currentTab === 'blocks' || currentTab === 'editor') ? 'w-16' : 'w-72 lg:w-80'\" class=\"hidden md:block shrink-0 transition-all duration-200\"><nav class=\"sticky top-24 bg-admin-sidebar/95 border border-admin-border rounded-2xl p-2 backdrop-blur-md shadow-xs space-y-1\" aria-label=\"Вкладки кабинета\"><div x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\" class=\"text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle px-3 py-1.5 mb-1\">Разделы кабинета</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, mod := range modules {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<button type=\"button\" hx-get=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<button type=\"button\" hx-get=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.Route).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 329, Col: 26}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 390, Col: 26}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-push-url=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-push-url=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client?tab=" + mod.ID).ResolveURL(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 332, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 393, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" @click=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" @click=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var20 string
 				templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression("currentTab = '" + mod.ID + "'").Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 333, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 394, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" title=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "\" title=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var21 string
 				templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.Title).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 334, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 395, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" :class=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "\" :class=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var22 string
 				templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("{ 'bg-admin-surface-active text-admin-content font-semibold border-transparent shadow-2xs relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-admin-accent before:rounded-r-full': currentTab === '%s', 'border-transparent text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted/50': currentTab !== '%s' }", mod.ID, mod.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 335, Col: 410}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 396, Col: 410}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" class=\"w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm border flex items-center justify-between gap-2.5 transition-colors cursor-pointer text-left focus:outline-none\"><div class=\"flex items-center gap-2.5 min-w-0\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\" class=\"w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm border flex items-center justify-between gap-2.5 transition-colors cursor-pointer text-left focus:outline-none\"><div class=\"flex items-center gap-2.5 min-w-0\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -523,25 +549,25 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span class=\"truncate\" x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<span class=\"truncate\" x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var23 string
 				templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(mod.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 340, Col: 103}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 401, Col: 103}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</span></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</span></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if mod.ID == "leads" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<div x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<div x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -549,7 +575,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "</div>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -558,7 +584,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 						templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 						templ_7745c5c3_Buffer := templ.GetBuffer()
 						var templ_7745c5c3_ElementScripts []templ.ComponentScript
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "<span x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\" class=\"")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<span x-show=\"currentTab !== 'blocks' && currentTab !== 'editor'\" class=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -576,7 +602,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\"")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -590,30 +616,38 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 						}
 						templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, ">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, ">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var26 string
 					templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", mod.BadgeCount))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 348, Col: 45}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 409, Col: 45}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</nav></aside><!-- Основная контентная область с HTMX-свопом --><main class=\"flex-1 min-w-0 w-full\" id=\"admin-tab-content\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</nav></aside><!-- Правая часть: Чеклист готовности + Контент вкладки --><div class=\"flex-1 min-w-0 w-full space-y-6\"><!-- Setup Checklist Дашборда (Фича 2) - скрывается в Focus Mode --><div x-show=\"!focusMode\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = SetupChecklistWidget(checklist).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "</div><!-- Основная контентная область с HTMX-свопом --><main class=\"w-full\" id=\"admin-tab-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -652,6 +686,16 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+			} else if activeTab == "importer" && isTabActive("importer", modules) {
+				templ_7745c5c3_Err = ClientImporterTab(nil, "").Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else if activeTab == "ai" && isTabActive("ai", modules) {
+				templ_7745c5c3_Err = ClientAITab(settings, ai.Presets, "", false).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			} else if activeTab == "leads" && isTabActive("leads", modules) {
 				templ_7745c5c3_Err = ClientLeadsTab(leads).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
@@ -663,7 +707,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</main></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</main></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

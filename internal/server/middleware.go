@@ -220,3 +220,34 @@ func HTTPRequestLoggerMiddleware(next http.Handler) http.Handler {
 		}
 	})
 }
+
+// HTTPRedirectMiddleware intercepts incoming requests and matches them against the
+// in-memory redirects hash-map. Redirects are served with 301 Moved Permanently in < 0.1 ms.
+func (s *Server) HTTPRedirectMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+
+		// Never redirect internal assets, media, admin console, or API requests
+		if strings.HasPrefix(path, "/assets/") ||
+			strings.HasPrefix(path, "/media/") ||
+			strings.HasPrefix(path, "/admin") ||
+			strings.HasPrefix(path, "/client") ||
+			strings.HasPrefix(path, "/api") {
+			next.ServeHTTP(w, r)
+			return
+		}
+
+		if s.Repo != nil {
+			if rule, found := s.Repo.FindRedirect(r.Context(), path, r.URL.RequestURI()); found {
+				statusCode := rule.StatusCode
+				if statusCode != http.StatusMovedPermanently && statusCode != http.StatusFound {
+					statusCode = http.StatusMovedPermanently
+				}
+				http.Redirect(w, r, rule.TargetPath, statusCode)
+				return
+			}
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}

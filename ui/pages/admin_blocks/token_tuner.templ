@@ -1,0 +1,817 @@
+package admin_blocks
+
+templ TokenTuner() {
+	<!-- Rollback & Status Banner -->
+	<div id="theme-rollback-banner"></div>
+
+	<!-- 0. Смена стиля в 1 клик (Theme Presets Switcher) -->
+	<div>
+		<div class="flex items-center justify-between mb-2">
+			<div>
+				<span class="block font-bold text-slate-900 text-xs">
+					Смена стиля в 1 клик (Theme Presets)
+				</span>
+				<span class="text-[10px] text-slate-500">Мгновенная трансформация без пересборки Tailwind CSS</span>
+			</div>
+			<span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Zero-Rebuild</span>
+		</div>
+
+		<!-- 4 Главных глобальных стиля -->
+		<div class="grid grid-cols-2 gap-2 mb-3">
+			<!-- Modern Bright -->
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'modern_bright', name: 'Modern Bright', theme: 'coral', flavor: 'soft', font: 'modern', primary: '#0f172a', accent: '#2563eb', surface: '#ffffff' })"
+				class="p-2.5 rounded-xl border text-left transition-all hover:shadow-xs cursor-pointer group"
+				:class="themePreset === 'coral' && tokens.accent === '#2563eb' ? 'border-blue-600 bg-blue-50/40 ring-1 ring-blue-500' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'"
+			>
+				<div class="flex items-center gap-1.5 mb-1.5">
+					<span class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-slate-900 border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-white border border-slate-200 shadow-xs shrink-0"></span>
+				</div>
+				<div class="font-bold text-[11px] text-slate-900 group-hover:text-blue-600">Modern Bright</div>
+				<div class="text-[9px] text-slate-500 leading-tight mt-0.5">SaaS • Inter • Soft 24px</div>
+			</button>
+
+			<!-- Luxury Editorial -->
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'luxury_editorial', name: 'Luxury Editorial', theme: 'beauty', flavor: 'corporate', font: 'editorial', primary: '#1c1917', accent: '#b45309', surface: '#fdfbf7' })"
+				class="p-2.5 rounded-xl border text-left transition-all hover:shadow-xs cursor-pointer group"
+				:class="tokens.accent === '#b45309' ? 'border-amber-700 bg-amber-50/40 ring-1 ring-amber-600' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'"
+			>
+				<div class="flex items-center gap-1.5 mb-1.5">
+					<span class="w-3.5 h-3.5 rounded-full bg-amber-700 border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-stone-900 border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-[#fdfbf7] border border-stone-300 shadow-xs shrink-0"></span>
+				</div>
+				<div class="font-bold text-[11px] text-slate-900 group-hover:text-amber-800">Luxury Editorial</div>
+				<div class="text-[9px] text-slate-500 leading-tight mt-0.5">Премиум • Merriweather • 8px</div>
+			</button>
+
+			<!-- Dark Premium -->
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'dark_premium', name: 'Dark Premium', theme: 'main-night', flavor: 'soft', font: 'tech', primary: '#f8fafc', accent: '#38bdf8', surface: '#090d16' })"
+				class="p-2.5 rounded-xl border text-left transition-all hover:shadow-xs cursor-pointer group bg-slate-900 text-white"
+				:class="themePreset === 'main-night' && tokens.accent === '#38bdf8' ? 'border-sky-400 ring-1 ring-sky-400' : 'border-slate-700 hover:border-slate-600'"
+			>
+				<div class="flex items-center gap-1.5 mb-1.5">
+					<span class="w-3.5 h-3.5 rounded-full bg-sky-400 border border-slate-900 shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-slate-100 border border-slate-900 shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-[#090d16] border border-slate-700 shadow-xs shrink-0"></span>
+				</div>
+				<div class="font-bold text-[11px] text-white group-hover:text-sky-300">Dark Premium</div>
+				<div class="text-[9px] text-slate-400 leading-tight mt-0.5">Ночь • High-Tech • 24px</div>
+			</button>
+
+			<!-- Swiss Bold -->
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'swiss_bold', name: 'Swiss Bold', theme: 'legal-swiss', flavor: 'sharp', font: 'condensed', primary: '#000000', accent: '#dc2626', surface: '#ffffff' })"
+				class="p-2.5 rounded-xl border text-left transition-all hover:shadow-xs cursor-pointer group"
+				:class="flavorPreset === 'sharp' && tokens.accent === '#dc2626' ? 'border-red-600 bg-red-50/40 ring-1 ring-red-500' : 'border-slate-200 hover:border-slate-300 bg-slate-50/50'"
+			>
+				<div class="flex items-center gap-1.5 mb-1.5">
+					<span class="w-3.5 h-3.5 rounded-full bg-red-600 border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-black border border-white shadow-xs shrink-0"></span>
+					<span class="w-3.5 h-3.5 rounded-full bg-white border border-slate-300 shadow-xs shrink-0"></span>
+				</div>
+				<div class="font-bold text-[11px] text-slate-900 group-hover:text-red-600">Swiss Bold</div>
+				<div class="text-[9px] text-slate-500 leading-tight mt-0.5">Швейцарский • Bebas • Sharp 0px</div>
+			</button>
+		</div>
+
+		<!-- Отраслевые пресеты -->
+		<div class="flex items-center justify-between mb-1.5">
+			<span class="font-semibold uppercase tracking-wider text-slate-600 text-[10px]">Отраслевые пресеты</span>
+		</div>
+		<div class="grid grid-cols-2 gap-1.5">
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'b2b_legal', name: 'B2B Юриспруденция', theme: 'legal', flavor: 'corporate', font: 'editorial', primary: '#0f172a', accent: '#c2410c', surface: '#f8fafc' })"
+				class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50/80 text-left cursor-pointer transition-all hover:bg-slate-100"
+			>
+				<div class="font-bold text-[10px] text-slate-800">B2B Юристы & Консалтинг</div>
+				<div class="text-[9px] text-slate-500">Терракот • Корпоративный</div>
+			</button>
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'b2c_medical', name: 'B2C Медицина', theme: 'medical', flavor: 'soft', font: 'modern', primary: '#0f766e', accent: '#0284c7', surface: '#f0fdfa' })"
+				class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50/80 text-left cursor-pointer transition-all hover:bg-slate-100"
+			>
+				<div class="font-bold text-[10px] text-slate-800">B2C Медицина & Клиники</div>
+				<div class="text-[9px] text-slate-500">Бирюза • Чистый светлый</div>
+			</button>
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'b2c_auto', name: 'B2C Автосервис', theme: 'auto', flavor: 'sharp', font: 'condensed', primary: '#18181b', accent: '#ea580c', surface: '#ffffff' })"
+				class="px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-slate-50/80 text-left cursor-pointer transition-all hover:bg-slate-100"
+			>
+				<div class="font-bold text-[10px] text-slate-800">B2C Автосервис & Детейлинг</div>
+				<div class="text-[9px] text-slate-500">Оранжевый • Четкий резкий</div>
+			</button>
+			<button
+				type="button"
+				@click="applyPresetStyle({ id: 'b2b_cyber', name: 'B2B Cyber & IT', theme: 'cyber', flavor: 'soft', font: 'tech', primary: '#f1f5f9', accent: '#06b6d4', surface: '#0a0f1d' })"
+				class="px-2.5 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-left cursor-pointer transition-all hover:bg-slate-800"
+			>
+				<div class="font-bold text-[10px] text-cyan-400">B2B Кибербезопасность</div>
+				<div class="text-[9px] text-slate-400">Неон • Темная тема</div>
+			</button>
+		</div>
+	</div>
+
+	<!-- 1. Индустриальная тема (Strict Presets) -->
+	<div class="pt-3 border-t border-slate-100">
+		<div class="flex items-center justify-between mb-1.5">
+			<label class="block font-semibold uppercase tracking-wider text-slate-700 text-[11px]">
+				Базовый CSS-слой темы
+			</label>
+			<span class="text-[10px] font-mono text-slate-400">Strict Theme</span>
+		</div>
+		<select
+			x-model="themePreset"
+			@change="sendThemeUpdate($event.target.value)"
+			class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
+		>
+			<option value="main">Основная тема (Default Day)</option>
+			<option value="coral">Stationery Coral (Modern Minimal)</option>
+			<option value="legal">B2B Legal & Consulting</option>
+			<option value="medical">B2C Medical & Health</option>
+			<option value="cyber">B2B Cyber & IT Service</option>
+			<option value="beauty">B2C Beauty & Premium</option>
+			<option value="auto">B2C Auto & Service</option>
+			<option value="main-night">Dark / Глубокая темная</option>
+		</select>
+	</div>
+
+	<!-- 2. Дизайн-настроения (Design Flavors) -->
+	<div class="pt-3 border-t border-slate-100">
+		<div class="flex items-center justify-between mb-1.5">
+			<span class="font-bold text-slate-900 text-xs">Характер геометрии (Flavor)</span>
+			<span class="text-[10px] font-mono text-blue-600" x-text="flavorPreset"></span>
+		</div>
+		<div class="grid grid-cols-2 gap-1.5">
+			<button
+				type="button"
+				@click="sendFlavorUpdate('soft')"
+				:class="flavorPreset === 'soft' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Soft / SaaS</div>
+				<div class="text-[10px] opacity-75">Радиус 24px</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFlavorUpdate('corporate')"
+				:class="flavorPreset === 'corporate' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Corporate</div>
+				<div class="text-[10px] opacity-75">Радиус 8px</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFlavorUpdate('sharp')"
+				:class="flavorPreset === 'sharp' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Sharp</div>
+				<div class="text-[10px] opacity-75">Радиус 0px</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFlavorUpdate('brutalist')"
+				:class="flavorPreset === 'brutalist' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Brutalist</div>
+				<div class="text-[10px] opacity-75">Контраст 2px</div>
+			</button>
+		</div>
+	</div>
+
+	<!-- 3. Шрифтовые пары (Font Pairs) -->
+	<div class="pt-3 border-t border-slate-100">
+		<div class="flex items-center justify-between mb-1.5">
+			<span class="font-bold text-slate-900 text-xs">Шрифтовая пара (Type Pair)</span>
+			<span class="text-[10px] font-mono text-blue-600" x-text="fontPreset"></span>
+		</div>
+		<div class="grid grid-cols-2 gap-1.5">
+			<button
+				type="button"
+				@click="sendFontUpdate('modern')"
+				:class="fontPreset === 'modern' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Modern / Inter</div>
+				<div class="text-[9px] opacity-75 font-sans">Чистый гротеск</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFontUpdate('editorial')"
+				:class="fontPreset === 'editorial' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Editorial / Serif</div>
+				<div class="text-[9px] opacity-75 font-serif">Merriweather</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFontUpdate('tech')"
+				:class="fontPreset === 'tech' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Tech / Mono</div>
+				<div class="text-[9px] opacity-75 font-mono">JetBrains Mono</div>
+			</button>
+			<button
+				type="button"
+				@click="sendFontUpdate('condensed')"
+				:class="fontPreset === 'condensed' ? 'bg-slate-900 text-white font-semibold' : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'"
+				class="px-2.5 py-1.5 rounded-lg text-left transition-all cursor-pointer"
+			>
+				<div class="font-medium text-[11px]">Condensed / Bold</div>
+				<div class="text-[9px] opacity-75 font-sans uppercase">Bebas Neue</div>
+			</button>
+		</div>
+	</div>
+
+	<!-- 4. Динамическая палитра 60-30-10 -->
+	<div class="pt-3 border-t border-slate-100 space-y-3">
+		<div class="flex items-center justify-between">
+			<div>
+				<span class="block font-bold text-slate-900 text-xs">
+					Живая дизайн-система (60-30-10)
+				</span>
+				<span class="text-[10px] text-slate-500">
+					Surface 60% • Content 30% • Accent 10%
+				</span>
+			</div>
+			<div class="flex items-center gap-1">
+				<span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: tokens.surface }"></span>
+				<span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: tokens.primary }"></span>
+				<span class="w-2.5 h-2.5 rounded-full" :style="{ backgroundColor: tokens.accent }"></span>
+			</div>
+		</div>
+
+		<!-- Карточка 1: Primary / Content (30% Текст и заголовки) -->
+		<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+			<div class="flex items-center justify-between gap-2">
+				<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('primary')">
+					<button
+						type="button"
+						@click.stop="toggleTuner('primary')"
+						class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+						:style="{ backgroundColor: tokens.primary }"
+						title="Открыть палитру цвета текста"
+					>
+						<span class="w-1.5 h-1.5 rounded-full bg-white opacity-0 hover:opacity-100 transition-opacity"></span>
+					</button>
+					<div class="min-w-0">
+						<div class="text-slate-800 font-semibold text-[11px] leading-tight">Текст и заголовки (Content 30%)</div>
+						<div class="text-[10px] font-mono text-slate-400" x-text="tokens.primary"></div>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-1.5 shrink-0">
+					<!-- Бейдж читаемости -->
+					<span
+						class="text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold border flex items-center gap-1"
+						:class="getRoleContrast('primary').pass ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-rose-50 text-rose-700 border-rose-300'"
+						:title="'Контраст текста к фону: ' + getRoleContrast('primary').ratio + ':1'"
+					>
+						<span class="w-1.5 h-1.5 rounded-full" :class="getRoleContrast('primary').pass ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+						<span x-text="getRoleContrast('primary').label + ' ' + getRoleContrast('primary').ratio + ':1'"></span>
+					</span>
+
+					<!-- Кнопка раскрытия Гибридного тюнера -->
+					<button
+						type="button"
+						@click="toggleTuner('primary')"
+						class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+						:class="activeTuner === 'primary' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+						title="Палитра пресетов и OKLCH-тюнер"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Выпадающий Гибридный тюнер для Primary -->
+			<div x-show="activeTuner === 'primary'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+				<!-- 1. Пресеты (Click and Done) -->
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Готовые пресеты (Click & Done)</span>
+						<span class="text-[9px] text-slate-400">1 клик</span>
+					</div>
+					<div class="flex items-center gap-1.5 flex-wrap">
+						<template x-for="swatch in presetSwatches.primary" :key="swatch.hex">
+							<button
+								type="button"
+								@click="applyRoleHex('primary', swatch.hex)"
+								:class="tokens.primary.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+								class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+								:style="{ backgroundColor: swatch.hex }"
+								:title="swatch.name + ' (' + swatch.hex + ')'"
+							>
+								<span x-show="tokens.primary.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+							</button>
+						</template>
+					</div>
+				</div>
+
+				<!-- 2. OKLCH Слайдеры -->
+				<div class="space-y-1 pt-1 border-t border-slate-100">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Оттенок (Hue)</span>
+						<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="360"
+						step="1"
+						:value="brandHue"
+						@input="onHueChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+						style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+					/>
+				</div>
+
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Светлота (Lightness)</span>
+						<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="100"
+						step="1"
+						:value="brandLightness"
+						@input="onLightnessChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+						:style="{ background: lightnessGradient }"
+					/>
+				</div>
+
+				<!-- Шкала безопасных зон контраста -->
+				<div class="space-y-1">
+					<div class="h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none">
+						<template x-if="safeZones.isLightBg">
+							<div class="flex w-full h-full">
+								<div :style="'width: ' + safeZones.aaaPercent + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+								<div :style="'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+								<div :style="'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+							</div>
+						</template>
+						<template x-if="!safeZones.isLightBg">
+							<div class="flex w-full h-full">
+								<div :style="'width: ' + safeZones.aaPercent + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+								<div :style="'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+								<div :style="'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+							</div>
+						</template>
+					</div>
+				</div>
+
+				<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+				<div class="flex items-center justify-between gap-1.5 pt-1">
+					<div class="flex items-center gap-1">
+						<button
+							type="button"
+							@click="snapTo('aa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AA"
+						>
+							Snap AA
+						</button>
+						<button
+							type="button"
+							@click="snapTo('aaa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AAA"
+						>
+							Snap AAA
+						</button>
+					</div>
+
+					<div class="flex items-center gap-1">
+						<input
+							type="text"
+							maxlength="7"
+							:value="tokens.primary"
+							@change="applyRoleHex('primary', $event.target.value)"
+							class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+							placeholder="#000000"
+							title="Ввести точный HEX-код"
+						/>
+						<button
+							type="button"
+							@click="pickEyeDropper('primary')"
+							class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+							title="Взять пипеткой с экрана"
+						>
+							<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+							</svg>
+						</button>
+						<input
+							type="color"
+							id="native-picker-primary"
+							class="sr-only"
+							:value="tokens.primary"
+							@input="applyRoleHex('primary', $event.target.value)"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Карточка 2: Accent (10% Кнопки и фокус) -->
+		<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+			<div class="flex items-center justify-between gap-2">
+				<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('accent')">
+					<button
+						type="button"
+						@click.stop="toggleTuner('accent')"
+						class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+						:style="{ backgroundColor: tokens.accent }"
+						title="Открыть палитру акцентного цвета"
+					>
+						<span class="w-1.5 h-1.5 rounded-full bg-white opacity-0 hover:opacity-100 transition-opacity"></span>
+					</button>
+					<div class="min-w-0">
+						<div class="text-slate-800 font-semibold text-[11px] leading-tight">Акцент (Accent 10% кнопки)</div>
+						<div class="text-[10px] font-mono text-slate-400" x-text="tokens.accent"></div>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-1.5 shrink-0">
+					<!-- Бейдж читаемости текста на кнопке -->
+					<span
+						class="text-[9px] font-mono px-1.5 py-0.5 rounded font-semibold border flex items-center gap-1"
+						:class="getOnAccentContrast().pass ? 'bg-emerald-50 text-emerald-800 border-emerald-300' : 'bg-rose-50 text-rose-700 border-rose-300'"
+						:title="'Контраст текста на кнопке: ' + getOnAccentContrast().ratio + ':1'"
+					>
+						<span class="w-1.5 h-1.5 rounded-full" :class="getOnAccentContrast().pass ? 'bg-emerald-500' : 'bg-rose-500'"></span>
+						<span x-text="getOnAccentContrast().label + ' ' + getOnAccentContrast().ratio + ':1'"></span>
+					</span>
+
+					<!-- Кнопка раскрытия Гибридного тюнера -->
+					<button
+						type="button"
+						@click="toggleTuner('accent')"
+						class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+						:class="activeTuner === 'accent' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+						title="Палитра пресетов и OKLCH-тюнер"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Выпадающий Гибридный тюнер для Accent -->
+			<div x-show="activeTuner === 'accent'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+				<!-- 1. Пресеты акцентов -->
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Готовые пресеты акцентов</span>
+						<span class="text-[9px] text-slate-400">1 клик</span>
+					</div>
+					<div class="flex items-center gap-1.5 flex-wrap">
+						<template x-for="swatch in presetSwatches.accent" :key="swatch.hex">
+							<button
+								type="button"
+								@click="applyRoleHex('accent', swatch.hex)"
+								:class="tokens.accent.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+								class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+								:style="{ backgroundColor: swatch.hex }"
+								:title="swatch.name + ' (' + swatch.hex + ')'"
+							>
+								<span x-show="tokens.accent.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-white"></span>
+							</button>
+						</template>
+					</div>
+				</div>
+
+				<!-- 2. OKLCH Слайдеры -->
+				<div class="space-y-1 pt-1 border-t border-slate-100">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Оттенок бренда (Hue)</span>
+						<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="360"
+						step="1"
+						:value="brandHue"
+						@input="onHueChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+						style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+					/>
+				</div>
+
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Светлота (Lightness)</span>
+						<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="100"
+						step="1"
+						:value="brandLightness"
+						@input="onLightnessChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+						:style="{ background: lightnessGradient }"
+					/>
+				</div>
+
+				<!-- Шкала безопасных зон -->
+				<div class="space-y-1">
+					<div class="h-1.5 w-full rounded-full overflow-hidden bg-slate-200 flex text-[8px] font-mono select-none">
+						<template x-if="safeZones.isLightBg">
+							<div class="flex w-full h-full">
+								<div :style="'width: ' + safeZones.aaaPercent + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+								<div :style="'width: ' + Math.max(0, safeZones.aaPercent - safeZones.aaaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+								<div :style="'width: ' + Math.max(0, 100 - safeZones.aaPercent) + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+							</div>
+						</template>
+						<template x-if="!safeZones.isLightBg">
+							<div class="flex w-full h-full">
+								<div :style="'width: ' + safeZones.aaPercent + '%'" class="bg-rose-400 h-full" title="Fail"></div>
+								<div :style="'width: ' + Math.max(0, safeZones.aaaPercent - safeZones.aaPercent) + '%'" class="bg-emerald-300 h-full" title="AA Safe"></div>
+								<div :style="'width: ' + Math.max(0, 100 - safeZones.aaaPercent) + '%'" class="bg-emerald-500 h-full" title="AAA Safe"></div>
+							</div>
+						</template>
+					</div>
+				</div>
+
+				<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+				<div class="flex items-center justify-between gap-1.5 pt-1">
+					<div class="flex items-center gap-1">
+						<button
+							type="button"
+							@click="snapTo('aa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AA"
+						>
+							Snap AA
+						</button>
+						<button
+							type="button"
+							@click="snapTo('aaa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AAA"
+						>
+							Snap AAA
+						</button>
+					</div>
+
+					<div class="flex items-center gap-1">
+						<input
+							type="text"
+							maxlength="7"
+							:value="tokens.accent"
+							@change="applyRoleHex('accent', $event.target.value)"
+							class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+							placeholder="#000000"
+							title="Ввести точный HEX-код"
+						/>
+						<button
+							type="button"
+							@click="pickEyeDropper('accent')"
+							class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+							title="Взять пипеткой с экрана"
+						>
+							<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+							</svg>
+						</button>
+						<input
+							type="color"
+							id="native-picker-accent"
+							class="sr-only"
+							:value="tokens.accent"
+							@input="applyRoleHex('accent', $event.target.value)"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Карточка 3: Surface (60% Фон страниц) -->
+		<div class="p-2 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2 transition-all">
+			<div class="flex items-center justify-between gap-2">
+				<div class="flex items-center gap-2 min-w-0 cursor-pointer select-none" @click="toggleTuner('surface')">
+					<button
+						type="button"
+						@click.stop="toggleTuner('surface')"
+						class="w-6 h-6 rounded-md cursor-pointer border border-slate-300 shadow-2xs shrink-0 transition-transform active:scale-95 flex items-center justify-center relative focus:outline-none focus:ring-2 focus:ring-blue-500 ring-offset-1"
+						:style="{ backgroundColor: tokens.surface }"
+						title="Открыть палитру фона"
+					>
+						<span class="w-1.5 h-1.5 rounded-full bg-slate-400 opacity-0 hover:opacity-100 transition-opacity"></span>
+					</button>
+					<div class="min-w-0">
+						<div class="text-slate-800 font-semibold text-[11px] leading-tight">Фон страниц (Surface 60%)</div>
+						<div class="text-[10px] font-mono text-slate-400" x-text="tokens.surface"></div>
+					</div>
+				</div>
+
+				<div class="flex items-center gap-1.5 shrink-0">
+					<!-- Бейдж роли Surface -->
+					<span class="text-[9px] font-mono text-slate-500 px-2 py-0.5 rounded-full bg-slate-100 font-semibold border border-slate-200/80">База 60%</span>
+
+					<!-- Кнопка раскрытия Гибридного тюнера -->
+					<button
+						type="button"
+						@click="toggleTuner('surface')"
+						class="p-1 rounded-md text-slate-500 hover:text-slate-800 hover:bg-white transition-colors border border-transparent hover:border-slate-200 cursor-pointer"
+						:class="activeTuner === 'surface' ? 'bg-blue-50 border-blue-200 text-blue-600 font-bold' : ''"
+						title="Палитра пресетов и OKLCH-тюнер"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+						</svg>
+					</button>
+				</div>
+			</div>
+
+			<!-- Выпадающий Гибридный тюнер для Surface -->
+			<div x-show="activeTuner === 'surface'" x-cloak class="pt-2 border-t border-slate-200 space-y-2.5">
+				<!-- 1. Пресеты фонов -->
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Премиальные оттенки фона</span>
+						<span class="text-[9px] text-slate-400">1 клик</span>
+					</div>
+					<div class="flex items-center gap-1.5 flex-wrap">
+						<template x-for="swatch in presetSwatches.surface" :key="swatch.hex">
+							<button
+								type="button"
+								@click="applyRoleHex('surface', swatch.hex)"
+								:class="tokens.surface.toLowerCase() === swatch.hex.toLowerCase() ? 'ring-2 ring-blue-600 ring-offset-1 scale-110 shadow-sm' : 'hover:scale-105 border border-slate-200'"
+								class="w-5 h-5 rounded-full cursor-pointer transition-all flex items-center justify-center shrink-0"
+								:style="{ backgroundColor: swatch.hex }"
+								:title="swatch.name + ' (' + swatch.hex + ')'"
+							>
+								<span x-show="tokens.surface.toLowerCase() === swatch.hex.toLowerCase()" class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+							</button>
+						</template>
+					</div>
+				</div>
+
+				<!-- 2. OKLCH Слайдеры для фона -->
+				<div class="space-y-1 pt-1 border-t border-slate-100">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Тон серого / оттенка (Hue)</span>
+						<span class="font-mono text-slate-500" x-text="brandHue + '°'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="360"
+						step="1"
+						:value="brandHue"
+						@input="onHueChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none"
+						style="background: linear-gradient(to right, #f43f5e, #f97316, #eab308, #22c55e, #06b6d4, #3b82f6, #8b5cf6, #ec4899, #f43f5e);"
+					/>
+				</div>
+
+				<div class="space-y-1">
+					<div class="flex items-center justify-between text-[10px]">
+						<span class="text-slate-600 font-medium">Светлота фона (Lightness)</span>
+						<span class="font-mono text-slate-500" x-text="brandLightness + '%'"></span>
+					</div>
+					<input
+						type="range"
+						min="0"
+						max="100"
+						step="1"
+						:value="brandLightness"
+						@input="onLightnessChange($event.target.value)"
+						class="w-full h-2 rounded-lg appearance-none cursor-pointer focus:outline-none border border-slate-200"
+						:style="{ background: lightnessGradient }"
+					/>
+				</div>
+
+				<!-- 3. Snap кнопки и точный HEX / Пипетка -->
+				<div class="flex items-center justify-between gap-1.5 pt-1">
+					<div class="flex items-center gap-1">
+						<button
+							type="button"
+							@click="snapTo('aa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AA"
+						>
+							Snap AA
+						</button>
+						<button
+							type="button"
+							@click="snapTo('aaa')"
+							class="px-2 py-0.5 rounded bg-white hover:bg-blue-50 text-blue-800 border border-blue-300 text-[9px] font-semibold transition-colors cursor-pointer"
+							title="Привязать к стандарту читаемости AAA"
+						>
+							Snap AAA
+						</button>
+					</div>
+
+					<div class="flex items-center gap-1">
+						<input
+							type="text"
+							maxlength="7"
+							:value="tokens.surface"
+							@change="applyRoleHex('surface', $event.target.value)"
+							class="w-16 px-1 py-0.5 text-center font-mono text-[9px] uppercase bg-white border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+							placeholder="#ffffff"
+							title="Ввести точный HEX-код"
+						/>
+						<button
+							type="button"
+							@click="pickEyeDropper('surface')"
+							class="p-1 rounded bg-white hover:bg-slate-100 border border-slate-300 text-slate-600 transition-colors cursor-pointer"
+							title="Взять пипеткой с экрана"
+						>
+							<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a1.65 1.65 0 0 0 .33-1.82l-1.46-3.41a2.38 2.38 0 0 0-.58-.81l-7.73-7.73a2.83 2.83 0 0 0-4 4l7.73 7.73c.23.23.51.43.81.58l3.41 1.46a1.65 1.65 0 0 0 1.82-.33l.67-.67z"></path>
+							</svg>
+						</button>
+						<input
+							type="color"
+							id="native-picker-surface"
+							class="sr-only"
+							:value="tokens.surface"
+							@input="applyRoleHex('surface', $event.target.value)"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tool 4: Шкала оттенков 50–900 (Tailwind OKLCH Scale без opacity) -->
+		<div class="pt-1">
+			<button
+				type="button"
+				@click="showProTools = !showProTools"
+				class="w-full flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-slate-100/80 hover:bg-slate-200/70 text-slate-700 text-[11px] font-medium transition-colors cursor-pointer select-none"
+			>
+				<span class="flex items-center gap-1.5">
+					<span>🎨 Шкала оттенков 50–900 (OKLCH Scale)</span>
+					<span class="text-[9px] font-mono text-slate-400 font-normal">без opacity</span>
+				</span>
+				<svg class="w-3.5 h-3.5 transform transition-transform" :class="showProTools ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+				</svg>
+			</button>
+
+			<div x-show="showProTools" x-cloak class="mt-2 p-2.5 rounded-xl border border-slate-200 bg-white space-y-2">
+				<div class="flex items-center justify-between text-[10px] text-slate-500">
+					<span>Твердые тона для дизайн-системы:</span>
+					<span x-show="copiedStep" class="text-emerald-600 font-mono font-bold" x-text="'Скопирован ' + copiedStep + '!'"></span>
+				</div>
+				<div class="grid grid-cols-6 sm:grid-cols-11 gap-1">
+					<template x-for="step in accentScale" :key="step.name">
+						<button
+							type="button"
+							@click="copyHex(step.hex, step.name)"
+							class="h-9 rounded-md flex flex-col items-center justify-between p-0.5 transition-transform hover:scale-105 active:scale-95 border border-black/10 shadow-2xs cursor-pointer select-none"
+							:style="{ backgroundColor: step.hex }"
+							:title="'Шаг ' + step.name + ' (' + step.hex + ') — клик для копирования'"
+						>
+							<span class="text-[8px] font-mono font-bold leading-none" :style="{ color: step.textColor }" x-text="step.name"></span>
+							<span class="text-[7px] font-mono leading-none opacity-80" :style="{ color: step.textColor }" x-text="step.lPercent + '%'"></span>
+						</button>
+					</template>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 6. Кнопка фиксации токенов в БД -->
+	<div class="pt-3 border-t border-slate-100">
+		<button
+			type="button"
+			@click="saveThemeTokens()"
+			class="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+		>
+			<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+			</svg>
+			<span>Зафиксировать стиль в БД</span>
+		</button>
+	</div>
+	<div x-show="saveStatus" class="text-center font-mono text-[11px] font-semibold text-emerald-700" x-text="saveStatus"></div>
+}

@@ -2,12 +2,15 @@ package pages
 
 import (
 	"fmt"
+	"sitecraft/internal/ai"
+	"sitecraft/internal/checker"
 	"sitecraft/internal/models"
 	"sitecraft/ui/layouts"
 )
 
 templ ClientLogin(settings models.SiteSettings, errMsg string) {
 	@layouts.Base("Вход в панель управления — "+settings.SiteName, "Авторизация в клиентской панели", settings) {
+		<link rel="stylesheet" href="/assets/admin.css"/>
 		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12">
 			<div class="w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
 				<div class="text-center mb-8">
@@ -68,6 +71,7 @@ templ ClientLogin(settings models.SiteSettings, errMsg string) {
 
 templ ClientInitialSetup(settings models.SiteSettings, errMsg string) {
 	@layouts.Base("Первоначальная настройка — "+settings.SiteName, "Установка пароля администратора", settings) {
+		<link rel="stylesheet" href="/assets/admin.css"/>
 		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12">
 			<div class="w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
 				<div class="text-center mb-8">
@@ -174,6 +178,14 @@ templ AdminTabIcon(id string) {
 			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
 			</svg>
+		case "importer", "redirects":
+			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+			</svg>
+		case "ai":
+			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+			</svg>
 		default:
 			<svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
@@ -214,6 +226,10 @@ templ renderFallbackTab(modules []models.AdminTabModule, leads []models.Lead, co
 			@ClientSecurityTab("", "")
 		} else if modules[0].ID == "fleet" {
 			@ClientFleetTab()
+		} else if modules[0].ID == "importer" {
+			@ClientImporterTab(nil, "")
+		} else if modules[0].ID == "ai" {
+			@ClientAITab(settings, ai.Presets, "", false)
 		} else {
 			<div class="p-6 bg-admin-surface border border-admin-border rounded-2xl text-admin-content">
 				<p class="text-sm">Раздел загружен.</p>
@@ -226,8 +242,11 @@ templ renderFallbackTab(modules []models.AdminTabModule, leads []models.Lead, co
 	}
 }
 
-templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule, blocks []models.PageBlock) {
+templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, leads []models.Lead, articles []models.ArticleItem, trashArticles []models.ArticleItem, reviews []models.ReviewItem, services []models.ServiceItem, trashServices []models.ServiceItem, activeTab string, modules []models.AdminTabModule, blocks []models.PageBlock, checklist checker.ChecklistResult) {
 	@layouts.Base("Кабинет управления — "+settings.SiteName, "Управление контактами, заявками и контентом", settings) {
+		<link rel="stylesheet" href="/assets/admin.css"/>
+		<script defer src="/assets/js/admin-blocks-editor.js"></script>
+		<script defer src="/assets/js/admin-article-editor.js"></script>
 		{{
 			initialTab := activeTab
 			if initialTab == "" && len(modules) > 0 {
@@ -238,12 +257,19 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 			newLeads, inProgressLeads := countLeadsByStatus(leads)
 		}}
 		<div
-			x-data={ fmt.Sprintf("{ currentTab: '%s' }", initialTab) }
+			x-data={ fmt.Sprintf("{ currentTab: '%s', focusMode: false }", initialTab) }
 			@popstate.window="currentTab = (new URLSearchParams(window.location.search)).get('tab') || 'leads'"
-			class="min-h-screen bg-admin-bg text-admin-content antialiased flex flex-col font-sans"
+			@toggle-focus-mode.window="focusMode = !focusMode"
+			@exit-focus-mode.window="focusMode = false"
+			@keydown.escape.window="if (focusMode) { focusMode = false; }"
+			class="min-h-screen bg-admin-bg text-admin-content antialiased flex flex-col font-sans transition-colors duration-200"
+			:class="{ 'admin-focus-mode': focusMode }"
 		>
-			<!-- Верхний командный бар (Header) -->
-			<header class="border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40">
+			<!-- Верхний командный бар (Header) - скрывается в режиме Focus Mode -->
+			<header
+				x-show="!focusMode"
+				class="border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40 transition-all duration-200"
+			>
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 					<div class="flex items-center gap-3">
 						<div class="w-8 h-8 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-sm font-mono shadow-xs">
@@ -305,13 +331,48 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 				</div>
 			</header>
 
+			<!-- Focus Mode Minimalist Top Bar (Фича 5: UX-фокус UltimaPress) -->
+			<div
+				x-show="focusMode"
+				x-cloak
+				class="sticky top-0 z-40 bg-admin-surface/95 backdrop-blur-md border-b border-admin-border px-4 sm:px-8 py-2.5 flex items-center justify-between shadow-xs transition-all duration-200"
+			>
+				<div class="flex items-center gap-3">
+					<div class="w-7 h-7 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-xs font-mono shadow-2xs">
+						FM
+					</div>
+					<div class="flex items-center gap-2 text-xs">
+						<span class="font-bold text-admin-content">Режим Focus Mode</span>
+						<span class="hidden sm:inline text-admin-content-muted">• Чистый Quill.js без отвлекающих элементов</span>
+					</div>
+				</div>
+				<div class="flex items-center gap-3">
+					<span class="text-[11px] font-mono text-admin-content-subtle hidden md:inline">Нажмите Esc для выхода</span>
+					<button
+						type="button"
+						@click="focusMode = false"
+						class="px-3 py-1.5 rounded-lg bg-admin-surface-muted hover:bg-admin-surface border border-admin-border text-admin-content-muted hover:text-admin-content text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+					>
+						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+						</svg>
+						<span>Выйти из фокуса</span>
+					</button>
+				</div>
+			</div>
+
 			<!-- Основная контентная сетка: Сайдбар слева + Контент справа -->
 			<div
-				:class="(currentTab === 'blocks' || currentTab === 'editor') ? 'max-w-[1720px]' : 'max-w-7xl'"
+				:class="{
+					'max-w-4xl mx-auto py-6 sm:py-8': focusMode,
+					'max-w-[1720px]': !focusMode && (currentTab === 'blocks' || currentTab === 'editor'),
+					'max-w-7xl': !focusMode && currentTab !== 'blocks' && currentTab !== 'editor'
+				}"
 				class="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start transition-all duration-200"
 			>
-				<!-- Левый вертикальный сайдбар навигации (Desktop / Tablet >= md) -->
+				<!-- Левый вертикальный сайдбар навигации (Desktop / Tablet >= md) - скрывается в Focus Mode -->
 				<aside
+					x-show="!focusMode"
 					:class="(currentTab === 'blocks' || currentTab === 'editor') ? 'w-16' : 'w-72 lg:w-80'"
 					class="hidden md:block shrink-0 transition-all duration-200"
 				>
@@ -353,28 +414,40 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 					</nav>
 				</aside>
 
-				<!-- Основная контентная область с HTMX-свопом -->
-				<main class="flex-1 min-w-0 w-full" id="admin-tab-content">
-					if (activeTab == "blocks" || activeTab == "editor") && isTabActive("blocks", modules) {
-						@AdminBlocksTab(blocks, settings)
-					} else if activeTab == "contacts" && isTabActive("contacts", modules) {
-						@ClientContactsTab(content, settings)
-					} else if activeTab == "services" && isTabActive("services", modules) {
-						@ClientServicesTab(services, trashServices, "")
-					} else if activeTab == "articles" && isTabActive("articles", modules) {
-						@ClientArticlesTab(articles, trashArticles, false)
-					} else if activeTab == "reviews" && isTabActive("reviews", modules) {
-						@ClientReviewsTab(reviews)
-					} else if activeTab == "security" && isTabActive("security", modules) {
-						@ClientSecurityTab("", "")
-					} else if activeTab == "fleet" && isTabActive("fleet", modules) {
-						@ClientFleetTab()
-					} else if activeTab == "leads" && isTabActive("leads", modules) {
-						@ClientLeadsTab(leads)
-					} else {
-						@renderFallbackTab(modules, leads, content, settings, services, articles, reviews)
-					}
-				</main>
+				<!-- Правая часть: Чеклист готовности + Контент вкладки -->
+				<div class="flex-1 min-w-0 w-full space-y-6">
+					<!-- Setup Checklist Дашборда (Фича 2) - скрывается в Focus Mode -->
+					<div x-show="!focusMode">
+						@SetupChecklistWidget(checklist)
+					</div>
+
+					<!-- Основная контентная область с HTMX-свопом -->
+					<main class="w-full" id="admin-tab-content">
+						if (activeTab == "blocks" || activeTab == "editor") && isTabActive("blocks", modules) {
+							@AdminBlocksTab(blocks, settings)
+						} else if activeTab == "contacts" && isTabActive("contacts", modules) {
+							@ClientContactsTab(content, settings)
+						} else if activeTab == "services" && isTabActive("services", modules) {
+							@ClientServicesTab(services, trashServices, "")
+						} else if activeTab == "articles" && isTabActive("articles", modules) {
+							@ClientArticlesTab(articles, trashArticles, false)
+						} else if activeTab == "reviews" && isTabActive("reviews", modules) {
+							@ClientReviewsTab(reviews)
+						} else if activeTab == "security" && isTabActive("security", modules) {
+							@ClientSecurityTab("", "")
+						} else if activeTab == "fleet" && isTabActive("fleet", modules) {
+							@ClientFleetTab()
+						} else if activeTab == "importer" && isTabActive("importer", modules) {
+							@ClientImporterTab(nil, "")
+						} else if activeTab == "ai" && isTabActive("ai", modules) {
+							@ClientAITab(settings, ai.Presets, "", false)
+						} else if activeTab == "leads" && isTabActive("leads", modules) {
+							@ClientLeadsTab(leads)
+						} else {
+							@renderFallbackTab(modules, leads, content, settings, services, articles, reviews)
+						}
+					</main>
+				</div>
 			</div>
 		</div>
 	}

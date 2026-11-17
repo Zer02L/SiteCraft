@@ -77,4 +77,23 @@ func TestMediaUploadAndThumbnail(t *testing.T) {
 	if cacheCtrl := thumbRR.Header().Get("Cache-Control"); cacheCtrl == "" {
 		t.Errorf("expected Cache-Control header, got empty")
 	}
+
+	// Test serving with WebP content negotiation
+	webpPath := tempDir + "/originals/" + filename[:len(filename)-4] + ".webp"
+	_ = os.WriteFile(webpPath, []byte("fake-webp-content"), 0644)
+
+	rawReq := httptest.NewRequest("GET", "/media/raw/"+filename, nil)
+	rawReq.Header.Set("Accept", "image/webp,image/apng,image/*,*/*;q=0.8")
+	rawRR := httptest.NewRecorder()
+	serveHandler.ServeHTTP(rawRR, rawReq)
+
+	if rawRR.Code != http.StatusOK {
+		t.Fatalf("serve media with webp accept failed with status %d", rawRR.Code)
+	}
+	if ct := rawRR.Header().Get("Content-Type"); ct != "image/webp" {
+		t.Errorf("expected Content-Type image/webp, got %s", ct)
+	}
+	if vary := rawRR.Header().Get("Vary"); vary != "Accept" {
+		t.Errorf("expected Vary: Accept, got %s", vary)
+	}
 }

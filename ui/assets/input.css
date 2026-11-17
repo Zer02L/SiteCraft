@@ -1,13 +1,28 @@
 @import "tailwindcss";
 
+@import "./css/fonts.css";
 @import "./css/tokens.css";
 @import "./css/components.css";
 @import "./css/a11y.css";
 @import "./css/animations.css";
 @import "./css/tw-animate.css";
-@import "./css/shadcn.css";
 
-@source "../**/*.templ";
+@source "../layouts/**/*.templ";
+@source "../components/**/*.templ";
+@source "../sections/**/*.templ";
+@source "../registry/**/*.templ";
+@source "../pages/home.templ";
+@source "../pages/blog_list.templ";
+@source "../pages/blog_post.templ";
+@source "../pages/careers.templ";
+@source "../pages/flat_to_3d_demo.templ";
+@source "../pages/fleet.templ";
+@source "../pages/invoice.templ";
+@source "../pages/jhill_demo.templ";
+@source "../pages/legal.templ";
+@source "../pages/shop_catalog.templ";
+@source "../pages/tracker.templ";
+@source "../pages/vip_club.templ";
 @source "../**/*.html";
 @source "../**/*.js";
 
@@ -28,30 +43,6 @@
   --color-content: var(--color-content);
   --color-content-muted: var(--color-content-muted);
 
-  /* Dedicated Client Admin Workbench Tokens */
-  --color-admin-bg: var(--admin-bg);
-  --color-admin-surface: var(--admin-surface);
-  --color-admin-surface-muted: var(--admin-surface-muted);
-  --color-admin-surface-hover: var(--admin-surface-hover);
-  --color-admin-surface-active: var(--admin-surface-active);
-  --color-admin-header: var(--admin-header);
-  --color-admin-sidebar: var(--admin-sidebar);
-  --color-admin-border: var(--admin-border);
-  --color-admin-border-subtle: var(--admin-border-subtle);
-  --color-admin-border-focus: var(--admin-border-focus);
-  --color-admin-content: var(--admin-content);
-  --color-admin-content-muted: var(--admin-content-muted);
-  --color-admin-content-subtle: var(--admin-content-subtle);
-  --color-admin-accent: var(--admin-accent);
-  --color-admin-accent-hover: var(--admin-accent-hover);
-  --color-admin-accent-muted: var(--admin-accent-muted);
-  --color-admin-accent-border: var(--admin-accent-border);
-  --color-admin-danger: var(--admin-danger);
-  --color-admin-danger-muted: var(--admin-danger-muted);
-  --color-admin-success: var(--admin-success);
-  --color-admin-success-muted: var(--admin-success-muted);
-  --color-admin-warning: var(--admin-warning);
-  --color-admin-warning-muted: var(--admin-warning-muted);
 
   /* Smart Hybrid Geometry & Radius tokens */
   --radius-card: var(--radius-card);

@@ -26,12 +26,33 @@ func TestEmbeddedAssetsFS(t *testing.T) {
 		t.Errorf("embedded styles.css is empty")
 	}
 
-	// Verify images/cyber_avatar.png can be opened
+	// Verify admin.css can be opened
+	adminFile, err := fsys.Open("admin.css")
+	if err != nil {
+		t.Fatalf("failed to open embedded admin.css: %v", err)
+	}
+	defer adminFile.Close()
+
+	adminInfo, err := adminFile.Stat()
+	if err != nil {
+		t.Fatalf("failed to stat embedded admin.css: %v", err)
+	}
+	if adminInfo.Size() == 0 {
+		t.Errorf("embedded admin.css is empty")
+	}
+
+	// Verify images/cyber_avatar.png and cyber_avatar.webp can be opened
 	imgFile, err := fsys.Open("images/cyber_avatar.png")
 	if err != nil {
 		t.Fatalf("failed to open embedded images/cyber_avatar.png: %v", err)
 	}
 	defer imgFile.Close()
+
+	webpFile, err := fsys.Open("images/cyber_avatar.webp")
+	if err != nil {
+		t.Fatalf("failed to open embedded images/cyber_avatar.webp: %v", err)
+	}
+	defer webpFile.Close()
 }
 
 func TestAssetsFS(t *testing.T) {
@@ -43,5 +64,10 @@ func TestAssetsFS(t *testing.T) {
 	_, err := fs.Stat(fsys, "styles.css")
 	if err != nil {
 		t.Fatalf("failed to stat styles.css via AssetsFS: %v", err)
+	}
+
+	_, err = fs.Stat(fsys, "admin.css")
+	if err != nil {
+		t.Fatalf("failed to stat admin.css via AssetsFS: %v", err)
 	}
 }

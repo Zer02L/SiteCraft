@@ -31,7 +31,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Статьи и Новости блога</h2><p class=\"text-xs text-admin-content-muted mt-1\">Публикация экспертных материалов, отложенный постинг и управление контентом</p></div><div class=\"flex items-center gap-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"articleHoverPreview()\" @keydown.escape.window=\"closePreview()\"><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6\"><div><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Статьи и Новости блога</h2><p class=\"text-xs text-admin-content-muted mt-1\">Публикация экспертных материалов, отложенный постинг и управление контентом</p></div><div class=\"flex items-center gap-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -377,66 +377,92 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					return templ_7745c5c3_Err
 				}
 				for _, a := range articles {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<tr class=\"hover:bg-admin-surface-hover transition-colors\"><td class=\"py-3.5 px-4 font-semibold text-admin-content max-w-sm truncate\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<tr class=\"hover:bg-admin-surface-hover transition-colors group cursor-default\" @mouseenter.debounce.400ms=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var19 string
-					templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(a.Title)
+					templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("showPreview('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title))).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 176, Col: 20}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 176, Col: 116}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-accent\">/blog/")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "\" @mouseleave=\"hidePreview()\"><td class=\"py-3.5 px-4 font-semibold text-admin-content max-w-sm truncate\"><div class=\"flex items-center gap-2\"><span class=\"truncate\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var20 string
-					templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(a.Slug)
+					templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(a.Title)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 179, Col: 25}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 181, Col: 44}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</td><td class=\"py-3.5 px-4 text-admin-content-muted text-xs\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</span> <button type=\"button\" @click.stop=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var21 string
-					templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(a.FormatPublishedAt())
+					templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title))).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 182, Col: 34}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 184, Col: 107}
 					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</td><td class=\"py-3.5 px-4\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" title=\"Live Preview (Быстрый предпросмотр)\" class=\"opacity-0 group-hover:opacity-100 transition-opacity text-admin-content-subtle hover:text-admin-accent cursor-pointer p-0.5 rounded shrink-0\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg></button></div></td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-accent\">/blog/")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var22 string
+					templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(a.Slug)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 196, Col: 25}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</td><td class=\"py-3.5 px-4 text-admin-content-muted text-xs\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var23 string
+					templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(a.FormatPublishedAt())
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 199, Col: 34}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</td><td class=\"py-3.5 px-4\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					if a.IsScheduled() {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning/20\" title=\"Публикация запланирована на будущее\"><svg class=\"w-3 h-3 text-admin-warning animate-pulse\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>Запланирована</span></span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span class=\"inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning/20\" title=\"Публикация запланирована на будущее\"><svg class=\"w-3.5 h-3.5 text-admin-warning animate-pulse\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>Запланирована</span></span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else if a.IsPublished {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success/20\">Опубликована</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success/20\">Опубликована</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border\">Черновик / Скрыта</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<span class=\"inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border\">Черновик / Скрыта</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</td><td class=\"py-3.5 px-4 text-right space-x-2\"><!-- Быстрое переключение: Скрыть / Опубликовать в 1 клик -->")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</td><td class=\"py-3.5 px-4 text-right space-x-2\"><!-- Быстрое переключение: Скрыть / Опубликовать в 1 клик -->")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -444,45 +470,45 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 						templ_7745c5c3_Buffer := templ.GetBuffer()
 						var templ_7745c5c3_ElementScripts []templ.ComponentScript
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "<button hx-post=\"")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						var templ_7745c5c3_Var22 string
-						templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/toggle/" + a.ID).Resolve(ctx)
-						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 205, Col: 55}
-						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						var templ_7745c5c3_Var23 = []any{"text-xs font-medium cursor-pointer transition-colors",
-							templ.KV("text-admin-content-muted hover:text-admin-accent", a.IsPublished),
-							templ.KV("text-admin-success hover:underline", !a.IsPublished)}
-						templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var23...)
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<button hx-post=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 						var templ_7745c5c3_Var24 string
-						templ_7745c5c3_Var24, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var23).String()).Resolve(ctx)
+						templ_7745c5c3_Var24, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/toggle/" + a.ID).Resolve(ctx)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 1, Col: 0}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 222, Col: 55}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" title=\"")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						var templ_7745c5c3_Var25 string
-						templ_7745c5c3_Var25, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.EscapeString(func() string {
+						var templ_7745c5c3_Var25 = []any{"text-xs font-medium cursor-pointer transition-colors",
+							templ.KV("text-admin-content-muted hover:text-admin-accent", a.IsPublished),
+							templ.KV("text-admin-success hover:underline", !a.IsPublished)}
+						templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var25...)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						var templ_7745c5c3_Var26 string
+						templ_7745c5c3_Var26, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.CSSClasses(templ_7745c5c3_Var25).String()).Resolve(ctx)
+						if templ_7745c5c3_Err != nil {
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 1, Col: 0}
+						}
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var26)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" title=\"")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						var templ_7745c5c3_Var27 string
+						templ_7745c5c3_Var27, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.EscapeString(func() string {
 							if a.IsPublished {
 								return "Скрыть статью с сайта"
 							} else {
@@ -490,13 +516,13 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 							}
 						}())).Resolve(ctx)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 211, Col: 188}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 228, Col: 188}
 						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var25)
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "\"")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -510,95 +536,108 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						}
 						templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, ">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, ">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					if a.IsPublished {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<span>Скрыть</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<span>Скрыть</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					} else {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<span>Опубликовать</span>")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<span>Опубликовать</span>")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</button> <button hx-get=\"")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					var templ_7745c5c3_Var26 string
-					templ_7745c5c3_Var26, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/edit/" + a.ID).Resolve(ctx)
-					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 221, Col: 52}
-					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var26)
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-admin-accent hover:underline cursor-pointer\">Редактировать</button> ")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					if a.IsLive() {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "<a href=\"")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						var templ_7745c5c3_Var27 string
-						templ_7745c5c3_Var27, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("/blog/" + a.Slug)).ResolveURL(ctx)
-						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 230, Col: 54}
-						}
-						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\" target=\"_blank\" class=\"text-xs text-admin-content-muted hover:text-admin-content\">Просмотр</a>")
-						if templ_7745c5c3_Err != nil {
-							return templ_7745c5c3_Err
-						}
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "<!-- Кнопка удаления в корзину --><button hx-post=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</button> <button hx-get=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var28 string
-					templ_7745c5c3_Var28, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/trash/" + a.ID).Resolve(ctx)
+					templ_7745c5c3_Var28, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/edit/" + a.ID).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 237, Col: 54}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 238, Col: 52}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var28)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"text-xs text-admin-accent hover:underline cursor-pointer\">Редактировать</button> <button type=\"button\" @click.stop=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var29 string
-					templ_7745c5c3_Var29, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Переместить статью «" + a.Title + "» в корзину?").Resolve(ctx)
+					templ_7745c5c3_Var29, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title))).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 240, Col: 101}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 248, Col: 106}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var29)
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "\" title=\"Переместить в корзину\" class=\"text-xs text-admin-danger hover:underline cursor-pointer\">В корзину</button></td></tr>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "\" class=\"text-xs text-admin-content-muted hover:text-admin-accent cursor-pointer transition-colors\" title=\"Открыть Live Preview\">Превью</button> ")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					if a.IsLive() {
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<a href=\"")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						var templ_7745c5c3_Var30 string
+						templ_7745c5c3_Var30, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("/blog/" + a.Slug)).ResolveURL(ctx)
+						if templ_7745c5c3_Err != nil {
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 256, Col: 54}
+						}
+						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var30)
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "\" target=\"_blank\" class=\"text-xs text-admin-content-muted hover:text-admin-content\">Вкладка ↗</a>")
+						if templ_7745c5c3_Err != nil {
+							return templ_7745c5c3_Err
+						}
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<!-- Кнопка удаления в корзину --><button hx-post=\"")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var31 string
+					templ_7745c5c3_Var31, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/trash/" + a.ID).Resolve(ctx)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 263, Col: 54}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var31)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-confirm=\"")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var32 string
+					templ_7745c5c3_Var32, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Переместить статью «" + a.Title + "» в корзину?").Resolve(ctx)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 266, Col: 101}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "\" title=\"Переместить в корзину\" class=\"text-xs text-admin-danger hover:underline cursor-pointer\">В корзину</button></td></tr>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "</tbody></table></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</tbody></table></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<!-- Live Hover Preview Singleton Container (Фича 5: UX-фокус и Live Preview) --><div x-show=\"isOpen\" x-cloak @mouseenter=\"keepPreview()\" @mouseleave=\"hidePreview()\" class=\"hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-200 pointer-events-auto\"><!-- Preview Header / Browser Chrome --><div class=\"px-4 py-3 bg-admin-surface-muted border-b border-admin-border flex items-center justify-between shrink-0 select-none\"><div class=\"flex items-center gap-2 min-w-0\"><!-- Window traffic lights --><div class=\"flex items-center gap-1.5 mr-1.5 shrink-0\"><span class=\"w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block\"></span></div><div class=\"min-w-0\"><div class=\"text-xs font-semibold text-admin-content truncate\" x-text=\"previewTitle || 'Превью публикации'\"></div><div class=\"text-[10px] font-mono text-admin-accent truncate\" x-text=\"previewUrlDisplay\"></div></div></div><div class=\"flex items-center gap-1 shrink-0 ml-2\"><!-- Open in new tab --><a :href=\"previewUrl\" target=\"_blank\" title=\"Открыть в новой вкладке\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-content hover:bg-admin-surface transition-colors\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a><!-- Close button --><button type=\"button\" @click=\"closePreview()\" title=\"Закрыть превью (Esc)\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div><!-- Preview Content Area: Loading Skeleton + Singleton Iframe --><div class=\"relative flex-1 w-full bg-admin-bg overflow-hidden\"><!-- Skeleton / Loader --><div x-show=\"isLoading\" class=\"absolute inset-0 flex flex-col items-center justify-center bg-admin-surface/80 backdrop-blur-xs z-10 transition-opacity\"><div class=\"w-7 h-7 border-2 border-admin-accent border-t-transparent rounded-full animate-spin mb-2\"></div><p class=\"text-[11px] font-mono text-admin-content-muted\">Загрузка превью...</p></div><!-- Single Iframe in DOM --><template x-if=\"previewUrl\"><iframe :src=\"previewUrl\" @load=\"isLoading = false\" class=\"w-full h-full border-0 bg-white\" loading=\"lazy\"></iframe></template></div></div><!-- Touch screen disable safeguard --><style>\n\t\t\t@media not all and (hover: hover) and (pointer: fine) {\n\t\t\t\t.hover-preview-singleton {\n\t\t\t\t\tdisplay: none !important;\n\t\t\t\t}\n\t\t\t}\n\t\t</style><!-- Script for Hover Preview controller --><script>\n\t\t\tfunction articleHoverPreview() {\n\t\t\t\treturn {\n\t\t\t\t\tpreviewUrl: '',\n\t\t\t\t\tpreviewUrlDisplay: '',\n\t\t\t\t\tpreviewTitle: '',\n\t\t\t\t\tisOpen: false,\n\t\t\t\t\tisLoading: false,\n\n\t\t\t\t\tisFinePointer() {\n\t\t\t\t\t\treturn window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;\n\t\t\t\t\t},\n\n\t\t\t\t\tshowPreview(url, title) {\n\t\t\t\t\t\tif (!this.isFinePointer() || !url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\topenPreviewNow(url, title) {\n\t\t\t\t\t\tif (!url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\thidePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t},\n\n\t\t\t\t\tkeepPreview() {\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\tclosePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t}\n\t\t\t\t};\n\t\t\t}\n\t\t</script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

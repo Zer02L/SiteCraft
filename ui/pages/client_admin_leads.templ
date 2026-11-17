@@ -3,6 +3,7 @@ package pages
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"sitecraft/ui/pages/admin_leads"
 )
 
 templ ClientLeadsTab(leads []models.Lead) {
@@ -40,80 +41,8 @@ templ ClientLeadsTab(leads []models.Lead) {
 		}"
 		class="space-y-6"
 	>
-		<!-- 1. Верхняя панель заголовка и действий -->
-		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-			<div>
-				<div class="flex items-center gap-3 flex-wrap">
-					<h2 class="text-xl font-bold text-admin-content tracking-tight">Входящие заявки</h2>
-					if newCount > 0 {
-						<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-admin-accent-muted text-admin-accent border border-admin-accent-border">
-							<span class="w-1.5 h-1.5 rounded-full bg-admin-accent animate-pulse"></span>
-							<span>Новых: { fmt.Sprintf("%d", newCount) }</span>
-						</span>
-					}
-					if inProgressCount > 0 {
-						<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-admin-warning-muted text-admin-warning border border-admin-warning/25">
-							<span class="w-1.5 h-1.5 rounded-full bg-admin-warning"></span>
-							<span>В обработке: { fmt.Sprintf("%d", inProgressCount) }</span>
-						</span>
-					}
-				</div>
-				<p class="text-xs text-admin-content-muted mt-1">Клиентские обращения с форм захвата, онлайн-записи и витрины услуг</p>
-			</div>
-			<div class="flex items-center gap-2.5 flex-wrap">
-				<button
-					type="button"
-					hx-get="/client/tab/leads"
-					hx-target="#admin-tab-content"
-					hx-swap="innerHTML"
-					class="px-3 py-2 rounded-xl bg-admin-surface hover:bg-admin-surface-muted text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 border border-admin-border shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
-					title="Обновить таблицу"
-				>
-					<svg class="w-3.5 h-3.5 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-					</svg>
-					<span>Обновить</span>
-				</button>
-				<a
-					href="/client/export/leads.csv"
-					class="px-3.5 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-xs font-semibold text-white transition-colors flex items-center gap-2 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
-				>
-					<svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-					</svg>
-					<span>Экспорт CSV</span>
-				</a>
-			</div>
-		</div>
-
-		<!-- 2. Сводные метрики (KPI карточки Workbench) -->
-		<div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-			<div class="bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs">
-				<div class="text-[10px] font-mono uppercase tracking-wider text-admin-content-muted">Всего заявок</div>
-				<div class="text-2xl lg:text-3xl font-mono font-semibold text-admin-content mt-1.5">{ fmt.Sprintf("%d", len(leads)) }</div>
-				<div class="text-[11px] text-admin-content-subtle mt-1">за все время</div>
-			</div>
-			<div class="bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs">
-				<div class="flex items-center justify-between">
-					<span class="text-[10px] font-mono uppercase tracking-wider text-admin-accent">Новые</span>
-					if newCount > 0 {
-						<span class="w-2 h-2 rounded-full bg-admin-accent animate-ping"></span>
-					}
-				</div>
-				<div class="text-2xl lg:text-3xl font-mono font-semibold text-admin-accent mt-1.5">{ fmt.Sprintf("%d", newCount) }</div>
-				<div class="text-[11px] text-admin-content-subtle mt-1">требуют ответа</div>
-			</div>
-			<div class="bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs">
-				<div class="text-[10px] font-mono uppercase tracking-wider text-admin-warning">В обработке</div>
-				<div class="text-2xl lg:text-3xl font-mono font-semibold text-admin-warning mt-1.5">{ fmt.Sprintf("%d", inProgressCount) }</div>
-				<div class="text-[11px] text-admin-content-subtle mt-1">в работе у менеджера</div>
-			</div>
-			<div class="bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs">
-				<div class="text-[10px] font-mono uppercase tracking-wider text-admin-success">Выполнено</div>
-				<div class="text-2xl lg:text-3xl font-mono font-semibold text-admin-success mt-1.5">{ fmt.Sprintf("%d", doneCount) }</div>
-				<div class="text-[11px] text-admin-content-subtle mt-1">успешно закрыты</div>
-			</div>
-		</div>
+		<!-- 1. Верхняя панель заголовка, KPI метрики, поиск и фильтры по статусам -->
+		@admin_leads.LeadsToolbar(leads, newCount, inProgressCount, doneCount)
 
 		if len(leads) == 0 {
 			<div class="bg-admin-surface border border-admin-border rounded-2xl p-12 text-center shadow-xs">
@@ -126,70 +55,7 @@ templ ClientLeadsTab(leads []models.Lead) {
 				<p class="text-xs text-admin-content-muted max-w-sm mx-auto">Новые заявки с форм на сайте будут мгновенно отображаться здесь в реальном времени.</p>
 			</div>
 		} else {
-			<!-- 3. Панель быстрого поиска и фильтров по статусам -->
-			<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-admin-surface border border-admin-border rounded-2xl p-2.5 shadow-2xs">
-				<div class="relative flex-1 max-w-md">
-					<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-admin-content-muted">
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-						</svg>
-					</div>
-					<input
-						type="text"
-						x-model="search"
-						placeholder="Поиск по имени, номеру телефона, деталям..."
-						class="w-full bg-admin-surface-muted border border-admin-border text-xs text-admin-content placeholder:text-admin-content-subtle rounded-xl pl-9 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-colors"
-					/>
-					<button
-						type="button"
-						x-show="search.length > 0"
-						@click="search = ''"
-						class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-admin-content-muted hover:text-admin-content"
-					>
-						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-						</svg>
-					</button>
-				</div>
-
-				<!-- Табы статусов -->
-				<div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs">
-					<button
-						type="button"
-						@click="filterStatus = 'all'"
-						:class="filterStatus === 'all' ? 'bg-admin-surface-active text-admin-content font-semibold border-admin-border shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'"
-						class="px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]"
-					>
-						Все ({ fmt.Sprintf("%d", len(leads)) })
-					</button>
-					<button
-						type="button"
-						@click="filterStatus = 'новая'"
-						:class="filterStatus === 'новая' ? 'bg-admin-accent-muted text-admin-accent font-semibold border-admin-accent-border shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'"
-						class="px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]"
-					>
-						Новые ({ fmt.Sprintf("%d", newCount) })
-					</button>
-					<button
-						type="button"
-						@click="filterStatus = 'в обработке'"
-						:class="filterStatus === 'в обработке' ? 'bg-admin-warning-muted text-admin-warning font-semibold border-admin-warning/30 shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'"
-						class="px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]"
-					>
-						В обработке ({ fmt.Sprintf("%d", inProgressCount) })
-					</button>
-					<button
-						type="button"
-						@click="filterStatus = 'выполнена'"
-						:class="filterStatus === 'выполнена' ? 'bg-admin-success-muted text-admin-success font-semibold border-admin-success/30 shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'"
-						class="px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]"
-					>
-						Выполнены ({ fmt.Sprintf("%d", doneCount) })
-					</button>
-				</div>
-			</div>
-
-			<!-- 4. Таблица заявок -->
+			<!-- 2. Таблица заявок -->
 			<div class="bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-2xs">
 				<div class="overflow-x-auto">
 					<table class="w-full text-left text-xs sm:text-sm">
@@ -212,9 +78,9 @@ templ ClientLeadsTab(leads []models.Lead) {
 				</div>
 			</div>
 
-			<!-- 5. Выдвижные шторки (Detail Drawers) для детального просмотра заявок -->
+			<!-- 3. Выдвижные шторки (Detail Drawers) для детального просмотра заявок -->
 			for _, lead := range leads {
-				@LeadDetailDrawer(lead)
+				@admin_leads.LeadDetailDrawer(lead)
 			}
 		}
 	</div>
@@ -455,188 +321,7 @@ templ LeadDetailsCell(lead models.Lead) {
 }
 
 templ LeadDetailDrawer(lead models.Lead) {
-	<div
-		x-show={ fmt.Sprintf("activeLeadID === '%s'", lead.ID) }
-		x-cloak
-		class="relative z-50"
-		role="dialog"
-		aria-modal="true"
-	>
-		<!-- Backdrop -->
-		<div
-			x-show={ fmt.Sprintf("activeLeadID === '%s'", lead.ID) }
-			x-transition:enter="ease-out duration-300"
-			x-transition:enter-start="opacity-0"
-			x-transition:enter-end="opacity-100"
-			x-transition:leave="ease-in duration-200"
-			x-transition:leave-start="opacity-100"
-			x-transition:leave-end="opacity-0"
-			@click="activeLeadID = null"
-			class="fixed inset-0 bg-black/60 backdrop-blur-2xs transition-opacity"
-		></div>
-
-		<div class="fixed inset-0 overflow-hidden">
-			<div class="absolute inset-0 overflow-hidden">
-				<div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-					<div
-						x-show={ fmt.Sprintf("activeLeadID === '%s'", lead.ID) }
-						x-transition:enter="transform transition ease-in-out duration-300"
-						x-transition:enter-start="translate-x-full"
-						x-transition:enter-end="translate-x-0"
-						x-transition:leave="transform transition ease-in-out duration-200"
-						x-transition:leave-start="translate-x-0"
-						x-transition:leave-end="translate-x-full"
-						class="pointer-events-auto w-screen max-w-md bg-admin-surface border-l border-admin-border shadow-2xl flex flex-col"
-					>
-						<!-- Drawer Header -->
-						<div class="p-6 border-b border-admin-border flex items-center justify-between">
-							<div class="flex items-center gap-3">
-								<div class="w-10 h-10 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent font-bold flex items-center justify-center text-sm font-mono">
-									{ getInitials(lead.Name) }
-								</div>
-								<div>
-									<h3 class="text-base font-bold text-admin-content leading-tight">{ lead.Name }</h3>
-									<div class="text-xs text-admin-content-muted mt-0.5 font-mono">Карточка обращения</div>
-								</div>
-							</div>
-							<button
-								type="button"
-								@click="activeLeadID = null"
-								class="p-2 rounded-xl text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer"
-								title="Закрыть"
-							>
-								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-								</svg>
-							</button>
-						</div>
-
-						<!-- Drawer Body -->
-						<div class="flex-1 overflow-y-auto p-6 space-y-5">
-							<!-- 1. Быстрые контакты -->
-							<div class="bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-3">
-								<div class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted">Контакты клиента</div>
-								<div class="flex items-center justify-between">
-									<span class="text-sm font-mono text-admin-content font-medium">{ formatPhoneMask(lead.Phone) }</span>
-									<div class="flex items-center gap-1.5">
-										<button
-											type="button"
-											@click={ fmt.Sprintf("copyText('%s', '%s')", lead.Phone, lead.ID) }
-											class="px-2 py-1 rounded-lg bg-admin-surface hover:bg-admin-surface-muted text-xs text-admin-content-muted hover:text-admin-content border border-admin-border transition-colors cursor-pointer"
-										>
-											<span x-text={ fmt.Sprintf("copiedPhone === '%s' ? 'Скопировано!' : 'Копировать'", lead.ID) }>Копировать</span>
-										</button>
-										<a
-											href={ templ.SafeURL("tel:" + lead.Phone) }
-											class="px-2.5 py-1 rounded-lg bg-admin-accent-muted hover:bg-admin-accent/20 text-xs text-admin-accent font-semibold border border-admin-accent-border transition-colors"
-										>
-											Вызов
-										</a>
-									</div>
-								</div>
-								if lead.Email != "" {
-									<div class="flex items-center justify-between pt-2 border-t border-admin-border">
-										<span class="text-xs text-admin-content-muted">{ lead.Email }</span>
-										<a
-											href={ templ.SafeURL("mailto:" + lead.Email) }
-											class="text-xs text-admin-accent hover:underline"
-										>
-											Написать email
-										</a>
-									</div>
-								}
-								if formatWhatsAppPhone(lead.Phone) != "" {
-									<a
-										href={ templ.SafeURL("https://wa.me/" + formatWhatsAppPhone(lead.Phone)) }
-										target="_blank"
-										rel="noopener noreferrer"
-										class="w-full py-2 px-3 rounded-xl bg-admin-success-muted hover:bg-admin-success/20 text-admin-success text-xs font-semibold flex items-center justify-center gap-2 border border-admin-success/20 transition-colors"
-									>
-										<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-											<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"></path>
-										</svg>
-										<span>Открыть чат WhatsApp</span>
-									</a>
-								}
-							</div>
-
-							<!-- 2. Запись / Желаемое время -->
-							if lead.BookingDate != "" {
-								<div class="bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-2">
-									<div class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted">Назначенная дата визита</div>
-									<div class="flex items-center gap-2 text-admin-content font-medium">
-										<svg class="w-4 h-4 text-admin-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-										</svg>
-										<span>{ lead.BookingDate }</span>
-										if lead.BookingTime != "" {
-											<span class="text-xs text-admin-accent font-mono ml-1">в { lead.BookingTime }</span>
-										}
-									</div>
-								</div>
-							}
-
-							<!-- 3. Детали и комментарий -->
-							<div class="bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-3">
-								<div class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted">Содержание обращения</div>
-								if lead.Source != "" {
-									<div class="flex items-center gap-2">
-										<span class="text-xs text-admin-content-muted">Источник:</span>
-										<span class="px-2 py-0.5 rounded-md bg-admin-surface text-admin-content text-xs border border-admin-border font-mono">{ lead.Source }</span>
-									</div>
-								}
-								if lead.Payload != nil {
-									if comment, ok := lead.Payload["comment"].(string); ok && comment != "" {
-										<div class="pt-2 border-t border-admin-border">
-											<div class="text-xs text-admin-content-muted mb-1">Комментарий клиента:</div>
-											<div class="text-xs text-admin-content bg-admin-surface p-3 rounded-xl border border-admin-border whitespace-pre-wrap leading-relaxed">
-												{ comment }
-											</div>
-										</div>
-									}
-									if qMap, ok := lead.Payload["quiz_summary"].(map[string]interface{}); ok {
-										<div class="pt-2 border-t border-admin-border">
-											<div class="text-xs text-admin-content-muted mb-1">Расчет квиза:</div>
-											<div class="text-xs text-admin-warning font-semibold bg-admin-warning-muted p-2.5 rounded-xl border border-admin-warning/20 font-mono">
-												Ориентировочная стоимость: { fmt.Sprintf("%v", qMap["estimated_price"]) } руб.
-											</div>
-										</div>
-									}
-								}
-							</div>
-
-							<!-- 4. Маркетинговые атрибуты -->
-							if lead.Payload != nil {
-								if utmSource, ok := lead.Payload["utm_source"].(string); ok && utmSource != "" {
-									<div class="bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-2">
-										<div class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted">Маркетинговые метки</div>
-										<div class="text-xs space-y-1 font-mono">
-											<div class="text-admin-content">utm_source: <span class="text-admin-accent">{ utmSource }</span></div>
-											if utmCampaign, ok := lead.Payload["utm_campaign"].(string); ok && utmCampaign != "" {
-												<div class="text-admin-content">utm_campaign: <span class="text-purple-400">{ utmCampaign }</span></div>
-											}
-										</div>
-									</div>
-								}
-							}
-						</div>
-
-						<!-- Drawer Footer -->
-						<div class="p-4 border-t border-admin-border bg-admin-surface-muted/30 flex items-center justify-between">
-							<div class="text-[11px] text-admin-content-muted font-mono">ID: { lead.ID }</div>
-							<button
-								type="button"
-								@click="activeLeadID = null"
-								class="px-4 py-2 rounded-xl bg-admin-surface hover:bg-admin-surface-muted text-xs font-semibold text-admin-content border border-admin-border transition-colors cursor-pointer"
-							>
-								Закрыть
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	@admin_leads.LeadDetailDrawer(lead)
 }
 
 templ LeadsBadges(newCount int, inProgressCount int, totalCount int) {

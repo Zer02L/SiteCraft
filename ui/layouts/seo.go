@@ -111,6 +111,24 @@ func RenderCustomTokens(settings models.SiteSettings) templ.Component {
 			css += "--color-surface: " + bg + "; "
 			css += "--color-surface-muted: color-mix(in srgb, var(--color-primary, #000) 4%, " + bg + "); "
 		}
+		switch settings.GetDesignFlavor() {
+		case "sharp", "brutalist":
+			css += "--radius-card: 0px; --radius-card-sm: 0px; --radius-btn: 0px; --radius-input: 0px; --radius-badge: 0px; "
+		case "corporate":
+			css += "--radius-card: 0.5rem; --radius-card-sm: 0.375rem; --radius-btn: 0.375rem; --radius-input: 0.375rem; --radius-badge: 9999px; "
+		case "soft":
+			css += "--radius-card: 1.5rem; --radius-card-sm: 1rem; --radius-btn: 0.75rem; --radius-input: 0.75rem; --radius-badge: 9999px; "
+		}
+		switch settings.GetFontPair() {
+		case "editorial":
+			css += "--font-serif-title: \"Merriweather\", Georgia, serif; "
+		case "condensed":
+			css += "--font-serif-title: \"Bebas Neue\", \"Barlow Condensed\", Impact, sans-serif; "
+		case "tech":
+			css += "--font-serif-title: \"Plus Jakarta Sans\", \"Inter\", sans-serif; "
+		case "modern":
+			css += "--font-serif-title: \"Inter\", system-ui, sans-serif; "
+		}
 		css += "}</style>\n"
 		_, err := io.WriteString(w, css)
 		return err

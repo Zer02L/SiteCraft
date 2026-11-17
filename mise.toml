@@ -28,6 +28,7 @@ description = "Сгенерировать Templ шаблоны и скомпил
 run = """
 heavy -- templ generate
 heavy -- tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify
+heavy -- tailwindcss -i ./ui/assets/admin_input.css -o ./ui/assets/admin.css --minify
 """
 
 [tasks.dev]
@@ -116,7 +117,7 @@ echo '==> All Quality Gates (Levels 1 + 2 + 3) passed successfully.'
 [tasks."check:clean"]
 description = "Проверить отсутствие незакоммиченных сгенерированных файлов"
 depends = ["check"]
-run = "git diff --exit-code ui/assets/styles.css ui/*_templ.go"
+run = "git diff --exit-code ui/assets/styles.css ui/assets/admin.css ui/*_templ.go"
 
 # --- Container Tasks (Podman Rootless OCI) ---
 
