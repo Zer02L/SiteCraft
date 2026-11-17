@@ -12,8 +12,12 @@
 | Задача | Где лежит код | Основные файлы | Команда проверки |
 |---|---|---|---|
 | **Добавить UI-блок / секцию** | `ui/sections/`, `ui/components/` | `ui/registry/registry.go`, `ui/pages/` | `make check` |
-| **Добавить HTTP-маршрут / API** | `internal/handlers/`, `internal/server/` | `internal/server/server.go` | `make test` |
-| **Изменить стили / токены темы** | `ui/assets/` | `ui/assets/input.css` | `make generate` |
+| **Добавить HTTP-маршрут / API** | `internal/handlers/`, `internal/server/` | `internal/server/server.go`, `internal/server/admin_*.go`, `internal/server/agent_api.go` | `make test` |
+| **Изменить стили / токены темы** | `ui/assets/` | `ui/assets/input.css`, `ui/assets/admin_input.css`, `ui/assets/css/tokens.css` | `make generate` |
+| **Переключить пресет темы** | `internal/theme/` | `internal/theme/presets.go`, `ui/assets/css/tokens.css` | `make test` |
+| **Импорт с WordPress / редиректы** | `internal/importer/`, `internal/models/` | `internal/importer/wordpress.go`, `sql/queries/redirects.sql` | `make test` |
+| **Чеклист готовности сайта** | `internal/checker/` | `internal/checker/checker.go`, `ui/pages/client_admin_checklist.templ` | `make test` |
+| **Веб-шрифты (Zero-CDN сабсеттинг)**| `ui/assets/fonts/` | `ui/assets/css/fonts.css`, `ui/assets/fonts/*.woff2` | `make check` |
 | **Добавить таблицу БД / миграцию**| `sql/migrations/` | `sql/migrations/sqlite/*.sql`, `sql/migrations/postgres/*.sql` | `sqlc generate && make test` |
 | **Добавить / изменить SQL-запрос** | `sql/queries/` | `sql/queries/*.sql`, `internal/db/` | `sqlc generate && make test` |
 | **Изменить бизнес-модель данных** | `internal/models/` | `internal/models/*.go` | `make test` |
@@ -94,7 +98,7 @@ flowchart TD
         subgraph RenderingLayer["ui/"]
             Registry["Block Registry\n(ui/registry/registry.go)"]
             TemplEngine["Templ SSR\n(ui/pages/, ui/sections/)"]
-            Tailwind["Tailwind v4 CSS\n(ui/assets/styles.css)"]
+            Tailwind["Tailwind v4 CSS\n(ui/assets/styles.css & admin.css)"]
         end
 
         subgraph StorageLayer["internal/db, internal/data & SQLite/Postgres"]
@@ -127,30 +131,36 @@ flowchart TD
 * `sqlc.yaml` — Конфигурация генератора sqlc (`engine: sqlite`, `emit_interface: true`, пакет `internal/db`).
 * `AGENTS.md` — Иерархия DOX-контрактов для ИИ-агентов ([AGENTS.md](AGENTS.md), [internal/AGENTS.md](internal/AGENTS.md), [ui/AGENTS.md](ui/AGENTS.md), [deploy/AGENTS.md](deploy/AGENTS.md), [presets/AGENTS.md](presets/AGENTS.md)).
 * `BUSINESS_MODULES.md` — Детальные спецификации 20 коммерческих модулей.
-* `FLEET_ARCHITECTURE.md` — Спецификация мультисайтового оркестратора и скрипта `fleet.sh`.
+* `FLEET_ARCHITECTURE.md` — Спецификация мультисайтового оркестратора `fleet.sh` и модулей `scripts/fleet/`.
 * `internal/` — Бэкенд-ядро:
+  * `ai/` — Мульти-провайдерный AI-движок (OpenAI, Anthropic Claude, Gemini, DeepSeek, Yandex GPT, GigaChat, Custom), Universal MCP-сервер, OpenAPI 3.1 схема агента.
   * `auth/` — Сессии SCS, хэширование паролей bcrypt, middleware защиты `/admin`.
   * `cache/` — Потокобезопасный in-memory кэш (`sync.RWMutex`).
-  * `data/` — Пресеты ниш (`preset.go`) и доменный репозиторий `sql_repository.go`.
+  * `checker/` — Движок проверки готовности сайта к запуску (Setup Checklist: контакты, оплата, 152-ФЗ, метрика, Telegram-бот, SSL).
+  * `data/` — Пресеты ниш (`preset.go`) и модульный доменный репозиторий (`repository.go`, `repo_settings.go`, `repo_blocks.go`, `repo_articles.go`, `repo_services.go`, `repo_leads.go`, `repo_reviews.go`, `repo_booking.go`, `repo_redirects.go`).
   * `db/` — Драйвер SQLite/Postgres, запуск goose-миграций и sqlc-интерфейс `Querier`.
   * `events/` — Внутрипроцессная шина событий (`bus.go`, `events.go`).
   * `exporter/` — Статический генератор (SSG HTML/CSS).
   * `handlers/` — HTTP-хэндлеры Chi (web, leads, админка `/admin`, чат, корзина, трекер заказов, платежи, TMA).
   * `i18n/` — Интернационализация (словари RU/EN, плюрализация, middleware).
-  * `media/` — Пайплайн обработки картинок (миниатюры, WebP/AVIF, кэширование).
-  * `models/` — Доменные Go-структуры (`Lead`, `Service`, `Article`, `ServiceOrder`, `ReviewItem`, `ThemeConfig`).
+  * `importer/` — WXR/XML WordPress-импортер: парсер категорий, статей, страниц и трансляция ссылок в 301-редиректы.
+  * `media/` — Пайплайн обработки картинок (миниатюры, WebP/AVIF, кэширование, согласование Accept: image/webp).
+  * `models/` — Доменные Go-структуры (`Lead`, `Service`, `Article`, `ServiceOrder`, `ReviewItem`, `ThemeConfig`, `Redirect`).
   * `notifications/` — Telegram-бот нотификатор и CRM вебхуки.
-  * `server/` — Корневой сервер Chi, стек middleware, маршрутизация, модульный реестр панели управления (`admin_registry.go`) и graceful shutdown.
+  * `server/` — Корневой сервер Chi, стек middleware (включая перехват 301-редиректов), маршрутизация, модульный реестр панели управления (`admin_registry.go`), изолированные доменные обработчики админки (`admin_routes.go`, `admin_auth.go`, `admin_blocks.go`, `admin_articles.go`, `admin_theme.go`, `admin_leads.go`, `admin_importer.go`, `admin_ai.go`, `admin_media.go`, `admin_settings.go`, `admin_reviews.go`, `admin.go`), MCP AI Agent API (`agent_api.go`) и graceful shutdown.
+  * `theme/` — Глобальные пресеты визуального стиля (Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold) со сменой в 1 клик.
 * `ui/` — Фронтенд-слой:
-  * `assets/` — CSS-first Tailwind v4 конфиг (`input.css`) и скомпилированный бандл (`styles.css`).
+  * `assets/` — CSS-first Tailwind v4 конфиг: публичная витрина (`input.css` -> `styles.css`) и изолированная панель управления (`admin_input.css` -> `admin.css`), дизайн-токены (`tokens.css`), клиентские JS-модули (`admin-blocks-editor.js`, `admin-article-editor.js`).
+  * `assets/fonts/` — Сабсеттированные WOFF2-шрифты (Zero-CDN: Inter, Bebas Neue, Merriweather 39 КБ).
   * `components/base/` — Zero-cost CVA UI-примитивы (`Button`, `Badge`, `Card`).
   * `components/cinematic/` — 31 кинематографический UI-модуль без GSAP.
-  * `layouts/` — Базовые HTML-шаблоны и SEO-генерация.
-  * `pages/` — Полноэкранные страницы лендинга, блога, трекера, магазина, кастомной админки (`client_admin_*.templ`).
+  * `layouts/` — Базовые HTML-шаблоны и SEO-генерация (изоляция Quill от публичных страниц).
+  * `pages/` — Полноэкранные страницы лендинга, блога, трекера, магазина, кастомной админки (`client_admin_*.templ`, чеклист, импортер) и декомпозированные компоненты (`admin_blocks/`, `admin_articles/`, `admin_leads/`).
   * `registry/` — Реестр и фабрика динамических блоков (`registry.go`, `helpers.go`).
   * `sections/` — Секции лендинга (hero, booking, services, faq, quiz, etc.).
 * `presets/` — 13 готовых конфигураций ниш SMB в формате JSON.
-* `deploy/` — Скрипты развертывания, systemd-юниты, Caddy/Nginx конфиги, watchdog-мониторинг.
+* `fleet.sh` & `scripts/fleet/` — Модульный CLI-оркестратор мульти-инстансов (`common.sh`, `cmd_instance.sh`, `cmd_snapshot.sh`, `cmd_podman.sh`, `cmd_update.sh`).
+* `deploy/` — Скрипты развертывания, systemd-юниты (`sitecraft.service`, `sitecraft@.service`), Rootless Podman спецификации, Caddy/Nginx конфиги, watchdog-мониторинг.
 
 ---
 
@@ -173,18 +183,20 @@ flowchart TD
 | `reviews` | Проверенные отзывы клиентов с фото (Verified UGC) | `id`, `author_name`, `rating`, `comment`, `is_published`, `photos` |
 | `branches` | География: филиалы, адреса, координаты для карт | `id`, `name`, `city`, `address`, `lat`, `lng`, `working_hours` |
 | `vacancies` | HR-портал: открытые вакансии и требования | `id`, `title`, `department`, `salary`, `requirements`, `is_open` |
+| `redirects` | Таблица 301-редиректов со старых URL (WP) | `id`, `source_path`, `target_path`, `status_code`, `created_at` |
 | `sessions` | Сессии авторизации администраторов (SCS Store) | `token`, `data`, `expiry` |
 
 ---
 
 ## 5. Модели данных Go и безопасность
 
-Доменные структуры расположены в каталоге `internal/models/` и слое `internal/data/sql_repository.go`:
+Доменные структуры расположены в каталоге `internal/models/` и модульном слое `internal/data/`:
 * `Lead` (`lead.go`) — Валидация телефонов по E.164, Honeypot-поле, санитизация через `bluemonday.UGCPolicy()`.
 * `Service` (`service.go`) — Каталог услуг, складские остатки, длительность для слотов записи.
 * `Article` (`article.go`) — Блог, время чтения, генерация OpenGraph / JSON-LD метаданных.
 * `ServiceOrder` (`b2b.go`) — Трекинг заказа, история этапов, расчет стоимости с НДС.
 * `ThemeConfig` (`theme.go`) — Палитра, радиус скруглений, темный режим, сезонные темы.
+* `Redirect` (`redirect.go`) — Правило 301/302 перенаправления URL.
 
 ---
 
@@ -204,6 +216,12 @@ flowchart TD
 | `/admin/leads` | `GET/POST`| Управление заявками (фильтрация, статусы, экспорт)| HTML / HTMX свопы |
 | `/admin/media` | `GET/POST`| Медиатека (drag-and-drop загрузка, ресайз) | HTML / HTMX свопы |
 | `/admin/settings` | `GET/POST`| Управление брендом, контактами, SEO и 152-ФЗ | HTML / HTMX свопы |
+| `/admin/checklist` | `GET` | Виджет аудита готовности сайта к запуску | HTML (HTMX фрагмент) |
+| `/admin/theme/preset` | `POST` | Применение глобального пресета стиля темы | JSON / Редирект |
+| `/admin/importer` | `GET` | Страница миграции контента с WordPress (WXR/XML)| HTML (Templ SSR) |
+| `/admin/importer/upload` | `POST` | Загрузка и фоновый импорт XML-файла WordPress | JSON / HTMX статус |
+| `/admin/importer/status` | `GET` | Текущий статус и прогресс импорта WXR | JSON / HTMX фрагмент |
+| `/*` (Middleware) | Любой | Автоматический 301-редирект по таблице `redirects` | HTTP 301 Moved Permanently |
 | `/media/{size}/{filename}` | `GET` | Раздача оптимизированных миниатюр (thumb, sm, md, lg)| Бинарный WebP/JPEG/PNG |
 | `/api/leads` | `POST` | Прием заявки с валидацией и антиспамом | HTMX фрагмент подтверждения |
 | `/api/slots` | `GET` | Доступные слоты бронирования по дате/мастеру | HTMX HTML-фрагмент |
@@ -253,7 +271,7 @@ flowchart LR
 
 * Реализация: `internal/cache/cache.go`.
 * Блокировки: `sync.RWMutex` (параллельное чтение без блокировок, эксклюзивная запись).
-* Инвалидация при мутациях: методы репозитория (`internal/data/sql_repository.go`) и хэндлеры админки автоматически сбрасывают ключи кэша (`site_data`, `articles_list`, `services_list`) в течение < 0.1 мс при сохранении изменений.
+* Инвалидация при мутациях: методы репозитория (`internal/data/`) и хэндлеры админки автоматически сбрасывают ключи кэша (`site_data`, `articles_list`, `services_list`) в течение < 0.1 мс при сохранении изменений.
 
 ---
 
@@ -276,7 +294,7 @@ flowchart LR
 
 ---
 
-## 10. CSS-архитектура и Dynamic Theming Engine
+## 10. CSS-архитектура, Dynamic Theming Engine и Веб-шрифты
 
 1. **Tailwind CSS v4 (Oxide):** Конфиг `ui/assets/input.css` построен на `@theme` директивах без `tailwind.config.js`. Компилируется в standalone-бинарнике через нативный CLI (`make generate`).
 2. **Zero-Cost Go Variants (CVA):** Типобезопасные генераторы классов для компонентов (`ui/components/base/`):
@@ -284,7 +302,12 @@ flowchart LR
    @base.Button(base.ButtonProps{Variant: base.BtnPrimary, Size: base.BtnMd}) { Текст }
    ```
 3. **Data-Variants:** Использование нативных `@custom-variant` (`data-open:`, `data-active:`), управляемых через Alpine.js без пересчета классов в JS.
-4. **Панель доступности (ГОСТ Р 52872-2019):** Модуль для слабовидящих (`ui/components/a11y_bar.templ`) на нативном Vanilla JS: контрастность, изменение размера шрифта, выключение анимаций.
+4. **Theme Presets Switcher (`internal/theme/`):** Мгновенная трансформация стиля всего сайта между 4 предустановленными темами (*Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold*) из панели администратора в 1 клик без перекомпиляции стилей за счет инъекции runtime CSS-токенов (`ui/assets/css/tokens.css`).
+5. **Zero-CDN Self-Hosted шрифты и сабсеттинг (`ui/assets/fonts/`):**
+   * Все шрифты размещаются локально (Zero-CDN, соответствие 152-ФЗ, независимость от внешних сетей).
+   * Выполнен сабсеттинг WOFF2-шрифтов: шрифт `Merriweather` оптимизирован с **361 КБ до 39 КБ (-89%)** утилитой `pyftsubset` с компрессией Brotli.
+   * Описание `@font-face` с unicode-range вынесено в изолированный файл [`ui/assets/css/fonts.css`](file:///home/zerg/Projects/web/SiteCreator/ui/assets/css/fonts.css).
+6. **Панель доступности (ГОСТ Р 52872-2019):** Модуль для слабовидящих (`ui/components/a11y_bar.templ`) на нативном Vanilla JS: контрастность, изменение размера шрифта, выключение анимаций.
 
 ---
 
@@ -334,7 +357,7 @@ flowchart LR
 ## 14. Пресеты ниш и мультисайтовый оркестратор (Fleet)
 
 * **Пресеты ниш B2B & B2C (`presets/*.json`):** 9 пресетов B2B (`b2b_*.json`) с фокусом на регламенты, метрики и сравнение; 5 пресетов B2C (`b2c_*.json`) с фокусом на визуальный ритм, квизы и корзину; комплексный тестовый стенд `test_all_modules.json`.
-* **Оркестратор (`fleet.sh`):** Создание клиентских сайтов за секунду, автоматический сид пресета, изоляция портов и директорий `pb_data`, экспорт в статику, резервное копирование (подробности в [FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)).
+* **Оркестратор (`fleet.sh` & `scripts/fleet/`):** Модульный CLI для управления изолированными бинарными инстансами клиентов (создание, старт, стоп, статус, бэкап, статический экспорт, Podman-контейнеры), безопасный деплой с валидацией схемы `--test-config`, обязательными преддеплойными снимками SQLite, Hot-Reload без простоя (сигнал `SIGHUP` / `systemctl reload`) и 1-click откатом (подробности в [FLEET_ARCHITECTURE.md](FLEET_ARCHITECTURE.md)).
 
 ---
 

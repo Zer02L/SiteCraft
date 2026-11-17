@@ -2,7 +2,7 @@
 
 > Документ фиксирует полный реестр коммерческих модулей SiteCraft, их архитектурный статус, текущее состояние реализации и технические спецификации.
 > 
-> **Архитектурный стандарт:** Go 1.27 + PocketBase + SQLite (WAL) + Templ + HTMX + Alpine.js + Tailwind CSS v4.  
+> **Архитектурный стандарт:** Go 1.27 + Chi v5 + modernc/sqlite (PostgreSQL-ready) + sqlc + goose + scs + Templ + HTMX + Alpine.js + Tailwind CSS v4.  
 > **Ограничения:** Единый бинарник (~25 МБ), RAM 20–35 МБ, TTFB < 10 мс, PageSpeed 100/100, нулевые расходы на SMS ($0 за счет Telegram Bot API, SMTP Magic Links и QR-кодов).
 
 ---
@@ -116,7 +116,7 @@
   * Обработка лидов: `internal/handlers/leads.go`
   * Telegram-алерты: `internal/notifications/notifications.go`
   * Кабинет `/client`: `ui/pages/client_admin.templ` (бейджи `🎯 yandex`)
-  * Экспорт отчетов: `internal/handlers/client_admin.go` (`HandleExportLeadsCSV`)
+  * Экспорт отчетов: `internal/server/admin_leads.go` (`HandleAdminExportLeadsCSV`)
 * **Возможности:** Захват `utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`, `yclid` (Яндекс.Директ) в 30-дневную cookie `sitecraft_utm`. Привязка источника к каждой заявке.
 
 ### 9. Виджет недавней активности (Recent Activity Social Proof / FOMO)
@@ -177,7 +177,7 @@
   * Контроллер: `internal/handlers/review.go` (`HandleSubmitReview`, `HandleTogglePublish`, `HandleDeleteReview`)
   * Витрина и Schema.org: `ui/sections/reviews.templ` (микроразметка `AggregateRating` и `Review`)
   * Форма в сервисной книжке: `ui/pages/tracker.templ` (отправка отзыва с привязкой к квитанции, статус Verified Buyer)
-  * Кабинет администратора: `internal/handlers/client_admin.go` (`HandleTabReviews`), `ui/pages/client_admin.templ` (вкладка «Отзывы клиентов», мгновенная публикация/скрытие и удаление по HTMX)
+  * Кабинет администратора: `internal/server/admin_reviews.go` (`HandleAdminReviews`), `ui/pages/client_admin.templ` (вкладка «Отзывы клиентов», мгновенная публикация/скрытие и удаление по HTMX)
 * **Возможности:** Разметка Schema.org для отображения звезд рейтинга в поисковой выдаче Google и Яндекс. Если отзыв отправлен по реальному номеру заказа из трекера — статус верифицирован («Проверенная покупка»). Премодерация отзывов в кабинете администратора с переключением видимости в 1 клик.
 
 ---

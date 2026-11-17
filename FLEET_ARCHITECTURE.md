@@ -37,9 +37,14 @@
 
 ---
 
-## 🛠 Управление через `fleet.sh`
+## 🛠 Управление через `fleet.sh` и модули `scripts/fleet/`
 
-В репозиторий встроен CLI-инструмент [fleet.sh](fleet.sh).
+В репозиторий встроен модульный CLI-оркестратор [fleet.sh](fleet.sh), декомпозированный на специализированные подмодули в каталоге `scripts/fleet/`:
+* `scripts/fleet/common.sh` — общие переменные, пути, сборка бинарника `build_temp_binary` и `ensure_engine`.
+* `scripts/fleet/cmd_instance.sh` — управление жизненным циклом сайтов (`create`, `start`, `stop`, `list`, `status`).
+* `scripts/fleet/cmd_snapshot.sh` — преддеплойные снимки SQLite (`take_sqlite_snapshot`), бэкапы (`backup`), экспорт (`export`), откат (`rollback`).
+* `scripts/fleet/cmd_podman.sh` — Rootless OCI контейнеры (`podman-up`, `podman-down`).
+* `scripts/fleet/cmd_update.sh` — двухэтапное безопасное обновление с `--test-config` и Hot-Reload (`update`).
 
 ### 1. Создание нового сайта клиента
 ```bash
@@ -49,13 +54,16 @@
 ```
 *Доступные пресеты:* `notary`, `legal`, `legal-swiss`, `legal-british`, `legal-milano`, `legal-corporate`, `medical`, `auto`, `repair`, `beauty`, `cyber`, `delivery`, `academy`.
 
-### 2. Запуск и управление
+### 2. Запуск и управление инстансами
 ```bash
 # Запустить инстанс в фоновом режиме
 ./fleet.sh start auto-express
 
 # Посмотреть состояние всех сайтов (порт, статус, PID)
 ./fleet.sh list
+
+# Диагностика конкретного инстанса и опрос /health
+./fleet.sh status auto-express
 
 # Остановить сайт
 ./fleet.sh stop auto-express
@@ -64,17 +72,46 @@
 ./fleet.sh restart auto-express
 ```
 
-### 3. Экспорт в статический сайт (SSG)
+### 3. Безопасное обновление и Hot-Reload (Safe Deploy)
+```bash
+# Обновление конкретного инстанса (снимок базы + --test-config + SIGHUP + health check)
+./fleet.sh update auto-express
+
+# Безопасное обновление всего пула клиентских сайтов
+./fleet.sh update all
+
+# Сборка и верификация только бинарника движка
+./fleet.sh update --engine
+```
+**Защитный барьер Safe Deploy:**
+1. Автоматический снимок SQLite базы в `fleet_sites/<site_id>/data/snapshots/`.
+2. Двухэтапная валидация схемы и настроек через `--test-config`. При ошибке бинарник **не заменяется**, инстанс **не прерывается**.
+3. Атомарная замена `bin/sitecraft` с сохранением `.prev`.
+4. Hot-Reload без простоя через `kill -HUP` / `systemctl reload`. При сбое проверки `/health` срабатывает **Automatic Rollback** базы и бинарника.
+
+### 4. Экстренный откат в 1 клик (Rollback)
+```bash
+# Откат базы из последнего снимка и бинарника из .prev
+./fleet.sh rollback auto-express
+```
+
+### 5. Экспорт в статический сайт (SSG)
 ```bash
 # Генерация плоского HTML/CSS для размещения на GitHub Pages, Cloudflare Pages или S3
 ./fleet.sh export auto-express ./dist-auto
 ```
 
-### 4. Резервное копирование и передача клиенту («под ключ»)
+### 6. Резервное копирование и передача клиенту («под ключ»)
 ```bash
 ./fleet.sh backup auto-express
 ```
 Скрипт генерирует единый автономный архив `.tar.gz`, включающий всю SQLite базу и загруженный клиентом медиаконтент. Вы можете передать этот архив клиенту или перенести на любой VPS в одну команду.
+
+### 7. Запуск в Rootless Podman
+```bash
+./fleet.sh podman-up    # Сборка и запуск контейнера
+./fleet.sh podman-down  # Остановка контейнера
+```
 
 ---
 

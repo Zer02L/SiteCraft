@@ -8,20 +8,24 @@ Owns all server-side application logic, data persistence, HTTP routing, real-tim
 
 ## Ownership
 
+- `internal/ai/` — Multi-provider AI engine (OpenAI, Anthropic Claude, Gemini, DeepSeek, Yandex GPT, GigaChat, custom OpenAI-compatible), universal Model Context Protocol (MCP) server over SSE, OpenAPI 3.1 agent schema, AES-256-GCM credentials encryption, Draft-First policy enforcement, and 152-FZ PII masking.
 - `internal/auth/` — Session authentication, password hashing (`bcrypt`), and route protection middleware (`RequireAdminAuth`).
 - `internal/cache/` — In-memory caching with `sync.RWMutex` and automatic invalidation on data mutations.
-- `internal/data/` — JSON preset loader (`preset.go`) and repository interface (`sql_repository.go`) bridging `internal/db` with domain models.
+- `internal/checker/` — Site launch readiness verification engine (Setup Checklist: contacts, payment, 152-FZ, analytics, Telegram bot, SSL).
+- `internal/data/` — JSON preset loader (`preset.go`) and modular domain repository (`repository.go`, `repo_settings.go`, `repo_blocks.go`, `repo_articles.go`, `repo_services.go`, `repo_leads.go`, `repo_reviews.go`, `repo_booking.go`, `repo_redirects.go`) bridging `internal/db` with domain models.
 - `internal/db/` — Database connection management (`connection.go`), goose migration runner, and sqlc-generated type-safe queries (`Querier`, `Queries`, models).
 - `internal/events/` — Internal asynchronous event bus for decoupled component messaging.
 - `internal/exporter/` — Static Site Generation (SSG) HTML/CSS exporter.
 - `internal/handlers/` — Domain handlers implementing standard `http.HandlerFunc` (web, leads, booking, cart, checkout, chat, reviews, services, fleet, client admin, TMA).
 - `internal/i18n/` — Multi-language catalog, URL/cookie/header negotiation, localized validation.
+- `internal/importer/` — WXR/XML WordPress importer and parser, content transformer, and 301-redirect generator.
 - `internal/media/` — Pure-Go and bimg image processing, thumbnail generation (thumb, sm, md, lg), and static media caching.
-- `internal/models/` — Domain models and DTOs (booking, ecommerce, content, fleet, seo, activity, chat, b2b).
+- `internal/models/` — Domain models and DTOs (booking, ecommerce, content, fleet, seo, activity, chat, b2b, redirect).
 - `internal/modules/` — Business logic extensions (payment processing, etc.).
 - `internal/notifications/` — Async notifications (Telegram Bot relay, CRM webhooks, iCal .ics reminders).
-- `internal/server/` — Root Chi HTTP server, middleware stack (RequestID, RealIP, Slog, Recoverer, Compress, CSRF, UTM, A/B, i18n), route registration, and graceful shutdown.
+- `internal/server/` — Root Chi HTTP server, middleware stack (RequestID, RealIP, Slog, Recoverer, Compress, CSRF, UTM, A/B, i18n, 301-redirects), modular admin endpoints (`admin_routes.go`, `admin_auth.go`, `admin_blocks.go`, `admin_articles.go`, `admin_theme.go`, `admin_leads.go`, `admin_importer.go`, `admin_ai.go`, `admin_media.go`, `admin_settings.go`, `admin_reviews.go`, `admin.go`), MCP AI Agent API (`agent_api.go`), route registration, and graceful shutdown.
 - `internal/testutil/` — Test helpers and isolated database test fixtures (`NewTestApp(t)` with in-memory/temp SQLite).
+- `internal/theme/` — Global theme preset switcher and token bridge (Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold).
 
 ## Local Contracts
 

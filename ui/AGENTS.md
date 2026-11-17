@@ -8,14 +8,15 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 ## Ownership
 
-- `ui/assets/` — Tailwind CSS entry point (`input.css`), runtime tokens (`tokens.css`), client scripts, icons, and `images/`.
+- `ui/assets/` — Tailwind CSS entry points: public storefront (`input.css` -> `styles.css`) and admin dashboard (`admin_input.css` -> `admin.css`), runtime tokens (`tokens.css`), client scripts (`admin-blocks-editor.js`, `admin-article-editor.js`), icons, and `images/`.
+- `ui/assets/fonts/` & `ui/assets/css/fonts.css` — Zero-CDN self-hosted, subsetted WOFF2 web fonts (Inter, Bebas Neue, Merriweather).
 - `ui/components/` — Reusable Templ components (base primitives, headers, footers, drawers, modals, widgets).
 - `ui/components/base/` — Zero-allocation Go Variants (CVA) button, badge, card, input, and modal primitives.
 - `ui/components/cinematic/` — 31 Zero-GSAP cinematic animation and scrollytelling modules.
 - `ui/components/icons/` — Self-contained type-safe Lucide SVG icon components compiled via Templ.
 - `ui/components/cinematic_2/` — Screen 1 & Screen 2 components adapted from jhill.com (cinematic video hero and tilted ArtStation marquee collage).
 - `ui/layouts/` — Master templates (`base.templ`) and SEO/meta tag helpers.
-- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin).
+- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin, checklist, importer) and modular admin subpackages (`admin_blocks/`, `admin_articles/`, `admin_leads/`).
 - `ui/registry/` — Dynamic section registry (`BlockRegistry`), generic payload parser (`ParsePayload[T]`), and block factory pattern (`RenderBlock`).
 - `ui/sections/` — Pre-built section blocks and variants (hero, features, services, booking, quiz, steps, reviews, team, map, faq, etc.).
 - `ui/embed.go` — Embedded asset file system (`//go:embed all:assets`).
@@ -25,7 +26,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - Type-safe templates: all HTML markup authored in `*.templ` files; never write raw unchecked HTML strings. STRICT: Never edit generated `*_templ.go` files directly.
 - DOM Source Mapping: `RenderBlock` in `ui/registry/` must wrap dynamic blocks in `BlockWrapper` (`<div class="contents">` with `data-block` and `data-source`), and base components (`ui/components/base/`) must preserve `data-component` and `data-source` attributes for seamless T3 Code preview inspection.
 - Zero-Node.js in production: compile CSS and templates ahead of time (`templ generate`, `tailwindcss`).
-- STRICT Styles Exclusion: `ui/assets/styles.css` is an automatically compiled build artifact and is strictly excluded from AI agent visibility (`.cursorignore`, `.aiignore`, `.geminiignore`). Agents must NEVER inspect, read, view, or edit `ui/assets/styles.css`. All styling and token edits belong strictly in `ui/assets/input.css` or `ui/assets/css/tokens.css`.
+- STRICT Styles Exclusion: `ui/assets/styles.css` and `ui/assets/admin.css` are automatically compiled build artifacts and are strictly excluded from AI agent visibility (`.cursorignore`, `.aiignore`, `.geminiignore`). Agents must NEVER inspect, read, view, or edit `ui/assets/styles.css` or `ui/assets/admin.css`. All styling and token edits belong strictly in `ui/assets/input.css`, `ui/assets/admin_input.css`, or `ui/assets/css/tokens.css`.
 - Design tokens & Semantic markup: configure themes via `@theme` in `ui/assets/input.css` and runtime CSS variables in `ui/assets/css/tokens.css`. Always use semantic utility classes (`bg-surface`, `text-content`, `text-accent`, `rounded-card`, `rounded-btn`) rather than hardcoded colors or pixel radii.
 - Payload parsing: use generic `registry.ParsePayload[T any]` to parse block payloads without handwriting repetitive unmarshalers.
 - Section variants: maintain variants as named functions in the owning package (e.g. `hero.CyberHero`, `sections.ReviewsSlider`) to avoid excessive micro-packages.
@@ -53,7 +54,11 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 
 - Generate Templ code: `templ generate`
 - Run UI package tests: `go test -v ./ui/...`
-- Rebuild production CSS: `tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`
+- Rebuild production CSS:
+  ```bash
+  tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify
+  tailwindcss -i ./ui/assets/admin_input.css -o ./ui/assets/admin.css --minify
+  ```
 
 ## Child DOX Index
 

@@ -81,7 +81,7 @@ Default section order:
   - STRICT: Never edit generated `*_templ.go` files directly. Always edit the source `*.templ` file and re-generate via `templ generate`.
   - DOM Source Mapping: Base components and dynamic blocks must maintain `data-component`, `data-source`, and `data-field` attributes to allow 1:1 visual element mapping in T3 Code preview and AI inspectors.
 - **Generated Styles Exclusion**:
-  - STRICT: `ui/assets/styles.css` is an automatically compiled build artifact. AI agents must NEVER inspect, read, view, or edit `ui/assets/styles.css`. All styling and token edits belong strictly in `ui/assets/input.css` or `ui/assets/css/tokens.css`.
+  - STRICT: `ui/assets/styles.css` and `ui/assets/admin.css` are automatically compiled build artifacts. AI agents must NEVER inspect, read, view, or edit them. All styling and token edits belong strictly in `ui/assets/input.css`, `ui/assets/admin_input.css`, or `ui/assets/css/tokens.css`.
 - **Anti-Slop Guard (Design & Copy Integrity)**:
   - Strict protection against generic AI templates, visual noise, and hallucinated marketing slop across all B2B/B2C components.
   - **Palettes & Tokens**: Ban default purple-to-indigo gradients (`from-indigo-500 to-purple-600`) and arbitrary blurred background orbs (`blur-3xl`). Color schemes must originate from `presets/*.json` or explicit project briefs.
@@ -125,4 +125,4 @@ Default section order:
 - [internal/AGENTS.md](internal/AGENTS.md) — Backend core: Chi routing, SQLite/PostgreSQL data layer via sqlc & goose, HTTP handlers, middleware, SCS sessions, bimg media, caching, i18n, events, business modules, and tests.
 - [ui/AGENTS.md](ui/AGENTS.md) — Frontend presentation: Templ components, layouts, pages, Tailwind v4 design tokens, Go Variants (CVA), and static assets.
 - [presets/AGENTS.md](presets/AGENTS.md) — Vertical business configs: SMB niche JSON presets, theme colors, section structures, and seed data.
-- [deploy/AGENTS.md](deploy/AGENTS.md) — Deployment & operations: single-binary systemd units, Nginx/Caddy reverse proxies, fleet orchestration, and Zero-RAM watchdog monitoring.
+- [deploy/AGENTS.md](deploy/AGENTS.md) — Deployment & operations: single-binary systemd units, Nginx/Caddy reverse proxies, modular fleet orchestration (`fleet.sh`, `scripts/fleet/`), safe deployment, and Zero-RAM watchdog monitoring.

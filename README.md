@@ -46,6 +46,9 @@
     * Асинхронные уведомления в **Telegram Bot** и **CRM Webhooks** (amoCRM / Битрикс24).
 12. **Гранулярное HTTP-кэширование (`Cache-Control`):** Иммутабельный кэш статики на 1 год (`max-age=31536000`), поддержка BFCache для страниц (`private, no-cache`) без рассинхрона A/B тестов, и полная защита от кэширования персональных данных в `/client`.
 13. **Observability (`log/slog`) и Zero-RAM Watchdog:** Встроенные структурированные JSON-логи стандартной библиотеки Go 1.27 + готовый легковесный сторож сервера на Bash (`deploy/monitoring/watchdog.sh`) с проверкой диска, RAM, падения процесса и алертами в Telegram без постоянных демонов (0 МБ RAM).
+14. **WordPress XML Importer & 301-редиректы (`internal/importer/`):** Бесшовная миграция контента (статьи, категории, страницы) со старых WordPress-сайтов через экспортный WXR/XML файл с автоматическим сохранением поисковых позиций и ссылочной массы за счет таблицы 301-редиректов.
+15. **Setup Checklist (Аудит готовности к запуску):** Интерактивный чеклист на дашборде админки (`internal/checker/`), проверяющий контакты, платежный шлюз, Telegram-уведомления, 152-ФЗ, веб-аналитику и SSL.
+16. **Theme Presets Switcher & Zero-CDN Web Fonts:** Мгновенное переключение 4 глобальных стилей оформления (*Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold*) в 1 клик из админки + легковесные сабсеттированные WOFF2-шрифты без внешних CDN (Merriweather 39 КБ, Inter, Bebas Neue).
 
 ---
 
@@ -154,7 +157,7 @@ flowchart LR
 
 ## 🚀 Управление парком сайтов (Fleet of Binaries)
 
-Для создания и обслуживания десятков клиентских сайтов используйте встроенный CLI-оркестратор [fleet.sh](fleet.sh):
+Для создания и обслуживания десятков клиентских сайтов используйте модульный CLI-оркестратор [fleet.sh](fleet.sh) и `scripts/fleet/`:
 
 ```bash
 # 1. Создать изолированный сайт клиента с нишевым пресетом
@@ -166,13 +169,19 @@ flowchart LR
 # 2. Запуск и управление инстансами в фоне
 ./fleet.sh start auto-express
 ./fleet.sh list                 # Таблица статусов (SITE_ID, PRESET, PORT, STATUS, PID)
+./fleet.sh status auto-express  # Проверка здоровья /health и метаданных
 ./fleet.sh restart auto-express
 ./fleet.sh stop auto-express
 
-# 3. Экспорт сайта клиента в статический HTML/CSS
+# 3. Безопасный деплой и Hot-Reload без простоя (Two-Stage Build + SQLite снимки)
+./fleet.sh update auto-express  # Снимок базы + валидация --test-config + SIGHUP
+./fleet.sh update all           # Обновление всего пула инстансов
+./fleet.sh rollback auto-express # Мгновенный откат базы из снимка и бинарника из .prev
+
+# 4. Экспорт сайта клиента в статический HTML/CSS
 ./fleet.sh export auto-express ./dist-auto
 
-# 4. Резервное копирование и передача клиенту «под ключ»
+# 5. Резервное копирование и передача клиенту «под ключ»
 ./fleet.sh backup auto-express  # Создает автономный архив backup_*.tar.gz с базой SQLite и файлами
 ```
 
@@ -184,8 +193,11 @@ flowchart LR
 
 Движок поддерживает гибкую многоуровневую систему оформления:
 
-### 1. Архитектура Tailwind CSS v4 (Oxide) & CSS Color Level 4
+### 1. Архитектура Tailwind CSS v4 (Oxide) & Раздельные CSS-бандлы
 Проект работает на движке **Tailwind CSS v4 (Rust Oxide)** с чистой CSS-first конфигурацией без JavaScript-файлов настроек:
+* **Изоляция публичного и административного CSS:**
+  * Публичная витрина компилируется из [input.css](ui/assets/input.css) в `styles.css` (очищен от стилей админки, ~110 КБ minified).
+  * Панель управления компилируется из [admin_input.css](ui/assets/admin_input.css) в `admin.css` (содержит токены админки и `shadcn.css`).
 * **Конфигурация через `@theme` ([input.css](ui/assets/input.css)):** Все дизайн-токены регистрируются нативно через директиву `@theme`. Внешний `tailwind.config.js` полностью устранен.
 * **Автоматическое сканирование `@source`:** Пути к шаблонам Templ (`@source "../**/*.templ"`) подключены напрямую в CSS.
 * **Семантические токены ([tokens.css](ui/assets/css/tokens.css)):** Цвета объявлены в стандарте **CSS Color Level 4** с нативным браузерным расчетом вторичных оттенков через `color-mix()`.
@@ -198,7 +210,7 @@ flowchart LR
 * **Режим День / Ночь:** Мгновенное переключение между светлой и темной версией любой выбранной темы (`main-day`, `main-night`, `harmonic-night`, `winter-night` и т.д.).
 * **Специальные режимы:** Режим для людей с особенностями цветовосприятия (`colorblind` / high-contrast) и нишевые пресеты (`cyber`, `legal`, `medical`, `auto`).
 
-### 3. Управление палитрой из админки PocketBase (`site_settings`)
+### 3. Управление палитрой из админки SiteCraft (`site_settings`)
 При указании базового `primary_color` или `accent_color` в панели управления, движок **автоматически вычисляет** через `color-mix()` всю цветовую шкалу бренда (hover-состояния, темные и светлые оттенки кнопок, тонированные фоны карточек) без пересборки CSS!
 
 ### 4. Дизайн-система Go Variants (CVA), Tailwind v4 CSS и Lucide
