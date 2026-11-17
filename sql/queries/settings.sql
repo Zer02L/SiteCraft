@@ -14,7 +14,9 @@ INSERT INTO site_settings (
     client_admin_password, client_admin_password_hash,
     legal_entity, legal_address, inn, kpp, ogrn,
     bank_name, bank_bik, bank_account, bank_corr, contact_email,
-    enable_careers, enable_cookie_consent, created_at, updated_at
+    enable_careers, enable_cookie_consent,
+    ai_provider, ai_base_url, ai_api_key_encrypted, ai_model_name, ai_proxy_url, ai_folder_id,
+    created_at, updated_at
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?,
@@ -26,7 +28,9 @@ INSERT INTO site_settings (
     ?, ?,
     ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?,
-    ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    ?, ?,
+    ?, ?, ?, ?, ?, ?,
+    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
 )
 ON CONFLICT (id) DO UPDATE SET
     site_name = excluded.site_name,
@@ -79,6 +83,12 @@ ON CONFLICT (id) DO UPDATE SET
     contact_email = excluded.contact_email,
     enable_careers = excluded.enable_careers,
     enable_cookie_consent = excluded.enable_cookie_consent,
+    ai_provider = excluded.ai_provider,
+    ai_base_url = excluded.ai_base_url,
+    ai_api_key_encrypted = excluded.ai_api_key_encrypted,
+    ai_model_name = excluded.ai_model_name,
+    ai_proxy_url = excluded.ai_proxy_url,
+    ai_folder_id = excluded.ai_folder_id,
     updated_at = CURRENT_TIMESTAMP
 RETURNING *;
 

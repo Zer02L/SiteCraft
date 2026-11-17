@@ -43,7 +43,7 @@ func (q *Queries) GetSiteContent(ctx context.Context) (SiteContent, error) {
 }
 
 const getSiteSettings = `-- name: GetSiteSettings :one
-SELECT id, site_name, tagline, theme, primary_color, accent_color, background_color, font_family, enable_a11y, enable_alpine, enable_turnstile, turnstile_site_key, turnstile_secret_key, telegram_bot_token, telegram_chat_id, webhook_url, yandex_metrika_id, map_mode, booking_mode, enable_payment, payment_shop_id, payment_secret, payment_sandbox, enable_blog, enable_tma, enable_tracker, enable_i18n, default_lang, enable_floating_contact, whatsapp_phone, telegram_contact, enable_cart, header_variant, footer_variant, enable_live_chat, enable_fleet, enable_recent_activity, client_admin_password, client_admin_password_hash, legal_entity, legal_address, inn, kpp, ogrn, bank_name, bank_bik, bank_account, bank_corr, contact_email, enable_careers, enable_cookie_consent, created_at, updated_at FROM site_settings
+SELECT id, site_name, tagline, theme, primary_color, accent_color, background_color, font_family, enable_a11y, enable_alpine, enable_turnstile, turnstile_site_key, turnstile_secret_key, telegram_bot_token, telegram_chat_id, webhook_url, yandex_metrika_id, map_mode, booking_mode, enable_payment, payment_shop_id, payment_secret, payment_sandbox, enable_blog, enable_tma, enable_tracker, enable_i18n, default_lang, enable_floating_contact, whatsapp_phone, telegram_contact, enable_cart, header_variant, footer_variant, enable_live_chat, enable_fleet, enable_recent_activity, client_admin_password, client_admin_password_hash, legal_entity, legal_address, inn, kpp, ogrn, bank_name, bank_bik, bank_account, bank_corr, contact_email, enable_careers, enable_cookie_consent, created_at, updated_at, ai_provider, ai_base_url, ai_api_key_encrypted, ai_model_name, ai_proxy_url, ai_folder_id FROM site_settings
 LIMIT 1
 `
 
@@ -104,6 +104,12 @@ func (q *Queries) GetSiteSettings(ctx context.Context) (SiteSetting, error) {
 		&i.EnableCookieConsent,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.AiProvider,
+		&i.AiBaseUrl,
+		&i.AiApiKeyEncrypted,
+		&i.AiModelName,
+		&i.AiProxyUrl,
+		&i.AiFolderID,
 	)
 	return i, err
 }
@@ -220,7 +226,9 @@ INSERT INTO site_settings (
     client_admin_password, client_admin_password_hash,
     legal_entity, legal_address, inn, kpp, ogrn,
     bank_name, bank_bik, bank_account, bank_corr, contact_email,
-    enable_careers, enable_cookie_consent, created_at, updated_at
+    enable_careers, enable_cookie_consent,
+    ai_provider, ai_base_url, ai_api_key_encrypted, ai_model_name, ai_proxy_url, ai_folder_id,
+    created_at, updated_at
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?,
@@ -232,7 +240,9 @@ INSERT INTO site_settings (
     ?, ?,
     ?, ?, ?, ?, ?,
     ?, ?, ?, ?, ?,
-    ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+    ?, ?,
+    ?, ?, ?, ?, ?, ?,
+    CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
 )
 ON CONFLICT (id) DO UPDATE SET
     site_name = excluded.site_name,
@@ -285,8 +295,14 @@ ON CONFLICT (id) DO UPDATE SET
     contact_email = excluded.contact_email,
     enable_careers = excluded.enable_careers,
     enable_cookie_consent = excluded.enable_cookie_consent,
+    ai_provider = excluded.ai_provider,
+    ai_base_url = excluded.ai_base_url,
+    ai_api_key_encrypted = excluded.ai_api_key_encrypted,
+    ai_model_name = excluded.ai_model_name,
+    ai_proxy_url = excluded.ai_proxy_url,
+    ai_folder_id = excluded.ai_folder_id,
     updated_at = CURRENT_TIMESTAMP
-RETURNING id, site_name, tagline, theme, primary_color, accent_color, background_color, font_family, enable_a11y, enable_alpine, enable_turnstile, turnstile_site_key, turnstile_secret_key, telegram_bot_token, telegram_chat_id, webhook_url, yandex_metrika_id, map_mode, booking_mode, enable_payment, payment_shop_id, payment_secret, payment_sandbox, enable_blog, enable_tma, enable_tracker, enable_i18n, default_lang, enable_floating_contact, whatsapp_phone, telegram_contact, enable_cart, header_variant, footer_variant, enable_live_chat, enable_fleet, enable_recent_activity, client_admin_password, client_admin_password_hash, legal_entity, legal_address, inn, kpp, ogrn, bank_name, bank_bik, bank_account, bank_corr, contact_email, enable_careers, enable_cookie_consent, created_at, updated_at
+RETURNING id, site_name, tagline, theme, primary_color, accent_color, background_color, font_family, enable_a11y, enable_alpine, enable_turnstile, turnstile_site_key, turnstile_secret_key, telegram_bot_token, telegram_chat_id, webhook_url, yandex_metrika_id, map_mode, booking_mode, enable_payment, payment_shop_id, payment_secret, payment_sandbox, enable_blog, enable_tma, enable_tracker, enable_i18n, default_lang, enable_floating_contact, whatsapp_phone, telegram_contact, enable_cart, header_variant, footer_variant, enable_live_chat, enable_fleet, enable_recent_activity, client_admin_password, client_admin_password_hash, legal_entity, legal_address, inn, kpp, ogrn, bank_name, bank_bik, bank_account, bank_corr, contact_email, enable_careers, enable_cookie_consent, created_at, updated_at, ai_provider, ai_base_url, ai_api_key_encrypted, ai_model_name, ai_proxy_url, ai_folder_id
 `
 
 type UpsertSiteSettingsParams struct {
@@ -341,6 +357,12 @@ type UpsertSiteSettingsParams struct {
 	ContactEmail            string `json:"contact_email"`
 	EnableCareers           int64  `json:"enable_careers"`
 	EnableCookieConsent     int64  `json:"enable_cookie_consent"`
+	AiProvider              string `json:"ai_provider"`
+	AiBaseUrl               string `json:"ai_base_url"`
+	AiApiKeyEncrypted       string `json:"ai_api_key_encrypted"`
+	AiModelName             string `json:"ai_model_name"`
+	AiProxyUrl              string `json:"ai_proxy_url"`
+	AiFolderID              string `json:"ai_folder_id"`
 }
 
 func (q *Queries) UpsertSiteSettings(ctx context.Context, arg UpsertSiteSettingsParams) (SiteSetting, error) {
@@ -396,6 +418,12 @@ func (q *Queries) UpsertSiteSettings(ctx context.Context, arg UpsertSiteSettings
 		arg.ContactEmail,
 		arg.EnableCareers,
 		arg.EnableCookieConsent,
+		arg.AiProvider,
+		arg.AiBaseUrl,
+		arg.AiApiKeyEncrypted,
+		arg.AiModelName,
+		arg.AiProxyUrl,
+		arg.AiFolderID,
 	)
 	var i SiteSetting
 	err := row.Scan(
@@ -452,6 +480,12 @@ func (q *Queries) UpsertSiteSettings(ctx context.Context, arg UpsertSiteSettings
 		&i.EnableCookieConsent,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.AiProvider,
+		&i.AiBaseUrl,
+		&i.AiApiKeyEncrypted,
+		&i.AiModelName,
+		&i.AiProxyUrl,
+		&i.AiFolderID,
 	)
 	return i, err
 }

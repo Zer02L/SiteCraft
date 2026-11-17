@@ -1,0 +1,28 @@
+[Unit]
+Description=SiteCraft Fleet Isolated Site Instance (%i)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/sitecraft
+EnvironmentFile=-/var/www/sitecraft/fleet_sites/%i/site.env
+ExecStart=/var/www/sitecraft/fleet_sites/%i/run.sh
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=3s
+
+# Переменные окружения: production режим включает JSON-логи в slog
+Environment="ENV=production"
+Environment="PROD=1"
+
+# Ограничения и безопасность Linux systemd sandbox
+LimitNOFILE=65535
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

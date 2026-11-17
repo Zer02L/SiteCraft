@@ -104,6 +104,14 @@ type PageBlock struct {
 	UpdatedAt  string `json:"updated_at"`
 }
 
+type Redirect struct {
+	ID         string `json:"id"`
+	SourcePath string `json:"source_path"`
+	TargetPath string `json:"target_path"`
+	StatusCode int64  `json:"status_code"`
+	CreatedAt  string `json:"created_at"`
+}
+
 type Resource struct {
 	ID         string `json:"id"`
 	Name       string `json:"name"`
@@ -241,6 +249,12 @@ type SiteSetting struct {
 	EnableCookieConsent     int64  `json:"enable_cookie_consent"`
 	CreatedAt               string `json:"created_at"`
 	UpdatedAt               string `json:"updated_at"`
+	AiProvider              string `json:"ai_provider"`
+	AiBaseUrl               string `json:"ai_base_url"`
+	AiApiKeyEncrypted       string `json:"ai_api_key_encrypted"`
+	AiModelName             string `json:"ai_model_name"`
+	AiProxyUrl              string `json:"ai_proxy_url"`
+	AiFolderID              string `json:"ai_folder_id"`
 }
 
 type Vacancy struct {

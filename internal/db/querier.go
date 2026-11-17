@@ -11,6 +11,7 @@ import (
 type Querier interface {
 	ApproveReview(ctx context.Context, id string) (Review, error)
 	CountLeads(ctx context.Context) (int64, error)
+	CountRedirects(ctx context.Context) (int64, error)
 	CreateArticle(ctx context.Context, arg CreateArticleParams) (Article, error)
 	CreateBranch(ctx context.Context, arg CreateBranchParams) (Branch, error)
 	CreateChatMessage(ctx context.Context, arg CreateChatMessageParams) (ChatMessage, error)
@@ -19,6 +20,7 @@ type Querier interface {
 	CreateOrder(ctx context.Context, arg CreateOrderParams) (ServiceOrder, error)
 	CreatePage(ctx context.Context, arg CreatePageParams) (Page, error)
 	CreatePageBlock(ctx context.Context, arg CreatePageBlockParams) (PageBlock, error)
+	CreateRedirect(ctx context.Context, arg CreateRedirectParams) (Redirect, error)
 	CreateResource(ctx context.Context, arg CreateResourceParams) (Resource, error)
 	CreateReview(ctx context.Context, arg CreateReviewParams) (Review, error)
 	CreateService(ctx context.Context, arg CreateServiceParams) (Service, error)
@@ -29,6 +31,8 @@ type Querier interface {
 	DeleteLead(ctx context.Context, id string) error
 	DeletePage(ctx context.Context, id string) error
 	DeletePageBlock(ctx context.Context, id string) error
+	DeleteRedirect(ctx context.Context, id string) error
+	DeleteRedirectBySource(ctx context.Context, sourcePath string) error
 	DeleteService(ctx context.Context, id string) error
 	GetArticleByID(ctx context.Context, id string) (Article, error)
 	GetArticleBySlug(ctx context.Context, slug string) (Article, error)
@@ -37,6 +41,8 @@ type Querier interface {
 	GetOrderByCode(ctx context.Context, orderCode string) (ServiceOrder, error)
 	GetPageBlockByID(ctx context.Context, id string) (PageBlock, error)
 	GetPageBySlug(ctx context.Context, slug string) (Page, error)
+	GetRedirectByID(ctx context.Context, id string) (Redirect, error)
+	GetRedirectBySource(ctx context.Context, sourcePath string) (Redirect, error)
 	GetServiceByID(ctx context.Context, id string) (Service, error)
 	GetSiteContent(ctx context.Context) (SiteContent, error)
 	GetSiteSettings(ctx context.Context) (SiteSetting, error)
@@ -58,6 +64,7 @@ type Querier interface {
 	ListPages(ctx context.Context) ([]Page, error)
 	ListPublishedArticles(ctx context.Context) ([]Article, error)
 	ListPublishedReviews(ctx context.Context) ([]Review, error)
+	ListRedirects(ctx context.Context) ([]Redirect, error)
 	ListResources(ctx context.Context) ([]Resource, error)
 	ListReviews(ctx context.Context) ([]Review, error)
 	ListServices(ctx context.Context) ([]Service, error)
@@ -72,6 +79,7 @@ type Querier interface {
 	UpdatePageBlock(ctx context.Context, arg UpdatePageBlockParams) (PageBlock, error)
 	UpdatePageBlockOrder(ctx context.Context, arg UpdatePageBlockOrderParams) error
 	UpdateService(ctx context.Context, arg UpdateServiceParams) (Service, error)
+	UpsertRedirect(ctx context.Context, arg UpsertRedirectParams) (Redirect, error)
 	UpsertSiteContent(ctx context.Context, arg UpsertSiteContentParams) (SiteContent, error)
 	UpsertSiteSettings(ctx context.Context, arg UpsertSiteSettingsParams) (SiteSetting, error)
 }
