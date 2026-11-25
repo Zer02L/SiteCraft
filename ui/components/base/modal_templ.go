@@ -34,7 +34,7 @@ type ModalProps struct {
 }
 
 func (p ModalProps) DialogClasses() string {
-	const base = "bg-surface border border-content/15 rounded-card p-6 sm:p-8 w-full shadow-2xl relative transition-all"
+	const base = "bg-surface border border-content/15 rounded-card p-6 sm:p-8 w-full shadow-2xl relative transition"
 
 	var size string
 	switch p.Size {
@@ -193,7 +193,7 @@ func Modal(props ModalProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer\" aria-label=\"Закрыть\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer\" aria-label=\"Закрыть\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

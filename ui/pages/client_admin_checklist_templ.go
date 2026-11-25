@@ -79,7 +79,7 @@ func SetupChecklistWidget(result checker.ChecklistResult) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"bg-admin-surface border border-admin-border rounded-2xl p-5 sm:p-6 shadow-xs transition-all duration-200\"><!-- Заголовок и процентная шкала --><div class=\"flex items-center justify-between gap-4\"><div class=\"flex items-center gap-3.5 min-w-0\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"bg-admin-surface border border-admin-border rounded-2xl p-5 sm:p-6 shadow-xs transition duration-200\"><!-- Заголовок и процентная шкала --><div class=\"flex items-center justify-between gap-4\"><div class=\"flex items-center gap-3.5 min-w-0\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -215,7 +215,7 @@ func SetupChecklistWidget(result checker.ChecklistResult) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var8 = []any{"h-full rounded-full transition-all duration-500 " + getProgressBarBg(result.Percentage)}
+			var templ_7745c5c3_Var8 = []any{"h-full rounded-full transition duration-200 " + getProgressBarBg(result.Percentage)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var8...)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

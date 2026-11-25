@@ -47,7 +47,7 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 							value={ searchCode }
 							required
 							placeholder={ i18n.T(ctx, "tracker.input_placeholder") }
-							class="flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+							class="flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm"
 						/>
 						@base.Button(base.ButtonProps{
 							Type:    "submit",
@@ -75,7 +75,7 @@ templ TrackerPage(settings models.SiteSettings, content models.SiteContent, orde
 						hx-get={ "/api/track/status/" + order.OrderCode }
 						hx-trigger="every 15s"
 						hx-swap="outerHTML"
-						class="bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl transition-all"
+						class="bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl transition"
 					>
 						@TrackerStatusCard(settings, *order)
 					</div>
@@ -452,7 +452,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 							<button
 								type="button"
 								@click={ fmt.Sprintf("rating = %d", star) }
-								class="text-xl transition-transform hover:scale-110 focus:outline-none"
+								class="text-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 								:class={ fmt.Sprintf("rating >= %d ? 'text-amber-400' : 'text-stone-300'", star) }
 							>
 								★
@@ -469,14 +469,14 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 						value={ order.ClientName }
 						placeholder="Ваше имя"
 						required
-						class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+						class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 					/>
 					<input
 						type="text"
 						name="service_title"
 						value={ order.ItemTitle }
 						placeholder="Услуга / направление"
-						class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+						class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 					/>
 				</div>
 
@@ -485,7 +485,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 					rows="3"
 					placeholder="Поделитесь впечатлением о скорости, качестве и общении с мастером..."
 					required
-					class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary"
+					class="w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 				></textarea>
 
 				<button

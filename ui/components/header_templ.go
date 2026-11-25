@@ -384,7 +384,20 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" aria-label=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var20 string
+			templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 209, Col: 46}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -392,12 +405,12 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</button>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</button>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Var20 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var21 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -409,12 +422,12 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			var templ_7745c5c3_Var21 string
-			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
+			var templ_7745c5c3_Var22 string
+			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 219, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 220, Col: 33}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -425,11 +438,11 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 			Size:    base.BtnSizeSm,
 			Href:    "#booking",
 			Class:   "text-on-accent text-xs font-semibold px-3 py-1.5 shadow",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var20), templ_7745c5c3_Buffer)
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var21), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<!-- Alpine.js Hamburger Button --><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\" class=\"flex items-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<!-- Alpine.js Hamburger Button --><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\" class=\"flex items-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -437,7 +450,7 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span> <span x-show=\"mobileMenuOpen\" x-cloak class=\"flex items-center\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span> <span x-show=\"mobileMenuOpen\" x-cloak class=\"flex items-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -445,38 +458,25 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span></button></div></div><!-- Mobile Menu Drawer (Alpine.js) --><div x-show=\"mobileMenuOpen\" x-cloak x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 -translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100 translate-y-0\" x-transition:leave-end=\"opacity-0 -translate-y-2\" class=\"md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-4 space-y-3\"><nav class=\"flex flex-col space-y-2 text-sm font-medium\"><a href=\"/#about\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 252, Col: 155}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</a> <a href=\"/#schedule\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span></button></div></div><!-- Mobile Menu Drawer (Alpine.js) --><div x-show=\"mobileMenuOpen\" x-cloak x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 -translate-y-2\" x-transition:enter-end=\"opacity-100 translate-y-0\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100 translate-y-0\" x-transition:leave-end=\"opacity-0 -translate-y-2\" class=\"md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-4 space-y-3\"><nav class=\"flex flex-col space-y-2 text-sm font-medium\"><a href=\"/#about\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 253, Col: 166}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 253, Col: 155}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</a> <a href=\"/#services\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</a> <a href=\"/#schedule\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 254, Col: 166}
 		}
@@ -484,59 +484,72 @@ func HeaderClassic(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</a> <a href=\"/#booking\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</a> <a href=\"/#services\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
-		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 255, Col: 164}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 255, Col: 166}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</a> <a href=\"/track\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</a> <a href=\"/#booking\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var26 string
-		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 256, Col: 161}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 256, Col: 164}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</a> <a href=\"/blog\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</a> <a href=\"/track\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var27 string
-		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 257, Col: 157}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 257, Col: 161}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</a> <a href=\"/#map\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</a> <a href=\"/blog\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var28 string
-		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 258, Col: 161}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 258, Col: 157}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</a></nav></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</a> <a href=\"/#map\" @click=\"mobileMenuOpen = false\" class=\"py-2 px-3 rounded hover:bg-surface/10 hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var29 string
+		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 259, Col: 161}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</a></nav></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -561,7 +574,7 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<!-- Header Minimal: лаконичный компактный стиль с фокусом на конверсию --><header class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-md border-b border-primary-dark/80 backdrop-blur-md bg-opacity-95\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center\"><!-- Бренд / Название --><a href=\"/\" class=\"flex items-center space-x-2.5 group\"><div class=\"w-8 h-8 rounded-lg bg-accent/20 border border-accent/40 flex items-center justify-center text-accent group-hover:scale-105 transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<!-- Header Minimal: лаконичный компактный стиль с фокусом на конверсию --><header class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-md border-b border-primary-dark/80 backdrop-blur-md bg-opacity-95\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><div class=\"max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center\"><!-- Бренд / Название --><a href=\"/\" class=\"flex items-center space-x-2.5 group\"><div class=\"w-8 h-8 rounded-lg bg-accent/20 border border-accent/40 flex items-center justify-center text-accent group-hover:scale-105 transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -569,51 +582,51 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "</div><div><div class=\"text-on-primary font-serif-title font-bold text-base leading-tight tracking-wide group-hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var30 string
-		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 278, Col: 153}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div class=\"text-[11px] text-accent/80 font-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</div><div><div class=\"text-on-primary font-serif-title font-bold text-base leading-tight tracking-wide group-hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var31 string
-		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 279, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 279, Col: 153}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div></a><!-- Правая часть: Телефон, CTA, Язык, День/Ночь --><div class=\"flex items-center space-x-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div><div class=\"text-[11px] text-accent/80 font-medium\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var32 string
+		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 280, Col: 76}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div></div></a><!-- Правая часть: Телефон, CTA, Язык, День/Ночь --><div class=\"flex items-center space-x-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if content.Phone1 != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<a href=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "<a href=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var32 string
-			templ_7745c5c3_Var32, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("tel:" + content.Phone1)).ResolveURL(ctx)
+			var templ_7745c5c3_Var33 string
+			templ_7745c5c3_Var33, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("tel:" + content.Phone1)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 287, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 288, Col: 47}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var33)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" class=\"hidden sm:flex items-center gap-1.5 text-xs font-semibold text-on-primary/90 hover:text-accent transition bg-current/5 border border-current/10 px-3 py-1.5 rounded-lg\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" class=\"hidden sm:flex items-center gap-1.5 text-xs font-semibold text-on-primary/90 hover:text-accent transition bg-current/5 border border-current/10 px-3 py-1.5 rounded-lg\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -621,20 +634,20 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "<span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var33 string
-			templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
+			var templ_7745c5c3_Var34 string
+			templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(content.Phone1)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 291, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 292, Col: 28}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</span></a>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</span></a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -643,25 +656,38 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Переключатель День / Ночь --><button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1.5 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Переключить тему\">🌙</button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<!-- Переключатель День / Ночь --><button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1.5 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"Переключить тему\">🌙</button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded border border-current/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded border border-current/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var34 string
-			templ_7745c5c3_Var34, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
+			var templ_7745c5c3_Var35 string
+			templ_7745c5c3_Var35, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 312, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 313, Col: 41}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var34)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var35)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "\" aria-label=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var36 string
+			templ_7745c5c3_Var36, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 314, Col: 46}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var36)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -669,12 +695,12 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</button>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</button>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Var35 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Var37 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
 			if !templ_7745c5c3_IsBuffer {
@@ -690,16 +716,16 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, " ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, " ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var36 string
-			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "btn.book"))
+			var templ_7745c5c3_Var38 string
+			templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "btn.book"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 325, Col: 30}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 327, Col: 30}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -710,11 +736,11 @@ func HeaderMinimal(content models.SiteContent, settings models.SiteSettings) tem
 			Size:    base.BtnSizeSm,
 			Href:    "/#booking",
 			Class:   "text-on-accent text-xs font-bold px-3.5 shadow transition",
-		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var35), templ_7745c5c3_Buffer)
+		}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var37), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</div></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -739,7 +765,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<!-- Header Centered: элегантный центрированный стиль для респектабельных проектов --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><!-- Верхняя строка: Логотип и название по центру --><div class=\"max-w-6xl mx-auto px-4 pt-3 pb-2 flex flex-col items-center justify-center border-b border-current/10\"><a href=\"/\" class=\"flex items-center space-x-2 text-center group\"><div class=\"w-9 h-9 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<!-- Header Centered: элегантный центрированный стиль для респектабельных проектов --><header x-data=\"{ mobileMenuOpen: false }\" class=\"bg-primary text-on-primary sticky top-0 z-40 shadow-lg border-b border-primary-dark\"><div class=\"scroll-progress-bar absolute bottom-0 left-0 right-0 h-[2px] bg-accent z-50 pointer-events-none\"></div><!-- Верхняя строка: Логотип и название по центру --><div class=\"max-w-6xl mx-auto px-4 pt-3 pb-2 flex flex-col items-center justify-center border-b border-current/10\"><a href=\"/\" class=\"flex items-center space-x-2 text-center group\"><div class=\"w-9 h-9 rounded-full bg-primary-dark border border-accent/40 flex items-center justify-center text-accent shadow-inner\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -747,116 +773,90 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div><div class=\"text-left sm:text-center\"><div class=\"text-on-primary font-serif-title font-bold text-lg sm:text-xl tracking-wider leading-tight group-hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var38 string
-		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 347, Col: 163}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "</div><div class=\"text-xs text-accent font-medium tracking-wide\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var39 string
-		templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 348, Col: 83}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</div></div></a></div><!-- Нижняя строка: Центрированная навигация --><div class=\"max-w-6xl mx-auto px-4 py-2 flex justify-between md:justify-center items-center relative\"><nav class=\"hidden md:flex items-center space-x-6 text-sm font-medium\"><a href=\"/#about\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</div><div class=\"text-left sm:text-center\"><div class=\"text-on-primary font-serif-title font-bold text-lg sm:text-xl tracking-wider leading-tight group-hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var40 string
-		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
+		templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(content.HeroTitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 356, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 349, Col: 163}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</a> <a href=\"/#schedule\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</div><div class=\"text-xs text-accent font-medium tracking-wide\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var41 string
-		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule"))
+		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(content.OwnerName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 357, Col: 91}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 350, Col: 83}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</a> <a href=\"/#services\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</div></div></a></div><!-- Нижняя строка: Центрированная навигация --><div class=\"max-w-6xl mx-auto px-4 py-2 flex justify-between md:justify-center items-center relative\"><nav class=\"hidden md:flex items-center space-x-6 text-sm font-medium\"><a href=\"/#about\" class=\"hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var42 string
-		templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services"))
+		templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 358, Col: 91}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 358, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "</a> <a href=\"/#booking\" class=\"hover:text-accent transition font-semibold text-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "</a> <a href=\"/#schedule\" class=\"hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var43 string
-		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
+		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 359, Col: 115}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 359, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "</a> <a href=\"/track\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "</a> <a href=\"/#services\" class=\"hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var44 string
-		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker"))
+		templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 360, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 360, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, "</a> <a href=\"/blog\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, "</a> <a href=\"/#booking\" class=\"hover:text-accent transition font-semibold text-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var45 string
-		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog"))
+		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 361, Col: 82}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 361, Col: 115}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "</a> <a href=\"/#map\" class=\"hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "</a> <a href=\"/track\" class=\"hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var46 string
-		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts"))
+		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker"))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 362, Col: 86}
 		}
@@ -864,7 +864,33 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "</a></nav><!-- Правые служебные кнопки (десктоп: абсолютно справа) --><div class=\"hidden md:flex items-center space-x-2 absolute right-4 top-1/2 -translate-y-1/2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 63, "</a> <a href=\"/blog\" class=\"hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var47 string
+		templ_7745c5c3_Var47, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 363, Col: 82}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var47))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "</a> <a href=\"/#map\" class=\"hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var48 string
+		templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 364, Col: 86}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "</a></nav><!-- Правые служебные кнопки (десктоп: абсолютно справа) --><div class=\"hidden md:flex items-center space-x-2 absolute right-4 top-1/2 -translate-y-1/2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -873,20 +899,33 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 			return templ_7745c5c3_Err
 		}
 		if settings.EnableA11y {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 64, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition cursor-pointer\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "<button type=\"button\" onclick=\"window.A11Y.toggle()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition cursor-pointer\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var47 string
-			templ_7745c5c3_Var47, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
+			var templ_7745c5c3_Var49 string
+			templ_7745c5c3_Var49, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 373, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 375, Col: 41}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var47)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var49)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 65, "\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "\" aria-label=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var50 string
+			templ_7745c5c3_Var50, templ_7745c5c3_Err = templruntime.NewAttributeExpression(i18n.T(ctx, "a11y.version")).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 376, Col: 46}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var50)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -894,12 +933,12 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 66, "</button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "</button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 67, "<button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent transition cursor-pointer\" title=\"Переключить день/ночь\">🌙</button></div><!-- Мобильная кнопка меню --><div class=\"md:hidden flex items-center justify-between w-full\"><div class=\"flex items-center gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, "<button type=\"button\" onclick=\"window.toggleNightMode && window.toggleNightMode()\" class=\"p-1 rounded border border-current/20 text-xs hover:border-accent transition cursor-pointer\" title=\"Переключить день/ночь\" aria-label=\"Переключить тему день/ночь\">🌙</button></div><!-- Мобильная кнопка меню --><div class=\"md:hidden flex items-center justify-between w-full\"><div class=\"flex items-center gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -907,20 +946,20 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 68, "<a href=\"#booking\" class=\"text-xs text-accent font-semibold underline\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 71, "<a href=\"#booking\" class=\"text-xs text-accent font-semibold underline\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var48 string
-		templ_7745c5c3_Var48, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
+		var templ_7745c5c3_Var51 string
+		templ_7745c5c3_Var51, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 392, Col: 104}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 396, Col: 104}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var48))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var51))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 69, "</a></div><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, "</a></div><button type=\"button\" @click=\"mobileMenuOpen = !mobileMenuOpen\" class=\"p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary\" aria-label=\"Меню навигации\"><span x-show=\"!mobileMenuOpen\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -928,7 +967,7 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 70, "</span> <span x-show=\"mobileMenuOpen\" x-cloak>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, "</span> <span x-show=\"mobileMenuOpen\" x-cloak>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -936,98 +975,98 @@ func HeaderCentered(content models.SiteContent, settings models.SiteSettings) te
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 71, "</span></button></div></div><!-- Mobile Menu Drawer (Alpine.js) --><div x-show=\"mobileMenuOpen\" x-cloak class=\"md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-3 space-y-2 text-sm text-center\"><a href=\"/#about\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var49 string
-		templ_7745c5c3_Var49, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 412, Col: 129}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var49))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 72, "</a> <a href=\"/#schedule\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var50 string
-		templ_7745c5c3_Var50, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 413, Col: 140}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var50))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 73, "</a> <a href=\"/#services\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var51 string
-		templ_7745c5c3_Var51, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 414, Col: 140}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var51))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 74, "</a> <a href=\"/#booking\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 text-accent font-semibold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 74, "</span></button></div></div><!-- Mobile Menu Drawer (Alpine.js) --><div x-show=\"mobileMenuOpen\" x-cloak class=\"md:hidden bg-primary-dark/95 backdrop-blur-md border-b border-primary-light px-4 py-3 space-y-2 text-sm text-center\"><a href=\"/#about\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var52 string
-		templ_7745c5c3_Var52, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
+		templ_7745c5c3_Var52, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.about"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 415, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 416, Col: 129}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var52))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "</a> <a href=\"/track\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 75, "</a> <a href=\"/#schedule\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var53 string
-		templ_7745c5c3_Var53, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
+		templ_7745c5c3_Var53, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.schedule_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 416, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 417, Col: 140}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var53))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 76, "</a> <a href=\"/blog\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 76, "</a> <a href=\"/#services\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var54 string
-		templ_7745c5c3_Var54, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
+		templ_7745c5c3_Var54, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.services_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 417, Col: 131}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 418, Col: 140}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var54))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 77, "</a> <a href=\"/#map\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 77, "</a> <a href=\"/#booking\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 text-accent font-semibold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var55 string
-		templ_7745c5c3_Var55, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
+		templ_7745c5c3_Var55, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.booking_full"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 418, Col: 135}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 419, Col: 135}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var55))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 78, "</a></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 78, "</a> <a href=\"/track\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var56 string
+		templ_7745c5c3_Var56, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.tracker_full"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 420, Col: 135}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var56))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 79, "</a> <a href=\"/blog\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var57 string
+		templ_7745c5c3_Var57, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.blog_full"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 421, Col: 131}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var57))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 80, "</a> <a href=\"/#map\" @click=\"mobileMenuOpen = false\" class=\"block py-1.5 hover:text-accent transition\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var58 string
+		templ_7745c5c3_Var58, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "nav.contacts_full"))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/header.templ`, Line: 422, Col: 135}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var58))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 81, "</a></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

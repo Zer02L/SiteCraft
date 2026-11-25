@@ -26,11 +26,11 @@ templ FlipCards(title string, subtitle string, items []FlipCardItem) {
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 [perspective:1200px]">
 			for _, item := range items {
 				<div
-					class="flip-card-container group h-[380px] w-full cursor-pointer focus:outline-none"
+					class="flip-card-container group h-[380px] w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
 					tabindex="0"
 					onclick="this.classList.toggle('flipped')"
 				>
-					<div class="flip-card-inner relative h-full w-full rounded-2xl transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-[.flipped]:[transform:rotateY(180deg)] shadow-sm hover:shadow-xl">
+					<div class="flip-card-inner relative h-full w-full rounded-2xl transition-transform duration-300 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-[.flipped]:[transform:rotateY(180deg)] shadow-sm hover:shadow-xl">
 						<!-- Лицевая сторона (Front) -->
 						<div class="flip-card-front absolute inset-0 h-full w-full rounded-2xl bg-surface border border-surface-muted/60 p-7 flex flex-col justify-between [backface-visibility:hidden] overflow-hidden">
 							if item.FrontImage != "" {

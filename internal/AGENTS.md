@@ -25,7 +25,7 @@ Owns all server-side application logic, data persistence, HTTP routing, real-tim
 - `internal/notifications/` — Async notifications (Telegram Bot relay, CRM webhooks, iCal .ics reminders).
 - `internal/server/` — Root Chi HTTP server, middleware stack (RequestID, RealIP, Slog, Recoverer, Compress, CSRF, UTM, A/B, i18n, 301-redirects), modular admin endpoints (`admin_routes.go`, `admin_auth.go`, `admin_blocks.go`, `admin_articles.go`, `admin_theme.go`, `admin_leads.go`, `admin_importer.go`, `admin_ai.go`, `admin_media.go`, `admin_settings.go`, `admin_reviews.go`, `admin.go`), MCP AI Agent API (`agent_api.go`), route registration, and graceful shutdown.
 - `internal/testutil/` — Test helpers and isolated database test fixtures (`NewTestApp(t)` with in-memory/temp SQLite).
-- `internal/theme/` — Global theme preset switcher and token bridge (Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold).
+- `internal/theme/` — Global theme preset switcher, token bridge (Modern Bright, Luxury Editorial, Dark Premium, Swiss Bold), and image palette extraction engine (`palette.go`) calculating 60-30-10 palettes from uploaded logos and images.
 
 ## Local Contracts
 

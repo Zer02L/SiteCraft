@@ -23,13 +23,13 @@ func (p CardProps) Classes() string {
 	var variant string
 	switch p.Variant {
 	case CardInteractive:
-		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200 hover:shadow-xl hover:border-accent/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 cursor-pointer"
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition duration-200 hover:shadow-xl hover:border-accent/60 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0 cursor-pointer"
 	case CardSm:
-		variant = "bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition-all duration-200"
+		variant = "bg-surface text-content p-4 rounded-card-sm border border-content/10 shadow-xs transition duration-200"
 	case CardMuted:
-		variant = "bg-surface-muted text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200"
+		variant = "bg-surface-muted text-content p-6 rounded-card border border-content/10 shadow-xs transition duration-200"
 	default: // CardBase
-		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition-all duration-200"
+		variant = "bg-surface text-content p-6 rounded-card border border-content/10 shadow-xs transition duration-200"
 	}
 
 	if p.Class == "" {

@@ -26,7 +26,7 @@ templ AdminMediaTab(files []MediaFileItem) {
 			@dragover.prevent="isDragging = true"
 			@dragleave.prevent="isDragging = false"
 			@drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.uploadForm.dispatchEvent(new Event('submit', { cancelable: true }))"
-			class="border-2 border-dashed rounded-2xl p-8 text-center transition-all bg-admin-surface/40"
+			class="border-2 border-dashed rounded-2xl p-8 text-center transition bg-admin-surface/40"
 			:class="isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus'"
 		>
 			<form
@@ -79,7 +79,7 @@ templ AdminMediaTab(files []MediaFileItem) {
 					for _, f := range files {
 						<div
 							x-data="{ copied: false }"
-							class="group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition-all flex flex-col"
+							class="group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition flex flex-col"
 						>
 							<div class="aspect-square bg-admin-bg flex items-center justify-center overflow-hidden">
 								<img

@@ -47,7 +47,7 @@ templ SetupChecklistWidget(result checker.ChecklistResult) {
 		hx-trigger="refreshChecklist from:body"
 		hx-swap="outerHTML"
 		x-data={ fmt.Sprintf("{ open: %t }", result.Percentage < 100) }
-		class="bg-admin-surface border border-admin-border rounded-2xl p-5 sm:p-6 shadow-xs transition-all duration-200"
+		class="bg-admin-surface border border-admin-border rounded-2xl p-5 sm:p-6 shadow-xs transition duration-200"
 	>
 		<!-- Заголовок и процентная шкала -->
 		<div class="flex items-center justify-between gap-4">
@@ -118,7 +118,7 @@ templ SetupChecklistWidget(result checker.ChecklistResult) {
 		<!-- Прогресс-бар -->
 		<div class="mt-4 h-2 w-full bg-admin-surface-muted rounded-full overflow-hidden border border-admin-border/40">
 			<div
-				class={ "h-full rounded-full transition-all duration-500 " + getProgressBarBg(result.Percentage) }
+				class={ "h-full rounded-full transition duration-200 " + getProgressBarBg(result.Percentage) }
 				style={ fmt.Sprintf("width: %d%%", result.Percentage) }
 			></div>
 		</div>

@@ -43,7 +43,7 @@ templ ScrollSvgDraw(title string, subtitle string, milestones []SvgMilestone) {
 				for idx, m := range milestones {
 					<div
 						class={
-							"milestone-item flex items-center w-full gap-8 transition-all duration-500",
+							"milestone-item flex items-center w-full gap-8 transition duration-200",
 							templ.KV("flex-row-reverse md:flex-row-reverse text-right md:text-right", idx%2 != 0),
 							templ.KV("flex-row text-left", idx%2 == 0),
 						}

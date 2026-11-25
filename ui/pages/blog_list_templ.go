@@ -175,7 +175,7 @@ func BlogList(settings models.SiteSettings, content models.SiteContent, articles
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" hx-get=\"/blog\" hx-trigger=\"keyup changed delay:300ms, search\" hx-target=\"#blog-posts-container\" hx-select=\"#blog-posts-container\" hx-push-url=\"true\" class=\"w-full pl-10 pr-4 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm transition\"> <span class=\"w-5 h-5 text-content-muted absolute left-3 top-3 pointer-events-none flex items-center justify-center\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" hx-get=\"/blog\" hx-trigger=\"keyup changed delay:300ms, search\" hx-target=\"#blog-posts-container\" hx-select=\"#blog-posts-container\" hx-push-url=\"true\" class=\"w-full pl-10 pr-4 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus:border-transparent shadow-sm transition\"> <span class=\"w-5 h-5 text-content-muted absolute left-3 top-3 pointer-events-none flex items-center justify-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -82,7 +82,7 @@ templ LeadsToolbar(leads []models.Lead, newCount int, inProgressCount int, doneC
 	</div>
 
 	<!-- 3. Панель быстрого поиска и фильтров по статусам -->
-	<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-admin-surface border border-admin-border rounded-2xl p-2.5 shadow-2xs">
+	<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-admin-surface border border-admin-border rounded-xl p-2.5 shadow-2xs">
 		<div class="relative flex-1 max-w-md">
 			<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-admin-content-muted">
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@ templ LeadsToolbar(leads []models.Lead, newCount int, inProgressCount int, doneC
 				type="text"
 				x-model="search"
 				placeholder="Поиск по имени, номеру телефона, деталям..."
-				class="w-full bg-admin-surface-muted border border-admin-border text-xs text-admin-content placeholder:text-admin-content-subtle rounded-xl pl-9 pr-8 py-2 focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-colors"
+				class="w-full bg-admin-surface-muted border border-admin-border text-xs text-admin-content placeholder:text-admin-content-subtle rounded-xl pl-9 pr-8 py-2 focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition-colors"
 			/>
 			<button
 				type="button"

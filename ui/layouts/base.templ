@@ -129,6 +129,13 @@ templ Base(title string, description string, settings models.SiteSettings, seoOp
 					const savedTheme = localStorage.getItem('sitecraft_theme') || root.getAttribute('data-theme') || 'coral';
 					root.setAttribute('data-theme', savedTheme);
 
+					// Тема панели управления (Dark/Light admin workbench)
+					try {
+						const savedAdminTheme = localStorage.getItem('sitecraft_admin_theme') || 
+							(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+						root.setAttribute('data-admin-theme', savedAdminTheme);
+					} catch(e) {}
+
 					// API Доступности (a11y)
 					window.A11Y = {
 						active: localStorage.getItem('a11y_active') === 'true',

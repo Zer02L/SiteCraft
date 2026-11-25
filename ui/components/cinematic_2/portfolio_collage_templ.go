@@ -227,7 +227,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"pointer-events-auto group px-8 py-4 sm:px-12 sm:py-6 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition-all duration-300 transform hover:scale-110 flex items-center gap-3 text-white focus:outline-none focus:ring-4 focus:ring-accent\" aria-label=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"pointer-events-auto group px-8 py-4 sm:px-12 sm:py-6 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md border border-white/20 hover:border-white/60 shadow-[0_10px_40px_rgba(0,0,0,0.8)] transition duration-300 transform hover:scale-110 flex items-center gap-3 text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-accent\" aria-label=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -261,7 +261,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></a></div><!-- Tilted Multi-Layer Carousel Container --><div class=\"relative w-[130vw] -mx-[15vw] flex flex-col justify-center gap-4 sm:gap-6 pointer-events-auto transition-transform duration-700 ease-out will-change-transform\" :style=\"'transform: rotate(' + rotation + 'deg); transform-origin: center;'\"><!-- Layer 1: Leftward scroll -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div></a></div><!-- Tilted Multi-Layer Carousel Container --><div class=\"relative w-[130vw] -mx-[15vw] flex flex-col justify-center gap-4 sm:gap-6 pointer-events-auto transition-transform duration-300 ease-out will-change-transform\" :style=\"'transform: rotate(' + rotation + 'deg); transform-origin: center;'\"><!-- Layer 1: Leftward scroll -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

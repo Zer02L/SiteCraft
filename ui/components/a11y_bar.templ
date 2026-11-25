@@ -71,7 +71,8 @@ templ A11yBar() {
 					type="button"
 					onclick="window.A11Y.setColorScheme('blue-on-cyan')"
 					data-a11y-btn-theme="blue-on-cyan"
-					class="px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer"
+					class="px-2.5 py-1 text-xs rounded transition cursor-pointer border-2"
+					style="background-color: #c6e2ff; color: #063462; border-color: #063462;"
 					title="Синим по голубому"
 				>
 					{ i18n.T(ctx, "a11y.color_blue") }

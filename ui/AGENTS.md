@@ -16,7 +16,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - `ui/components/icons/` — Self-contained type-safe Lucide SVG icon components compiled via Templ.
 - `ui/components/cinematic_2/` — Screen 1 & Screen 2 components adapted from jhill.com (cinematic video hero and tilted ArtStation marquee collage).
 - `ui/layouts/` — Master templates (`base.templ`) and SEO/meta tag helpers.
-- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin, checklist, importer) and modular admin subpackages (`admin_blocks/`, `admin_articles/`, `admin_leads/`).
+- `ui/pages/` — Top-level page views (home, blog, tracker, shop, invoice, vip, fleet, legal, client admin, checklist, importer) and modular admin subpackages (`admin_blocks/` with visual editor and image palette extractor, `admin_articles/`, `admin_leads/`).
 - `ui/registry/` — Dynamic section registry (`BlockRegistry`), generic payload parser (`ParsePayload[T]`), and block factory pattern (`RenderBlock`).
 - `ui/sections/` — Pre-built section blocks and variants (hero, features, services, booking, quiz, steps, reviews, team, map, faq, etc.).
 - `ui/embed.go` — Embedded asset file system (`//go:embed all:assets`).

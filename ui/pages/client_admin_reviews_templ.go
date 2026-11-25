@@ -46,7 +46,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 		if len(reviews) > 0 {
 			avgScore = float64(totalScore) / float64(len(reviews))
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tfilter: 'all',\n\t\t\treplyModalOpen: false,\n\t\t\tcurrentReview: null,\n\t\t\treplyText: ''\n\t\t}\" class=\"space-y-6\"><!-- Заголовок страницы (Высокий контраст на светлом фоне) --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><h2 class=\"text-xl sm:text-2xl font-bold text-slate-900 tracking-tight\">Модерация отзывов</h2><p class=\"text-xs sm:text-sm text-slate-600 mt-1\">Управление клиентскими отзывами, подтверждение модерации и публикация на витрине</p></div></div><!-- Верхняя сводка KPI (Перенесена из заголовка для чистоты композиции) --><div class=\"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4\"><div class=\"p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500\">Всего отзывов</div><div class=\"text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tfilter: 'all',\n\t\t\treplyModalOpen: false,\n\t\t\tcurrentReview: null,\n\t\t\treplyText: ''\n\t\t}\" class=\"space-y-6\"><!-- Заголовок страницы (Высокий контраст) --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><h2 class=\"text-xl sm:text-2xl font-bold text-admin-content tracking-tight\">Модерация отзывов</h2><p class=\"text-xs sm:text-sm text-admin-content-muted mt-1\">Управление клиентскими отзывами, подтверждение модерации и публикация на витрине</p></div></div><!-- Верхняя сводка KPI --><div class=\"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4\"><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted\">Всего отзывов</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -59,7 +59,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div></div><div class=\"p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-700\"><span class=\"w-2 h-2 rounded-full bg-emerald-500\"></span> Опубликовано</div><div class=\"text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-500\"><span class=\"w-2 h-2 rounded-full bg-emerald-500\"></span> Опубликовано</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -72,7 +72,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><div class=\"p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-amber-700\"><span class=\"w-2 h-2 rounded-full bg-amber-500\"></span> На проверке</div><div class=\"text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-amber-500\"><span class=\"w-2 h-2 rounded-full bg-amber-500\"></span> На проверке</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -85,7 +85,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div class=\"p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500\">Средняя оценка</div><div class=\"text-2xl sm:text-3xl font-bold text-slate-900 mt-1 font-mono flex items-center gap-1.5\"><span class=\"text-amber-400\">★</span> <span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted\">Средняя оценка</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono flex items-center gap-1.5\"><span class=\"text-amber-400\">★</span> <span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -98,17 +98,17 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> <span class=\"text-xs text-slate-400 font-normal font-sans\">/ 5.0</span></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span> <span class=\"text-xs text-admin-content-subtle font-normal font-sans\">/ 5.0</span></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(reviews) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Empty state --> <div class=\"bg-white border border-slate-200 rounded-2xl p-12 text-center shadow-xs\"><div class=\"w-14 h-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4 text-2xl\">★</div><h3 class=\"text-slate-900 font-bold text-lg mb-1.5\">Отзывов пока нет</h3><p class=\"text-xs sm:text-sm text-slate-500 max-w-md mx-auto leading-relaxed\">Клиенты могут оставлять отзывы в трекере заказов или через виджет на сайте. Все новые обращения будут автоматически поступать сюда на проверку.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Empty state --> <div class=\"bg-admin-surface border border-admin-border rounded-2xl p-12 text-center shadow-xs\"><div class=\"w-14 h-14 rounded-2xl bg-admin-surface-muted text-admin-content-subtle flex items-center justify-center mx-auto mb-4 text-2xl\">★</div><h3 class=\"text-admin-content font-bold text-lg mb-1.5\">Отзывов пока нет</h3><p class=\"text-xs sm:text-sm text-admin-content-muted max-w-md mx-auto leading-relaxed\">Клиенты могут оставлять отзывы в трекере заказов или через виджет на сайте. Все новые обращения будут автоматически поступать сюда на проверку.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<!-- Фильтры по статусу (Действия модерации) --> <div class=\"flex items-center justify-between gap-3 flex-wrap\"><div class=\"inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium\"><button type=\"button\" @click=\"filter = 'all'\" :class=\"filter === 'all' ? 'bg-white text-slate-900 font-semibold shadow-2xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3.5 py-1.5 rounded-lg transition-all cursor-pointer\">Все (")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<!-- Фильтры по статусу (Действия модерации) --> <div class=\"flex items-center justify-between gap-3 flex-wrap\"><div class=\"inline-flex items-center p-1 rounded-xl bg-admin-surface-muted border border-admin-border text-xs font-medium\"><button type=\"button\" @click=\"filter = 'all'\" :class=\"filter === 'all' ? 'bg-admin-surface text-admin-content font-semibold shadow-2xs' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3.5 py-1.5 rounded-lg transition cursor-pointer\">Все (")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -121,7 +121,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, ")</button> <button type=\"button\" @click=\"filter = 'published'\" :class=\"filter === 'published' ? 'bg-white text-slate-900 font-semibold shadow-2xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> Опубликованные (")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, ")</button> <button type=\"button\" @click=\"filter = 'published'\" :class=\"filter === 'published' ? 'bg-admin-surface text-admin-content font-semibold shadow-2xs' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> Опубликованные (")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -134,7 +134,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, ")</button> <button type=\"button\" @click=\"filter = 'pending'\" :class=\"filter === 'pending' ? 'bg-white text-slate-900 font-semibold shadow-2xs' : 'text-slate-600 hover:text-slate-900'\" class=\"px-3.5 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5\"><span class=\"w-1.5 h-1.5 rounded-full bg-amber-500\"></span> На проверке (")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, ")</button> <button type=\"button\" @click=\"filter = 'pending'\" :class=\"filter === 'pending' ? 'bg-admin-surface text-admin-content font-semibold shadow-2xs' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3.5 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5\"><span class=\"w-1.5 h-1.5 rounded-full bg-amber-500\"></span> На проверке (")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -147,20 +147,20 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, ")</button></div><div class=\"text-xs text-slate-500\">Показано строк: <span class=\"font-mono font-semibold text-slate-700\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, ")</button></div><div class=\"text-xs text-admin-content-muted\">Показано строк: <span class=\"font-mono font-semibold text-admin-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(reviews)))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 134, Col: 120}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 134, Col: 124}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div><!-- Таблица модерации (Светлый непрозрачный фон, высокий контраст WCAG AA >= 4.5:1) --> <div class=\"bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-sm border-collapse\"><thead class=\"bg-slate-50/90 text-slate-600 uppercase tracking-wider font-semibold border-b border-slate-200 font-mono text-xs\"><tr><th class=\"py-3.5 px-4 font-semibold\">Автор & Дата</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Оценка</th><th class=\"py-3.5 px-4 font-semibold\">Услуга / Заказ</th><th class=\"py-3.5 px-4 font-semibold\">Отзыв</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right whitespace-nowrap\">Действия</th></tr></thead> <tbody class=\"divide-y divide-slate-100 text-slate-800\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div><!-- Таблица модерации --> <div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xs\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-sm border-collapse\"><thead class=\"bg-admin-surface-muted/90 text-admin-content-muted uppercase tracking-wider font-semibold border-b border-admin-border font-mono text-xs\"><tr><th class=\"py-3.5 px-4 font-semibold\">Автор & Дата</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Оценка</th><th class=\"py-3.5 px-4 font-semibold\">Услуга / Заказ</th><th class=\"py-3.5 px-4 font-semibold\">Отзыв</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right whitespace-nowrap\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border text-admin-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -178,7 +178,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\" x-data=\"{ expanded: false }\" class=\"hover:bg-slate-50/80 transition-colors group\" id=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\" x-data=\"{ expanded: false }\" class=\"hover:bg-admin-surface-muted/60 transition-colors group\" id=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -191,7 +191,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"><!-- Автор и дата: высокий контраст, дата не сливается --><td class=\"py-4 px-4 align-top\"><div class=\"font-semibold text-slate-900 text-sm leading-snug\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"><!-- Автор и дата: высокий контраст, дата не сливается --><td class=\"py-4 px-4 align-top\"><div class=\"font-semibold text-admin-content text-sm leading-snug\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -204,7 +204,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"text-xs text-slate-500 font-normal mt-1 flex items-center gap-1.5\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"text-xs text-admin-content-muted font-normal mt-1 flex items-center gap-1.5\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -227,14 +227,14 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span class=\"font-mono text-slate-500\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<span class=\"font-mono text-admin-content-subtle\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(rev.CreatedAt)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 169, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 169, Col: 76}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -251,12 +251,12 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					}
 				}
 				for s := rev.Rating + 1; s <= 5; s++ {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<span class=\"text-slate-200\">★</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<span class=\"text-admin-border\">★</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><span class=\"ml-1 text-xs font-mono font-medium text-slate-600\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div><span class=\"ml-1 text-xs font-mono font-medium text-admin-content-muted\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -274,13 +274,13 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				if rev.ServiceTitle == "" && rev.OrderCode == "" {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<span class=\"text-slate-400 font-medium select-none\">—</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<span class=\"text-admin-content-subtle font-medium select-none\">—</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
 					if rev.ServiceTitle != "" {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"font-medium text-slate-900 text-sm leading-snug\">")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"font-medium text-admin-content text-sm leading-snug\">")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -303,7 +303,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 						return templ_7745c5c3_Err
 					}
 					if rev.OrderCode != "" {
-						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<span class=\"inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-slate-100 text-slate-700 border border-slate-200\">✓ Заказ #")
+						templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<span class=\"inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border\">✓ Заказ #")
 						if templ_7745c5c3_Err != nil {
 							return templ_7745c5c3_Err
 						}
@@ -335,7 +335,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\"><p :class=\"expanded ? '' : 'line-clamp-2'\" class=\"text-slate-700 text-sm leading-relaxed transition-all\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\"><p :class=\"expanded ? '' : 'line-clamp-2'\" class=\"text-admin-content text-sm leading-relaxed transition\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -353,7 +353,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				if len(rev.Comment) > 75 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<button type=\"button\" class=\"text-xs text-blue-600 hover:text-blue-800 font-medium mt-1.5 inline-flex items-center gap-1 cursor-pointer\"><span x-text=\"expanded ? 'Свернуть' : 'Читать полностью'\"></span> <svg :class=\"expanded ? 'rotate-180' : ''\" class=\"w-3 h-3 transition-transform\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<button type=\"button\" class=\"text-xs text-admin-accent hover:underline font-medium mt-1.5 inline-flex items-center gap-1 cursor-pointer\"><span x-text=\"expanded ? 'Свернуть' : 'Читать полностью'\"></span> <svg :class=\"expanded ? 'rotate-180' : ''\" class=\"w-3 h-3 transition-transform\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -376,12 +376,12 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				if rev.IsPublished {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-600\"></span> <span>Опубликован</span></span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/25\"><span class=\"w-1.5 h-1.5 rounded-full bg-emerald-500\"></span> <span>Опубликован</span></span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-200\"><span class=\"w-1.5 h-1.5 rounded-full bg-amber-600\"></span> <span>На проверке</span></span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 border border-amber-500/25\"><span class=\"w-1.5 h-1.5 rounded-full bg-amber-500\"></span> <span>На проверке</span></span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -404,7 +404,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-medium text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Снять отзыв с витрины\"><svg class=\"w-3.5 h-3.5 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыть</span></button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-2.5 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content font-medium text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Снять отзыв с витрины\"><svg class=\"w-3.5 h-3.5 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыть</span></button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -422,7 +422,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-2.5 py-1.5 rounded-lg border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Опубликовать отзыв на сайте\"><svg class=\"w-3.5 h-3.5 text-emerald-600\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Опубликовать</span></button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-2.5 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 font-semibold text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Опубликовать отзыв на сайте\"><svg class=\"w-3.5 h-3.5 text-emerald-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Опубликовать</span></button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -440,7 +440,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" class=\"px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-medium text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Написать официальный ответ на отзыв\"><svg class=\"w-3.5 h-3.5 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6\"></path></svg> <span>Ответить</span></button><!-- Кнопка 'Удалить' с подтверждением и видимой контрастной иконкой --><button type=\"button\" hx-post=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" class=\"px-2.5 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content font-medium text-xs transition-colors shadow-2xs inline-flex items-center gap-1 cursor-pointer\" title=\"Написать официальный ответ на отзыв\"><svg class=\"w-3.5 h-3.5 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6\"></path></svg> <span>Ответить</span></button><!-- Кнопка 'Удалить' с подтверждением и видимой контрастной иконкой --><button type=\"button\" hx-post=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -453,7 +453,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" hx-confirm=\"Удалить этот отзыв безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"p-1.5 rounded-lg border border-slate-200 hover:border-red-200 text-slate-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer\" title=\"Удалить отзыв\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></div></td></tr>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" hx-confirm=\"Удалить этот отзыв безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"p-1.5 rounded-lg border border-admin-border hover:border-admin-danger/30 text-admin-content-subtle hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\" title=\"Удалить отзыв\" aria-label=\"Удалить отзыв\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></div></td></tr>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -463,7 +463,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Модальное окно 'Ответить на отзыв' --><div x-show=\"replyModalOpen\" x-cloak class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs transition-opacity\"><div @click.away=\"replyModalOpen = false\" class=\"bg-white rounded-2xl border border-slate-200 shadow-xl max-w-lg w-full p-6 text-left\"><div class=\"flex items-center justify-between pb-3 border-b border-slate-100\"><div><h3 class=\"text-base font-bold text-slate-900\">Ответ на отзыв</h3><p class=\"text-xs text-slate-500 mt-0.5\">Клиент: <span class=\"font-semibold text-slate-800\" x-text=\"currentReview ? currentReview.author : ''\"></span></p></div><button type=\"button\" @click=\"replyModalOpen = false\" class=\"text-slate-400 hover:text-slate-600 p-1 rounded-lg\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><form :action=\"'/admin/reviews/' + (currentReview ? currentReview.id : '') + '/reply'\" method=\"POST\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" @submit=\"replyModalOpen = false\" class=\"mt-4 space-y-4\"><div><label class=\"block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5\">Текст официального ответа</label> <textarea name=\"reply\" x-model=\"replyText\" rows=\"4\" required placeholder=\"Здравствуйте! Благодарим за ваш отзыв...\" class=\"w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y\"></textarea><p class=\"text-[11px] text-slate-500 mt-1\">Ответ будет отображаться под отзывом клиента на сайте и в карточке заказа.</p></div><div class=\"flex items-center justify-end gap-2.5 pt-2 border-t border-slate-100\"><button type=\"button\" @click=\"replyModalOpen = false\" class=\"px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors shadow-2xs cursor-pointer\">Сохранить и отправить ответ</button></div></form></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Модальное окно 'Ответить на отзыв' --><div x-show=\"replyModalOpen\" x-cloak class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity\"><div @click.away=\"replyModalOpen = false\" class=\"bg-admin-surface rounded-2xl border border-admin-border shadow-xl max-w-lg w-full p-6 text-left\"><div class=\"flex items-center justify-between pb-3 border-b border-admin-border\"><div><h3 class=\"text-base font-bold text-admin-content\">Ответ на отзыв</h3><p class=\"text-xs text-admin-content-muted mt-0.5\">Клиент: <span class=\"font-semibold text-admin-content\" x-text=\"currentReview ? currentReview.author : ''\"></span></p></div><button type=\"button\" @click=\"replyModalOpen = false\" class=\"text-admin-content-subtle hover:text-admin-content p-1 rounded-lg\" aria-label=\"Закрыть\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><form :action=\"'/admin/reviews/' + (currentReview ? currentReview.id : '') + '/reply'\" method=\"POST\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" @submit=\"replyModalOpen = false\" class=\"mt-4 space-y-4\"><div><label class=\"block text-xs font-semibold text-admin-content-muted uppercase tracking-wider mb-1.5\">Текст официального ответа</label> <textarea name=\"reply\" x-model=\"replyText\" rows=\"4\" required placeholder=\"Здравствуйте! Благодарим за ваш отзыв...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-sm text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent resize-y\"></textarea><p class=\"text-[11px] text-admin-content-subtle mt-1\">Ответ будет отображаться под отзывом клиента на сайте и в карточке заказа.</p></div><div class=\"flex items-center justify-end gap-2.5 pt-2 border-t border-admin-border\"><button type=\"button\" @click=\"replyModalOpen = false\" class=\"px-4 py-2 rounded-xl border border-admin-border text-xs font-semibold text-admin-content-muted hover:bg-admin-surface-muted transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold transition-colors shadow-2xs cursor-pointer\">Сохранить и отправить ответ</button></div></form></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

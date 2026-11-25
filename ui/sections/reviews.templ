@@ -197,7 +197,7 @@ templ Reviews(theme string, customReviews ...[]models.ReviewItem) {
 									<button
 										type="button"
 										@click="rating = star"
-										class="text-lg transition focus:outline-none cursor-pointer"
+										class="text-lg transition focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary"
 										:class="star <= rating ? 'text-accent' : 'text-content/20'"
 									>
 										★

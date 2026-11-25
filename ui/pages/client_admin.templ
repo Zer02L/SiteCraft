@@ -8,10 +8,61 @@ import (
 	"sitecraft/ui/layouts"
 )
 
+templ AdminThemeToggle(extraClass ...string) {
+	{{
+		cls := "px-2.5 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs text-admin-content-muted hover:text-admin-content transition-colors flex items-center gap-1.5 font-medium shadow-2xs cursor-pointer select-none"
+		if len(extraClass) > 0 {
+			cls += " " + extraClass[0]
+		}
+	}}
+	<button
+		type="button"
+		x-data="{
+			theme: document.documentElement.getAttribute('data-admin-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
+			toggle() {
+				this.theme = this.theme === 'dark' ? 'light' : 'dark';
+				document.documentElement.setAttribute('data-admin-theme', this.theme);
+				try {
+					localStorage.setItem('sitecraft_admin_theme', this.theme);
+					document.cookie = 'sitecraft_admin_theme=' + this.theme + '; path=/; max-age=31536000; SameSite=Lax';
+				} catch(e) {}
+				window.dispatchEvent(new CustomEvent('admin-theme-changed', { detail: { theme: this.theme } }));
+			}
+		}"
+		@click="toggle()"
+		@admin-theme-changed.window="theme = $event.detail.theme"
+		class={ cls }
+		:title="theme === 'dark' ? 'Переключить на светлую тему' : 'Переключить на темную тему'"
+		:aria-label="theme === 'dark' ? 'Переключить на светлую тему' : 'Переключить на темную тему'"
+	>
+		<!-- Луна (когда светлая тема, предлагаем включить тёмную) -->
+		<template x-if="theme !== 'dark'">
+			<span class="inline-flex items-center gap-1.5">
+				<svg class="w-4 h-4 text-admin-content-muted transition-transform group-hover:-rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+				</svg>
+				<span class="hidden sm:inline">Темная</span>
+			</span>
+		</template>
+		<!-- Солнце (когда тёмная тема, предлагаем включить светлую) -->
+		<template x-if="theme === 'dark'">
+			<span class="inline-flex items-center gap-1.5">
+				<svg class="w-4 h-4 text-amber-400 transition-transform group-hover:rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+				</svg>
+				<span class="hidden sm:inline">Светлая</span>
+			</span>
+		</template>
+	</button>
+}
+
 templ ClientLogin(settings models.SiteSettings, errMsg string) {
 	@layouts.Base("Вход в панель управления — "+settings.SiteName, "Авторизация в клиентской панели", settings) {
 		<link rel="stylesheet" href="/assets/admin.css"/>
-		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12">
+		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12 relative">
+			<div class="absolute top-4 right-4 sm:top-6 sm:right-6">
+				@AdminThemeToggle()
+			</div>
 			<div class="w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
 				<div class="text-center mb-8">
 					<div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent mb-4">
@@ -41,13 +92,13 @@ templ ClientLogin(settings models.SiteSettings, errMsg string) {
 							required
 							autofocus
 							placeholder="Введите мастер-пароль..."
-							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus:ring-2 focus:ring-admin-border-focus focus:border-transparent transition-colors"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent transition-colors"
 						/>
 					</div>
 
 					<button
 						type="submit"
-						class="w-full py-2.5 px-4 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-sm transition-all shadow-sm active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						class="w-full py-2.5 px-4 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-sm transition shadow-sm active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					>
 						<span>Войти в консоль</span>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +123,10 @@ templ ClientLogin(settings models.SiteSettings, errMsg string) {
 templ ClientInitialSetup(settings models.SiteSettings, errMsg string) {
 	@layouts.Base("Первоначальная настройка — "+settings.SiteName, "Установка пароля администратора", settings) {
 		<link rel="stylesheet" href="/assets/admin.css"/>
-		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12">
+		<div class="min-h-screen flex items-center justify-center bg-admin-bg px-4 py-12 relative">
+			<div class="absolute top-4 right-4 sm:top-6 sm:right-6">
+				@AdminThemeToggle()
+			</div>
 			<div class="w-full max-w-md bg-admin-surface border border-admin-border rounded-2xl shadow-2xl p-8 backdrop-blur-sm">
 				<div class="text-center mb-8">
 					<div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-admin-success-muted border border-admin-success/25 text-admin-success mb-4">
@@ -103,7 +157,7 @@ templ ClientInitialSetup(settings models.SiteSettings, errMsg string) {
 							autofocus
 							minlength="8"
 							placeholder="Не менее 8 символов..."
-							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus:ring-2 focus:ring-admin-border-focus focus:border-transparent transition-colors"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent transition-colors"
 						/>
 						<p class="mt-1 text-[11px] font-mono text-admin-content-subtle">Минимум 8 знаков</p>
 					</div>
@@ -116,13 +170,13 @@ templ ClientInitialSetup(settings models.SiteSettings, errMsg string) {
 							required
 							minlength="8"
 							placeholder="Повторите ввод пароля..."
-							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus:ring-2 focus:ring-admin-border-focus focus:border-transparent transition-colors"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent transition-colors"
 						/>
 					</div>
 
 					<button
 						type="submit"
-						class="w-full py-2.5 px-4 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-sm transition-all shadow-sm active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						class="w-full py-2.5 px-4 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-sm transition shadow-sm active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					>
 						<span>Сохранить и войти</span>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -257,7 +311,9 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 			newLeads, inProgressLeads := countLeadsByStatus(leads)
 		}}
 		<div
-			x-data={ fmt.Sprintf("{ currentTab: '%s', focusMode: false }", initialTab) }
+			x-data={ fmt.Sprintf("{ currentTab: '%s', focusMode: false, sidebarCompact: false, toggleSidebar() { this.sidebarCompact = !this.sidebarCompact; try { localStorage.setItem('sitecraft_admin_sidebar_compact', this.sidebarCompact); } catch(e) {} } }", initialTab) }
+			x-init="try { const saved = localStorage.getItem('sitecraft_admin_sidebar_compact'); if (saved !== null) { sidebarCompact = (saved === 'true'); } else if (currentTab === 'blocks' || currentTab === 'editor') { sidebarCompact = true; } } catch(e) {}"
+			@toggle-sidebar.window="toggleSidebar()"
 			@popstate.window="currentTab = (new URLSearchParams(window.location.search)).get('tab') || 'leads'"
 			@toggle-focus-mode.window="focusMode = !focusMode"
 			@exit-focus-mode.window="focusMode = false"
@@ -268,7 +324,7 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 			<!-- Верхний командный бар (Header) - скрывается в режиме Focus Mode -->
 			<header
 				x-show="!focusMode"
-				class="border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40 transition-all duration-200"
+				class="border-b border-admin-border bg-admin-header backdrop-blur-md sticky top-0 z-40 transition duration-200"
 			>
 				<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
 					<div class="flex items-center gap-3">
@@ -282,6 +338,7 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 					</div>
 
 					<div class="flex items-center gap-2.5">
+						@AdminThemeToggle()
 						<a href="/" target="_blank" class="px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs text-admin-content-muted hover:text-admin-content transition-colors flex items-center gap-1.5 font-medium shadow-2xs">
 							<span>Открыть сайт</span>
 							<svg class="w-3.5 h-3.5 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -311,7 +368,7 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 								});
 								history.pushState(null, '', '/client?tab=' + currentTab);
 							"
-							class="w-full bg-admin-surface border border-admin-border text-admin-content text-xs sm:text-sm rounded-xl px-3.5 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-admin-border-focus appearance-none font-medium cursor-pointer"
+							class="w-full bg-admin-surface border border-admin-border text-admin-content text-xs sm:text-sm rounded-xl px-3.5 py-2 pr-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus appearance-none font-medium cursor-pointer"
 						>
 							for _, mod := range modules {
 								<option value={ mod.ID } selected?={ mod.ID == initialTab }>
@@ -335,7 +392,7 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 			<div
 				x-show="focusMode"
 				x-cloak
-				class="sticky top-0 z-40 bg-admin-surface/95 backdrop-blur-md border-b border-admin-border px-4 sm:px-8 py-2.5 flex items-center justify-between shadow-xs transition-all duration-200"
+				class="sticky top-0 z-40 bg-admin-surface/95 backdrop-blur-md border-b border-admin-border px-4 sm:px-8 py-2.5 flex items-center justify-between shadow-xs transition duration-200"
 			>
 				<div class="flex items-center gap-3">
 					<div class="w-7 h-7 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold text-xs font-mono shadow-2xs">
@@ -347,11 +404,12 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 					</div>
 				</div>
 				<div class="flex items-center gap-3">
+					@AdminThemeToggle()
 					<span class="text-[11px] font-mono text-admin-content-subtle hidden md:inline">Нажмите Esc для выхода</span>
 					<button
 						type="button"
 						@click="focusMode = false"
-						class="px-3 py-1.5 rounded-lg bg-admin-surface-muted hover:bg-admin-surface border border-admin-border text-admin-content-muted hover:text-admin-content text-xs font-medium transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+						class="px-3 py-1.5 rounded-lg bg-admin-surface-muted hover:bg-admin-surface border border-admin-border text-admin-content-muted hover:text-admin-content text-xs font-medium transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
 					>
 						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -365,23 +423,42 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 			<div
 				:class="{
 					'max-w-4xl mx-auto py-6 sm:py-8': focusMode,
-					'max-w-[1720px]': !focusMode && (currentTab === 'blocks' || currentTab === 'editor'),
-					'max-w-7xl': !focusMode && currentTab !== 'blocks' && currentTab !== 'editor'
+					'max-w-[1720px]': !focusMode && (currentTab === 'blocks' || currentTab === 'editor' || sidebarCompact),
+					'max-w-7xl': !focusMode && currentTab !== 'blocks' && currentTab !== 'editor' && !sidebarCompact
 				}"
-				class="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start transition-all duration-200"
+				class="flex-1 w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 flex flex-col md:flex-row gap-6 lg:gap-8 items-start"
 			>
 				<!-- Левый вертикальный сайдбар навигации (Desktop / Tablet >= md) - скрывается в Focus Mode -->
 				<aside
 					x-show="!focusMode"
-					:class="(currentTab === 'blocks' || currentTab === 'editor') ? 'w-16' : 'w-72 lg:w-80'"
-					class="hidden md:block shrink-0 transition-all duration-200"
+					:class="sidebarCompact ? 'w-16' : 'w-72 lg:w-80'"
+					class="hidden md:block shrink-0"
 				>
-					<nav class="sticky top-24 bg-admin-sidebar/95 border border-admin-border rounded-2xl p-2 backdrop-blur-md shadow-xs space-y-1" aria-label="Вкладки кабинета">
+					<nav class="sticky top-24 bg-admin-sidebar/95 border border-admin-border rounded-xl p-2 backdrop-blur-md shadow-xs space-y-1 transition-colors duration-200" aria-label="Вкладки кабинета">
 						<div
-							x-show="currentTab !== 'blocks' && currentTab !== 'editor'"
-							class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle px-3 py-1.5 mb-1"
+							class="flex items-center gap-1 px-2 py-1 mb-1 border-b border-admin-border/50 pb-2"
+							:class="{ 'justify-center !p-1': sidebarCompact, 'justify-between': !sidebarCompact }"
 						>
-							Разделы кабинета
+							<span
+								x-show="!sidebarCompact"
+								class="text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle px-1 select-none truncate"
+							>
+								Разделы кабинета
+							</span>
+							<button
+								type="button"
+								@click="toggleSidebar()"
+								:title="sidebarCompact ? 'Развернуть меню (полный вид)' : 'Свернуть меню (компактный вид)'"
+								:aria-label="sidebarCompact ? 'Развернуть меню' : 'Свернуть меню'"
+								class="p-1.5 rounded-lg text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer flex items-center justify-center shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+								:class="{ 'w-full': sidebarCompact }"
+							>
+								<svg class="w-4 h-4 transition-transform duration-200" :class="{ 'rotate-180': sidebarCompact }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<rect width="18" height="18" x="3" y="3" rx="2" stroke-width="2"></rect>
+									<path stroke-width="2" d="M9 3v18"></path>
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 15l-3-3 3-3"></path>
+								</svg>
+							</button>
 						</div>
 
 						for _, mod := range modules {
@@ -393,24 +470,46 @@ templ ClientDashboard(settings models.SiteSettings, content models.SiteContent, 
 								hx-push-url={ "/client?tab=" + mod.ID }
 								@click={ "currentTab = '" + mod.ID + "'" }
 								title={ mod.Title }
-								:class={ fmt.Sprintf("{ 'bg-admin-surface-active text-admin-content font-semibold border-transparent shadow-2xs relative before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-admin-accent before:rounded-r-full': currentTab === '%s', 'border-transparent text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted/50': currentTab !== '%s' }", mod.ID, mod.ID) }
-								class="w-full px-3 py-2.5 rounded-xl text-xs sm:text-sm border flex items-center justify-between gap-2.5 transition-colors cursor-pointer text-left focus:outline-none"
+								:class={ fmt.Sprintf("{ 'bg-admin-surface-active text-admin-content font-semibold border-transparent shadow-2xs before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-admin-accent before:rounded-r-full': currentTab === '%s', 'border-transparent text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted/50': currentTab !== '%s', 'justify-center !px-0': sidebarCompact, 'justify-between px-3 gap-2.5': !sidebarCompact }", mod.ID, mod.ID) }
+								class="w-full relative py-2.5 rounded-xl text-xs sm:text-sm border flex items-center transition-colors cursor-pointer text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
 							>
-								<div class="flex items-center gap-2.5 min-w-0">
+								<div class="flex items-center gap-2.5 min-w-0" :class="{ 'justify-center': sidebarCompact }">
 									@AdminTabIcon(mod.ID)
-									<span class="truncate" x-show="currentTab !== 'blocks' && currentTab !== 'editor'">{ mod.Title }</span>
+									<span class="truncate" x-show="!sidebarCompact">{ mod.Title }</span>
 								</div>
 								if mod.ID == "leads" {
-									<div x-show="currentTab !== 'blocks' && currentTab !== 'editor'">
+									<div x-show="!sidebarCompact">
 										@LeadsBadges(newLeads, inProgressLeads, mod.BadgeCount)
 									</div>
+									if newLeads > 0 || mod.BadgeCount > 0 {
+										<span x-show="sidebarCompact" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-admin-danger ring-2 ring-admin-sidebar"></span>
+									}
 								} else if mod.BadgeCount > 0 {
-									<span x-show="currentTab !== 'blocks' && currentTab !== 'editor'" class={ "px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border " + mod.BadgeClass }>
+									<span x-show="!sidebarCompact" class={ "px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border " + mod.BadgeClass }>
 										{ fmt.Sprintf("%d", mod.BadgeCount) }
 									</span>
+									<span x-show="sidebarCompact" class="absolute top-2 right-2 w-2 h-2 rounded-full bg-admin-accent ring-2 ring-admin-sidebar"></span>
 								}
 							</button>
 						}
+
+						<div class="pt-1.5 mt-1 border-t border-admin-border/50">
+							<button
+								type="button"
+								@click="toggleSidebar()"
+								:title="sidebarCompact ? 'Развернуть меню (полный вид)' : 'Свернуть меню (компактный вид)'"
+								:aria-label="sidebarCompact ? 'Развернуть меню' : 'Свернуть меню'"
+								class="w-full py-2 rounded-xl text-xs text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors flex items-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+								:class="{ 'justify-center !px-0': sidebarCompact, 'justify-start px-3 gap-2.5': !sidebarCompact }"
+							>
+								<svg class="w-4 h-4 shrink-0 transition-transform duration-200" :class="{ 'rotate-180': sidebarCompact }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path>
+								</svg>
+								<span x-show="!sidebarCompact" class="truncate font-medium">
+									Компактный вид
+								</span>
+							</button>
+						</div>
 					</nav>
 				</aside>
 

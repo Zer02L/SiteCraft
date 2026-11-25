@@ -50,7 +50,7 @@ func DockNav(items []DockNavItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"dock-item group relative flex flex-col items-center origin-bottom transition-all duration-100 ease-out\" style=\"width: 48px; height: 48px;\"><!-- Всплывающая подсказка над иконкой --><span class=\"pointer-events-none absolute -top-9 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded-md text-[11px] font-semibold bg-zinc-900 text-white shadow-md whitespace-nowrap\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" class=\"dock-item group relative flex flex-col items-center origin-bottom transition duration-100 ease-out\" style=\"width: 48px; height: 48px;\"><!-- Всплывающая подсказка над иконкой --><span class=\"pointer-events-none absolute -top-9 opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1 rounded-md text-[11px] font-semibold bg-zinc-900 text-white shadow-md whitespace-nowrap\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

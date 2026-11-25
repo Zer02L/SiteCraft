@@ -167,7 +167,7 @@ func FlatTo3D(props FlatTo3DProps) templ.Component {
 			}
 			templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "><!-- 100svh Sticky Viewport Scene --><div class=\"sticky top-0 h-screen w-full overflow-hidden select-none bg-surface\"><!-- Canvas для OGL WebGL --><canvas x-ref=\"canvas\" class=\"absolute inset-0 h-full w-full block transition-opacity duration-700\" :class=\"{ 'opacity-0 pointer-events-none': reducedMotion }\" aria-hidden=\"true\"></canvas><!-- Чертежная CAD-рамка в архитектурном стиле --><div class=\"pointer-events-none absolute inset-3 sm:inset-6 border border-content/15 flex flex-col justify-between p-3 sm:p-6\"><!-- Верхний статус-бар чертежа --><div class=\"flex justify-between items-start font-mono text-[11px] sm:text-xs\"><div class=\"space-y-0.5\"><div class=\"flex items-center space-x-2\"><span class=\"w-2 h-2 rounded-full bg-accent animate-pulse\"></span> <span class=\"font-bold tracking-widest uppercase\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "><!-- 100svh Sticky Viewport Scene --><div class=\"sticky top-0 h-screen w-full overflow-hidden select-none bg-surface\"><!-- Canvas для OGL WebGL --><canvas x-ref=\"canvas\" class=\"absolute inset-0 h-full w-full block transition-opacity duration-300\" :class=\"{ 'opacity-0 pointer-events-none': reducedMotion }\" aria-hidden=\"true\"></canvas><!-- Чертежная CAD-рамка в архитектурном стиле --><div class=\"pointer-events-none absolute inset-3 sm:inset-6 border border-content/15 flex flex-col justify-between p-3 sm:p-6\"><!-- Верхний статус-бар чертежа --><div class=\"flex justify-between items-start font-mono text-[11px] sm:text-xs\"><div class=\"space-y-0.5\"><div class=\"flex items-center space-x-2\"><span class=\"w-2 h-2 rounded-full bg-accent animate-pulse\"></span> <span class=\"font-bold tracking-widest uppercase\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -198,7 +198,7 @@ func FlatTo3D(props FlatTo3DProps) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for i, layer := range props.Layers {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"p-3.5 sm:p-4 rounded-xl border backdrop-blur-md transition-all duration-300 pointer-events-auto cursor-pointer\" :class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"p-3.5 sm:p-4 rounded-xl border backdrop-blur-md transition duration-300 pointer-events-auto cursor-pointer\" :class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

@@ -208,7 +208,7 @@ func Hero(content models.SiteContent) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" class=\"w-full h-auto object-cover grayscale hover:grayscale-0 transition duration-500\"><div class=\"mt-3 pt-2 border-t border-content/10 text-left\"><div class=\"text-xs font-semibold text-content\">Официальный приём</div><div class=\"text-xs text-content-muted mt-0.5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" class=\"w-full h-auto object-cover grayscale hover:grayscale-0 transition duration-200\"><div class=\"mt-3 pt-2 border-t border-content/10 text-left\"><div class=\"text-xs font-semibold text-content\">Официальный приём</div><div class=\"text-xs text-content-muted mt-0.5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

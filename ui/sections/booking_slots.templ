@@ -361,7 +361,7 @@ templ BookingSlots(content models.SiteContent, bookedSlots map[string][]string, 
 							type="checkbox"
 							name="consent"
 							x-model="agreeConsent"
-							class="mt-0.5 border-content/20 text-primary focus:ring-accent"
+							class="mt-0.5 border-content/20 text-primary focus-visible:ring-accent"
 						/>
 						<span class="text-xs text-content-muted leading-snug">
 							{ i18n.T(ctx, "booking.consent_text") } *

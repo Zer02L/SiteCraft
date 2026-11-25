@@ -101,7 +101,7 @@ func AccordionSlider(title string, subtitle string, strips []AccordionStrip) tem
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 = []any{"group relative flex-1 hover:flex-[3.5] active:flex-[3.5] transition-[flex] duration-500 ease-out rounded-2xl overflow-hidden cursor-pointer border border-surface-muted/60 bg-surface shadow-md",
+				var templ_7745c5c3_Var4 = []any{"group relative flex-1 hover:flex-[3.5] active:flex-[3.5] transition-[flex] duration-200 ease-out rounded-2xl overflow-hidden cursor-pointer border border-surface-muted/60 bg-surface shadow-md",
 					templ.KV("md:flex-[2]", idx == 0),
 				}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var4...)
@@ -131,7 +131,7 @@ func AccordionSlider(title string, subtitle string, strips []AccordionStrip) tem
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "><!-- Фоновое изображение или градиент --><div class=\"absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105\" style=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "><!-- Фоновое изображение или градиент --><div class=\"absolute inset-0 bg-cover bg-center transition-transform duration-300 ease-out group-hover:scale-105\" style=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -183,7 +183,7 @@ func AccordionSlider(title string, subtitle string, strips []AccordionStrip) tem
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</h3><!-- Развернутое описание (появляется при наведении/раскрытии) --><div class=\"max-h-0 opacity-0 group-hover:max-h-36 group-hover:opacity-100 transition-all duration-500 overflow-hidden\"><p class=\"text-sm text-white/80 leading-relaxed mb-4 pt-2\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</h3><!-- Развернутое описание (появляется при наведении/раскрытии) --><div class=\"max-h-0 opacity-0 group-hover:max-h-36 group-hover:opacity-100 transition duration-200 overflow-hidden\"><p class=\"text-sm text-white/80 leading-relaxed mb-4 pt-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

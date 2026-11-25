@@ -163,6 +163,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 					type="button"
 					x-on:click="createModal = false"
 					class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg"
+					aria-label="Закрыть"
 				>
 					@icons.X(templ.Attributes{"class": "w-5 h-5"})
 				</button>
@@ -194,7 +195,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 							required
 							pattern="[a-z0-9_-]+"
 							placeholder="auto-master"
-							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary"
 						/>
 						<p class="text-[10px] text-slate-500 mt-0.5">Только строчные латинские буквы, цифры и дефис</p>
 					</div>
@@ -204,7 +205,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 							<label class="block text-xs font-semibold text-slate-400 mb-1">Нишевый пресет</label>
 							<select
 								name="preset"
-								class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+								class="w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary"
 							>
 								<option value="legal">Юрист / Нотариус</option>
 								<option value="medical">Медицина / Стоматология</option>
@@ -220,7 +221,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 								name="port"
 								value="8091"
 								required
-								class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400"
+								class="w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary"
 							/>
 						</div>
 					</div>
@@ -305,6 +306,7 @@ templ FleetSiteRow(site models.FleetSite) {
 							type="submit"
 							class="p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer"
 							title="Остановить"
+							aria-label="Остановить инстанс"
 						>
 							@icons.Square(templ.Attributes{"class": "w-4 h-4"})
 						</button>
@@ -316,6 +318,7 @@ templ FleetSiteRow(site models.FleetSite) {
 							type="submit"
 							class="p-1.5 rounded-lg bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 transition cursor-pointer"
 							title="Перезапустить"
+							aria-label="Перезапустить инстанс"
 						>
 							@icons.RefreshCw(templ.Attributes{"class": "w-4 h-4"})
 						</button>
@@ -328,6 +331,7 @@ templ FleetSiteRow(site models.FleetSite) {
 							type="submit"
 							class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer"
 							title="Запустить"
+							aria-label="Запустить инстанс"
 						>
 							@icons.Play(templ.Attributes{"class": "w-4 h-4"})
 						</button>
@@ -341,6 +345,7 @@ templ FleetSiteRow(site models.FleetSite) {
 						type="submit"
 						class="p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer"
 						title="Сделать бэкап"
+						aria-label="Создать бэкап инстанса"
 					>
 						@icons.Archive(templ.Attributes{"class": "w-4 h-4"})
 					</button>

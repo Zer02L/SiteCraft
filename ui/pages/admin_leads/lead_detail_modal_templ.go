@@ -96,14 +96,14 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</h3><div class=\"text-xs text-admin-content-muted mt-0.5 font-mono\">Карточка обращения</div></div></div><button type=\"button\" @click=\"activeLeadID = null\" class=\"p-2 rounded-xl text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer\" title=\"Закрыть\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><!-- Drawer Body --><div class=\"flex-1 overflow-y-auto p-6 space-y-5\"><!-- 1. Быстрые контакты --><div class=\"bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-3\"><div class=\"text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted\">Контакты клиента</div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-mono text-admin-content font-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</h3><div class=\"text-xs text-admin-content-muted mt-0.5 font-mono\">Карточка обращения</div></div></div><button type=\"button\" @click=\"activeLeadID = null\" class=\"p-2 rounded-xl text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer\" title=\"Закрыть\" aria-label=\"Закрыть\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><!-- Drawer Body --><div class=\"flex-1 overflow-y-auto p-6 space-y-5\"><!-- 1. Быстрые контакты --><div class=\"bg-admin-surface-muted/50 border border-admin-border rounded-2xl p-4 space-y-3\"><div class=\"text-[10px] font-mono font-semibold uppercase tracking-wider text-admin-content-muted\">Контакты клиента</div><div class=\"flex items-center justify-between\"><span class=\"text-sm font-mono text-admin-content font-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(FormatPhoneMask(lead.Phone))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 72, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 73, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -116,7 +116,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("copyText('%s', '%s')", lead.Phone, lead.ID)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 76, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 77, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -129,7 +129,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("copiedPhone === '%s' ? 'Скопировано!' : 'Копировать'", lead.ID)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 79, Col: 123}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 80, Col: 123}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 		if templ_7745c5c3_Err != nil {
@@ -142,7 +142,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("tel:" + lead.Phone)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 82, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 83, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 		if templ_7745c5c3_Err != nil {
@@ -160,7 +160,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(lead.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 91, Col: 69}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 92, Col: 69}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -173,7 +173,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("mailto:" + lead.Email)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 93, Col: 55}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 94, Col: 55}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
 			if templ_7745c5c3_Err != nil {
@@ -192,7 +192,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("https://wa.me/" + FormatWhatsAppPhone(lead.Phone))).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 102, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 103, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
@@ -215,7 +215,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(lead.BookingDate)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 123, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 124, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -233,7 +233,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(lead.BookingTime)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 125, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 126, Col: 87}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
@@ -261,7 +261,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(lead.Source)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 137, Col: 141}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 138, Col: 141}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {
@@ -281,7 +281,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 				var templ_7745c5c3_Var17 string
 				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(comment)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 145, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 146, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
@@ -304,7 +304,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%v", qMap["estimated_price"]))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 153, Col: 107}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 154, Col: 107}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 				if templ_7745c5c3_Err != nil {
@@ -329,7 +329,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(utmSource)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 166, Col: 98}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 167, Col: 98}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
@@ -347,7 +347,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 					var templ_7745c5c3_Var20 string
 					templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(utmCampaign)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 168, Col: 101}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 169, Col: 101}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 					if templ_7745c5c3_Err != nil {
@@ -371,7 +371,7 @@ func LeadDetailDrawer(lead models.Lead) templ.Component {
 		var templ_7745c5c3_Var21 string
 		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(lead.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 178, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/lead_detail_modal.templ`, Line: 179, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {

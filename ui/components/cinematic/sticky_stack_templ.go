@@ -98,7 +98,7 @@ func StickyStack(title string, subtitle string, features []StickyFeatureItem) te
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 = []any{"sticky-visual-state absolute inset-0 transition-all duration-500 flex flex-col items-center justify-center text-center p-4",
+				var templ_7745c5c3_Var4 = []any{"sticky-visual-state absolute inset-0 transition duration-200 flex flex-col items-center justify-center text-center p-4",
 					templ.KV("opacity-100 scale-100", idx == 0),
 					templ.KV("opacity-0 scale-95 pointer-events-none", idx > 0),
 				}
@@ -199,7 +199,7 @@ func StickyStack(title string, subtitle string, features []StickyFeatureItem) te
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var10 = []any{"sticky-feature-card p-8 rounded-3xl border transition-all duration-300",
+				var templ_7745c5c3_Var10 = []any{"sticky-feature-card p-8 rounded-3xl border transition duration-300",
 					templ.KV("border-accent/40 bg-surface shadow-lg", idx == 0),
 					templ.KV("border-surface-muted/60 bg-surface/40 hover:bg-surface/80 opacity-70", idx > 0),
 				}

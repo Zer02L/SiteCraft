@@ -72,14 +72,14 @@ templ ExitIntent(settings models.SiteSettings) {
 			aria-modal="true"
 			aria-labelledby="exit-intent-title"
 		>
-			<!-- Декоративное мягкое свечение вверху -->
-			<div class="absolute -top-24 left-1/2 -translate-x-1/2 w-72 h-48 bg-accent/15 rounded-full blur-3xl pointer-events-none"></div>
+			<!-- Декоративная акцентная линия вверху -->
+			<div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-transparent via-accent/40 to-transparent pointer-events-none"></div>
 
 			<!-- Кнопка закрытия с доступной областью клика -->
 			<button
 				type="button"
 				@click="close()"
-				class="absolute top-4 right-4 text-content-muted hover:text-content w-9 h-9 flex items-center justify-center rounded-btn hover:bg-content/5 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+				class="absolute top-4 right-4 text-content-muted hover:text-content w-9 h-9 flex items-center justify-center rounded-btn hover:bg-content/5 transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
 				aria-label="Закрыть"
 			>
 				@icons.X(templ.Attributes{"class": "w-5 h-5"})
@@ -117,7 +117,7 @@ templ ExitIntent(settings models.SiteSettings) {
 							name="name"
 							required
 							placeholder="Иван"
-							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm transition-all"
+							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus:border-accent text-sm transition"
 						/>
 					</div>
 
@@ -129,7 +129,7 @@ templ ExitIntent(settings models.SiteSettings) {
 							required
 							x-mask="+7 (999) 999-99-99"
 							placeholder="+7 (___) ___-__-__"
-							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent text-sm font-mono transition-all"
+							class="w-full px-4 py-2.5 rounded-input bg-surface-muted hover:bg-surface border border-content/20 hover:border-content/40 text-content placeholder-content-muted/60 focus:bg-surface focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus:border-accent text-sm font-mono transition"
 						/>
 					</div>
 

@@ -210,7 +210,7 @@ templ UIShowcase() {
 					type="button"
 					x-on:click="expanded = !expanded"
 					:data-active="expanded ? 'true' : 'false'"
-					class="px-2.5 py-1 text-xs font-medium rounded-btn border border-content/20 transition-all cursor-pointer flex items-center gap-1.5 data-active:bg-accent/15 data-active:border-accent data-active:text-accent text-content-muted hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+					class="px-2.5 py-1 text-xs font-medium rounded-btn border border-content/20 transition cursor-pointer flex items-center gap-1.5 data-active:bg-accent/15 data-active:border-accent data-active:text-accent text-content-muted hover:text-content focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
 				>
 					<span x-text="expanded ? 'Скрыть интерактивный блок' : 'Раскрыть интерактивный блок'">Раскрыть</span>
 					<span :class="expanded ? 'rotate-180' : ''" class="transition-transform duration-200 inline-block">
@@ -222,7 +222,7 @@ templ UIShowcase() {
 			<!-- Collapsible panel powered purely by Tailwind v4 data-state styling -->
 			<div
 				:data-state="expanded ? 'open' : 'closed'"
-				class="overflow-hidden transition-all duration-300 data-closed:max-h-0 data-closed:opacity-0 data-open:max-h-60 data-open:opacity-100 data-open:mt-4"
+				class="overflow-hidden transition duration-300 data-closed:max-h-0 data-closed:opacity-0 data-open:max-h-60 data-open:opacity-100 data-open:mt-4"
 			>
 				<div class="p-4 rounded-xl bg-surface-muted border border-content/10 text-xs space-y-2">
 					<p class="font-semibold text-content">🚀 Zero JavaScript Class Swapping!</p>

@@ -206,6 +206,7 @@ templ HeaderClassic(content models.SiteContent, settings models.SiteSettings) {
 						onclick="window.A11Y.toggle()"
 						class="px-2.5 py-1.5 rounded border border-current/20 text-xs font-semibold bg-current/10 text-on-primary cursor-pointer"
 						title={ i18n.T(ctx, "a11y.version") }
+						aria-label={ i18n.T(ctx, "a11y.version") }
 					>
 						@icons.Eye(templ.Attributes{"class": "w-4 h-4"})
 					</button>
@@ -222,7 +223,7 @@ templ HeaderClassic(content models.SiteContent, settings models.SiteSettings) {
 				<button
 					type="button"
 					@click="mobileMenuOpen = !mobileMenuOpen"
-					class="p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer"
+					class="p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary"
 					aria-label="Меню навигации"
 				>
 					<span x-show="!mobileMenuOpen" class="flex items-center">
@@ -310,6 +311,7 @@ templ HeaderMinimal(content models.SiteContent, settings models.SiteSettings) {
 						onclick="window.A11Y.toggle()"
 						class="hidden md:flex items-center gap-1 px-2.5 py-1.5 rounded border border-current/30 text-xs font-semibold hover:border-accent hover:text-accent transition bg-surface/5 cursor-pointer"
 						title={ i18n.T(ctx, "a11y.version") }
+						aria-label={ i18n.T(ctx, "a11y.version") }
 					>
 						@icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"})
 					</button>
@@ -371,6 +373,7 @@ templ HeaderCentered(content models.SiteContent, settings models.SiteSettings) {
 						onclick="window.A11Y.toggle()"
 						class="p-1 rounded border border-current/20 text-xs hover:border-accent hover:text-accent transition cursor-pointer"
 						title={ i18n.T(ctx, "a11y.version") }
+						aria-label={ i18n.T(ctx, "a11y.version") }
 					>
 						@icons.Eye(templ.Attributes{"class": "w-3.5 h-3.5"})
 					</button>
@@ -380,6 +383,7 @@ templ HeaderCentered(content models.SiteContent, settings models.SiteSettings) {
 					onclick="window.toggleNightMode && window.toggleNightMode()"
 					class="p-1 rounded border border-current/20 text-xs hover:border-accent transition cursor-pointer"
 					title="Переключить день/ночь"
+					aria-label="Переключить тему день/ночь"
 				>
 					🌙
 				</button>
@@ -394,7 +398,7 @@ templ HeaderCentered(content models.SiteContent, settings models.SiteSettings) {
 				<button
 					type="button"
 					@click="mobileMenuOpen = !mobileMenuOpen"
-					class="p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer"
+					class="p-1.5 rounded-lg border border-current/20 bg-surface/10 text-on-primary hover:text-accent focus:outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-primary"
 					aria-label="Меню навигации"
 				>
 					<span x-show="!mobileMenuOpen">@icons.Menu(templ.Attributes{"class": "w-5 h-5"})</span>

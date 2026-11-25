@@ -8,7 +8,7 @@ import (
 
 templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 	<!-- Cyber Hero Section (Virtuality) -->
-	<section class="relative bg-[#181515] text-[#F3EFEA] min-h-[92vh] flex flex-col justify-between px-6 sm:px-10 lg:px-14 pt-8 pb-10 overflow-hidden font-sans border-b border-[#2b2727] select-none">
+	<section class="relative bg-neutral-950 text-stone-100 min-h-[92vh] flex flex-col justify-between px-6 sm:px-10 lg:px-14 pt-8 pb-10 overflow-hidden font-sans border-b border-neutral-800 select-none">
 		<!-- Верхний ряд: Навбар и правая плашка входа -->
 		<header class="flex items-center justify-between z-20 mb-8 lg:mb-12">
 			<!-- Логотип -->
@@ -26,7 +26,7 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 			</div>
 
 			<!-- Центральные ссылки меню -->
-			<nav class="hidden md:flex items-center gap-10 text-sm tracking-wide text-[#b5afaa]">
+			<nav class="hidden md:flex items-center gap-10 text-sm tracking-wide text-stone-400">
 				<a href="#apps" class="hover:text-white transition duration-200">Apps & Games</a>
 				<a href="#services" class="hover:text-white transition duration-200">Resources</a>
 				<a href="#booking" class="hover:text-white transition duration-200">Contact us</a>
@@ -34,15 +34,14 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 
 			<!-- Правая кнопка LOG IN -->
 			<div class="flex items-center gap-2">
-				<a href="/_/" class="group flex items-center gap-2 text-xs tracking-wider uppercase font-semibold text-white/90 hover:text-white transition bg-surface/5 hover:bg-surface/10 px-4 py-2.5 rounded-sm border border-white/10">
+				<a href="/_/" class="group flex items-center gap-2 text-xs tracking-wider uppercase font-semibold text-white/90 hover:text-white transition bg-surface/5 hover:bg-surface/10 px-4 py-2.5 rounded-sm border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
 					<span>Log in</span>
-					<div class="w-5 h-5 bg-[#F04E2E] flex items-center justify-center text-white text-[11px] rounded-[2px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200">
+					<div class="w-5 h-5 bg-rose-600 flex items-center justify-center text-white text-[11px] rounded-[2px] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition duration-200">
 						@icons.ArrowUpRight(templ.Attributes{"class": "w-3.5 h-3.5 text-white"})
 					</div>
 				</a>
 			</div>
 		</header>
-
 
 		<!-- Главный контент: Grid Hero -->
 		<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-start relative z-10 flex-1">
@@ -51,7 +50,7 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 			<div class="lg:col-span-6 flex flex-col justify-between h-full space-y-10">
 				<!-- Главный типографический блок -->
 				<div class="pt-4 lg:pt-8 space-y-6">
-					<h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-[6.8rem] leading-[0.88] font-condensed tracking-tight uppercase text-[#F3EFEA] font-bold">
+					<h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-[6.8rem] leading-[0.88] font-condensed tracking-tight uppercase text-stone-100 font-bold">
 						if content.HeroTitle != "" {
 							{ content.HeroTitle }
 						} else {
@@ -59,16 +58,16 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 						}
 					</h1>
 
-					<p class="text-[#a8a19c] text-sm sm:text-base max-w-md font-normal leading-relaxed">
+					<p class="text-stone-400 text-sm sm:text-base max-w-md font-normal leading-relaxed">
 						{ content.HeroSubtitle }
 					</p>
 
 					<!-- Кнопки действий -->
 					<div class="flex flex-wrap items-center gap-6 pt-2">
-						<a href="#booking" class="bg-[#F0EDE8] hover:bg-surface text-[#161414] font-bold text-xs tracking-widest uppercase px-8 py-4 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition duration-200">
+						<a href="#booking" class="bg-stone-100 hover:bg-surface text-stone-900 font-bold text-xs tracking-widest uppercase px-8 py-4 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
 							Get Started
 						</a>
-						<a href="#services" class="text-xs font-bold tracking-widest uppercase text-[#F0EDE8] hover:text-[#F04E2E] border-b border-transparent hover:border-[#F04E2E] pb-1 transition duration-200 flex items-center gap-2">
+						<a href="#services" class="text-xs font-bold tracking-widest uppercase text-stone-100 hover:text-rose-500 border-b border-transparent hover:border-rose-500 pb-1 transition duration-200 flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500">
 							Join the community
 						</a>
 					</div>
@@ -76,26 +75,26 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 
 				<!-- Нижний виджет: UPGRADE YOUR HERO -->
 				<div class="pt-6">
-					<div class="relative bg-[#1E1B1B] border border-[#332E2E] p-4 sm:p-5 max-w-md rounded-sm overflow-hidden group hover:border-[#F04E2E]/50 transition duration-300">
-						<!-- Декоративная 3D-сетка на фоне -->
-						<div class="absolute -bottom-8 -right-4 w-44 h-32 opacity-25 pointer-events-none bg-[radial-gradient(#F04E2E_1px,transparent_1px)] [background-size:8px_8px]"></div>
+					<div class="relative bg-neutral-900 border border-neutral-800 p-4 sm:p-5 max-w-md rounded-sm overflow-hidden group hover:border-rose-600/50 transition duration-200">
+						<!-- Декоративная сетка на фоне -->
+						<div class="absolute -bottom-8 -right-4 w-44 h-32 opacity-25 pointer-events-none bg-[radial-gradient(#e11d48_1px,transparent_1px)] [background-size:8px_8px]"></div>
 
 						<div class="flex items-center gap-5">
 							<!-- 3D Шлем с кнопкой плюса -->
-							<div class="relative shrink-0 w-20 h-20 bg-black/40 border border-[#363030] flex items-center justify-center rounded">
-								<img src="/assets/images/cyber_helmet.png" alt="Hero Helmet" class="w-16 h-16 object-contain group-hover:scale-110 transition duration-300"/>
+							<div class="relative shrink-0 w-20 h-20 bg-black/40 border border-neutral-800 flex items-center justify-center rounded">
+								<img src="/assets/images/cyber_helmet.png" alt="Hero Helmet" fetchpriority="high" loading="eager" class="w-16 h-16 object-contain group-hover:scale-110 transition duration-200"/>
 								<!-- Оранжевая кнопка + -->
-								<button class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-[#F04E2E] hover:bg-[#ff684a] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md transition cursor-pointer">
+								<button class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-rose-600 hover:bg-rose-500 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-md transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400" aria-label="Upgrade Hero">
 									@icons.Plus(templ.Attributes{"class": "w-4 h-4 text-white"})
 								</button>
 							</div>
 
 							<!-- Текст виджета -->
 							<div class="space-y-1">
-								<h3 class="font-condensed text-xl sm:text-2xl font-bold tracking-wider text-[#F0EDE8] uppercase">
+								<h3 class="font-condensed text-xl sm:text-2xl font-bold tracking-wider text-stone-100 uppercase">
 									Upgrade Your Hero
 								</h3>
-								<p class="text-[11px] text-[#9A938E] uppercase tracking-wider">
+								<p class="text-[11px] text-stone-400 uppercase tracking-wider">
 									Only for pro plan users
 								</p>
 							</div>
@@ -106,33 +105,33 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 
 			<!-- Центральная колонка: Кибер-аватар с координатной сеткой -->
 			<div class="lg:col-span-3 flex justify-center items-center lg:items-end h-full">
-				<div class="relative w-full max-w-[320px] aspect-[3/4] bg-[#221F1F] border border-[#383232] rounded-sm overflow-hidden group shadow-2xl">
+				<div class="relative w-full max-w-[320px] aspect-[3/4] bg-neutral-900 border border-neutral-800 rounded-sm overflow-hidden group shadow-2xl">
 					<!-- Фоновая перспектива и сетка -->
 					<div class="absolute inset-0 opacity-20 bg-[linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-					<!-- Круговой световой градиент -->
-					<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-[#F04E2E]/10 rounded-full blur-2xl"></div>
+					<!-- Круговой световой блик -->
+					<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-rose-600/10 rounded-full border border-rose-500/20"></div>
 
 					<picture>
 						<source srcset="/assets/images/cyber_avatar.webp" type="image/webp"/>
 						<img
 							src="/assets/images/cyber_avatar.png"
 							alt="Cyber Avatar"
-							class="relative z-10 w-full h-full object-cover object-center group-hover:scale-105 transition duration-500"
+							class="relative z-10 w-full h-full object-cover object-center group-hover:scale-105 transition duration-200"
 						/>
 					</picture>
 				</div>
 			</div>
 
-			<!-- Правая колонка: Оранжевая карточка 5.0 VERSION + Интерактивные фичи/таймлайн -->
+			<!-- Правая колонка: Контрастная карточка 5.0 VERSION + Интерактивные фичи/таймлайн -->
 			<div class="lg:col-span-3 flex flex-col justify-between h-full space-y-8">
 				
-				<!-- Верхняя контрастная карточка: 5.0 VERSION (Оранжево-красный блок) -->
-				<div class="relative bg-[#F04E2E] text-white p-6 rounded-sm shadow-2xl flex flex-col justify-between min-h-[300px] overflow-hidden group">
+				<!-- Верхняя контрастная карточка: 5.0 VERSION (Розово-красный блок) -->
+				<div class="relative bg-rose-600 text-white p-6 rounded-sm shadow-2xl flex flex-col justify-between min-h-[300px] overflow-hidden group">
 					<!-- Картинка робота на фоне карточки -->
 					<div class="flex justify-center items-center py-2 relative">
 						<picture>
 							<source srcset="/assets/images/cyber_robot.webp" type="image/webp"/>
-							<img src="/assets/images/cyber_robot.png" alt="Robot 5.0" class="h-40 w-auto object-contain group-hover:scale-105 transition duration-300 drop-shadow-lg"/>
+							<img src="/assets/images/cyber_robot.png" alt="Robot 5.0" class="h-40 w-auto object-contain group-hover:scale-105 transition duration-200 drop-shadow-lg"/>
 						</picture>
 					</div>
 
@@ -152,7 +151,7 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 							</span>
 						</div>
 						
-						<a href="#features" class="w-9 h-9 border border-white/40 hover:bg-surface hover:text-[#F04E2E] transition duration-200 flex items-center justify-center text-lg font-light rounded-sm">
+						<a href="#features" class="w-9 h-9 border border-white/40 hover:bg-surface hover:text-rose-600 transition duration-200 flex items-center justify-center text-lg font-light rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white" aria-label="Version 5.0 details">
 							↗
 						</a>
 					</div>
@@ -163,33 +162,33 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 					<div class="w-10 h-10 rounded-full bg-surface text-black flex items-center justify-center font-bold text-xs shadow-md cursor-pointer hover:scale-110 transition">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
 					</div>
-					<div class="w-10 h-10 rounded-full bg-[#2C2727] text-white flex items-center justify-center text-xs shadow-md cursor-pointer hover:scale-110 transition border border-[#443E3E]">
+					<div class="w-10 h-10 rounded-full bg-neutral-800 text-white flex items-center justify-center text-xs shadow-md cursor-pointer hover:scale-110 transition border border-neutral-700">
 						<div class="w-4 h-4 rounded-full border border-dashed border-white/60 animate-spin"></div>
 					</div>
 				</div>
 
 				<!-- Нижний блок: Players & Showcase со строками и годами -->
-				<div class="space-y-4 pt-2 border-t border-[#332E2E]">
+				<div class="space-y-4 pt-2 border-t border-neutral-800">
 					<!-- Строка 1: Players -->
 					<div class="space-y-1 group">
-						<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase text-[#E8E4DF]">
-							<span class="group-hover:text-[#F04E2E] transition">Players</span>
-							<span class="text-[#8A847F]">/2022</span>
+						<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase text-stone-200">
+							<span class="group-hover:text-rose-500 transition">Players</span>
+							<span class="text-stone-400">/2022</span>
 						</div>
-						<p class="text-[11px] text-[#9A938E] leading-relaxed">
+						<p class="text-[11px] text-stone-400 leading-relaxed">
 							Creating the personal avatar, and independently exploring the world
 						</p>
 					</div>
 
-					<div class="h-[1px] bg-[#2E2929]"></div>
+					<div class="h-[1px] bg-neutral-800"></div>
 
 					<!-- Строка 2: Showcase -->
 					<div class="space-y-1 group">
-						<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase text-[#E8E4DF]">
-							<span class="group-hover:text-[#F04E2E] transition">Showcase</span>
-							<span class="text-[#8A847F]">/2023</span>
+						<div class="flex items-center justify-between text-xs font-semibold tracking-wider uppercase text-stone-200">
+							<span class="group-hover:text-rose-500 transition">Showcase</span>
+							<span class="text-stone-400">/2023</span>
 						</div>
-						<p class="text-[11px] text-[#9A938E] leading-relaxed">
+						<p class="text-[11px] text-stone-400 leading-relaxed">
 							Virtual spaces can serve a variety of research and educational goals
 						</p>
 					</div>

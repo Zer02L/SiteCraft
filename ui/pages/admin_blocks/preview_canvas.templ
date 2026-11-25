@@ -32,14 +32,14 @@ templ PreviewCanvas() {
 		</div>
 
 		<!-- Контейнер масштабирования -->
-		<div class="w-full flex justify-center transition-all duration-300 overflow-hidden">
+		<div class="w-full flex justify-center transition duration-300 overflow-hidden">
 			<div
 				:class="{
 					'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',
 					'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',
 					'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'
 				}"
-				class="overflow-hidden transition-all duration-300 relative flex justify-center"
+				class="overflow-hidden transition duration-300 relative flex justify-center"
 				:style="canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'"
 			>
 				<!-- Верхняя полоска мобильного острова/камеры -->

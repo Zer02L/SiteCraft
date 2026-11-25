@@ -132,14 +132,14 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 bg-[#c6e2ff] text-[#063462] border-2 border-[#063462] text-xs rounded transition cursor-pointer\" title=\"Синим по голубому\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 text-xs rounded transition cursor-pointer border-2\" style=\"background-color: #c6e2ff; color: #063462; border-color: #063462;\" title=\"Синим по голубому\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.color_blue"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 77, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 78, Col: 37}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -152,7 +152,7 @@ func A11yBar() templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.images"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 97, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 98, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -165,7 +165,7 @@ func A11yBar() templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.images_on"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 97, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 98, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -198,7 +198,7 @@ func A11yBar() templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(i18n.T(ctx, "a11y.reset"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 113, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/a11y_bar.templ`, Line: 114, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {

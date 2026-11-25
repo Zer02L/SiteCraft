@@ -78,7 +78,7 @@ func BookingSimple(content models.SiteContent, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 border-content/20 text-primary focus:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"pt-1\"><label class=\"flex items-start gap-2.5 cursor-pointer select-none\"><input type=\"checkbox\" name=\"consent\" value=\"on\" checked required class=\"mt-0.5 border-content/20 text-primary focus-visible:ring-accent\"> <span class=\"text-xs text-content-muted leading-snug\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -97,7 +97,7 @@ func ScrollSvgDraw(title string, subtitle string, milestones []SvgMilestone) tem
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 = []any{"milestone-item flex items-center w-full gap-8 transition-all duration-500",
+				var templ_7745c5c3_Var4 = []any{"milestone-item flex items-center w-full gap-8 transition duration-200",
 					templ.KV("flex-row-reverse md:flex-row-reverse text-right md:text-right", idx%2 != 0),
 					templ.KV("flex-row text-left", idx%2 == 0),
 				}

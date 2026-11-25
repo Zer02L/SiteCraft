@@ -100,7 +100,7 @@ templ Quiz(payload models.QuizPayload, settings models.SiteSettings) {
 					<div class="flex items-center gap-1.5">
 						<template x-for="i in totalSteps + 1" :key="i">
 							<div
-								class="h-1.5 transition-all duration-300"
+								class="h-1.5 transition duration-300"
 								:class="i - 1 <= step ? 'w-8 bg-accent' : 'w-2 bg-content/15'"
 							></div>
 						</template>

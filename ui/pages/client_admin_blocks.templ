@@ -54,15 +54,15 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 				class="space-y-4"
 			>
 				<!-- Табы переключения: Секции / Дизайн-система -->
-				<div class="flex items-center gap-6 border-b border-slate-200 px-1">
+				<div class="flex items-center gap-6 border-b border-admin-border px-1">
 					<button
 						type="button"
 						@click="activeSubTab = 'blocks'"
-						:class="activeSubTab === 'blocks' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'"
-						class="pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5"
+						:class="activeSubTab === 'blocks' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'"
+						class="pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5"
 					>
 						<span>Секции лендинга</span>
-						<span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200">
+						<span class="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-admin-surface-muted text-admin-content-muted border border-admin-border">
 							{ fmt.Sprintf("%d", len(blocks)) }
 						</span>
 					</button>
@@ -70,8 +70,8 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 					<button
 						type="button"
 						@click="activeSubTab = 'theme'"
-						:class="activeSubTab === 'theme' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'"
-						class="pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5"
+						:class="activeSubTab === 'theme' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'"
+						class="pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5"
 					>
 						<span>Дизайн-система</span>
 					</button>
@@ -83,7 +83,7 @@ templ AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) {
 				</div>
 
 				<!-- Вкладка 2: Дизайн-система (OKLCH Тюнер токенов и пресетов) -->
-				<div x-show="activeSubTab === 'theme'" class="space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs">
+				<div x-show="activeSubTab === 'theme'" class="space-y-4 p-4 rounded-2xl bg-admin-surface border border-admin-border text-xs">
 					@admin_blocks.TokenTuner()
 				</div>
 			</div>

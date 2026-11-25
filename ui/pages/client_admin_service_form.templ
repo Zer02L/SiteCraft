@@ -51,7 +51,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 					value={ service.Title }
 					required
 					placeholder="Например: Замена масла и фильтров, Экспресс-консультация..."
-					class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm"
+					class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition text-sm"
 				/>
 			</div>
 
@@ -66,7 +66,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 						name="price"
 						value={ service.Price }
 						placeholder="от 2 500 ₽, 1 900 ₽/мес, Бесплатно..."
-						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm"
+						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition text-sm"
 					/>
 					<p class="text-[11px] text-admin-content-subtle mt-1">Произвольный текстовый формат или точная сумма с валютой</p>
 				</div>
@@ -82,7 +82,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 						min="0"
 						step="1"
 						placeholder="1"
-						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm"
+						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition text-sm"
 					/>
 					<p class="text-[11px] text-admin-content-subtle mt-1">Меньшее число выводится выше в списке</p>
 				</div>
@@ -99,7 +99,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 						name="stock_count"
 						value={ fmt.Sprintf("%d", service.StockCount) }
 						placeholder="-1"
-						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm"
+						class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition text-sm"
 					/>
 					<p class="text-[11px] text-admin-content-subtle mt-1">-1 для неограниченного запаса, 0 при отсутствии</p>
 				</div>
@@ -111,7 +111,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 							name="is_preorder"
 							value="true"
 							checked?={ service.IsPreorder }
-							class="w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-accent focus:ring-admin-accent"
+							class="w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-accent focus-visible:ring-admin-accent"
 						/>
 						<span class="text-xs text-admin-content-muted font-medium">Доступно под заказ (Preorder)</span>
 					</label>
@@ -122,7 +122,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 							name="active"
 							value="true"
 							checked?={ service.Active }
-							class="w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-success focus:ring-admin-success"
+							class="w-4 h-4 rounded bg-admin-surface-muted border-admin-border text-admin-success focus-visible:ring-admin-success"
 						/>
 						<span class="text-xs text-admin-content-muted font-medium">Активна (показывать на витрине сайта)</span>
 					</label>
@@ -138,7 +138,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 					name="description"
 					rows="3"
 					placeholder="Укажите, что входит в услугу, сроки исполнения, гарантию..."
-					class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus transition-all text-sm resize-none"
+					class="w-full px-4 py-3 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder-admin-content-subtle focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition text-sm resize-none"
 				>{ service.Description }</textarea>
 			</div>
 
@@ -154,7 +154,7 @@ templ ClientServiceForm(service models.ServiceItem, isNew bool) {
 				</button>
 				<button
 					type="submit"
-					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-xs transition-all shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-xs transition shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

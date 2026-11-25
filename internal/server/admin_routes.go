@@ -126,6 +126,8 @@ func (s *Server) setupAdminRoutes() {
 		admin.Post("/client/api/theme/apply", s.HandleAdminApplyThemePreset)
 		admin.Post("/admin/api/theme/rollback", s.HandleAdminRollbackThemePreset)
 		admin.Post("/client/api/theme/rollback", s.HandleAdminRollbackThemePreset)
+		admin.Post("/admin/api/theme/extract-palette", s.HandleAdminExtractPalette)
+		admin.Post("/client/api/theme/extract-palette", s.HandleAdminExtractPalette)
 		admin.Post("/admin/contacts", s.HandleAdminSaveContacts)
 		admin.Post("/admin/security/password", s.HandleAdminChangePassword)
 

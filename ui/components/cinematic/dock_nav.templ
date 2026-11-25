@@ -15,7 +15,7 @@ templ DockNav(items []DockNavItem) {
 			for _, item := range items {
 				<a
 					href={ templ.SafeURL(item.URL) }
-					class="dock-item group relative flex flex-col items-center origin-bottom transition-all duration-100 ease-out"
+					class="dock-item group relative flex flex-col items-center origin-bottom transition duration-100 ease-out"
 					style="width: 48px; height: 48px;"
 				>
 					<!-- Всплывающая подсказка над иконкой -->

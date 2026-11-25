@@ -31,12 +31,12 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Кнопка быстрого добавления всегда на виду --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"w-full py-2.5 px-3 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer shadow-2xs\"><span class=\"w-4 h-4 rounded-full bg-slate-900 text-white flex items-center justify-center text-[10px] leading-none\">+</span> <span>Добавить новую секцию в лендинг</span></button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- Кнопка быстрого добавления всегда на виду --><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" class=\"w-full py-2.5 px-3 rounded-xl border border-dashed border-admin-border hover:border-admin-border-focus bg-admin-surface hover:bg-admin-surface-muted text-admin-content text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs\"><span class=\"w-4 h-4 rounded-full bg-admin-accent text-white flex items-center justify-center text-[10px] leading-none\">+</span> <span>Добавить новую секцию в лендинг</span></button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(blocks) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"p-8 text-center bg-white rounded-2xl border border-slate-200\"><p class=\"text-slate-500 text-xs\">Секции лендинга пока не добавлены.</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"p-8 text-center bg-admin-surface rounded-2xl border border-admin-border\"><p class=\"text-admin-content-muted text-xs\">Секции лендинга пока не добавлены.</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -90,9 +90,9 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-blue-500 border-blue-500 bg-blue-50/20' : ''", b.ID)).Resolve(ctx)
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-admin-border-focus border-admin-border-focus bg-admin-accent-muted/20' : ''", b.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 38, Col: 118}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 38, Col: 149}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 				if templ_7745c5c3_Err != nil {
@@ -102,9 +102,9 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 = []any{"p-3.5 rounded-2xl border transition-all cursor-pointer relative group",
-					templ.KV("bg-white border-slate-200 hover:border-slate-300 shadow-2xs", b.Active),
-					templ.KV("opacity-55 bg-slate-50 border-dashed border-slate-300", !b.Active)}
+				var templ_7745c5c3_Var5 = []any{"p-3.5 rounded-2xl border transition cursor-pointer relative group",
+					templ.KV("bg-admin-surface border-admin-border hover:border-admin-border-focus shadow-2xs", b.Active),
+					templ.KV("opacity-55 bg-admin-surface-muted border-dashed border-admin-border", !b.Active)}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var5...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -132,7 +132,7 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				}
 				templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "><div class=\"flex items-start justify-between gap-3\"><!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип --><div class=\"flex items-start gap-2.5 min-w-0 flex-1\"><!-- Ручка перетаскивания drag-and-drop --><div class=\"pt-0.5 text-slate-300 group-hover:text-slate-500 cursor-grab shrink-0 select-none\" title=\"Перетащить блок\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9h.01M8 15h.01M16 9h.01M16 15h.01\"></path></svg></div><!-- Порядковый номер --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-slate-100 text-slate-700 text-xs font-mono font-bold flex items-center justify-center select-none\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "><div class=\"flex items-start justify-between gap-3\"><!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип --><div class=\"flex items-start gap-2.5 min-w-0 flex-1\"><!-- Ручка перетаскивания drag-and-drop --><div class=\"pt-0.5 text-admin-content-subtle group-hover:text-admin-content-muted cursor-grab shrink-0 select-none\" title=\"Перетащить блок\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9h.01M8 15h.01M16 9h.01M16 15h.01\"></path></svg></div><!-- Порядковый номер --><div class=\"w-6 h-6 shrink-0 rounded-lg bg-admin-surface-muted text-admin-content text-xs font-mono font-bold flex items-center justify-center select-none border border-admin-border\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -145,7 +145,7 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><!-- Текстовое описание блока (полная ширина, без обрезания) --><div class=\"min-w-0 flex-1\"><!-- Заголовок секции: переносится до 2 строк, не режется --><h4 class=\"font-bold text-slate-900 text-sm leading-snug break-words\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><!-- Текстовое описание блока (полная ширина, без обрезания) --><div class=\"min-w-0 flex-1\"><!-- Заголовок секции: переносится до 2 строк, не режется --><h4 class=\"font-bold text-admin-content text-sm leading-snug break-words\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -158,7 +158,7 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</h4><!-- Вторая строка: Понятное человеческое имя типа + вариант --><div class=\"flex items-center gap-1.5 mt-1.5 flex-wrap\"><span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200 font-sans\" title=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</h4><!-- Вторая строка: Понятное человеческое имя типа + вариант --><div class=\"flex items-center gap-1.5 mt-1.5 flex-wrap\"><span class=\"inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-sans\" title=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -202,7 +202,7 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if variantStr != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<span class=\"px-2 py-0.5 rounded-md text-[11px] font-mono text-slate-500 bg-slate-50 border border-slate-200\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<span class=\"px-2 py-0.5 rounded-md text-[11px] font-mono text-admin-content-subtle bg-admin-surface-muted border border-admin-border\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -245,9 +245,9 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var14 = []any{"cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs border",
+				var templ_7745c5c3_Var14 = []any{"cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-xs border",
 					templ.KV("bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 ring-2 ring-emerald-500/20", b.Active),
-					templ.KV("bg-slate-200 hover:bg-slate-300 text-slate-700 border-slate-300", !b.Active)}
+					templ.KV("bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content-muted border-admin-border", !b.Active)}
 				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var14...)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -304,25 +304,25 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<span class=\"w-2.5 h-2.5 rounded-full bg-slate-400\"></span> <svg class=\"w-4 h-4 text-slate-500\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыта</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<span class=\"w-2.5 h-2.5 rounded-full bg-admin-content-subtle\"></span> <svg class=\"w-4 h-4 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18\"></path></svg> <span>Скрыта</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</button><!-- Кнопка действий '⋯' --><div x-data=\"{ menuOpen: false }\" class=\"relative\"><button type=\"button\" @click.stop=\"menuOpen = !menuOpen\" class=\"p-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-900 shadow-2xs transition-colors cursor-pointer\" title=\"Действия над секцией\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 5v.01M12 12v.01M12 19v.01\"></path></svg></button><div x-show=\"menuOpen\" x-cloak @click.away=\"menuOpen = false\" class=\"absolute right-0 top-full mt-1 w-44 rounded-xl bg-white border border-slate-200 shadow-lg py-1 z-30 text-xs text-slate-700 font-medium\"><button type=\"button\" @click=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</button><!-- Кнопка действий '⋯' --><div x-data=\"{ menuOpen: false }\" class=\"relative\"><button type=\"button\" @click.stop=\"menuOpen = !menuOpen\" class=\"p-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content shadow-2xs transition-colors cursor-pointer\" title=\"Действия над секцией\" aria-label=\"Действия над секцией\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 5v.01M12 12v.01M12 19v.01\"></path></svg></button><div x-show=\"menuOpen\" x-cloak @click.away=\"menuOpen = false\" class=\"absolute right-0 top-full mt-1 w-44 rounded-xl bg-admin-surface border border-admin-border shadow-lg py-1 z-30 text-xs text-admin-content font-medium\"><button type=\"button\" @click=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); menuOpen = false;", b.ID, b.Title, b.Content, b.Type, variantStr)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 134, Col: 136}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 135, Col: 136}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg> <span>Свойства блока</span></button> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" class=\"w-full px-3 py-2 text-left hover:bg-admin-surface-muted flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z\"></path></svg> <span>Свойства блока</span></button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -334,13 +334,13 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-up", b.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 146, Col: 65}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 147, Col: 65}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg> <span>Поднять выше</span></button> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-admin-surface-muted flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 15l7-7 7 7\"></path></svg> <span>Поднять выше</span></button> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -353,31 +353,31 @@ func BlocksList(blocks []models.PageBlock) templ.Component {
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/move-down", b.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 161, Col: 67}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 162, Col: 67}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-slate-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg> <span>Опустить ниже</span></button>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-admin-surface-muted flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg> <span>Опустить ниже</span></button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"my-1 border-t border-slate-100\"></div><button type=\"button\" hx-post=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "<div class=\"my-1 border-t border-admin-border\"></div><button type=\"button\" hx-post=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("/admin/blocks/%s/delete", b.ID)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 177, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_blocks/blocks_list.templ`, Line: 178, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-confirm=\"Удалить этот блок лендинга безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Удалить блок</span></button></div></div></div></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "\" hx-confirm=\"Удалить этот блок лендинга безвозвратно?\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"w-full px-3 py-2 text-left hover:bg-admin-danger-muted text-admin-danger flex items-center gap-2 cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg> <span>Удалить блок</span></button></div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

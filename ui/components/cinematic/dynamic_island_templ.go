@@ -33,7 +33,7 @@ func DynamicIsland(notif IslandNotification) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"cinematic-dynamic-island fixed top-4 left-1/2 -translate-x-1/2 z-50 select-none\" x-data=\"{ expanded: false }\"><div class=\"relative flex items-center justify-between transition-all duration-300 ease-out bg-black/90 text-white rounded-full px-4 py-2 shadow-2xl border border-white/10 backdrop-blur-xl cursor-pointer\" :class=\"expanded ? 'w-[360px] sm:w-[420px] rounded-3xl p-5' : 'w-auto hover:scale-105'\" @click=\"expanded = !expanded\"><!-- Свёрнутое состояние (Pill) --><div x-show=\"!expanded\" class=\"flex items-center gap-3\"><span class=\"w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping\"></span> <span class=\"text-xs font-semibold tracking-wide\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"cinematic-dynamic-island fixed top-4 left-1/2 -translate-x-1/2 z-50 select-none\" x-data=\"{ expanded: false }\"><div class=\"relative flex items-center justify-between transition duration-300 ease-out bg-black/90 text-white rounded-full px-4 py-2 shadow-2xl border border-white/10 backdrop-blur-xl cursor-pointer\" :class=\"expanded ? 'w-[360px] sm:w-[420px] rounded-3xl p-5' : 'w-auto hover:scale-105'\" @click=\"expanded = !expanded\"><!-- Свёрнутое состояние (Pill) --><div x-show=\"!expanded\" class=\"flex items-center gap-3\"><span class=\"w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping\"></span> <span class=\"text-xs font-semibold tracking-wide\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

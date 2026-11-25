@@ -25,7 +25,7 @@ templ ViewTransitions(title string, subtitle string, items []MorphItem) {
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 			for _, item := range items {
 				<div
-					class="morph-card p-7 rounded-3xl bg-surface border border-surface-muted/80 shadow-md hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between"
+					class="morph-card p-7 rounded-3xl bg-surface border border-surface-muted/80 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between"
 					data-morph-id={ item.ID }
 					data-morph-title={ item.Title }
 					data-morph-cat={ item.Category }
@@ -40,7 +40,7 @@ templ ViewTransitions(title string, subtitle string, items []MorphItem) {
 					</div>
 					<div class="flex items-center justify-between pt-4 border-t border-surface-muted/60">
 						<span class="text-lg font-extrabold text-content font-mono">{ item.Price }</span>
-						<span class="text-xs font-bold text-accent">Подробнее →</span>
+						<span class="text-xs font-bold text-accent">Подробнее</span>
 					</div>
 				</div>
 			}

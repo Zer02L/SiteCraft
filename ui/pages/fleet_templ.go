@@ -189,7 +189,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div></div><!-- Модальное окно создания сайта --><div x-show=\"createModal\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm\" style=\"display: none;\"><div x-on:click.outside=\"createModal = false\" class=\"bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative\"><button type=\"button\" x-on:click=\"createModal = false\" class=\"absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div></div><!-- Модальное окно создания сайта --><div x-show=\"createModal\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm\" style=\"display: none;\"><div x-on:click.outside=\"createModal = false\" class=\"bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative\"><button type=\"button\" x-on:click=\"createModal = false\" class=\"absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg\" aria-label=\"Закрыть\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -205,7 +205,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div><h3 class=\"font-bold text-base text-white\">Создать клиентский инстанс</h3><p class=\"text-xs text-slate-400\">Инициализация базы данных и пресета</p></div></div><div id=\"fleet-create-result\" class=\"mb-4\"></div><form hx-post=\"/api/fleet/create\" hx-target=\"#fleet-create-result\" hx-swap=\"innerHTML\" @fleet-updated.window=\"setTimeout(() => { window.location.reload(); }, 1200)\" class=\"space-y-4\"><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">Идентификатор сайта (латиница)</label> <input type=\"text\" name=\"site_id\" required pattern=\"[a-z0-9_-]+\" placeholder=\"auto-master\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400\"><p class=\"text-[10px] text-slate-500 mt-0.5\">Только строчные латинские буквы, цифры и дефис</p></div><div class=\"grid grid-cols-2 gap-3\"><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">Нишевый пресет</label> <select name=\"preset\" class=\"w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400\"><option value=\"legal\">Юрист / Нотариус</option> <option value=\"medical\">Медицина / Стоматология</option> <option value=\"auto\">Автосервис / Детейлинг</option> <option value=\"beauty\">Салон красоты / SPA</option></select></div><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">HTTP-порт</label> <input type=\"text\" name=\"port\" value=\"8091\" required class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400\"></div></div><div class=\"pt-2\"><button type=\"submit\" class=\"w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition flex items-center justify-center gap-2 cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div><div><h3 class=\"font-bold text-base text-white\">Создать клиентский инстанс</h3><p class=\"text-xs text-slate-400\">Инициализация базы данных и пресета</p></div></div><div id=\"fleet-create-result\" class=\"mb-4\"></div><form hx-post=\"/api/fleet/create\" hx-target=\"#fleet-create-result\" hx-swap=\"innerHTML\" @fleet-updated.window=\"setTimeout(() => { window.location.reload(); }, 1200)\" class=\"space-y-4\"><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">Идентификатор сайта (латиница)</label> <input type=\"text\" name=\"site_id\" required pattern=\"[a-z0-9_-]+\" placeholder=\"auto-master\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary\"><p class=\"text-[10px] text-slate-500 mt-0.5\">Только строчные латинские буквы, цифры и дефис</p></div><div class=\"grid grid-cols-2 gap-3\"><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">Нишевый пресет</label> <select name=\"preset\" class=\"w-full px-3 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary\"><option value=\"legal\">Юрист / Нотариус</option> <option value=\"medical\">Медицина / Стоматология</option> <option value=\"auto\">Автосервис / Детейлинг</option> <option value=\"beauty\">Салон красоты / SPA</option></select></div><div><label class=\"block text-xs font-semibold text-slate-400 mb-1\">HTTP-порт</label> <input type=\"text\" name=\"port\" value=\"8091\" required class=\"w-full px-3.5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-white text-xs focus:outline-none focus:border-amber-400 focus-visible:ring-2 focus-visible:ring-primary\"></div></div><div class=\"pt-2\"><button type=\"submit\" class=\"w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition flex items-center justify-center gap-2 cursor-pointer\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -245,7 +245,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression("fleet-row-" + site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 244, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 245, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -258,7 +258,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(site.SiteID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 246, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 247, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -276,7 +276,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(site.CreatedAt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 248, Col: 77}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 249, Col: 77}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -294,7 +294,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(site.Preset)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 254, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 255, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -307,7 +307,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(site.Port)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 260, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 261, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -325,7 +325,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(site.URL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 263, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 264, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
@@ -346,7 +346,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(site.AdminURL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 273, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 274, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 			if templ_7745c5c3_Err != nil {
@@ -369,7 +369,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(site.PID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 288, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 289, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -397,7 +397,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 301, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 302, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 			if templ_7745c5c3_Err != nil {
@@ -410,13 +410,13 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 302, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 303, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\"> <input type=\"hidden\" name=\"action\" value=\"stop\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer\" title=\"Остановить\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\"> <input type=\"hidden\" name=\"action\" value=\"stop\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition cursor-pointer\" title=\"Остановить\" aria-label=\"Остановить инстанс\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -431,7 +431,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 312, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 314, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 			if templ_7745c5c3_Err != nil {
@@ -444,13 +444,13 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 313, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 315, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\"> <input type=\"hidden\" name=\"action\" value=\"restart\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 transition cursor-pointer\" title=\"Перезапустить\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "\"> <input type=\"hidden\" name=\"action\" value=\"restart\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 transition cursor-pointer\" title=\"Перезапустить\" aria-label=\"Перезапустить инстанс\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -470,7 +470,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 324, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 327, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 			if templ_7745c5c3_Err != nil {
@@ -483,13 +483,13 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 325, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 328, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"> <input type=\"hidden\" name=\"action\" value=\"start\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer\" title=\"Запустить\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\"> <input type=\"hidden\" name=\"action\" value=\"start\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition cursor-pointer\" title=\"Запустить\" aria-label=\"Запустить инстанс\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -509,7 +509,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 337, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 341, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 		if templ_7745c5c3_Err != nil {
@@ -522,13 +522,13 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 338, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 342, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var23)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\"> <input type=\"hidden\" name=\"action\" value=\"backup\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer\" title=\"Сделать бэкап\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\"> <input type=\"hidden\" name=\"action\" value=\"backup\"> <button type=\"submit\" class=\"p-1.5 rounded-lg bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer\" title=\"Сделать бэкап\" aria-label=\"Создать бэкап инстанса\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

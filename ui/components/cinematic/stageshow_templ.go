@@ -800,7 +800,7 @@ func MockSatellite(props MockSatelliteProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var32 = []any{twmerge.Merge(
-				"absolute z-30 bg-surface/95 backdrop-blur-md border border-content/15 rounded-xl shadow-2xl p-4 transition-all duration-300",
+				"absolute z-30 bg-surface/95 backdrop-blur-md border border-content/15 rounded-xl shadow-2xl p-4 transition duration-300",
 				props.Class,
 			)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var32...)
@@ -897,7 +897,7 @@ func MockCursor(props MockCursorProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var35 = []any{twmerge.Merge(
-				"pointer-events-none absolute z-40 transition-transform duration-700 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform",
+				"pointer-events-none absolute z-40 transition-transform duration-300 ease-[cubic-bezier(0.2,0.8,0.2,1)] will-change-transform",
 				props.Class,
 			)}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_ElementWriter, templ_7745c5c3_Var35...)

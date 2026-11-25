@@ -31,7 +31,7 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 					hx-get="/client/articles/new"
 					hx-target="#admin-tab-content"
 					hx-swap="innerHTML"
-					class="px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+					class="px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
@@ -183,6 +183,7 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 													type="button"
 													@click.stop={ fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title)) }
 													title="Live Preview (Быстрый предпросмотр)"
+													aria-label="Live Preview (Быстрый предпросмотр)"
 													class="opacity-0 group-hover:opacity-100 transition-opacity text-admin-content-subtle hover:text-admin-accent cursor-pointer p-0.5 rounded shrink-0"
 												>
 													<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -285,7 +286,7 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 			x-cloak
 			@mouseenter="keepPreview()"
 			@mouseleave="hidePreview()"
-			class="hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-200 pointer-events-auto"
+			class="hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition duration-200 pointer-events-auto"
 		>
 			<!-- Preview Header / Browser Chrome -->
 			<div class="px-4 py-3 bg-admin-surface-muted border-b border-admin-border flex items-center justify-between shrink-0 select-none">
@@ -319,6 +320,7 @@ templ ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Ar
 						type="button"
 						@click="closePreview()"
 						title="Закрыть превью (Esc)"
+						aria-label="Закрыть превью (Esc)"
 						class="p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer"
 					>
 						<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

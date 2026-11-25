@@ -91,7 +91,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			return templ_7745c5c3_Err
 		}
 		for _, item := range items {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"morph-card p-7 rounded-3xl bg-surface border border-surface-muted/80 shadow-md hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between\" data-morph-id=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"morph-card p-7 rounded-3xl bg-surface border border-surface-muted/80 shadow-md hover:shadow-xl transition cursor-pointer flex flex-col justify-between\" data-morph-id=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -221,7 +221,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</span> <span class=\"text-xs font-bold text-accent\">Подробнее →</span></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</span> <span class=\"text-xs font-bold text-accent\">Подробнее</span></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

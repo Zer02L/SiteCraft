@@ -98,6 +98,10 @@ run = "agnix validate ."
 description = "Проверка семантических токенов Tailwind (anti-slop)"
 run = "./scripts/lint-tokens.sh"
 
+[tasks."lint:modern-web"]
+description = "Проверка современных веб-стандартов и Baseline (modern-web-guidance)"
+run = "python3 .agents/skills/modern-web-guidance/scripts/modern_web_lint.py ui/"
+
 [tasks.check]
 description = "Полный канонический прогон Quality Gates (Уровни 1 + 2 + 3)"
 depends = ["generate"]

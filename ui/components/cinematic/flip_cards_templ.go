@@ -94,7 +94,7 @@ func FlipCards(title string, subtitle string, items []FlipCardItem) templ.Compon
 			return templ_7745c5c3_Err
 		}
 		for _, item := range items {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"flip-card-container group h-[380px] w-full cursor-pointer focus:outline-none\" tabindex=\"0\" onclick=\"this.classList.toggle('flipped')\"><div class=\"flip-card-inner relative h-full w-full rounded-2xl transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-[.flipped]:[transform:rotateY(180deg)] shadow-sm hover:shadow-xl\"><!-- Лицевая сторона (Front) --><div class=\"flip-card-front absolute inset-0 h-full w-full rounded-2xl bg-surface border border-surface-muted/60 p-7 flex flex-col justify-between [backface-visibility:hidden] overflow-hidden\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"flip-card-container group h-[380px] w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-primary\" tabindex=\"0\" onclick=\"this.classList.toggle('flipped')\"><div class=\"flip-card-inner relative h-full w-full rounded-2xl transition-transform duration-300 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] group-[.flipped]:[transform:rotateY(180deg)] shadow-sm hover:shadow-xl\"><!-- Лицевая сторона (Front) --><div class=\"flip-card-front absolute inset-0 h-full w-full rounded-2xl bg-surface border border-surface-muted/60 p-7 flex flex-col justify-between [backface-visibility:hidden] overflow-hidden\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

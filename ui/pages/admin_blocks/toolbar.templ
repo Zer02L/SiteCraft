@@ -2,26 +2,26 @@ package admin_blocks
 
 templ Toolbar() {
 	<!-- Компактная шапка конструктора с Live Preview и селекторами устройств -->
-	<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+	<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-admin-border">
 		<div>
 			<div class="flex items-center gap-3">
-				<h2 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+				<h2 class="text-xl sm:text-2xl font-bold text-admin-content tracking-tight">
 					Конструктор
 				</h2>
 				<a
 					href="/?preview=true"
 					target="_blank"
-					class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 transition-colors shadow-2xs cursor-pointer"
+					class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 hover:bg-emerald-500/20 transition-colors shadow-2xs cursor-pointer"
 					title="Открыть живой сайт в отдельной вкладке"
 				>
 					<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
 					<span>Live Preview</span>
-					<svg class="w-3 h-3 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
 					</svg>
 				</a>
 			</div>
-			<p class="text-xs sm:text-sm text-slate-500 mt-0.5">
+			<p class="text-xs sm:text-sm text-admin-content-muted mt-0.5">
 				Управление структурой секций и живой дизайн-системой лендинга
 			</p>
 		</div>
@@ -29,12 +29,12 @@ templ Toolbar() {
 		<!-- Верхняя панель по смысловым группам -->
 		<div class="flex items-center gap-2.5 sm:gap-3 flex-wrap">
 			<!-- Группа 0: Переключатель режима отображения (Сплит / Секции / Превью) -->
-			<div class="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs">
+			<div class="inline-flex items-center p-1 rounded-xl bg-admin-surface-muted border border-admin-border text-xs font-medium shadow-2xs">
 				<button
 					type="button"
 					@click="responsiveView = 'both'; $nextTick(() => { updateContainerWidth(); });"
-					:class="responsiveView === 'both' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+					:class="responsiveView === 'both' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer"
 					title="Сплит-режим: Список + Живой предпросмотр"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,8 +46,8 @@ templ Toolbar() {
 				<button
 					type="button"
 					@click="responsiveView = 'blocks'"
-					:class="responsiveView === 'blocks' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+					:class="responsiveView === 'blocks' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer"
 					title="Только список секций"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,8 +59,8 @@ templ Toolbar() {
 				<button
 					type="button"
 					@click="responsiveView = 'preview'; $nextTick(() => { updateContainerWidth(); });"
-					:class="responsiveView === 'preview' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer"
+					:class="responsiveView === 'preview' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-2.5 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer"
 					title="Только Live Preview"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,12 +72,12 @@ templ Toolbar() {
 			</div>
 
 			<!-- Группа 1: Сегментированный переключатель экранов с явной подсветкой -->
-			<div class="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-medium shadow-2xs">
+			<div class="inline-flex items-center p-1 rounded-xl bg-admin-surface-muted border border-admin-border text-xs font-medium shadow-2xs">
 				<button
 					type="button"
 					@click="setDevice('desktop')"
-					:class="canvasDevice === 'desktop' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+					:class="canvasDevice === 'desktop' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer"
 					title="Десктоп (1280–1440px)"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,8 +89,8 @@ templ Toolbar() {
 				<button
 					type="button"
 					@click="setDevice('tablet')"
-					:class="canvasDevice === 'tablet' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+					:class="canvasDevice === 'tablet' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer"
 					title="Планшет (768px)"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,8 +102,8 @@ templ Toolbar() {
 				<button
 					type="button"
 					@click="setDevice('mobile')"
-					:class="canvasDevice === 'mobile' ? 'bg-slate-900 text-white font-semibold shadow-xs' : 'text-slate-600 hover:text-slate-900'"
-					class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+					:class="canvasDevice === 'mobile' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'"
+					class="px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 cursor-pointer"
 					title="Мобильный (390px)"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,8 +118,8 @@ templ Toolbar() {
 				type="button"
 				@click="triggerRadarCheck()"
 				x-show="radarStatus.checked"
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition-all shadow-2xs cursor-pointer"
-				:class="radarStatus.hasOverflow ? 'bg-rose-50 border-rose-300 text-rose-700 animate-pulse' : 'bg-emerald-50 border-emerald-300 text-emerald-800'"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono font-medium transition shadow-2xs cursor-pointer"
+				:class="radarStatus.hasOverflow ? 'bg-rose-500/10 border-rose-500/30 text-rose-500 animate-pulse' : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'"
 				:title="radarStatus.hasOverflow ? ('Вылет верстки на ' + radarStatus.diff + 'px! Кликните для повторной проверки') : '100% Fit: горизонтальный скролл отсутствует'"
 			>
 				<span
@@ -133,13 +133,13 @@ templ Toolbar() {
 			<button
 				type="button"
 				@click="toggleGrayscale()"
-				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all shadow-2xs cursor-pointer select-none"
-				:class="isGrayscale ? 'bg-slate-900 text-white border-slate-900 font-semibold shadow-xs' : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'"
+				class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition shadow-2xs cursor-pointer select-none"
+				:class="isGrayscale ? 'bg-admin-accent text-white border-admin-accent font-semibold shadow-xs' : 'bg-admin-surface border-admin-border text-admin-content-muted hover:bg-admin-surface-muted'"
 				title="Тест иерархии в оттенках серого (Value First): выявляет проблемы контраста и читаемости без цвета"
 			>
-				<span class="w-3 h-3 rounded-full border border-slate-400 overflow-hidden flex shrink-0">
-					<span class="w-1/2 h-full bg-slate-900"></span>
-					<span class="w-1/2 h-full bg-white"></span>
+				<span class="w-3 h-3 rounded-full border border-admin-border overflow-hidden flex shrink-0">
+					<span class="w-1/2 h-full bg-admin-content"></span>
+					<span class="w-1/2 h-full bg-admin-surface"></span>
 				</span>
 				<span x-text="isGrayscale ? 'Ч/Б активен' : 'Ч/Б тест'"></span>
 			</button>
@@ -148,8 +148,9 @@ templ Toolbar() {
 			<button
 				type="button"
 				@click="refreshCanvas()"
-				class="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-colors shadow-2xs cursor-pointer"
+				class="p-2 rounded-xl bg-admin-surface border border-admin-border text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors shadow-2xs cursor-pointer"
 				title="Перезагрузить превью"
+				aria-label="Перезагрузить превью"
 			>
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -157,7 +158,7 @@ templ Toolbar() {
 			</button>
 
 			<!-- Группа 3: Индикатор статуса синхронизации -->
-			<div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-mono font-medium text-slate-700">
+			<div class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-admin-surface-muted border border-admin-border text-xs font-mono font-medium text-admin-content-muted">
 				<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
 				<span>Все изменения сохранены</span>
 			</div>
@@ -166,7 +167,7 @@ templ Toolbar() {
 			<button
 				type="button"
 				onclick="document.getElementById('new-block-dialog').showModal()"
-				class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl text-xs transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+				class="px-4 py-2 bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold rounded-xl text-xs transition shadow-xs flex items-center gap-1.5 cursor-pointer"
 			>
 				<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>

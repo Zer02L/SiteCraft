@@ -33,7 +33,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						pattern=".*\S+.*"
 						title="Название сайта должно содержать от 2 до 100 символов"
 						placeholder="Моя Компания"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Обязательное поле (от 2 до 100 символов)</p>
 				</div>
@@ -46,7 +46,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						value={ settings.Tagline }
 						maxlength="150"
 						placeholder="Например: Надежная защита ваших интересов"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Краткое описание деятельности (до 150 символов)</p>
 				</div>
@@ -65,7 +65,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$"
 						title="Формат номера: +7 (999) 999-99-99"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Формат: +7 (XXX) XXX-XX-XX</p>
 				</div>
@@ -81,7 +81,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^(\+7 \(\d{3}\) \d{3}-\d{2}-\d{2})?$"
 						title="Формат номера: +7 (999) 999-99-99 или оставьте пустым"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Необязательно. Формат: +7 (XXX) XXX-XX-XX</p>
 				</div>
@@ -97,7 +97,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						placeholder="+7 (999) 000-00-00"
 						pattern="^(\+7 \(\d{3}\) \d{3}-\d{2}-\d{2})?$"
 						title="Формат номера WhatsApp: +7 (999) 999-99-99 или оставьте пустым"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Для прямой ссылки wa.me</p>
 				</div>
@@ -112,7 +112,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						maxlength="60"
 						pattern="^(@[a-zA-Z0-9_]{3,32}|(https?:\/\/)?t\.me\/[a-zA-Z0-9_]{3,32}|[a-zA-Z0-9_]{3,32})?$"
 						title="Юзернейм Telegram (@username или t.me/username)"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Формат: &#64;username или t.me/username</p>
 				</div>
@@ -131,7 +131,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						pattern=".*\S+.*"
 						title="Фактический адрес (от 5 до 200 символов)"
 						placeholder="г. Москва, ул. Ленина, д. 10"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Обязательное поле для отображения на сайте и картах</p>
 				</div>
@@ -144,7 +144,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						value={ content.AddressSub }
 						maxlength="100"
 						placeholder="Офис 302, 3 этаж, БЦ Плаза"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Дополнительные ориентиры для клиентов</p>
 				</div>
@@ -157,7 +157,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						value={ content.WorkHours }
 						maxlength="60"
 						placeholder="Пн-Пт: 09:00 - 18:00"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Рабочие часы в будние дни</p>
 				</div>
@@ -170,7 +170,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 						value={ content.DaysOff }
 						maxlength="60"
 						placeholder="Сб, Вс"
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors"
 					/>
 					<p class="text-[11px] font-mono text-admin-content-subtle mt-1">Дни отдыха или праздники</p>
 				</div>
@@ -180,7 +180,7 @@ templ ClientContactsTab(content models.SiteContent, settings models.SiteSettings
 				<div id="contacts-save-status"></div>
 				<button
 					type="submit"
-					class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+					class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -232,7 +232,7 @@ templ ClientSecurityTab(msg string, errMsg string) {
 						name="current_password"
 						required
 						placeholder="Введите текущий пароль..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm"
 					/>
 				</div>
 
@@ -244,7 +244,7 @@ templ ClientSecurityTab(msg string, errMsg string) {
 						required
 						minlength="8"
 						placeholder="Минимум 8 символов..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm"
 					/>
 					<p class="mt-1 text-[11px] font-mono text-admin-content-subtle">Пароль должен содержать не менее 8 знаков</p>
 				</div>
@@ -257,14 +257,14 @@ templ ClientSecurityTab(msg string, errMsg string) {
 						required
 						minlength="8"
 						placeholder="Повторите новый пароль..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus transition-colors text-sm"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm"
 					/>
 				</div>
 
 				<div class="pt-2">
 					<button
 						type="submit"
-						class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

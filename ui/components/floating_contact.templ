@@ -82,10 +82,10 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 				class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn"
 				title="Заказать экспресс-звонок"
 			>
-				<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap">
+				<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition whitespace-nowrap">
 					Обратный звонок (30 сек)
 				</span>
-				<div class="w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+				<div class="w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition">
 					@icons.Zap(templ.Attributes{"class": "w-6 h-6"})
 				</div>
 			</button>
@@ -97,10 +97,10 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 					class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn"
 					title="Позвонить сейчас"
 				>
-					<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap">
+					<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition whitespace-nowrap">
 						Позвонить { phone }
 					</span>
-					<div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+					<div class="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition">
 						@icons.PhoneCall(templ.Attributes{"class": "w-5 h-5"})
 					</div>
 				</a>
@@ -115,10 +115,10 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 					class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn"
 					title="Написать в WhatsApp"
 				>
-					<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap">
+					<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap">
 						Написать в WhatsApp
 					</span>
-					<div class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+					<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: #25D366;">
 						@icons.MessageCircle(templ.Attributes{"class": "w-6 h-6"})
 					</div>
 				</a>
@@ -132,10 +132,10 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 				class="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn"
 				title="Написать в Telegram"
 			>
-				<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap">
+				<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap">
 					Написать в Telegram
 				</span>
-				<div class="w-12 h-12 rounded-full bg-[#0088cc] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all">
+				<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: #0088cc;">
 					@icons.Send(templ.Attributes{"class": "w-5 h-5"})
 				</div>
 			</a>
@@ -146,7 +146,7 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 			type="button"
 			x-on:click="open = !open"
 			:class="open ? 'rotate-90 bg-content text-surface' : 'bg-accent text-surface'"
-			class="w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 relative group cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
+			class="w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition duration-200 relative group cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30"
 			aria-label="Связаться с нами"
 		>
 			<!-- Пульсирующий ореол (когда закрыто) -->

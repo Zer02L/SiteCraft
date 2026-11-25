@@ -90,7 +90,7 @@ func Coverflow(title string, subtitle string, items []CoverflowItem) templ.Compo
 			return templ_7745c5c3_Err
 		}
 		for idx, itm := range items {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"coverflow-slide absolute w-[280px] sm:w-[340px] h-[380px] rounded-3xl p-7 flex flex-col justify-end bg-surface border border-surface-muted/80 shadow-2xl transition-all duration-500 ease-out cursor-pointer select-none overflow-hidden\" data-coverflow-slide data-index=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"coverflow-slide absolute w-[280px] sm:w-[340px] h-[380px] rounded-3xl p-7 flex flex-col justify-end bg-surface border border-surface-muted/80 shadow-2xl transition duration-200 ease-out cursor-pointer select-none overflow-hidden\" data-coverflow-slide data-index=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

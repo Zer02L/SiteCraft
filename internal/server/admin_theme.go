@@ -1,9 +1,20 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
+	"image"
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
+	"io"
 	"log/slog"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+
+	_ "golang.org/x/image/webp"
 
 	"sitecraft/internal/theme"
 )
@@ -153,4 +164,89 @@ func (s *Server) HandleAdminRollbackThemePreset(w http.ResponseWriter, r *http.R
 		<span class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
 		<span>Предыдущая тема успешно восстановлена!</span>
 	</div>`))
+}
+
+// HandleAdminExtractPalette extracts dominant colors and curated 60-30-10 palettes from an uploaded image.
+func (s *Server) HandleAdminExtractPalette(w http.ResponseWriter, r *http.Request) {
+	// Support max 10MB image uploads
+	if err := r.ParseMultipartForm(10 << 20); err != nil {
+		_ = r.ParseForm()
+	}
+
+	var imgReader io.Reader
+
+	// Check if a file was uploaded directly
+	file, _, err := r.FormFile("image")
+	if err != nil {
+		file, _, err = r.FormFile("file")
+	}
+
+	if err == nil && file != nil {
+		defer file.Close()
+		imgReader = file
+	} else {
+		// Alternatively, check for image_url or path in form values
+		imgPath := r.FormValue("image_url")
+		if imgPath == "" {
+			imgPath = r.FormValue("path")
+		}
+
+		if imgPath == "" {
+			http.Error(w, "Файл изображения не передан", http.StatusBadRequest)
+			return
+		}
+
+		// Security: clean path and prevent path traversal
+		cleanPath := filepath.Clean(strings.TrimPrefix(imgPath, "/"))
+		if strings.HasPrefix(cleanPath, "..") {
+			http.Error(w, "Недопустимый путь к изображению", http.StatusBadRequest)
+			return
+		}
+
+		// Look up in media directory or public directory
+		var f *os.File
+		if s.Media != nil {
+			localFile, err := s.Media.GetOrGenerateThumbnail("raw", filepath.Base(cleanPath))
+			if err == nil {
+				f, err = os.Open(localFile)
+			}
+		}
+		if f == nil {
+			f, err = os.Open(cleanPath)
+		}
+		if err != nil {
+			http.Error(w, "Изображение не найдено", http.StatusNotFound)
+			return
+		}
+		defer f.Close()
+		imgReader = f
+	}
+
+	img, _, err := image.Decode(imgReader)
+	if err != nil {
+		slog.Warn("failed to decode image for palette extraction", "error", err)
+		http.Error(w, "Не удалось декодировать изображение. Поддерживаются JPEG, PNG, WebP и GIF.", http.StatusBadRequest)
+		return
+	}
+
+	palette, err := theme.ExtractPaletteFromImage(img)
+	if err != nil {
+		slog.Error("failed to extract palette from image", "error", err)
+		http.Error(w, "Ошибка извлечения палитры: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	resp := map[string]interface{}{
+		"success":          true,
+		"accent":           palette.Accent,
+		"primary":          palette.Primary,
+		"surface":          palette.Surface,
+		"suggested_theme":  palette.SuggestedTheme,
+		"suggested_flavor": palette.SuggestedFlavor,
+		"dominant_colors":  palette.DominantColors,
+		"palettes":         palette.Palettes,
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	_ = json.NewEncoder(w).Encode(resp)
 }

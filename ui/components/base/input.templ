@@ -40,7 +40,7 @@ type InputProps struct {
 }
 
 func (p InputProps) Classes() string {
-	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60"
+	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60"
 
 	var variant string
 	if p.Variant == InputError || p.ErrorText != "" {
@@ -162,7 +162,7 @@ type TextareaProps struct {
 }
 
 func (p TextareaProps) Classes() string {
-	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60 text-sm px-4 py-2.5 resize-y"
+	const base = "w-full rounded-input border bg-surface-muted hover:bg-surface text-content transition duration-150 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-surface-muted/50 placeholder:text-content-muted/60 text-sm px-4 py-2.5 resize-y"
 	var variant string
 	if p.ErrorText != "" {
 		variant = "border-rose-500 text-rose-900 dark:text-rose-100 focus:ring-rose-500 focus:border-rose-500"

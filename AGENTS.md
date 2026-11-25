@@ -90,6 +90,7 @@ Default section order:
   - **Layout Rhythm**: Avoid monotonous 3-identical-card grids. Vary structural density (split heroes, asymmetrical bento, interactive quizzes, accent timelines).
   - **Tactile Performance (60 FPS)**: Content must be readable instantly without waiting for scroll animations. Animations limited to `transform` and `opacity` (150–200ms) with full `prefers-reduced-motion` and No-JS progressive enhancement.
   - **Craft & Heuristic Audit**: Use `.agents/skills/impeccable-craft/` (commands `polish`, `bolder`, `quieter`, `distill`, `audit`) and run `.agents/skills/impeccable-craft/scripts/check_slop.py` for 0-token deterministic verification against 60+ anti-slop rules.
+  - **Modern Web & Baseline Standards**: Use `.agents/skills/modern-web-guidance/` (commands `audit`, `modernize`, `baseline`, `recipes`) and `.agents/skills/modern-web-guidance/scripts/modern_web_lint.py` to enforce native Baseline primitives (`<dialog>`, Popover API, CSS Anchor, `@container`, `@starting-style`, View Transitions, `fetchpriority`) and eliminate legacy JS bloat without Node.js runtime.
 - **Ponytail (Lazy Senior Dev Mode)**:
   - Best code is the code never written. Solve problems with minimal diffs and no over-engineering.
   - Before writing, grep callers to establish full scope (callers, templates, tests, fixtures, configs).
@@ -106,6 +107,7 @@ Default section order:
   - **Architecture Guard**: [`.go-arch-lint.yml`](.go-arch-lint.yml) enforces strict layer isolation (`server`, `data`, `db`, `models`, `ui`).
   - **Structural & Anti-Slop Guard**: [`.ast-grep-rules/`](.ast-grep-rules/) and [`sgconfig.yml`](sgconfig.yml) (`ast-grep`) enforce custom AST patterns (e.g. banning raw SQL `fmt.Sprintf` and enforcing safe context usage).
   - **Secret Leak Guard**: `betterleaks` (with drop-in `.gitleaks.toml` compatibility and BPE tokenization) stops credential leaks.
+  - **Modern Web Guard**: `mise run lint:modern-web` runs static scanning for legacy web anti-patterns and Baseline compatibility.
   - **Typo & Spell Checker**: [`.typos.toml`](.typos.toml) prevents misspellings in code, templates, and dictionaries.
   - **Code Quality**: [`.golangci.yml`](.golangci.yml) enforces static analysis, error checking, and code hygiene.
   - **Vulnerability Scanner**: `govulncheck` checks reachable CVEs in dependencies.

@@ -333,6 +333,20 @@ window.openBlockEditor = function(id, title, content, bType, variant) {
 						{ name: 'Dark Zinc', hex: '#18181b' }
 					]
 				},
+				imageExtractor: {
+					isOpen: false,
+					isProcessing: false,
+					isDragOver: false,
+					imageSrc: '',
+					fileName: '',
+					dominantColors: [],
+					curatedPalettes: [],
+					selectedPaletteId: '',
+					sampleRole: 'accent',
+					pickedPixelHex: '',
+					statusMsg: '',
+					errorMsg: ''
+				},
 				init() {
 					this.$nextTick(() => { this.updateContainerWidth(); });
 					window.addEventListener('resize', () => { this.updateContainerWidth(); });
@@ -349,6 +363,21 @@ window.openBlockEditor = function(id, title, content, bType, variant) {
 								diff: e.data.diff || 0,
 								culprits: e.data.culprits || []
 							};
+						}
+					});
+					window.addEventListener('paste', (e) => {
+						if (!this.imageExtractor.isOpen) return;
+						if (e.clipboardData && e.clipboardData.items) {
+							for (let i = 0; i < e.clipboardData.items.length; i++) {
+								const item = e.clipboardData.items[i];
+								if (item.type.indexOf('image') !== -1) {
+									const file = item.getAsFile();
+									if (file) {
+										this.handleImageFile(file);
+										break;
+									}
+								}
+							}
 						}
 					});
 					this.$nextTick(() => {
@@ -711,6 +740,330 @@ window.openBlockEditor = function(id, title, content, bType, variant) {
 						.catch(() => {
 							this.saveStatus = 'Ошибка сохранения';
 						});
+				},
+				toggleImageExtractor() {
+					this.imageExtractor.isOpen = !this.imageExtractor.isOpen;
+				},
+				handleImageFile(file) {
+					if (!file) return;
+					if (!file.type || !file.type.startsWith('image/')) {
+						this.imageExtractor.errorMsg = 'Пожалуйста, выберите файл изображения (PNG, JPG, WebP, SVG, GIF)';
+						return;
+					}
+					this.imageExtractor.isProcessing = true;
+					this.imageExtractor.errorMsg = '';
+					this.imageExtractor.statusMsg = 'Анализ палитры изображения...';
+					this.imageExtractor.fileName = file.name;
+
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						const dataUrl = e.target.result;
+						this.imageExtractor.imageSrc = dataUrl;
+						const img = new Image();
+						img.onload = () => {
+							this.extractPaletteFromImg(img, file);
+						};
+						img.src = dataUrl;
+					};
+					reader.readAsDataURL(file);
+				},
+				extractPaletteFromImg(img, rawFile) {
+					try {
+						// 1. Offscreen canvas extraction
+						const maxDim = 120;
+						let w = img.naturalWidth || img.width || 100;
+						let h = img.naturalHeight || img.height || 100;
+						if (w > maxDim || h > maxDim) {
+							if (w > h) {
+								h = Math.round((h * maxDim) / w);
+								w = maxDim;
+							} else {
+								w = Math.round((w * maxDim) / h);
+								h = maxDim;
+							}
+						}
+						const canvas = document.createElement('canvas');
+						canvas.width = Math.max(1, w);
+						canvas.height = Math.max(1, h);
+						const ctx = canvas.getContext('2d', { willReadFrequently: true });
+						ctx.drawImage(img, 0, 0, w, h);
+						const data = ctx.getImageData(0, 0, w, h).data;
+
+						// 2. 5-bit color bucketing
+						const buckets = {};
+						let totalSampled = 0;
+						for (let i = 0; i < data.length; i += 4) {
+							const a = data[i + 3];
+							if (a < 128) continue; // skip transparent
+							const r = data[i];
+							const g = data[i + 1];
+							const b = data[i + 2];
+							const key = ((r >> 3) << 10) | ((g >> 3) << 5) | (b >> 3);
+							if (!buckets[key]) {
+								buckets[key] = { rSum: 0, gSum: 0, bSum: 0, count: 0 };
+							}
+							buckets[key].rSum += r;
+							buckets[key].gSum += g;
+							buckets[key].bSum += b;
+							buckets[key].count++;
+							totalSampled++;
+						}
+
+						if (totalSampled === 0) {
+							this.imageExtractor.errorMsg = 'Изображение полностью прозрачное';
+							this.imageExtractor.isProcessing = false;
+							return;
+						}
+
+						// 3. Cluster averages
+						const clusters = [];
+						for (const k in buckets) {
+							const b = buckets[k];
+							clusters.push({
+								r: Math.round(b.rSum / b.count),
+								g: Math.round(b.gSum / b.count),
+								b: Math.round(b.bSum / b.count),
+								count: b.count
+							});
+						}
+						clusters.sort((a, b) => b.count - a.count);
+
+						// 4. Merge visually close clusters
+						const merged = [];
+						const threshold = 28 * 28;
+						for (const c of clusters) {
+							let dup = false;
+							for (const m of merged) {
+								const dr = c.r - m.r;
+								const dg = c.g - m.g;
+								const db = c.b - m.b;
+								if (dr * dr + dg * dg + db * db < threshold) {
+									m.count += c.count;
+									dup = true;
+									break;
+								}
+							}
+							if (!dup) {
+								merged.push(c);
+								if (merged.length >= 16) break;
+							}
+						}
+						merged.sort((a, b) => b.count - a.count);
+
+						// 5. Convert to color objects with metrics
+						const dominant = [];
+						for (const m of merged.slice(0, 8)) {
+							const hex = window.SiteOklchGuard.rgbToHex(m.r, m.g, m.b);
+							const lum = window.SiteOklchGuard.getLuminanceFromHex(hex);
+							const rgb = window.SiteOklchGuard.hexToRgb(hex);
+							const oklch = window.SiteOklchGuard.rgbToOklch(rgb.r, rgb.g, rgb.b);
+							const pct = Math.round((m.count / totalSampled) * 1000) / 10;
+							dominant.push({
+								hex: hex,
+								r: m.r,
+								g: m.g,
+								b: m.b,
+								lum: lum,
+								chroma: oklch.c,
+								hue: Math.round(oklch.h),
+								percent: pct,
+								isDark: lum < 0.22
+							});
+						}
+
+						this.imageExtractor.dominantColors = dominant;
+
+						// 6. Identify Accent, Primary, Surface
+						let bestAccent = dominant[0] ? dominant[0].hex : '#2563eb';
+						let bestAccentScore = -1;
+						for (const c of dominant) {
+							if (c.lum > 0.03 && c.lum < 0.88) {
+								const score = c.chroma * 4.0 + Math.min(1.0, c.percent / 15.0);
+								if (score > bestAccentScore) {
+									bestAccentScore = score;
+									bestAccent = c.hex;
+								}
+							}
+						}
+
+						// Primary: deep dark color or tinted dark
+						let bestPrimary = '#0f172a';
+						let lowestLum = 1.0;
+						for (const c of dominant) {
+							if (c.hex !== bestAccent && c.lum < 0.15 && c.lum < lowestLum) {
+								lowestLum = c.lum;
+								bestPrimary = c.hex;
+							}
+						}
+						if (lowestLum > 0.15) {
+							const accRgb = window.SiteOklchGuard.hexToRgb(bestAccent);
+							const accOklch = window.SiteOklchGuard.rgbToOklch(accRgb.r, accRgb.g, accRgb.b);
+							const tinted = window.SiteOklchGuard.oklchToRgb(0.18, 0.035, accOklch.h);
+							bestPrimary = tinted.hex;
+						}
+
+						// Surface: very light neutral tone or white
+						let bestSurface = '#ffffff';
+						for (const c of dominant) {
+							if (c.lum > 0.88 && c.chroma < 0.04) {
+								bestSurface = c.hex;
+								break;
+							}
+						}
+
+						// Curated palettes
+						const accRgb = window.SiteOklchGuard.hexToRgb(bestAccent);
+						const accOklch = window.SiteOklchGuard.rgbToOklch(accRgb.r, accRgb.g, accRgb.b);
+						const h = accOklch.h;
+
+						const darkSurface = window.SiteOklchGuard.oklchToRgb(0.12, 0.02, h).hex;
+						const darkText = window.SiteOklchGuard.oklchToRgb(0.96, 0.02, h).hex;
+						const darkAccent = window.SiteOklchGuard.oklchToRgb(0.68, Math.max(0.16, accOklch.c), h).hex;
+
+						const warmSurface = window.SiteOklchGuard.oklchToRgb(0.985, 0.015, 65).hex; // Warm ivory
+						const warmText = window.SiteOklchGuard.oklchToRgb(0.18, 0.025, 45).hex;
+
+						this.imageExtractor.curatedPalettes = [
+							{
+								id: 'balanced',
+								name: 'Сбалансированная (60-30-10)',
+								desc: 'Чистый фон, четкий читаемый текст и выразительный акцент',
+								accent: bestAccent,
+								primary: bestPrimary,
+								surface: bestSurface,
+								theme: 'coral',
+								flavor: 'soft'
+							},
+							{
+								id: 'vibrant',
+								name: 'Яркая / Брендовая',
+								desc: 'Максимальная энергия цветов для активных проектов',
+								accent: bestAccent,
+								primary: bestPrimary,
+								surface: '#ffffff',
+								theme: 'coral',
+								flavor: 'sharp'
+							},
+							{
+								id: 'editorial',
+								name: 'Мягкая / Редакционная',
+								desc: 'Теплый благородный фон и сдержанный контраст',
+								accent: bestAccent,
+								primary: warmText,
+								surface: warmSurface,
+								theme: 'beauty',
+								flavor: 'corporate'
+							},
+							{
+								id: 'dark',
+								name: 'Глубокая ночная (Dark)',
+								desc: 'Премиальный темный фон со светящимся неоновым акцентом',
+								accent: darkAccent,
+								primary: darkText,
+								surface: darkSurface,
+								theme: 'main-night',
+								flavor: 'soft'
+							}
+						];
+
+						// Apply first palette to preview immediately
+						this.applyCuratedPalette(this.imageExtractor.curatedPalettes[0]);
+						this.imageExtractor.statusMsg = 'Палитра успешно извлечена!';
+						this.imageExtractor.isProcessing = false;
+
+						// In background: also call backend API if rawFile is present to verify
+						if (rawFile) {
+							const fd = new FormData();
+							fd.append('image', rawFile);
+							fetch('/admin/api/theme/extract-palette', { method: 'POST', body: fd })
+								.then(r => r.json())
+								.then(data => {
+									if (data && data.success && data.palettes && data.palettes.length) {
+										this.imageExtractor.curatedPalettes = data.palettes;
+									}
+								})
+								.catch(() => {});
+						}
+					} catch (err) {
+						this.imageExtractor.errorMsg = 'Ошибка обработки изображения: ' + (err.message || err);
+						this.imageExtractor.isProcessing = false;
+					}
+				},
+				applyCuratedPalette(pal) {
+					if (!pal) return;
+					this.imageExtractor.selectedPaletteId = pal.id;
+					this.tokens.accent = pal.accent;
+					this.tokens.primary = pal.primary;
+					this.tokens.surface = pal.surface;
+					if (pal.theme) this.themePreset = pal.theme;
+					if (pal.flavor || pal.design_flavor) this.flavorPreset = pal.flavor || pal.design_flavor;
+
+					const frame = document.getElementById('preview-canvas');
+					if (frame && frame.contentWindow) {
+						frame.contentWindow.postMessage({ type: 'SITE_THEME_UPDATE', theme: this.themePreset }, '*');
+						frame.contentWindow.postMessage({ type: 'SITE_FLAVOR_UPDATE', flavor: this.flavorPreset }, '*');
+						frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: '--color-primary', value: this.tokens.primary }, '*');
+						frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: '--color-accent', value: this.tokens.accent }, '*');
+						frame.contentWindow.postMessage({ type: 'SITE_TOKEN_UPDATE', key: '--color-surface', value: this.tokens.surface }, '*');
+					}
+					this.updateScale();
+					this.syncFromHex(this.tokens[this.inspectRole]);
+					this.imageExtractor.statusMsg = 'Палитра «' + pal.name + '» применена в предпросмотре!';
+					setTimeout(() => { if (this.imageExtractor.statusMsg.startsWith('Палитра «')) this.imageExtractor.statusMsg = ''; }, 3500);
+				},
+				applyExtractedRole(hex, role) {
+					role = role || this.imageExtractor.sampleRole || 'accent';
+					this.applyRoleHex(role, hex);
+					this.imageExtractor.statusMsg = 'Цвет ' + hex + ' назначен для ' + (role === 'accent' ? 'Акцента (10%)' : (role === 'primary' ? 'Текста (30%)' : 'Фона (60%)'));
+					setTimeout(() => { this.imageExtractor.statusMsg = ''; }, 3000);
+				},
+				sampleImagePixel(event) {
+					const img = event.target;
+					const rect = img.getBoundingClientRect();
+					const x = Math.floor((event.clientX - rect.left) * (img.naturalWidth / rect.width));
+					const y = Math.floor((event.clientY - rect.top) * (img.naturalHeight / rect.height));
+
+					const canvas = document.createElement('canvas');
+					canvas.width = 1;
+					canvas.height = 1;
+					const ctx = canvas.getContext('2d', { willReadFrequently: true });
+					ctx.drawImage(img, x, y, 1, 1, 0, 0, 1, 1);
+					const pixel = ctx.getImageData(0, 0, 1, 1).data;
+					const hex = window.SiteOklchGuard.rgbToHex(pixel[0], pixel[1], pixel[2]);
+
+					this.imageExtractor.pickedPixelHex = hex;
+					this.applyExtractedRole(hex, this.imageExtractor.sampleRole);
+				},
+				clearImageExtractor() {
+					this.imageExtractor.imageSrc = '';
+					this.imageExtractor.fileName = '';
+					this.imageExtractor.dominantColors = [];
+					this.imageExtractor.curatedPalettes = [];
+					this.imageExtractor.selectedPaletteId = '';
+					this.imageExtractor.statusMsg = '';
+					this.imageExtractor.errorMsg = '';
+					this.imageExtractor.pickedPixelHex = '';
+				},
+				loadSamplePaletteImage(type) {
+					let svg = '';
+					if (type === 'logo') {
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="100%" height="100%" fill="#ffffff"/><circle cx="120" cy="120" r="70" fill="#06b6d4"/><circle cx="200" cy="120" r="50" fill="#0f172a"/><circle cx="270" cy="120" r="60" fill="#3b82f6"/><text x="200" y="215" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#0f172a">TECH LOGO</text></svg>';
+					} else if (type === 'interior') {
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="100%" height="100%" fill="#fdfbf7"/><rect x="40" y="40" width="160" height="160" rx="16" fill="#b45309"/><rect x="220" y="40" width="140" height="100" rx="8" fill="#1c1917"/><circle cx="290" cy="175" r="25" fill="#d97706"/><text x="200" y="225" font-family="serif" font-size="16" text-anchor="middle" fill="#1c1917">LUXURY EDITORIAL</text></svg>';
+					} else if (type === 'auto') {
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="100%" height="100%" fill="#18181b"/><polygon points="40,200 180,40 260,40 120,200" fill="#ea580c"/><rect x="240" y="100" width="120" height="60" fill="#ffffff"/><circle cx="100" cy="160" r="25" fill="#f97316"/><text x="200" y="225" font-family="sans-serif" font-size="18" font-weight="900" text-anchor="middle" fill="#ffffff">DYNAMIC AUTO</text></svg>';
+					} else {
+						svg = '<svg xmlns="http://www.w3.org/2000/svg" width="400" height="240" viewBox="0 0 400 240"><rect width="100%" height="100%" fill="#0a0f1d"/><circle cx="140" cy="110" r="65" fill="#e11d48"/><circle cx="240" cy="110" r="55" fill="#06b6d4"/><path d="M 60 190 Q 200 90 340 190" stroke="#38bdf8" stroke-width="8" fill="none"/><text x="200" y="220" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#38bdf8">CYBERPUNK</text></svg>';
+					}
+					const dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+					this.imageExtractor.imageSrc = dataUrl;
+					this.imageExtractor.fileName = 'sample_' + type + '.svg';
+					this.imageExtractor.isProcessing = true;
+					const img = new Image();
+					img.onload = () => {
+						this.extractPaletteFromImg(img, null);
+					};
+					img.src = dataUrl;
 				},
 				refreshCanvas() {
 					const frame = document.getElementById('preview-canvas');

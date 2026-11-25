@@ -4,6 +4,7 @@
 @import "./css/shadcn.css";
 
 @source "../pages/client_admin*.templ";
+@source "../pages/admin_*/**/*.templ";
 @source "../**/*.js";
 
 @theme {

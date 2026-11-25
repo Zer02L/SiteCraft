@@ -42,7 +42,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 					type="button"
 					@click="$dispatch('toggle-focus-mode')"
 					title="Переключить режим Focus Mode (Esc для выхода)"
-					class="px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+					class="px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
 					:class="focusMode ? 'bg-admin-accent text-white border-admin-accent shadow-xs' : 'bg-admin-surface-muted hover:bg-admin-surface-hover border-admin-border text-admin-content'"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!focusMode">
@@ -81,7 +81,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				isNew,
 			) }
 			x-init="init()"
-			class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm transition-all duration-200"
+			class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm transition duration-200"
 		>
 			<input type="hidden" name="id" value={ article.ID }/>
 			<input type="hidden" name="tags" :value="tags.join(',')"/>
@@ -103,7 +103,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						x-on:input="onTitleInput()"
 						required
 						placeholder="Например: Как подготовить документы для сделки в 2026 году..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
+						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
 					/>
 				</div>
 
@@ -162,7 +162,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 									x-on:input="onSlugInput()"
 									required
 									placeholder="kak-podgotovit-dokumenty"
-									class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-accent font-mono text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
+									class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-accent font-mono text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
 								/>
 							</div>
 							<p class="text-[11px] text-admin-content-subtle mt-1 truncate">
@@ -179,7 +179,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 								name="author_name"
 								value={ article.AuthorName }
 								placeholder="Владислав Захаров"
-								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
+								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
 							/>
 						</div>
 					</div>
@@ -238,7 +238,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							x-on:dragleave.prevent="isDragging = false"
 							x-on:drop.prevent="handleDrop($event)"
 							:class="isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus bg-admin-surface-muted/40'"
-							class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all max-w-lg"
+							class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition max-w-lg"
 						>
 							<div class="w-12 h-12 mx-auto rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center mb-3">
 								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,6 +269,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 										type="button"
 										x-on:click="removeTag(idx)"
 										title="Удалить тег"
+										aria-label="Удалить тег"
 										class="hover:text-admin-danger text-admin-accent/80 transition-colors cursor-pointer"
 									>
 										<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -284,7 +285,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 								x-on:keydown.enter.prevent="addTag()"
 								x-on:keydown.comma.prevent="addTag()"
 								placeholder="+ Напишите тег и нажмите Enter..."
-								class="flex-1 min-w-[200px] bg-transparent text-admin-content text-xs placeholder-admin-content-subtle focus:outline-none py-1"
+								class="flex-1 min-w-[200px] bg-transparent text-admin-content text-xs placeholder-admin-content-subtle focus:outline-none py-1 focus-visible:ring-2 focus-visible:ring-blue-500"
 							/>
 						</div>
 
@@ -312,7 +313,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							name="excerpt"
 							rows="2"
 							placeholder="Краткое описание сути статьи в 1-2 предложениях..."
-							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus"
+							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
 						>{ article.Excerpt }</textarea>
 					</div>
 				</div>
@@ -343,12 +344,12 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 					<!-- Контейнер Quill.js со стилизацией под Client Admin -->
 					<div
-						class="quill-dark-wrapper rounded-xl overflow-hidden border border-admin-border bg-admin-surface shadow-inner transition-all duration-200"
+						class="quill-dark-wrapper rounded-xl overflow-hidden border border-admin-border bg-admin-surface shadow-inner transition duration-200"
 						:class="{ 'ring-2 ring-admin-accent/30 shadow-lg': focusMode }"
 					>
 						<div
 							x-ref="quillEditor"
-							class="text-admin-content transition-all duration-200"
+							class="text-admin-content transition duration-200"
 							:class="focusMode ? 'min-h-[520px] text-base leading-relaxed' : 'min-h-[340px]'"
 						></div>
 					</div>
@@ -370,7 +371,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 								name="published_at"
 								id="published_at_input"
 								value={ article.PublishedAtInput() }
-								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus:ring-1 focus:ring-admin-border-focus focus:border-admin-border-focus font-mono"
+								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus font-mono"
 							/>
 							<p class="text-[11px] text-admin-content-subtle mt-1">
 								Если указать дату и время в будущем — материал станет запланированным и появится на сайте автоматически.
@@ -422,7 +423,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							name="is_published"
 							value="true"
 							checked?={ article.IsPublished }
-							class="w-4 h-4 rounded text-admin-accent bg-admin-surface-muted border-admin-border focus:ring-admin-accent cursor-pointer"
+							class="w-4 h-4 rounded text-admin-accent bg-admin-surface-muted border-admin-border focus-visible:ring-admin-accent cursor-pointer"
 						/>
 						<label for="is_published" class="text-sm font-medium text-admin-content-muted cursor-pointer">
 							Опубликовать статью на сайте (если указано будущее время — будет запланирована)
@@ -434,7 +435,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 			<div class="pt-4 border-t border-admin-border flex items-center justify-end gap-3">
 				<button
 					type="submit"
-					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-sm transition-all shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-sm transition shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
 				>
 					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

@@ -23,7 +23,7 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 			<button
 				type="button"
 				onclick="document.getElementById('payment-modal').remove()"
-				class="absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
+				class="absolute top-4 right-4 text-content-muted hover:text-content w-8 h-8 rounded-btn flex items-center justify-center hover:bg-content/5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent cursor-pointer"
 				aria-label="Закрыть"
 			>
 				@icons.X(templ.Attributes{"class": "w-4 h-4"})
@@ -130,7 +130,7 @@ templ PaymentModal(settings models.SiteSettings, service models.ServiceItem, fix
 						value="on"
 						checked
 						required
-						class="mt-1 h-4 w-4 rounded border-content/30 text-accent focus:ring-accent cursor-pointer"
+						class="mt-1 h-4 w-4 rounded border-content/30 text-accent focus-visible:ring-accent cursor-pointer"
 					/>
 					<label for="payment-consent" class="text-[11px] text-content-muted leading-snug cursor-pointer select-none">
 						Согласен с <a href="/policy" target="_blank" class="underline hover:text-content">политикой конфиденциальности</a> (152-ФЗ) и условиями публичной оферты

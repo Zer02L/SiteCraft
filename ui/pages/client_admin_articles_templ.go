@@ -41,7 +41,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<button hx-get=\"/client/articles/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Написать новую статью</span></button></div></div><!-- Вкладки-фильтры: Все публикации / Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-admin-border pb-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<button hx-get=\"/client/articles/new\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Написать новую статью</span></button></div></div><!-- Вкладки-фильтры: Все публикации / Корзина --><div class=\"flex items-center gap-2 mb-4 border-b border-admin-border pb-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -416,14 +416,14 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" title=\"Live Preview (Быстрый предпросмотр)\" class=\"opacity-0 group-hover:opacity-100 transition-opacity text-admin-content-subtle hover:text-admin-accent cursor-pointer p-0.5 rounded shrink-0\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg></button></div></td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-accent\">/blog/")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" title=\"Live Preview (Быстрый предпросмотр)\" aria-label=\"Live Preview (Быстрый предпросмотр)\" class=\"opacity-0 group-hover:opacity-100 transition-opacity text-admin-content-subtle hover:text-admin-accent cursor-pointer p-0.5 rounded shrink-0\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg></button></div></td><td class=\"py-3.5 px-4 font-mono text-xs text-admin-accent\">/blog/")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var22 string
 					templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(a.Slug)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 196, Col: 25}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 197, Col: 25}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 					if templ_7745c5c3_Err != nil {
@@ -436,7 +436,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					var templ_7745c5c3_Var23 string
 					templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(a.FormatPublishedAt())
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 199, Col: 34}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 200, Col: 34}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 					if templ_7745c5c3_Err != nil {
@@ -477,7 +477,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						var templ_7745c5c3_Var24 string
 						templ_7745c5c3_Var24, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/toggle/" + a.ID).Resolve(ctx)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 222, Col: 55}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 223, Col: 55}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
 						if templ_7745c5c3_Err != nil {
@@ -516,7 +516,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 							}
 						}())).Resolve(ctx)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 228, Col: 188}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 229, Col: 188}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var27)
 						if templ_7745c5c3_Err != nil {
@@ -558,7 +558,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					var templ_7745c5c3_Var28 string
 					templ_7745c5c3_Var28, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/edit/" + a.ID).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 238, Col: 52}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 239, Col: 52}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var28)
 					if templ_7745c5c3_Err != nil {
@@ -571,7 +571,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					var templ_7745c5c3_Var29 string
 					templ_7745c5c3_Var29, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("openPreviewNow('/blog/%s', %s)", a.Slug, escapeJSONString(a.Title))).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 248, Col: 106}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 249, Col: 106}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var29)
 					if templ_7745c5c3_Err != nil {
@@ -589,7 +589,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 						var templ_7745c5c3_Var30 string
 						templ_7745c5c3_Var30, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL("/blog/" + a.Slug)).ResolveURL(ctx)
 						if templ_7745c5c3_Err != nil {
-							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 256, Col: 54}
+							return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 257, Col: 54}
 						}
 						_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var30)
 						if templ_7745c5c3_Err != nil {
@@ -607,7 +607,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					var templ_7745c5c3_Var31 string
 					templ_7745c5c3_Var31, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client/articles/trash/" + a.ID).Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 263, Col: 54}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 264, Col: 54}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var31)
 					if templ_7745c5c3_Err != nil {
@@ -620,7 +620,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					var templ_7745c5c3_Var32 string
 					templ_7745c5c3_Var32, templ_7745c5c3_Err = templruntime.NewAttributeExpression("Переместить статью «" + a.Title + "» в корзину?").Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 266, Col: 101}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_articles.templ`, Line: 267, Col: 101}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var32)
 					if templ_7745c5c3_Err != nil {
@@ -637,7 +637,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<!-- Live Hover Preview Singleton Container (Фича 5: UX-фокус и Live Preview) --><div x-show=\"isOpen\" x-cloak @mouseenter=\"keepPreview()\" @mouseleave=\"hidePreview()\" class=\"hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition-all duration-200 pointer-events-auto\"><!-- Preview Header / Browser Chrome --><div class=\"px-4 py-3 bg-admin-surface-muted border-b border-admin-border flex items-center justify-between shrink-0 select-none\"><div class=\"flex items-center gap-2 min-w-0\"><!-- Window traffic lights --><div class=\"flex items-center gap-1.5 mr-1.5 shrink-0\"><span class=\"w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block\"></span></div><div class=\"min-w-0\"><div class=\"text-xs font-semibold text-admin-content truncate\" x-text=\"previewTitle || 'Превью публикации'\"></div><div class=\"text-[10px] font-mono text-admin-accent truncate\" x-text=\"previewUrlDisplay\"></div></div></div><div class=\"flex items-center gap-1 shrink-0 ml-2\"><!-- Open in new tab --><a :href=\"previewUrl\" target=\"_blank\" title=\"Открыть в новой вкладке\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-content hover:bg-admin-surface transition-colors\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a><!-- Close button --><button type=\"button\" @click=\"closePreview()\" title=\"Закрыть превью (Esc)\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div><!-- Preview Content Area: Loading Skeleton + Singleton Iframe --><div class=\"relative flex-1 w-full bg-admin-bg overflow-hidden\"><!-- Skeleton / Loader --><div x-show=\"isLoading\" class=\"absolute inset-0 flex flex-col items-center justify-center bg-admin-surface/80 backdrop-blur-xs z-10 transition-opacity\"><div class=\"w-7 h-7 border-2 border-admin-accent border-t-transparent rounded-full animate-spin mb-2\"></div><p class=\"text-[11px] font-mono text-admin-content-muted\">Загрузка превью...</p></div><!-- Single Iframe in DOM --><template x-if=\"previewUrl\"><iframe :src=\"previewUrl\" @load=\"isLoading = false\" class=\"w-full h-full border-0 bg-white\" loading=\"lazy\"></iframe></template></div></div><!-- Touch screen disable safeguard --><style>\n\t\t\t@media not all and (hover: hover) and (pointer: fine) {\n\t\t\t\t.hover-preview-singleton {\n\t\t\t\t\tdisplay: none !important;\n\t\t\t\t}\n\t\t\t}\n\t\t</style><!-- Script for Hover Preview controller --><script>\n\t\t\tfunction articleHoverPreview() {\n\t\t\t\treturn {\n\t\t\t\t\tpreviewUrl: '',\n\t\t\t\t\tpreviewUrlDisplay: '',\n\t\t\t\t\tpreviewTitle: '',\n\t\t\t\t\tisOpen: false,\n\t\t\t\t\tisLoading: false,\n\n\t\t\t\t\tisFinePointer() {\n\t\t\t\t\t\treturn window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;\n\t\t\t\t\t},\n\n\t\t\t\t\tshowPreview(url, title) {\n\t\t\t\t\t\tif (!this.isFinePointer() || !url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\topenPreviewNow(url, title) {\n\t\t\t\t\t\tif (!url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\thidePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t},\n\n\t\t\t\t\tkeepPreview() {\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\tclosePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t}\n\t\t\t\t};\n\t\t\t}\n\t\t</script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<!-- Live Hover Preview Singleton Container (Фича 5: UX-фокус и Live Preview) --><div x-show=\"isOpen\" x-cloak @mouseenter=\"keepPreview()\" @mouseleave=\"hidePreview()\" class=\"hover-preview-singleton fixed bottom-6 right-6 z-50 w-96 sm:w-[460px] h-[580px] max-h-[82vh] bg-admin-surface border border-admin-border/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl transition duration-200 pointer-events-auto\"><!-- Preview Header / Browser Chrome --><div class=\"px-4 py-3 bg-admin-surface-muted border-b border-admin-border flex items-center justify-between shrink-0 select-none\"><div class=\"flex items-center gap-2 min-w-0\"><!-- Window traffic lights --><div class=\"flex items-center gap-1.5 mr-1.5 shrink-0\"><span class=\"w-2.5 h-2.5 rounded-full bg-rose-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-amber-500/80 inline-block\"></span> <span class=\"w-2.5 h-2.5 rounded-full bg-emerald-500/80 inline-block\"></span></div><div class=\"min-w-0\"><div class=\"text-xs font-semibold text-admin-content truncate\" x-text=\"previewTitle || 'Превью публикации'\"></div><div class=\"text-[10px] font-mono text-admin-accent truncate\" x-text=\"previewUrlDisplay\"></div></div></div><div class=\"flex items-center gap-1 shrink-0 ml-2\"><!-- Open in new tab --><a :href=\"previewUrl\" target=\"_blank\" title=\"Открыть в новой вкладке\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-content hover:bg-admin-surface transition-colors\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14\"></path></svg></a><!-- Close button --><button type=\"button\" @click=\"closePreview()\" title=\"Закрыть превью (Esc)\" aria-label=\"Закрыть превью (Esc)\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div></div><!-- Preview Content Area: Loading Skeleton + Singleton Iframe --><div class=\"relative flex-1 w-full bg-admin-bg overflow-hidden\"><!-- Skeleton / Loader --><div x-show=\"isLoading\" class=\"absolute inset-0 flex flex-col items-center justify-center bg-admin-surface/80 backdrop-blur-xs z-10 transition-opacity\"><div class=\"w-7 h-7 border-2 border-admin-accent border-t-transparent rounded-full animate-spin mb-2\"></div><p class=\"text-[11px] font-mono text-admin-content-muted\">Загрузка превью...</p></div><!-- Single Iframe in DOM --><template x-if=\"previewUrl\"><iframe :src=\"previewUrl\" @load=\"isLoading = false\" class=\"w-full h-full border-0 bg-white\" loading=\"lazy\"></iframe></template></div></div><!-- Touch screen disable safeguard --><style>\n\t\t\t@media not all and (hover: hover) and (pointer: fine) {\n\t\t\t\t.hover-preview-singleton {\n\t\t\t\t\tdisplay: none !important;\n\t\t\t\t}\n\t\t\t}\n\t\t</style><!-- Script for Hover Preview controller --><script>\n\t\t\tfunction articleHoverPreview() {\n\t\t\t\treturn {\n\t\t\t\t\tpreviewUrl: '',\n\t\t\t\t\tpreviewUrlDisplay: '',\n\t\t\t\t\tpreviewTitle: '',\n\t\t\t\t\tisOpen: false,\n\t\t\t\t\tisLoading: false,\n\n\t\t\t\t\tisFinePointer() {\n\t\t\t\t\t\treturn window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;\n\t\t\t\t\t},\n\n\t\t\t\t\tshowPreview(url, title) {\n\t\t\t\t\t\tif (!this.isFinePointer() || !url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\topenPreviewNow(url, title) {\n\t\t\t\t\t\tif (!url) return;\n\t\t\t\t\t\tthis.previewUrl = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'preview=1';\n\t\t\t\t\t\tthis.previewUrlDisplay = url;\n\t\t\t\t\t\tthis.previewTitle = title;\n\t\t\t\t\t\tthis.isLoading = true;\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\thidePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t},\n\n\t\t\t\t\tkeepPreview() {\n\t\t\t\t\t\tthis.isOpen = true;\n\t\t\t\t\t},\n\n\t\t\t\t\tclosePreview() {\n\t\t\t\t\t\tthis.isOpen = false;\n\t\t\t\t\t\tthis.previewUrl = '';\n\t\t\t\t\t\tthis.isLoading = false;\n\t\t\t\t\t}\n\t\t\t\t};\n\t\t\t}\n\t\t</script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

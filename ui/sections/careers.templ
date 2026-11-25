@@ -63,6 +63,7 @@ templ CareersSection(vacancies []models.VacancyItem, settings models.SiteSetting
 									type="button"
 									class="w-8 h-8 flex items-center justify-center text-content-muted transition-transform"
 									:class={ fmt.Sprintf("openVacancyId === '%s' ? 'rotate-180 text-accent' : ''", v.ID) }
+									:aria-label={ fmt.Sprintf("openVacancyId === '%s' ? 'Свернуть описание вакансии' : 'Развернуть описание вакансии'", v.ID) }
 								>
 									@icons.ChevronDown(templ.Attributes{"class": "w-4 h-4"})
 								</button>

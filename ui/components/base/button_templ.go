@@ -91,7 +91,7 @@ func (p ButtonProps) combinedAttrs() templ.Attributes {
 }
 
 func (p ButtonProps) Classes() string {
-	const base = "inline-flex items-center justify-center font-medium transition-all duration-150 cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed aria-disabled:pointer-events-none aria-disabled:opacity-50 select-none rounded-btn active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface motion-reduce:transition-none motion-reduce:active:scale-100"
+	const base = "inline-flex items-center justify-center font-medium transition duration-150 cursor-pointer disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed aria-disabled:pointer-events-none aria-disabled:opacity-50 select-none rounded-btn active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface motion-reduce:transition-none motion-reduce:active:scale-100"
 
 	var variant string
 	switch p.Variant {

@@ -81,7 +81,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- 2. Основная рабочая область: Список секций / Дизайн-система + Холст Live Preview --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций / Тюнер дизайн-системы --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Табы переключения: Секции / Дизайн-система --><div class=\"flex items-center gap-6 border-b border-slate-200 px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- 2. Основная рабочая область: Список секций / Дизайн-система + Холст Live Preview --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций / Тюнер дизайн-системы --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Табы переключения: Секции / Дизайн-система --><div class=\"flex items-center gap-6 border-b border-admin-border px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-admin-surface-muted text-admin-content-muted border border-admin-border\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -94,7 +94,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-slate-900 font-bold border-slate-900' : 'text-slate-500 hover:text-slate-800 border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-all cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций лендинга --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций лендинга --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -102,7 +102,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><!-- Вкладка 2: Дизайн-система (OKLCH Тюнер токенов и пресетов) --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-white border border-slate-200 text-xs\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><!-- Вкладка 2: Дизайн-система (OKLCH Тюнер токенов и пресетов) --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-admin-surface border border-admin-border text-xs\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

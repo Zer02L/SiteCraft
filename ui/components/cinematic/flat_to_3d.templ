@@ -441,7 +441,7 @@ templ FlatTo3D(props FlatTo3DProps) {
 			<!-- Canvas для OGL WebGL -->
 			<canvas
 				x-ref="canvas"
-				class="absolute inset-0 h-full w-full block transition-opacity duration-700"
+				class="absolute inset-0 h-full w-full block transition-opacity duration-300"
 				:class="{ 'opacity-0 pointer-events-none': reducedMotion }"
 				aria-hidden="true"
 			></canvas>
@@ -496,7 +496,7 @@ templ FlatTo3D(props FlatTo3DProps) {
 			<div class="pointer-events-none absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 w-72 sm:w-88 space-y-2.5 z-10">
 				for i, layer := range props.Layers {
 					<div
-						class="p-3.5 sm:p-4 rounded-xl border backdrop-blur-md transition-all duration-300 pointer-events-auto cursor-pointer"
+						class="p-3.5 sm:p-4 rounded-xl border backdrop-blur-md transition duration-300 pointer-events-auto cursor-pointer"
 						:class={ fmt.Sprintf("activeLayerIndex === %d ? 'bg-surface/90 border-accent shadow-xl translate-x-0' : 'bg-surface/40 border-content/10 text-content/40 translate-x-2 opacity-70 hover:opacity-100'", i) }
 						@click={ fmt.Sprintf("scrollToLayer(%d)", i) }
 					>

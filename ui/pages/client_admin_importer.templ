@@ -116,7 +116,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2">
 					<label class="flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition">
-						<input type="checkbox" name="create_redirects" value="1" checked class="w-4 h-4 rounded text-admin-accent focus:ring-admin-border-focus"/>
+						<input type="checkbox" name="create_redirects" value="1" checked class="w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus"/>
 						<div class="text-xs text-admin-content">
 							<span class="font-semibold block">301-редиректы</span>
 							<span class="text-admin-content-muted text-[11px]">Автоматически сохранить старые ссылки</span>
@@ -124,7 +124,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 					</label>
 
 					<label class="flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition">
-						<input type="checkbox" name="import_posts" value="1" checked class="w-4 h-4 rounded text-admin-accent focus:ring-admin-border-focus"/>
+						<input type="checkbox" name="import_posts" value="1" checked class="w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus"/>
 						<div class="text-xs text-admin-content">
 							<span class="font-semibold block">Статьи блога</span>
 							<span class="text-admin-content-muted text-[11px]">Импортировать записи в раздел Блог</span>
@@ -132,7 +132,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 					</label>
 
 					<label class="flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition">
-						<input type="checkbox" name="import_pages" value="1" checked class="w-4 h-4 rounded text-admin-accent focus:ring-admin-border-focus"/>
+						<input type="checkbox" name="import_pages" value="1" checked class="w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus"/>
 						<div class="text-xs text-admin-content">
 							<span class="font-semibold block">Страницы</span>
 							<span class="text-admin-content-muted text-[11px]">Импортировать статичные страницы</span>
@@ -140,7 +140,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 					</label>
 
 					<label class="flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition">
-						<input type="checkbox" name="clean_shortcodes" value="1" checked class="w-4 h-4 rounded text-admin-accent focus:ring-admin-border-focus"/>
+						<input type="checkbox" name="clean_shortcodes" value="1" checked class="w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus"/>
 						<div class="text-xs text-admin-content">
 							<span class="font-semibold block">Очистка шорткодов</span>
 							<span class="text-admin-content-muted text-[11px]">Удалить [gallery], конвертировать [caption]</span>
@@ -148,7 +148,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 					</label>
 
 					<label class="flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition">
-						<input type="checkbox" name="sanitize_html" value="1" checked class="w-4 h-4 rounded text-admin-accent focus:ring-admin-border-focus"/>
+						<input type="checkbox" name="sanitize_html" value="1" checked class="w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus"/>
 						<div class="text-xs text-admin-content">
 							<span class="font-semibold block">Санитизация верстки</span>
 							<span class="text-admin-content-muted text-[11px]">Очистка мусорных тегов bluemonday</span>
@@ -159,7 +159,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 				<div class="flex items-center justify-end gap-3 pt-2">
 					<button
 						type="submit"
-						class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition-all shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer"
+						class="px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer"
 					>
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
@@ -223,7 +223,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 							name="source_path"
 							required
 							placeholder="/2021/05/old-article/"
-							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus:ring-2 focus:ring-admin-border-focus"
+							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 						/>
 					</div>
 
@@ -236,7 +236,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 							name="target_path"
 							required
 							placeholder="/blog/new-article"
-							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus:ring-2 focus:ring-admin-border-focus"
+							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 						/>
 					</div>
 
@@ -246,7 +246,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 						</label>
 						<select
 							name="status_code"
-							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus:ring-2 focus:ring-admin-border-focus"
+							class="w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 						>
 							<option value="301" selected>301 (Permanent)</option>
 							<option value="302">302 (Temporary)</option>
@@ -271,7 +271,7 @@ templ ClientImporterTab(redirects []models.RedirectRule, activeJobID string) {
 						type="search"
 						x-model="searchQuery"
 						placeholder="Поиск по URL..."
-						class="w-full px-3 py-1.5 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs placeholder:text-admin-content-subtle focus:outline-none focus:ring-2 focus:ring-admin-border-focus"
+						class="w-full px-3 py-1.5 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					/>
 				</div>
 			}
@@ -299,7 +299,7 @@ templ ImporterSSEContainer(jobID string) {
 			<span class="text-xs font-mono font-bold text-admin-accent">0%</span>
 		</div>
 		<div class="w-full bg-admin-border h-2 rounded-full overflow-hidden">
-			<div class="bg-admin-accent h-full w-0 transition-all duration-300"></div>
+			<div class="bg-admin-accent h-full w-0 transition duration-300"></div>
 		</div>
 		<p class="text-xs text-admin-content-muted font-mono truncate">Подключение к потоку...</p>
 	</div>
@@ -322,7 +322,7 @@ templ ImporterProgressFragment(p models.RedirectRule, currentItem string, percen
 
 		<div class="w-full bg-admin-border h-2.5 rounded-full overflow-hidden">
 			<div
-				class="bg-admin-accent h-full transition-all duration-200"
+				class="bg-admin-accent h-full transition duration-200"
 				style={ fmt.Sprintf("width: %d%%;", percent) }
 			></div>
 		</div>
@@ -431,6 +431,7 @@ templ RedirectRow(rule models.RedirectRule) {
 				hx-swap="outerHTML swap:300ms"
 				hx-confirm="Удалить это правило редиректа?"
 				title="Удалить редирект"
+				aria-label="Удалить редирект"
 				class="p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer"
 			>
 				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

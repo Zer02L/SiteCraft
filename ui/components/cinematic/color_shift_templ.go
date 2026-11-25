@@ -38,7 +38,7 @@ func ScrollColorShift(sections []ColorShiftSection) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for idx, sec := range sections {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<section class=\"min-h-[85vh] flex flex-col items-center justify-center text-center px-4 py-20 transition-colors duration-700\" data-color-shift-section=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<section class=\"min-h-[85vh] flex flex-col items-center justify-center text-center px-4 py-20 transition-colors duration-300\" data-color-shift-section=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

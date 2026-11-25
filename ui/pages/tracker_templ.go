@@ -162,7 +162,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus:ring-2 focus:ring-primary shadow-sm\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"flex-grow px-4 py-3 rounded-xl border border-content/20 bg-surface text-content text-sm font-semibold tracking-wider uppercase focus:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-sm\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -234,7 +234,7 @@ func TrackerPage(settings models.SiteSettings, content models.SiteContent, order
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" hx-trigger=\"every 15s\" hx-swap=\"outerHTML\" class=\"bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl transition-all\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" hx-trigger=\"every 15s\" hx-swap=\"outerHTML\" class=\"bg-surface rounded-3xl p-6 sm:p-8 border border-content/10 shadow-xl transition\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -902,7 +902,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 93, "\" class=\"text-xl transition-transform hover:scale-110 focus:outline-none\" :class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 93, "\" class=\"text-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary\" :class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -933,7 +933,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 96, "\" placeholder=\"Ваше имя\" required class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary\"> <input type=\"text\" name=\"service_title\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 96, "\" placeholder=\"Ваше имя\" required class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary\"> <input type=\"text\" name=\"service_title\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -946,7 +946,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 97, "\" placeholder=\"Услуга / направление\" class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary\"></div><textarea name=\"comment\" rows=\"3\" placeholder=\"Поделитесь впечатлением о скорости, качестве и общении с мастером...\" required class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus:ring-2 focus:ring-primary\"></textarea> <button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition shadow cursor-pointer flex items-center gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 97, "\" placeholder=\"Услуга / направление\" class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary\"></div><textarea name=\"comment\" rows=\"3\" placeholder=\"Поделитесь впечатлением о скорости, качестве и общении с мастером...\" required class=\"w-full px-3.5 py-2.5 rounded-xl border border-content/20 bg-surface text-content text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-primary\"></textarea> <button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary/90 transition shadow cursor-pointer flex items-center gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

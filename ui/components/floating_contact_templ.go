@@ -75,7 +75,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			tgUser = "SiteCraftSupport"
 		}
 		tgLink := "https://t.me/" + strings.TrimPrefix(tgUser, "@")
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\topen: false,\n\t\t\tmodalOpen: false\n\t\t}\" class=\"fixed bottom-6 right-6 z-50 print:hidden font-sans\" data-component=\"FloatingContact\" data-source=\"ui/components/floating_contact.templ\"><!-- Всплывающие кнопки мессенджеров --><div x-show=\"open\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 translate-y-4 scale-95\" x-transition:enter-end=\"opacity-100 translate-y-0 scale-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100 translate-y-0 scale-100\" x-transition:leave-end=\"opacity-0 translate-y-4 scale-95\" x-on:click.outside=\"open = false\" class=\"flex flex-col-reverse gap-3 mb-3 items-end\" style=\"display: none;\"><!-- Быстрый обратный звонок (Экспресс-модалка) --><button type=\"button\" x-on:click=\"modalOpen = true; open = false\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Заказать экспресс-звонок\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap\">Обратный звонок (30 сек)</span><div class=\"w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\topen: false,\n\t\t\tmodalOpen: false\n\t\t}\" class=\"fixed bottom-6 right-6 z-50 print:hidden font-sans\" data-component=\"FloatingContact\" data-source=\"ui/components/floating_contact.templ\"><!-- Всплывающие кнопки мессенджеров --><div x-show=\"open\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0 translate-y-4 scale-95\" x-transition:enter-end=\"opacity-100 translate-y-0 scale-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100 translate-y-0 scale-100\" x-transition:leave-end=\"opacity-0 translate-y-4 scale-95\" x-on:click.outside=\"open = false\" class=\"flex flex-col-reverse gap-3 mb-3 items-end\" style=\"display: none;\"><!-- Быстрый обратный звонок (Экспресс-модалка) --><button type=\"button\" x-on:click=\"modalOpen = true; open = false\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Заказать экспресс-звонок\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition whitespace-nowrap\">Обратный звонок (30 сек)</span><div class=\"w-12 h-12 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -101,7 +101,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Позвонить сейчас\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap\">Позвонить ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Позвонить сейчас\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition whitespace-nowrap\">Позвонить ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -114,7 +114,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span><div class=\"w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span><div class=\"w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -145,7 +145,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в WhatsApp\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap\">Написать в WhatsApp</span><div class=\"w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в WhatsApp\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в WhatsApp</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: #25D366;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -171,7 +171,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в Telegram\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition-all whitespace-nowrap\">Написать в Telegram</span><div class=\"w-12 h-12 rounded-full bg-[#0088cc] text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в Telegram\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в Telegram</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: #0088cc;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -179,7 +179,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div></a></div><!-- Главная плавающая кнопка-триггер --><button type=\"button\" x-on:click=\"open = !open\" :class=\"open ? 'rotate-90 bg-content text-surface' : 'bg-accent text-surface'\" class=\"w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all duration-200 relative group cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30\" aria-label=\"Связаться с нами\"><!-- Пульсирующий ореол (когда закрыто) --><span x-show=\"!open\" class=\"absolute -inset-1 rounded-full bg-accent/40 animate-ping pointer-events-none opacity-75\"></span><template x-if=\"!open\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div></a></div><!-- Главная плавающая кнопка-триггер --><button type=\"button\" x-on:click=\"open = !open\" :class=\"open ? 'rotate-90 bg-content text-surface' : 'bg-accent text-surface'\" class=\"w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition duration-200 relative group cursor-pointer focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-accent/30\" aria-label=\"Связаться с нами\"><!-- Пульсирующий ореол (когда закрыто) --><span x-show=\"!open\" class=\"absolute -inset-1 rounded-full bg-accent/40 animate-ping pointer-events-none opacity-75\"></span><template x-if=\"!open\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
