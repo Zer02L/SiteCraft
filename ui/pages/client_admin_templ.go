@@ -42,7 +42,7 @@ func AdminThemeToggle(extraClass ...string) templ.Component {
 			templ_7745c5c3_ElementWriter := templ_7745c5c3_Buffer
 			templ_7745c5c3_Buffer := templ.GetBuffer()
 			var templ_7745c5c3_ElementScripts []templ.ComponentScript
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<button type=\"button\" x-data=\"{\n\t\t\ttheme: document.documentElement.getAttribute('data-admin-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),\n\t\t\ttoggle() {\n\t\t\t\tthis.theme = this.theme === 'dark' ? 'light' : 'dark';\n\t\t\t\tdocument.documentElement.setAttribute('data-admin-theme', this.theme);\n\t\t\t\ttry {\n\t\t\t\t\tlocalStorage.setItem('sitecraft_admin_theme', this.theme);\n\t\t\t\t\tdocument.cookie = 'sitecraft_admin_theme=' + this.theme + '; path=/; max-age=31536000; SameSite=Lax';\n\t\t\t\t} catch(e) {}\n\t\t\t\twindow.dispatchEvent(new CustomEvent('admin-theme-changed', { detail: { theme: this.theme } }));\n\t\t\t}\n\t\t}\" @click=\"toggle()\" @admin-theme-changed.window=\"theme = $event.detail.theme\" class=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<button type=\"button\" x-data=\"{\n\t\t\ttheme: document.documentElement.getAttribute('data-admin-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),\n\t\t\tswitching: false,\n\t\t\ttoggle(event) {\n\t\t\t\tif (this.switching) return;\n\t\t\t\tconst next = this.theme === 'dark' ? 'light' : 'dark';\n\t\t\t\tconst root = document.documentElement;\n\t\t\t\tconst apply = () => {\n\t\t\t\t\troot.setAttribute('data-admin-theme', next);\n\t\t\t\t\tthis.theme = next;\n\t\t\t\t\ttry {\n\t\t\t\t\t\tlocalStorage.setItem('sitecraft_admin_theme', next);\n\t\t\t\t\t\tdocument.cookie = 'sitecraft_admin_theme=' + next + '; path=/; max-age=31536000; SameSite=Lax';\n\t\t\t\t\t} catch(e) {}\n\t\t\t\t\twindow.dispatchEvent(new CustomEvent('admin-theme-changed', { detail: { theme: next } }));\n\t\t\t\t};\n\t\t\t\tif (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {\n\t\t\t\t\tapply();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\t// Без View Transitions интерполируем только токены на :root.\n\t\t\t\t// Потомкам запрещаем свои color-переходы: иначе каждый кадр перезапускает\n\t\t\t\t// их transition и цвет доезжает вторым рывком после окончания 320 мс.\n\t\t\t\tif (!document.startViewTransition) {\n\t\t\t\t\tthis.switching = true;\n\t\t\t\t\troot.classList.add('theme-crossfade');\n\t\t\t\t\tapply();\n\t\t\t\t\twindow.setTimeout(() => {\n\t\t\t\t\t\troot.classList.remove('theme-crossfade');\n\t\t\t\t\t\tthis.switching = false;\n\t\t\t\t\t}, 320);\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\tthis.switching = true;\n\t\t\t\t// Замораживаем переходы ДО снимка: иначе ::view-transition-new(root)\n\t\t\t\t// фиксирует середину 200ms color-перехода, а живой DOM включается рывком.\n\t\t\t\troot.classList.add('theme-freeze');\n\t\t\t\tconst release = () => { root.classList.remove('theme-freeze'); this.switching = false; };\n\t\t\t\tlet transition;\n\t\t\t\ttry {\n\t\t\t\t\ttransition = document.startViewTransition(apply);\n\t\t\t\t} catch (e) {\n\t\t\t\t\trelease();\n\t\t\t\t\tapply();\n\t\t\t\t\treturn;\n\t\t\t\t}\n\t\t\t\ttransition.finished.then(release, release);\n\t\t\t\ttransition.ready.then(() => {\n\t\t\t\t\t// Клавиатурный клик (Enter/Space) не имеет координат — раскрываем из центра.\n\t\t\t\t\tconst fromKeyboard = !event || event.detail === 0;\n\t\t\t\t\tconst x = fromKeyboard ? window.innerWidth / 2 : event.clientX;\n\t\t\t\t\tconst y = fromKeyboard ? window.innerHeight / 2 : event.clientY;\n\t\t\t\t\tconst radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));\n\t\t\t\t\tconst reveal = root.animate(\n\t\t\t\t\t\t{ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'] },\n\t\t\t\t\t\t{ duration: 450, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', pseudoElement: '::view-transition-new(root)' }\n\t\t\t\t\t);\n\t\t\t\t\treveal.finished.then(release, release);\n\t\t\t\t}).catch(release);\n\t\t\t}\n\t\t}\" @click=\"toggle($event)\" @admin-theme-changed.window=\"theme = $event.detail.theme\" class=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -126,7 +126,7 @@ func ClientLogin(settings models.SiteSettings, errMsg string) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(settings.SiteName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 74, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 123, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -144,7 +144,7 @@ func ClientLogin(settings models.SiteSettings, errMsg string) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(errMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 82, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 131, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -218,7 +218,7 @@ func ClientInitialSetup(settings models.SiteSettings, errMsg string) templ.Compo
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(errMsg)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 146, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 195, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -472,7 +472,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("{ currentTab: '%s', focusMode: false, sidebarCompact: false, toggleSidebar() { this.sidebarCompact = !this.sidebarCompact; try { localStorage.setItem('sitecraft_admin_sidebar_compact', this.sidebarCompact); } catch(e) {} } }", initialTab)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 314, Col: 263}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 363, Col: 263}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 			if templ_7745c5c3_Err != nil {
@@ -485,7 +485,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(settings.SiteName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 335, Col: 105}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 384, Col: 105}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -511,7 +511,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var18 string
 				templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 374, Col: 30}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 423, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 				if templ_7745c5c3_Err != nil {
@@ -534,7 +534,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var19 string
 				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(mod.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 375, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 424, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
@@ -548,7 +548,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 					var templ_7745c5c3_Var20 string
 					templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf(" (%d)", mod.BadgeCount))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 377, Col: 48}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 426, Col: 48}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 					if templ_7745c5c3_Err != nil {
@@ -580,7 +580,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var21 string
 				templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.Route).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 467, Col: 26}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 516, Col: 26}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 				if templ_7745c5c3_Err != nil {
@@ -593,7 +593,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var22 string
 				templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/client?tab=" + mod.ID).ResolveURL(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 470, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 519, Col: 45}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 				if templ_7745c5c3_Err != nil {
@@ -606,7 +606,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var23 string
 				templ_7745c5c3_Var23, templ_7745c5c3_Err = templruntime.NewAttributeExpression("currentTab = '" + mod.ID + "'").Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 471, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 520, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var23)
 				if templ_7745c5c3_Err != nil {
@@ -619,7 +619,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var24 string
 				templ_7745c5c3_Var24, templ_7745c5c3_Err = templruntime.NewAttributeExpression(mod.Title).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 472, Col: 25}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 521, Col: 25}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
 				if templ_7745c5c3_Err != nil {
@@ -632,7 +632,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var25 string
 				templ_7745c5c3_Var25, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("{ 'bg-admin-surface-active text-admin-content font-semibold border-transparent shadow-2xs before:absolute before:left-0 before:top-2 before:bottom-2 before:w-1 before:bg-admin-accent before:rounded-r-full': currentTab === '%s', 'border-transparent text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted/50': currentTab !== '%s', 'justify-center !px-0': sidebarCompact, 'justify-between px-3 gap-2.5': !sidebarCompact }", mod.ID, mod.ID)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 473, Col: 490}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 522, Col: 490}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var25)
 				if templ_7745c5c3_Err != nil {
@@ -653,7 +653,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 				var templ_7745c5c3_Var26 string
 				templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(mod.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 478, Col: 68}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 527, Col: 68}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 				if templ_7745c5c3_Err != nil {
@@ -726,7 +726,7 @@ func ClientDashboard(settings models.SiteSettings, content models.SiteContent, l
 					var templ_7745c5c3_Var29 string
 					templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", mod.BadgeCount))
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 489, Col: 45}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin.templ`, Line: 538, Col: 45}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 					if templ_7745c5c3_Err != nil {

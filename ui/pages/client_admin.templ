@@ -19,17 +19,66 @@ templ AdminThemeToggle(extraClass ...string) {
 		type="button"
 		x-data="{
 			theme: document.documentElement.getAttribute('data-admin-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'),
-			toggle() {
-				this.theme = this.theme === 'dark' ? 'light' : 'dark';
-				document.documentElement.setAttribute('data-admin-theme', this.theme);
+			switching: false,
+			toggle(event) {
+				if (this.switching) return;
+				const next = this.theme === 'dark' ? 'light' : 'dark';
+				const root = document.documentElement;
+				const apply = () => {
+					root.setAttribute('data-admin-theme', next);
+					this.theme = next;
+					try {
+						localStorage.setItem('sitecraft_admin_theme', next);
+						document.cookie = 'sitecraft_admin_theme=' + next + '; path=/; max-age=31536000; SameSite=Lax';
+					} catch(e) {}
+					window.dispatchEvent(new CustomEvent('admin-theme-changed', { detail: { theme: next } }));
+				};
+				if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+					apply();
+					return;
+				}
+				// Без View Transitions интерполируем только токены на :root.
+				// Потомкам запрещаем свои color-переходы: иначе каждый кадр перезапускает
+				// их transition и цвет доезжает вторым рывком после окончания 320 мс.
+				if (!document.startViewTransition) {
+					this.switching = true;
+					root.classList.add('theme-crossfade');
+					apply();
+					window.setTimeout(() => {
+						root.classList.remove('theme-crossfade');
+						this.switching = false;
+					}, 320);
+					return;
+				}
+				this.switching = true;
+				// Замораживаем переходы ДО снимка: иначе ::view-transition-new(root)
+				// фиксирует середину 200ms color-перехода, а живой DOM включается рывком.
+				root.classList.add('theme-freeze');
+				const release = () => { root.classList.remove('theme-freeze'); this.switching = false; };
+				let transition;
 				try {
-					localStorage.setItem('sitecraft_admin_theme', this.theme);
-					document.cookie = 'sitecraft_admin_theme=' + this.theme + '; path=/; max-age=31536000; SameSite=Lax';
-				} catch(e) {}
-				window.dispatchEvent(new CustomEvent('admin-theme-changed', { detail: { theme: this.theme } }));
+					transition = document.startViewTransition(apply);
+				} catch (e) {
+					release();
+					apply();
+					return;
+				}
+				transition.finished.then(release, release);
+				transition.ready.then(() => {
+					// Клавиатурный клик (Enter/Space) не имеет координат — раскрываем из центра.
+					const fromKeyboard = !event || event.detail === 0;
+					const x = fromKeyboard ? window.innerWidth / 2 : event.clientX;
+					const y = fromKeyboard ? window.innerHeight / 2 : event.clientY;
+					const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+					const reveal = root.animate(
+						{ clipPath: ['circle(0px at ' + x + 'px ' + y + 'px)', 'circle(' + radius + 'px at ' + x + 'px ' + y + 'px)'] },
+						{ duration: 450, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', pseudoElement: '::view-transition-new(root)' }
+					);
+					reveal.finished.then(release, release);
+				}).catch(release);
 			}
 		}"
-		@click="toggle()"
+		@click="toggle($event)"
 		@admin-theme-changed.window="theme = $event.detail.theme"
 		class={ cls }
 		:title="theme === 'dark' ? 'Переключить на светлую тему' : 'Переключить на темную тему'"

@@ -33,7 +33,7 @@ heavy -- tailwindcss -i ./ui/assets/admin_input.css -o ./ui/assets/admin.css --m
 
 [tasks.dev]
 description = "Запустить dev-сервер с hot-reload через air"
-run = "air"
+run = "./scripts/dev-port-guard.sh && air"
 
 [tasks.test]
 description = "Запустить Go тесты через семафор heavy"

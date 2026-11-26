@@ -120,7 +120,7 @@ Default section order:
   - **Multi-Agent Worktrees**: `mise run worktree:add <name>`, `mise run worktree:list`, `mise run worktree:rm <name>` manage isolated workspaces.
   - **Future Horizon**: Design-First API via `TypeSpec` + `vacuum` reserved in [MIGRATION_ROADMAP.md](MIGRATION_ROADMAP.md) for future public partner REST APIs.
 - Full production build: `mise run build`
-- Dev server with live reload: `mise run dev`
+- Dev server with live reload: `mise run dev` — `scripts/dev-port-guard.sh` stops a stale `tmp/main` from a previous air session before air binds `$PORT`; air sends SIGINT with a 2s grace period so the app shuts down cleanly. A foreign process holding the port is never killed — stop it manually.
 
 ## Child DOX Index
 

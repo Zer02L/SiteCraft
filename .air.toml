@@ -10,6 +10,9 @@ tmp_dir = "tmp"
   include_ext = ["go", "templ", "html", "css"]
   exclude_regex = ["_test.go", "_templ.go"]
   stop_on_error = true
+  # Корректно останавливаем сервер на rebuild/выходе, чтобы не оставались сироты на порту.
+  send_interrupt = true
+  kill_delay = "2s"
 
 [color]
   main = "magenta"

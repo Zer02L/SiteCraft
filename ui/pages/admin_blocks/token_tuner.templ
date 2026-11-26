@@ -304,16 +304,16 @@ templ TokenTuner() {
 			<button
 				type="button"
 				@click="applyPresetStyle({ id: 'dark_premium', name: 'Dark Premium', theme: 'main-night', flavor: 'soft', font: 'tech', primary: '#f8fafc', accent: '#38bdf8', surface: '#090d16' })"
-				class="p-2.5 rounded-xl border text-left transition hover:shadow-xs cursor-pointer group bg-slate-900 text-white"
-				:class="themePreset === 'main-night' && tokens.accent === '#38bdf8' ? 'border-admin-accent ring-1 ring-admin-accent' : 'border-admin-border hover:border-admin-accent'"
+				class="p-2.5 rounded-xl border text-left transition hover:shadow-xs cursor-pointer group"
+				:class="themePreset === 'main-night' && tokens.accent === '#38bdf8' ? 'border-admin-accent bg-admin-surface-active ring-1 ring-admin-accent' : 'border-admin-border hover:border-admin-accent bg-admin-surface-muted'"
 			>
 				<div class="flex items-center gap-1.5 mb-1.5">
 					<span class="w-3.5 h-3.5 rounded-full bg-sky-400 border border-slate-900 shadow-xs shrink-0"></span>
 					<span class="w-3.5 h-3.5 rounded-full bg-slate-100 border border-slate-900 shadow-xs shrink-0"></span>
 					<span class="w-3.5 h-3.5 rounded-full border border-slate-700 shadow-xs shrink-0" style="background-color: var(--swatch-preset-night-surface);"></span>
 				</div>
-				<div class="flex items-center justify-between font-bold text-xs text-white group-hover:text-admin-accent">Dark Premium <span x-show="themePreset === 'main-night' && tokens.accent === '#38bdf8'" class="text-admin-accent">✓</span></div>
-				<div class="text-[10px] text-admin-content-subtle leading-tight mt-0.5">Ночь • High-Tech • 24px</div>
+				<div class="flex items-center justify-between font-bold text-xs text-admin-content group-hover:text-admin-accent">Dark Premium <span x-show="themePreset === 'main-night' && tokens.accent === '#38bdf8'" class="text-admin-accent">✓</span></div>
+				<div class="text-[10px] text-admin-content-muted leading-tight mt-0.5">Ночь • High-Tech • 24px</div>
 			</button>
 
 			<!-- Swiss Bold -->
@@ -341,34 +341,50 @@ templ TokenTuner() {
 			<button
 				type="button"
 				@click="applyPresetStyle({ id: 'b2b_legal', name: 'B2B Юриспруденция', theme: 'legal', flavor: 'corporate', font: 'editorial', primary: '#0f172a', accent: '#c2410c', surface: '#f8fafc' })"
-				class="px-2.5 py-1.5 rounded-lg border border-admin-border hover:border-admin-border bg-admin-surface-muted/80 text-left cursor-pointer transition hover:bg-admin-surface-muted"
+				class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition"
+				:class="themePreset === 'legal' && tokens.accent === '#c2410c' ? 'border-admin-accent bg-admin-surface-active ring-1 ring-admin-accent' : 'border-admin-border bg-admin-surface-muted hover:border-admin-accent'"
 			>
-				<div class="font-bold text-[11px] text-admin-content">B2B Юристы & Консалтинг</div>
+				<div class="flex items-center justify-between gap-1">
+					<span class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full bg-orange-700 shrink-0"></span><span class="font-bold text-[11px] text-admin-content truncate">B2B Юристы & Консалтинг</span></span>
+					<span x-show="themePreset === 'legal' && tokens.accent === '#c2410c'" class="text-admin-accent">✓</span>
+				</div>
 				<div class="text-[10px] text-admin-content-muted">Терракот • Корпоративный</div>
 			</button>
 			<button
 				type="button"
 				@click="applyPresetStyle({ id: 'b2c_medical', name: 'B2C Медицина', theme: 'medical', flavor: 'soft', font: 'modern', primary: '#0f766e', accent: '#0284c7', surface: '#f0fdfa' })"
-				class="px-2.5 py-1.5 rounded-lg border border-admin-border hover:border-admin-border bg-admin-surface-muted/80 text-left cursor-pointer transition hover:bg-admin-surface-muted"
+				class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition"
+				:class="themePreset === 'medical' && tokens.accent === '#0284c7' ? 'border-admin-accent bg-admin-surface-active ring-1 ring-admin-accent' : 'border-admin-border bg-admin-surface-muted hover:border-admin-accent'"
 			>
-				<div class="font-bold text-[11px] text-admin-content">B2C Медицина & Клиники</div>
+				<div class="flex items-center justify-between gap-1">
+					<span class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full bg-sky-600 shrink-0"></span><span class="font-bold text-[11px] text-admin-content truncate">B2C Медицина & Клиники</span></span>
+					<span x-show="themePreset === 'medical' && tokens.accent === '#0284c7'" class="text-admin-accent">✓</span>
+				</div>
 				<div class="text-[10px] text-admin-content-muted">Бирюза • Чистый светлый</div>
 			</button>
 			<button
 				type="button"
 				@click="applyPresetStyle({ id: 'b2c_auto', name: 'B2C Автосервис', theme: 'auto', flavor: 'sharp', font: 'condensed', primary: '#18181b', accent: '#ea580c', surface: '#ffffff' })"
-				class="px-2.5 py-1.5 rounded-lg border border-admin-border hover:border-admin-border bg-admin-surface-muted/80 text-left cursor-pointer transition hover:bg-admin-surface-muted"
+				class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition"
+				:class="themePreset === 'auto' && tokens.accent === '#ea580c' ? 'border-admin-accent bg-admin-surface-active ring-1 ring-admin-accent' : 'border-admin-border bg-admin-surface-muted hover:border-admin-accent'"
 			>
-				<div class="font-bold text-[11px] text-admin-content">B2C Автосервис & Детейлинг</div>
+				<div class="flex items-center justify-between gap-1">
+					<span class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full bg-orange-600 shrink-0"></span><span class="font-bold text-[11px] text-admin-content truncate">B2C Автосервис & Детейлинг</span></span>
+					<span x-show="themePreset === 'auto' && tokens.accent === '#ea580c'" class="text-admin-accent">✓</span>
+				</div>
 				<div class="text-[10px] text-admin-content-muted">Оранжевый • Четкий резкий</div>
 			</button>
 			<button
 				type="button"
 				@click="applyPresetStyle({ id: 'b2b_cyber', name: 'B2B Cyber & IT', theme: 'cyber', flavor: 'soft', font: 'tech', primary: '#f1f5f9', accent: '#06b6d4', surface: '#0a0f1d' })"
-				class="px-2.5 py-1.5 rounded-lg border border-admin-border bg-slate-900 text-left cursor-pointer transition hover:bg-admin-surface-hover"
+				class="px-2.5 py-1.5 rounded-lg border text-left cursor-pointer transition"
+				:class="themePreset === 'cyber' && tokens.accent === '#06b6d4' ? 'border-admin-accent bg-admin-surface-active ring-1 ring-admin-accent' : 'border-admin-border bg-admin-surface-muted hover:border-admin-accent'"
 			>
-				<div class="font-bold text-[11px] text-cyan-400">B2B Кибербезопасность</div>
-				<div class="text-[10px] text-admin-content-subtle">Неон • Темная тема</div>
+				<div class="flex items-center justify-between gap-1">
+					<span class="flex items-center gap-1.5 min-w-0"><span class="w-2 h-2 rounded-full bg-cyan-500 shrink-0"></span><span class="font-bold text-[11px] text-admin-content truncate">B2B Кибербезопасность</span></span>
+					<span x-show="themePreset === 'cyber' && tokens.accent === '#06b6d4'" class="text-admin-accent">✓</span>
+				</div>
+				<div class="text-[10px] text-admin-content-muted">Неон • Темная тема</div>
 			</button>
 		</div>
 	</div>

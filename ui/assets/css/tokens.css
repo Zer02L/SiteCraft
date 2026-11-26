@@ -4,6 +4,33 @@
    через color-mix()
    ========================================= */
 
+/* Регистрируем цветовые токены как <color>: только зарегистрированные
+   custom properties интерполируются. Это позволяет анимировать тему
+   ОДНИМ переходом на :root вместо transition у каждого элемента. */
+@property --admin-bg { syntax: "<color>"; inherits: true; initial-value: #f8fafc; }
+@property --admin-surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --admin-surface-muted { syntax: "<color>"; inherits: true; initial-value: #f1f5f9; }
+@property --admin-surface-hover { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
+@property --admin-surface-active { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
+@property --admin-header { syntax: "<color>"; inherits: true; initial-value: rgba(255, 255, 255, 0.92); }
+@property --admin-sidebar { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --admin-border { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
+@property --admin-border-subtle { syntax: "<color>"; inherits: true; initial-value: #f1f5f9; }
+@property --admin-border-focus { syntax: "<color>"; inherits: true; initial-value: #2563eb; }
+@property --admin-content { syntax: "<color>"; inherits: true; initial-value: #0f172a; }
+@property --admin-content-muted { syntax: "<color>"; inherits: true; initial-value: #475569; }
+@property --admin-content-subtle { syntax: "<color>"; inherits: true; initial-value: #64748b; }
+@property --admin-accent { syntax: "<color>"; inherits: true; initial-value: #2563eb; }
+@property --admin-accent-hover { syntax: "<color>"; inherits: true; initial-value: #2157cf; }
+@property --admin-accent-muted { syntax: "<color>"; inherits: true; initial-value: #e9effd; }
+@property --admin-accent-border { syntax: "<color>"; inherits: true; initial-value: #c9d8fa; }
+@property --admin-danger { syntax: "<color>"; inherits: true; initial-value: #dc2626; }
+@property --admin-danger-muted { syntax: "<color>"; inherits: true; initial-value: #fef2f2; }
+@property --admin-success { syntax: "<color>"; inherits: true; initial-value: #059669; }
+@property --admin-success-muted { syntax: "<color>"; inherits: true; initial-value: #ecfdf5; }
+@property --admin-warning { syntax: "<color>"; inherits: true; initial-value: #d97706; }
+@property --admin-warning-muted { syntax: "<color>"; inherits: true; initial-value: #fffbeb; }
+
 :root,
 html[data-theme="default"],
 html[data-theme="main"],
@@ -167,6 +194,43 @@ html[data-admin-theme="light"] {
 html[data-admin-theme="light"] body {
   background-color: var(--admin-bg);
   color: var(--admin-content);
+}
+
+/* =========================================
+   КРОСС-ФЕЙД ТЕМЫ (fallback без View Transitions)
+   Один переход на :root интерполирует зарегистрированные токены;
+   все потомки обновляются через var() без собственных transition.
+   При View Transitions переход снимается классом .theme-freeze.
+   ========================================= */
+html {
+  transition:
+    --admin-bg 320ms ease,
+    --admin-surface 320ms ease,
+    --admin-surface-muted 320ms ease,
+    --admin-surface-hover 320ms ease,
+    --admin-surface-active 320ms ease,
+    --admin-header 320ms ease,
+    --admin-sidebar 320ms ease,
+    --admin-border 320ms ease,
+    --admin-border-subtle 320ms ease,
+    --admin-border-focus 320ms ease,
+    --admin-content 320ms ease,
+    --admin-content-muted 320ms ease,
+    --admin-content-subtle 320ms ease,
+    --admin-accent 320ms ease,
+    --admin-accent-hover 320ms ease,
+    --admin-accent-muted 320ms ease,
+    --admin-accent-border 320ms ease,
+    --admin-danger 320ms ease,
+    --admin-danger-muted 320ms ease,
+    --admin-success 320ms ease,
+    --admin-success-muted 320ms ease,
+    --admin-warning 320ms ease,
+    --admin-warning-muted 320ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { transition: none !important; }
 }
 
 /* =========================================

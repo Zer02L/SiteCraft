@@ -33,3 +33,35 @@
   --color-admin-warning: var(--admin-warning);
   --color-admin-warning-muted: var(--admin-warning-muted);
 }
+
+/* =========================================
+   ПЛАВНОЕ ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ADMIN WORKBENCH
+   Новая тема раскрывается кругом от курсора поверх старой (View Transitions).
+   ========================================= */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+
+/* На время View Transition выключаем ВСЕ переходы: ::view-transition-new(root)
+   должен снимать финальные цвета, а не середину color-перехода компонентов.
+   Дёшево: ни одного запущенного transition, одна инвалидация стилей. */
+html.theme-freeze,
+html.theme-freeze *,
+html.theme-freeze *::before,
+html.theme-freeze *::after {
+  transition: none !important;
+  /* CSS-анимации не должны уйти вперёд снимка и дёрнуться в конце круга. */
+  animation-play-state: paused !important;
+}
+
+/* Firefox/без VT: :root интерполирует зарегистрированные токены, а потомки
+   не должны запускать свои color-переходы каждый кадр. */
+html.theme-crossfade *,
+html.theme-crossfade *::before,
+html.theme-crossfade *::after {
+  transition: none !important;
+}
