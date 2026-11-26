@@ -118,7 +118,7 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 					<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap">
 						Написать в WhatsApp
 					</span>
-					<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: #25D366;">
+					<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: var(--color-brand-whatsapp);">
 						@icons.MessageCircle(templ.Attributes{"class": "w-6 h-6"})
 					</div>
 				</a>
@@ -135,7 +135,7 @@ templ FloatingContact(content models.SiteContent, settings models.SiteSettings) 
 				<span class="bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap">
 					Написать в Telegram
 				</span>
-				<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: #0088cc;">
+				<div class="w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150" style="background-color: var(--color-brand-telegram);">
 					@icons.Send(templ.Attributes{"class": "w-5 h-5"})
 				</div>
 			</a>

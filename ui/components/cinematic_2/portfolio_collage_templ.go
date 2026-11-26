@@ -9,6 +9,8 @@ package cinematic_2
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-GLASS-STACK (Collage CTA is intentionally frosted over the artwork background)
+
 import (
 	"fmt"
 	icons "sitecraft/ui/components/icons"
@@ -43,7 +45,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.ID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 11, Col: 15}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 13, Col: 15}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 			if templ_7745c5c3_Err != nil {
@@ -77,7 +79,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.Title + " Gallery").Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 17, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 19, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
@@ -194,7 +196,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 			}
 		}`, props.RotationDeg, props.RotationDeg)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 122, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 124, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
@@ -221,7 +223,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(props.TitleLink)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 129, Col: 41}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 131, Col: 41}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 		if templ_7745c5c3_Err != nil {
@@ -234,7 +236,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.Title + " - Open ArtStation in new tab").Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 133, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 135, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -247,7 +249,7 @@ func PortfolioCollage(props CollageProps) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 136, Col: 18}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 138, Col: 18}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -409,7 +411,7 @@ func collageCard(item CollageItem, key string, cardRadius string) templ.Componen
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(key).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 224, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 226, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
@@ -436,7 +438,7 @@ func collageCard(item CollageItem, key string, cardRadius string) templ.Componen
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.ImageURL).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 227, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 229, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 		if templ_7745c5c3_Err != nil {
@@ -449,7 +451,7 @@ func collageCard(item CollageItem, key string, cardRadius string) templ.Componen
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.Alt).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 228, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 230, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
 		if templ_7745c5c3_Err != nil {
@@ -467,7 +469,7 @@ func collageCard(item CollageItem, key string, cardRadius string) templ.Componen
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 236, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/portfolio_collage.templ`, Line: 238, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 			if templ_7745c5c3_Err != nil {

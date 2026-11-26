@@ -9,6 +9,8 @@ package cinematic
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-GLASS-STACK (Transition demo chrome is intentionally translucent over the media)
+
 type MorphItem struct {
 	ID       string
 	Title    string
@@ -51,7 +53,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(subtitle)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 16, Col: 100}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 18, Col: 100}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -70,7 +72,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 19, Col: 88}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 21, Col: 88}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -98,7 +100,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.ID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 29, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 31, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 			if templ_7745c5c3_Err != nil {
@@ -111,7 +113,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.Title).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 30, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 32, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
@@ -124,7 +126,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.Category).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 31, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 33, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
@@ -137,7 +139,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.Desc).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 32, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 34, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 			if templ_7745c5c3_Err != nil {
@@ -150,7 +152,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(item.Price).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 33, Col: 34}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 35, Col: 34}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
@@ -163,7 +165,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("view-transition-name: card-" + item.ID + ";")
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 34, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 36, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -176,7 +178,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(item.Category)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 37, Col: 86}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 39, Col: 86}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -189,7 +191,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 38, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 40, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -202,7 +204,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(item.Desc)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 39, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 41, Col: 73}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -215,7 +217,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(item.Price)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 42, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/view_transitions.templ`, Line: 44, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -226,7 +228,7 @@ func ViewTransitions(title string, subtitle string, items []MorphItem) templ.Com
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- Модальное окно с морфингом --><div class=\"morph-modal-backdrop fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4\" data-morph-modal><div class=\"morph-modal-box max-w-lg w-full p-8 rounded-3xl bg-surface border border-surface-muted shadow-2xl relative\" style=\"view-transition-name: active-card;\"><button class=\"absolute top-6 right-6 w-9 h-9 rounded-full bg-surface-muted/60 text-content flex items-center justify-center text-sm font-bold hover:bg-surface-muted\" data-morph-close>✕</button> <span class=\"text-xs font-mono font-bold text-accent mb-2 block\" data-modal-cat></span><h3 class=\"text-3xl font-extrabold text-content mb-3\" data-modal-title></h3><p class=\"text-base text-content-muted leading-relaxed mb-6\" data-modal-desc></p><div class=\"flex items-center justify-between pt-6 border-t border-surface-muted/60\"><span class=\"text-2xl font-extrabold text-content font-mono\" data-modal-price></span> <button class=\"px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent-hover transition-colors shadow-lg\">Выбрать тариф</button></div></div></div></section><script>\n\t\t(function() {\n\t\t\tfunction initMorphCards() {\n\t\t\t\tvar section = document.querySelector('[data-view-transition-section]');\n\t\t\t\tif (!section) return;\n\n\t\t\t\tvar modal = section.querySelector('[data-morph-modal]');\n\t\t\t\tvar closeBtn = section.querySelector('[data-morph-close]');\n\t\t\t\tvar mTitle = section.querySelector('[data-modal-title]');\n\t\t\t\tvar mCat = section.querySelector('[data-modal-cat]');\n\t\t\t\tvar mDesc = section.querySelector('[data-modal-desc]');\n\t\t\t\tvar mPrice = section.querySelector('[data-modal-price]');\n\n\t\t\t\tfunction openModal(card) {\n\t\t\t\t\tfunction updateDOM() {\n\t\t\t\t\t\tmTitle.textContent = card.dataset.morphTitle;\n\t\t\t\t\t\tmCat.textContent = card.dataset.morphCat;\n\t\t\t\t\t\tmDesc.textContent = card.dataset.morphDesc;\n\t\t\t\t\t\tmPrice.textContent = card.dataset.morphPrice;\n\t\t\t\t\t\tmodal.classList.remove('hidden');\n\t\t\t\t\t\tmodal.classList.add('flex');\n\t\t\t\t\t}\n\n\t\t\t\t\tif (document.startViewTransition) {\n\t\t\t\t\t\tdocument.startViewTransition(updateDOM);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tupdateDOM();\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tfunction closeModal() {\n\t\t\t\t\tfunction updateDOM() {\n\t\t\t\t\t\tmodal.classList.add('hidden');\n\t\t\t\t\t\tmodal.classList.remove('flex');\n\t\t\t\t\t}\n\n\t\t\t\t\tif (document.startViewTransition) {\n\t\t\t\t\t\tdocument.startViewTransition(updateDOM);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tupdateDOM();\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tsection.querySelectorAll('[data-morph-id]').forEach(function(card) {\n\t\t\t\t\tcard.addEventListener('click', function() { openModal(card); });\n\t\t\t\t});\n\n\t\t\t\tif (closeBtn) closeBtn.addEventListener('click', closeModal);\n\t\t\t\tmodal.addEventListener('click', function(e) {\n\t\t\t\t\tif (e.target === modal) closeModal();\n\t\t\t\t});\n\t\t\t}\n\n\t\t\tif (document.readyState === 'loading') {\n\t\t\t\tdocument.addEventListener('DOMContentLoaded', initMorphCards);\n\t\t\t} else {\n\t\t\t\tinitMorphCards();\n\t\t\t}\n\t\t\tdocument.addEventListener('htmx:afterSwap', initMorphCards);\n\t\t})();\n\t</script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div><!-- Модальное окно с морфингом --><div class=\"morph-modal-backdrop fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4\" data-morph-modal><div class=\"morph-modal-box max-w-lg w-full p-8 rounded-3xl bg-surface border border-surface-muted shadow-2xl relative\" style=\"view-transition-name: active-card;\"><button class=\"absolute top-6 right-6 w-9 h-9 rounded-full bg-surface-muted/60 text-content flex items-center justify-center text-sm font-bold hover:bg-surface-muted\" data-morph-close>✕</button> <span class=\"text-xs font-mono font-bold text-accent mb-2 block\" data-modal-cat></span><h3 class=\"text-3xl font-extrabold text-content mb-3\" data-modal-title></h3><p class=\"text-base text-content-muted leading-relaxed mb-6\" data-modal-desc></p><div class=\"flex items-center justify-between pt-6 border-t border-surface-muted/60\"><span class=\"text-2xl font-extrabold text-content font-mono\" data-modal-price></span> <button class=\"px-6 py-3 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent-hover transition-colors shadow-lg\">Выбрать тариф</button></div></div></div></section><script>\n\t\t(function() {\n\t\t\tfunction initMorphCards() {\n\t\t\t\tvar section = document.querySelector('[data-view-transition-section]');\n\t\t\t\tif (!section) return;\n\n\t\t\t\tvar modal = section.querySelector('[data-morph-modal]');\n\t\t\t\tvar closeBtn = section.querySelector('[data-morph-close]');\n\t\t\t\tvar mTitle = section.querySelector('[data-modal-title]');\n\t\t\t\tvar mCat = section.querySelector('[data-modal-cat]');\n\t\t\t\tvar mDesc = section.querySelector('[data-modal-desc]');\n\t\t\t\tvar mPrice = section.querySelector('[data-modal-price]');\n\n\t\t\t\tfunction openModal(card) {\n\t\t\t\t\tfunction updateDOM() {\n\t\t\t\t\t\tmTitle.textContent = card.dataset.morphTitle;\n\t\t\t\t\t\tmCat.textContent = card.dataset.morphCat;\n\t\t\t\t\t\tmDesc.textContent = card.dataset.morphDesc;\n\t\t\t\t\t\tmPrice.textContent = card.dataset.morphPrice;\n\t\t\t\t\t\tmodal.classList.remove('hidden');\n\t\t\t\t\t\tmodal.classList.add('flex');\n\t\t\t\t\t}\n\n\t\t\t\t\tif (document.startViewTransition) {\n\t\t\t\t\t\tdocument.startViewTransition(updateDOM);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tupdateDOM();\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tfunction closeModal() {\n\t\t\t\t\tfunction updateDOM() {\n\t\t\t\t\t\tmodal.classList.add('hidden');\n\t\t\t\t\t\tmodal.classList.remove('flex');\n\t\t\t\t\t}\n\n\t\t\t\t\tif (document.startViewTransition) {\n\t\t\t\t\t\tdocument.startViewTransition(updateDOM);\n\t\t\t\t\t} else {\n\t\t\t\t\t\tupdateDOM();\n\t\t\t\t\t}\n\t\t\t\t}\n\n\t\t\t\tsection.querySelectorAll('[data-morph-id]').forEach(function(card) {\n\t\t\t\t\tcard.addEventListener('click', function() { openModal(card); });\n\t\t\t\t});\n\n\t\t\t\tif (closeBtn) closeBtn.addEventListener('click', closeModal);\n\t\t\t\tmodal.addEventListener('click', function(e) {\n\t\t\t\t\tif (e.target === modal) closeModal();\n\t\t\t\t});\n\t\t\t}\n\n\t\t\tif (document.readyState === 'loading') {\n\t\t\t\tdocument.addEventListener('DOMContentLoaded', initMorphCards);\n\t\t\t} else {\n\t\t\t\tinitMorphCards();\n\t\t\t}\n\t\t\tdocument.addEventListener('htmx:afterSwap', initMorphCards);\n\t\t})();\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

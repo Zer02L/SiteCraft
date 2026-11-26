@@ -9,6 +9,8 @@ package cinematic_2
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-GLASS-STACK (Hero overlay controls are intentionally frosted over the video background)
+
 import (
 	"fmt"
 	icons "sitecraft/ui/components/icons"
@@ -64,7 +66,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.BrandName + " Hero Screen").Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 38, Col: 47}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 40, Col: 47}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 			if templ_7745c5c3_Err != nil {
@@ -96,7 +98,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.PosterURL).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 45, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 47, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 			if templ_7745c5c3_Err != nil {
@@ -119,7 +121,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.PosterURL).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 63, Col: 29}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 65, Col: 29}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 			if templ_7745c5c3_Err != nil {
@@ -132,7 +134,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.VideoURL).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 66, Col: 33}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 68, Col: 33}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 			if templ_7745c5c3_Err != nil {
@@ -150,7 +152,7 @@ func HeroScreen(props HeroProps) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.BrandName + " Home").Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 81, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 83, Col: 42}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -163,7 +165,7 @@ func HeroScreen(props HeroProps) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.BrandName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 84, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 86, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -181,7 +183,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(link.URL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 92, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 94, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 			if templ_7745c5c3_Err != nil {
@@ -204,7 +206,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(link.Label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 99, Col: 18}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 101, Col: 18}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -231,7 +233,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", props.CartCount))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 135, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 137, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -270,7 +272,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(link.URL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 172, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 174, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
@@ -293,7 +295,7 @@ func HeroScreen(props HeroProps) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(link.Label)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 180, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 182, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -311,7 +313,7 @@ func HeroScreen(props HeroProps) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(props.BrandName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 189, Col: 22}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 191, Col: 22}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -324,7 +326,7 @@ func HeroScreen(props HeroProps) templ.Component {
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(props.Subtitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 192, Col: 21}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 194, Col: 21}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -337,7 +339,7 @@ func HeroScreen(props HeroProps) templ.Component {
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(props.TargetScroll)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 199, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic_2/hero_screen.templ`, Line: 201, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 		if templ_7745c5c3_Err != nil {

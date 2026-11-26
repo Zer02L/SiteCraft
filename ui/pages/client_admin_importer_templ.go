@@ -304,7 +304,7 @@ func RedirectsTable(redirects []models.RedirectRule) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"overflow-x-auto border border-admin-border rounded-xl\"><table class=\"w-full text-left text-xs text-admin-content divide-y divide-admin-border\"><thead class=\"bg-admin-surface-muted/50 text-[11px] font-mono uppercase text-admin-content-subtle\"><tr><th class=\"px-4 py-3\">Исходный URL (Старый)</th><th class=\"px-4 py-3\">Куда перенаправлять (Новый)</th><th class=\"px-4 py-3\">Код</th><th class=\"px-4 py-3 text-right\">Действие</th></tr></thead> <tbody class=\"divide-y divide-admin-border\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"overflow-x-auto border border-admin-border rounded-xl\"><table class=\"tabular-nums w-full text-left text-xs text-admin-content divide-y divide-admin-border\"><thead class=\"bg-admin-surface-muted/50 text-[11px] font-mono uppercase text-admin-content-subtle\"><tr><th class=\"px-4 py-3\">Исходный URL (Старый)</th><th class=\"px-4 py-3\">Куда перенаправлять (Новый)</th><th class=\"px-4 py-3\">Код</th><th class=\"px-4 py-3 text-right\">Действие</th></tr></thead> <tbody class=\"divide-y divide-admin-border\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

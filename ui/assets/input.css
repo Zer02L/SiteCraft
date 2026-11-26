@@ -36,6 +36,7 @@
   --color-accent-hover: var(--color-accent-hover);
   --color-accent-light: var(--color-accent-light);
   --color-on-accent: var(--color-on-accent, #ffffff);
+  --color-on-gold: var(--color-on-gold);
 
   --color-surface: var(--color-surface);
   --color-surface-muted: var(--color-surface-muted);

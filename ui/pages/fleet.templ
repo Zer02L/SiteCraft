@@ -1,5 +1,7 @@
 package pages
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Fleet is an isolated ops dashboard with a fixed dark monitoring palette, not a themed storefront)
+
 import (
 	"fmt"
 	"sitecraft/internal/models"
@@ -111,7 +113,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 		</div>
 
 		<!-- Таблица сайтов -->
-		<div class="bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
+		<div class="tabular-nums bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl">
 			<div class="overflow-x-auto">
 				<table class="w-full text-left text-xs">
 					<thead class="bg-slate-800/60 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800">
@@ -152,7 +154,7 @@ templ FleetTabContent(sites []models.FleetSite, stats models.FleetStats) {
 			x-transition:leave="transition ease-in duration-150"
 			x-transition:leave-start="opacity-100"
 			x-transition:leave-end="opacity-0"
-			class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+			class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75"
 			style="display: none;"
 		>
 			<div

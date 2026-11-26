@@ -413,7 +413,7 @@ func ClientServicesTab(services []models.ServiceItem, trashServices []models.Ser
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted/50 border-b border-admin-border text-admin-content-muted text-[11px] font-mono uppercase tracking-wider\"><tr>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"tabular-nums w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted/50 border-b border-admin-border text-admin-content-muted text-[11px] font-mono uppercase tracking-wider\"><tr>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

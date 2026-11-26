@@ -1,5 +1,7 @@
 package hero
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Cyber preset hero deliberately uses the fixed dark palette from presets/b2b_cyber.json)
+
 import (
 	"sitecraft/internal/models"
 
@@ -113,7 +115,7 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 
 					<picture>
 						<source srcset="/assets/images/cyber_avatar.webp" type="image/webp"/>
-						<img
+						<img decoding="async" fetchpriority="high"
 							src="/assets/images/cyber_avatar.png"
 							alt="Cyber Avatar"
 							class="relative z-10 w-full h-full object-cover object-center group-hover:scale-105 transition duration-200"
@@ -131,7 +133,7 @@ templ CyberHero(content models.SiteContent, settings models.SiteSettings) {
 					<div class="flex justify-center items-center py-2 relative">
 						<picture>
 							<source srcset="/assets/images/cyber_robot.webp" type="image/webp"/>
-							<img src="/assets/images/cyber_robot.png" alt="Robot 5.0" class="h-40 w-auto object-contain group-hover:scale-105 transition duration-200 drop-shadow-lg"/>
+							<img decoding="async" fetchpriority="high" src="/assets/images/cyber_robot.png" alt="Robot 5.0" class="h-40 w-auto object-contain group-hover:scale-105 transition duration-200 drop-shadow-lg"/>
 						</picture>
 					</div>
 

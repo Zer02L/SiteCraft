@@ -26,7 +26,11 @@ func (s *Server) HandleAdminUpdateLeadStatus(w http.ResponseWriter, r *http.Requ
 	if err := s.Repo.UpdateLeadStatus(ctx, id, status); err != nil {
 		slog.Error("failed to update lead status", "id", id, "error", err)
 	}
-	s.HandleAdminTabLeads(w, r)
+	// Refresh only the tab content. Replacing the root x-data element would make
+	// Alpine evaluate the rows' x-show before their parent scope is available.
+	leads, _ := s.Repo.GetLeads(ctx)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_ = pages.LeadsTabContent(leads).Render(ctx, w)
 }
 
 func (s *Server) HandleAdminExportLeadsCSV(w http.ResponseWriter, r *http.Request) {

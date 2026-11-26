@@ -132,7 +132,7 @@ func A11yBar() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 text-xs rounded transition cursor-pointer border-2\" style=\"background-color: #c6e2ff; color: #063462; border-color: #063462;\" title=\"Синим по голубому\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</button> <button type=\"button\" onclick=\"window.A11Y.setColorScheme('blue-on-cyan')\" data-a11y-btn-theme=\"blue-on-cyan\" class=\"px-2.5 py-1 text-xs rounded transition cursor-pointer border-2\" style=\"background-color: var(--swatch-a11y-blue-bg); color: var(--swatch-a11y-blue-fg); border-color: var(--swatch-a11y-blue-fg);\" title=\"Синим по голубому\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

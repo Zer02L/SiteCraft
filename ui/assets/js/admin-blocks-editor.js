@@ -914,11 +914,11 @@ window.openBlockEditor = function(id, title, content, bType, variant) {
 						// Curated palettes
 						const accRgb = window.SiteOklchGuard.hexToRgb(bestAccent);
 						const accOklch = window.SiteOklchGuard.rgbToOklch(accRgb.r, accRgb.g, accRgb.b);
-						const h = accOklch.h;
+						const accentHue = accOklch.h;
 
-						const darkSurface = window.SiteOklchGuard.oklchToRgb(0.12, 0.02, h).hex;
-						const darkText = window.SiteOklchGuard.oklchToRgb(0.96, 0.02, h).hex;
-						const darkAccent = window.SiteOklchGuard.oklchToRgb(0.68, Math.max(0.16, accOklch.c), h).hex;
+						const darkSurface = window.SiteOklchGuard.oklchToRgb(0.12, 0.02, accentHue).hex;
+						const darkText = window.SiteOklchGuard.oklchToRgb(0.96, 0.02, accentHue).hex;
+						const darkAccent = window.SiteOklchGuard.oklchToRgb(0.68, Math.max(0.16, accOklch.c), accentHue).hex;
 
 						const warmSurface = window.SiteOklchGuard.oklchToRgb(0.985, 0.015, 65).hex; // Warm ivory
 						const warmText = window.SiteOklchGuard.oklchToRgb(0.18, 0.025, 45).hex;

@@ -89,7 +89,7 @@ Default section order:
   - **Proof & Trust**: Ban fake testimonials with stock photos. Use real case studies (estimate, scope, timeline, materials), verified UGC reviews from SQLite/PostgreSQL, or external review links (Yandex/Avito).
   - **Layout Rhythm**: Avoid monotonous 3-identical-card grids. Vary structural density (split heroes, asymmetrical bento, interactive quizzes, accent timelines).
   - **Tactile Performance (60 FPS)**: Content must be readable instantly without waiting for scroll animations. Animations limited to `transform` and `opacity` (150–200ms) with full `prefers-reduced-motion` and No-JS progressive enhancement.
-  - **Craft & Heuristic Audit**: Use `.agents/skills/impeccable-craft/` (commands `polish`, `bolder`, `quieter`, `distill`, `audit`) and run `.agents/skills/impeccable-craft/scripts/check_slop.py` for 0-token deterministic verification against 60+ anti-slop rules.
+  - **Craft & Heuristic Audit**: Use the shared `ui-craft` skill (`ui-lint.py preflight`, `ui-lint.py lint --profile commercial|editorial|app` for 0-token deterministic Floor/Reflex verification without Node.js, and `snapshot`/`kept` to preserve forms/links/HTMX/data hooks during redesigns).
   - **Modern Web & Baseline Standards**: Use `.agents/skills/modern-web-guidance/` (commands `audit`, `modernize`, `baseline`, `recipes`) and `.agents/skills/modern-web-guidance/scripts/modern_web_lint.py` to enforce native Baseline primitives (`<dialog>`, Popover API, CSS Anchor, `@container`, `@starting-style`, View Transitions, `fetchpriority`) and eliminate legacy JS bloat without Node.js runtime.
 - **Ponytail (Lazy Senior Dev Mode)**:
   - Best code is the code never written. Solve problems with minimal diffs and no over-engineering.

@@ -9,6 +9,8 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Fleet is an isolated ops dashboard with a fixed dark monitoring palette, not a themed storefront)
+
 import (
 	"fmt"
 	"sitecraft/internal/models"
@@ -108,7 +110,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", stats.TotalSites))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 68, Col: 90}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 70, Col: 90}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -129,7 +131,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", stats.RunningSites))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 78, Col: 98}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 80, Col: 98}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -150,7 +152,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", stats.StoppedSites))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 88, Col: 96}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 90, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -172,7 +174,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<span>Создать новый сайт</span></button></div><!-- Таблица сайтов --><div class=\"bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs\"><thead class=\"bg-slate-800/60 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800\"><tr><th class=\"px-5 py-3.5\">ID Сайта / Проект</th><th class=\"px-5 py-3.5\">Пресет / Ниша</th><th class=\"px-5 py-3.5\">Порт & Ссылки</th><th class=\"px-5 py-3.5\">Статус / PID</th><th class=\"px-5 py-3.5 text-right\">Действия</th></tr></thead> <tbody id=\"fleet-sites-table\" class=\"divide-y divide-slate-800 text-slate-300\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<span>Создать новый сайт</span></button></div><!-- Таблица сайтов --><div class=\"tabular-nums bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden shadow-xl\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs\"><thead class=\"bg-slate-800/60 text-slate-400 uppercase tracking-wider text-[10px] border-b border-slate-800\"><tr><th class=\"px-5 py-3.5\">ID Сайта / Проект</th><th class=\"px-5 py-3.5\">Пресет / Ниша</th><th class=\"px-5 py-3.5\">Порт & Ссылки</th><th class=\"px-5 py-3.5\">Статус / PID</th><th class=\"px-5 py-3.5 text-right\">Действия</th></tr></thead> <tbody id=\"fleet-sites-table\" class=\"divide-y divide-slate-800 text-slate-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -189,7 +191,7 @@ func FleetTabContent(sites []models.FleetSite, stats models.FleetStats) templ.Co
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div></div><!-- Модальное окно создания сайта --><div x-show=\"createModal\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm\" style=\"display: none;\"><div x-on:click.outside=\"createModal = false\" class=\"bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative\"><button type=\"button\" x-on:click=\"createModal = false\" class=\"absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg\" aria-label=\"Закрыть\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div></div><!-- Модальное окно создания сайта --><div x-show=\"createModal\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" x-transition:leave=\"transition ease-in duration-150\" x-transition:leave-start=\"opacity-100\" x-transition:leave-end=\"opacity-0\" class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75\" style=\"display: none;\"><div x-on:click.outside=\"createModal = false\" class=\"bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative\"><button type=\"button\" x-on:click=\"createModal = false\" class=\"absolute top-4 right-4 text-slate-400 hover:text-white p-1 rounded-lg\" aria-label=\"Закрыть\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -245,7 +247,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression("fleet-row-" + site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 245, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 247, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
@@ -258,7 +260,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(site.SiteID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 247, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 249, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -276,7 +278,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(site.CreatedAt)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 249, Col: 77}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 251, Col: 77}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -294,7 +296,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(site.Preset)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 255, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 257, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -307,7 +309,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(site.Port)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 261, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 263, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -325,7 +327,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(site.URL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 264, Col: 36}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 266, Col: 36}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13)
 			if templ_7745c5c3_Err != nil {
@@ -346,7 +348,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(site.AdminURL)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 274, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 276, Col: 41}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var14)
 			if templ_7745c5c3_Err != nil {
@@ -369,7 +371,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(site.PID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 289, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 291, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -397,7 +399,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var16 string
 			templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 302, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 304, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 			if templ_7745c5c3_Err != nil {
@@ -410,7 +412,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 303, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 305, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 			if templ_7745c5c3_Err != nil {
@@ -431,7 +433,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var18 string
 			templ_7745c5c3_Var18, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 314, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 316, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var18)
 			if templ_7745c5c3_Err != nil {
@@ -444,7 +446,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 315, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 317, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var19)
 			if templ_7745c5c3_Err != nil {
@@ -470,7 +472,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 327, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 329, Col: 78}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 			if templ_7745c5c3_Err != nil {
@@ -483,7 +485,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 328, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 330, Col: 61}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 			if templ_7745c5c3_Err != nil {
@@ -509,7 +511,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#fleet-row-" + site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 341, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 343, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 		if templ_7745c5c3_Err != nil {
@@ -522,7 +524,7 @@ func FleetSiteRow(site models.FleetSite) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templruntime.NewAttributeExpression(site.SiteID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 342, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/fleet.templ`, Line: 344, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var23)
 		if templ_7745c5c3_Err != nil {

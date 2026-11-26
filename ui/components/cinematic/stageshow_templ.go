@@ -9,6 +9,8 @@ package cinematic
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Stageshow window chrome is a fixed dark desktop mockup)
+
 import (
 	"encoding/json"
 	"fmt"
@@ -58,7 +60,7 @@ func StageshowStage(props StageshowStageProps) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 21, Col: 16}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 23, Col: 16}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 				if templ_7745c5c3_Err != nil {
@@ -165,7 +167,7 @@ func MockWindow(props MockWindowProps) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 48, Col: 16}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 50, Col: 16}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 				if templ_7745c5c3_Err != nil {
@@ -223,7 +225,7 @@ func MockWindow(props MockWindowProps) templ.Component {
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(props.URL)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 69, Col: 22}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 71, Col: 22}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -241,7 +243,7 @@ func MockWindow(props MockWindowProps) templ.Component {
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 73, Col: 18}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 75, Col: 18}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -315,7 +317,7 @@ func MockPhone(props MockPhoneProps) templ.Component {
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 99, Col: 16}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 101, Col: 16}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
 				if templ_7745c5c3_Err != nil {
@@ -420,7 +422,7 @@ func MockTerminal(props MockTerminalProps) templ.Component {
 				var templ_7745c5c3_Var16 string
 				templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(props.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 133, Col: 16}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 135, Col: 16}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 				if templ_7745c5c3_Err != nil {
@@ -478,7 +480,7 @@ func MockTerminal(props MockTerminalProps) templ.Component {
 			var templ_7745c5c3_Var19 string
 			templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 150, Col: 67}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 152, Col: 67}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 			if templ_7745c5c3_Err != nil {
@@ -665,7 +667,7 @@ func MockRow(props MockRowProps) templ.Component {
 			var templ_7745c5c3_Var26 string
 			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 213, Col: 87}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 215, Col: 87}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 			if templ_7745c5c3_Err != nil {
@@ -689,7 +691,7 @@ func MockRow(props MockRowProps) templ.Component {
 			var templ_7745c5c3_Var27 string
 			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(props.Subtitle)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 218, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 220, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 			if templ_7745c5c3_Err != nil {
@@ -748,7 +750,7 @@ func MockRow(props MockRowProps) templ.Component {
 			var templ_7745c5c3_Var30 string
 			templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(props.BadgeText)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 225, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 227, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 			if templ_7745c5c3_Err != nil {
@@ -953,7 +955,7 @@ func MockCursor(props MockCursorProps) templ.Component {
 			}
 		}`, jsonWaypoints(props.Waypoints))).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 313, Col: 37}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/stageshow.templ`, Line: 315, Col: 37}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var37)
 			if templ_7745c5c3_Err != nil {

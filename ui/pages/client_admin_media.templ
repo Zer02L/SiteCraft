@@ -82,7 +82,7 @@ templ AdminMediaTab(files []MediaFileItem) {
 							class="group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition flex flex-col"
 						>
 							<div class="aspect-square bg-admin-bg flex items-center justify-center overflow-hidden">
-								<img
+								<img decoding="async"
 									src={ f.ThumbURL }
 									alt={ f.Filename }
 									loading="lazy"

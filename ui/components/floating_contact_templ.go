@@ -145,7 +145,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в WhatsApp\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в WhatsApp</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: #25D366;\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в WhatsApp\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в WhatsApp</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: var(--color-brand-whatsapp);\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -171,7 +171,7 @@ func FloatingContact(content models.SiteContent, settings models.SiteSettings) t
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в Telegram\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в Telegram</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: #0088cc;\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-btn\" title=\"Написать в Telegram\"><span class=\"bg-surface text-content text-xs font-semibold py-1.5 px-3 rounded-btn shadow-md border border-content/10 group-hover:bg-accent group-hover:text-surface transition duration-150 whitespace-nowrap\">Написать в Telegram</span><div class=\"w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition duration-150\" style=\"background-color: var(--color-brand-telegram);\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

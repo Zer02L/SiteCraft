@@ -9,6 +9,8 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Small status chip uses the fixed neutral admin accent palette)
+
 import (
 	"fmt"
 	"sitecraft/internal/ai"
@@ -39,7 +41,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIProvider).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 27, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 29, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
@@ -52,7 +54,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIBaseURL).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 28, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 30, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
@@ -65,7 +67,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIModelName).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 29, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 31, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
@@ -78,7 +80,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIFolderID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 30, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 32, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
@@ -91,7 +93,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.JSONString(presets)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 31, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 33, Col: 42}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
@@ -105,7 +107,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(settings.AIProvider)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 57, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 59, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -129,7 +131,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(p.ID).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 125, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 127, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 			if templ_7745c5c3_Err != nil {
@@ -152,7 +154,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 			var templ_7745c5c3_Var9 string
 			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(p.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 126, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 128, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 			if templ_7745c5c3_Err != nil {
@@ -178,7 +180,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(keyPlaceholder).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 170, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 172, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 		if templ_7745c5c3_Err != nil {
@@ -191,7 +193,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIProxyURL).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 194, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 196, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 		if templ_7745c5c3_Err != nil {
@@ -220,7 +222,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
   }
 }`)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 441, Col: 2}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 443, Col: 2}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -259,7 +261,7 @@ func AIAlert(msg string, success bool) templ.Component {
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 453, Col: 14}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 455, Col: 14}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -277,7 +279,7 @@ func AIAlert(msg string, success bool) templ.Component {
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 460, Col: 14}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 462, Col: 14}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
@@ -316,7 +318,7 @@ func AICopilotArticleResult(title string, slug string, preview string) templ.Com
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(fmt.Sprintf("/client?tab=articles"))).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 474, Col: 61}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 476, Col: 61}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 		if templ_7745c5c3_Err != nil {
@@ -329,7 +331,7 @@ func AICopilotArticleResult(title string, slug string, preview string) templ.Com
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 484, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 486, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -342,7 +344,7 @@ func AICopilotArticleResult(title string, slug string, preview string) templ.Com
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(preview)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 486, Col: 12}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 488, Col: 12}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -355,7 +357,7 @@ func AICopilotArticleResult(title string, slug string, preview string) templ.Com
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(slug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 489, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 491, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
@@ -393,7 +395,7 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d симв.", len([]rune(meta.Title))))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 505, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 507, Col: 83}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
@@ -406,7 +408,7 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(meta.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 508, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 510, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
@@ -419,7 +421,7 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d симв.", len([]rune(meta.Description))))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 515, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 517, Col: 89}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
@@ -432,7 +434,7 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(meta.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 518, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 520, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
@@ -455,7 +457,7 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 				var templ_7745c5c3_Var26 string
 				templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(kw)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 528, Col: 12}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 530, Col: 12}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 				if templ_7745c5c3_Err != nil {

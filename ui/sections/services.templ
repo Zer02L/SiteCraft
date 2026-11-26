@@ -64,7 +64,7 @@ templ Services(services []models.ServiceItem, settings models.SiteSettings) {
 					<div class="flex items-center justify-between lg:justify-end gap-6 pl-7 lg:pl-0 shrink-0">
 						<div class="text-left lg:text-right">
 							<span class="text-[11px] text-content-muted block">{ i18n.T(ctx, "services.cost_label") }</span>
-							<span class="text-sm sm:text-base font-bold text-content">{ s.Price }</span>
+							<span class="tabular-nums text-sm sm:text-base font-bold text-content">{ s.Price }</span>
 						</div>
 
 						<div class="flex items-center gap-3">

@@ -191,14 +191,14 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 				return templ_7745c5c3_Err
 			}
 			if article.CoverImage != "" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-surface-muted\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "<div class=\"aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-surface-muted\"><img decoding=\"async\" fetchpriority=\"high\" src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(article.CoverImage).ResolveURL(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 69, Col: 35}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 69, Col: 73}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 				if templ_7745c5c3_Err != nil {
@@ -211,7 +211,7 @@ func BlogPost(settings models.SiteSettings, content models.SiteContent, article 
 				var templ_7745c5c3_Var10 string
 				templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(article.Title).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 69, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/blog_post.templ`, Line: 69, Col: 95}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 				if templ_7745c5c3_Err != nil {

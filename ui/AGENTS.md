@@ -28,10 +28,11 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - Zero-Node.js in production: compile CSS and templates ahead of time (`templ generate`, `tailwindcss`).
 - STRICT Styles Exclusion: `ui/assets/styles.css` and `ui/assets/admin.css` are automatically compiled build artifacts and are strictly excluded from AI agent visibility (`.cursorignore`, `.aiignore`, `.geminiignore`). Agents must NEVER inspect, read, view, or edit `ui/assets/styles.css` or `ui/assets/admin.css`. All styling and token edits belong strictly in `ui/assets/input.css`, `ui/assets/admin_input.css`, or `ui/assets/css/tokens.css`.
 - Design tokens & Semantic markup: configure themes via `@theme` in `ui/assets/input.css` and runtime CSS variables in `ui/assets/css/tokens.css`. Always use semantic utility classes (`bg-surface`, `text-content`, `text-accent`, `rounded-card`, `rounded-btn`) rather than hardcoded colors or pixel radii.
+- Admin chrome: `--admin-accent` is fixed and must never derive from `--color-accent` — changing the edited site's theme must not recolor the admin panel. Admin UI (including `ui/pages/admin_blocks/`) uses `admin-*` tokens; raw palette utilities are allowed only for literal preset color swatches.
 - Payload parsing: use generic `registry.ParsePayload[T any]` to parse block payloads without handwriting repetitive unmarshalers.
 - Section variants: maintain variants as named functions in the owning package (e.g. `hero.CyberHero`, `sections.ReviewsSlider`) to avoid excessive micro-packages.
 - Go Variants (CVA) in `ui/components/base/`: use typed Go structs for variant resolution; use `tailwind-merge-go` only when resolving conflicting override classes.
-- Alpine + HTMX compatibility: use `hx-alpine-compat` patterns so dynamic DOM replacements safely reinitialize Alpine state without memory leaks.
+- Alpine + HTMX compatibility: use `hx-alpine-compat` patterns so dynamic DOM replacements safely reinitialize Alpine state without memory leaks. For in-tab HTMX updates, keep the owning `x-data` element mounted and target an inner container; swapping the root makes child `x-show` expressions evaluate before the parent scope exists.
 - CSS Data-Variants: prefer native Tailwind v4 data variants (`data-open:`, `data-active:`) triggered by Alpine data attributes over manual JavaScript class manipulation.
 - Accessibility standard: adhere to ГОСТ Р 52872-2019 accessibility mode (`body.a11y-mode`) and honor `@media (prefers-reduced-motion: reduce)`.
 - Anti-Slop Guard in UI: All components must use semantic tokens from `presets/*.json` (never default purple/indigo gradients or floating blur orbs). Elements with `[data-reveal]` must remain accessible and visible without JavaScript via `<noscript>` progressive enhancement. Animations must be restricted to `transform` and `opacity` (150–200ms) with zero layout thrashing.
@@ -47,7 +48,7 @@ Owns the user interface architecture of SiteCraft: compiling type-safe HTML temp
 - Rebuild minified CSS on utility changes: `tailwindcss -i ./ui/assets/input.css -o ./ui/assets/styles.css --minify`.
 - Register new section blocks in `ui/registry/registry.go` with fallback handling.
 - Audit responsive layouts across mobile (390px), tablet (768px), and desktop (1440px) using the `layout-review` skill.
-- Generate architectural landing layouts using the `hallmark-craft` skill (`.agents/skills/hallmark-craft/SKILL.md`).
+- Design and audit landing, editorial, and app layouts using the shared `ui-craft` skill (`ui-deal.py` for macrostructure/composition rotation, `ui-lint.py --profile commercial|editorial|app` for deterministic anti-slop & redesign wiring checks).
 - Generate or align sections against `brief.md` using the `stitch-workflow` skill.
 
 ## Verification

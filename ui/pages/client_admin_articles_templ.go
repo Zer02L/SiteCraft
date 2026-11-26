@@ -256,7 +256,7 @@ func ClientArticlesTab(articles []models.ArticleItem, trashArticles []models.Art
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-sm\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted border-b border-admin-border text-admin-content-subtle text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Удалено</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border/60 text-admin-content\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-sm\"><div class=\"overflow-x-auto\"><table class=\"tabular-nums w-full text-left text-xs sm:text-sm\"><thead class=\"bg-admin-surface-muted border-b border-admin-border text-admin-content-subtle text-[11px] uppercase tracking-wider\"><tr><th class=\"py-3.5 px-4 font-semibold\">Заголовок</th><th class=\"py-3.5 px-4 font-semibold\">URL (Slug)</th><th class=\"py-3.5 px-4 font-semibold\">Удалено</th><th class=\"py-3.5 px-4 font-semibold text-right\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border/60 text-admin-content\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

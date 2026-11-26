@@ -1,5 +1,7 @@
 package pages
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Print-ready invoice uses a fixed slate palette independent of the storefront theme tokens)
+
 import (
 	"fmt"
 	"sitecraft/internal/models"
@@ -83,7 +85,7 @@ templ InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) {
 				</div>
 
 				<!-- Банковские реквизиты поставщика (Образец платежного поручения) -->
-				<table class="w-full border-collapse border border-slate-800 mb-6 text-xs">
+				<table class="tabular-nums w-full border-collapse border border-slate-800 mb-6 text-xs">
 					<tbody>
 						<tr>
 							<td colspan="2" rowspan="2" class="border border-slate-800 p-2 align-top w-7/12">
@@ -154,7 +156,7 @@ templ InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) {
 				</div>
 
 				<!-- Таблица товаров / услуг -->
-				<table class="w-full border-collapse border border-slate-800 mb-6 text-xs">
+				<table class="tabular-nums w-full border-collapse border border-slate-800 mb-6 text-xs">
 					<thead>
 						<tr class="bg-slate-100 font-bold text-center">
 							<th class="border border-slate-800 p-2 w-10">№</th>

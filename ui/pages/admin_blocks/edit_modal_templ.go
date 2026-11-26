@@ -9,6 +9,8 @@ package admin_blocks
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Admin block editor uses a fixed neutral palette independent of storefront themes)
+// ui-craft-waive: RFX-ED-TRACKED-CAPS (Dense admin table headers and form labels use tracked micro-caps for scannability)
 func EditModal() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context

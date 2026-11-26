@@ -192,7 +192,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 		<div class="flex flex-wrap items-center justify-between pb-6 border-b border-content/10 gap-4">
 			<div>
 				<div class="flex items-center gap-2">
-					<span class="px-3 py-1 bg-stone-900 text-accent font-bold text-sm tracking-wider rounded-lg uppercase">
+					<span class="px-3 py-1 bg-primary text-accent font-bold text-sm tracking-wider rounded-lg uppercase">
 						№ { order.OrderCode }
 					</span>
 					if order.CurrentStage == "ready" {
@@ -247,7 +247,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 		<div class="py-8">
 			<div class="relative">
 				<!-- Соединяющая линия -->
-				<div class="hidden sm:block absolute top-5 left-8 right-8 h-1 bg-stone-200 -z-0"></div>
+				<div class="hidden sm:block absolute top-5 left-8 right-8 h-1 bg-surface-muted -z-0"></div>
 
 				<div class="grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10">
 					<!-- Этап 1: Принят -->
@@ -268,7 +268,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
-							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
+							<div class="w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm">
 								2
 							</div>
 						}
@@ -289,7 +289,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
-							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
+							<div class="w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm">
 								3
 							</div>
 						}
@@ -306,7 +306,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 								@icons.Check(templ.Attributes{"class": "w-4 h-4"})
 							</div>
 						} else {
-							<div class="w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm">
+							<div class="w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm">
 								4
 							</div>
 						}
@@ -453,7 +453,7 @@ templ TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder)
 								type="button"
 								@click={ fmt.Sprintf("rating = %d", star) }
 								class="text-xl transition-transform hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-								:class={ fmt.Sprintf("rating >= %d ? 'text-amber-400' : 'text-stone-300'", star) }
+								:class={ fmt.Sprintf("rating >= %d ? 'text-amber-400' : 'text-content-muted'", star) }
 							>
 								★
 							</button>

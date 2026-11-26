@@ -91,7 +91,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				<!-- Заголовок статьи с транслитерацией -->
 				<div>
 					<div class="flex items-center justify-between mb-2">
-						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+						<label class="block text-xs font-semibold text-admin-content-muted">
 							Заголовок статьи <span class="text-admin-accent">*</span>
 						</label>
 						<span class="text-[11px] text-admin-content-subtle">Автоматически формирует понятный адрес ссылки</span>
@@ -136,7 +136,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<div>
 							<div class="flex items-center justify-between mb-2">
-								<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+								<label class="block text-xs font-semibold text-admin-content-muted">
 									URL-адрес (Slug) <span class="text-admin-accent">*</span>
 								</label>
 								<button
@@ -171,7 +171,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						</div>
 
 						<div>
-							<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
+							<label class="block text-xs font-semibold text-admin-content-muted mb-2">
 								Автор публикации
 							</label>
 							<input
@@ -186,7 +186,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 					<!-- Обложка статьи (Drag & Drop + Preview) -->
 					<div>
-						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
+						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
 							Обложка статьи
 						</label>
 
@@ -201,7 +201,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 						<!-- Если обложка выбрана / существует -->
 						<div x-show="coverPreview" class="relative group rounded-2xl overflow-hidden border border-admin-border bg-admin-bg max-w-lg shadow-sm">
-							<img
+							<img decoding="async" loading="lazy"
 								:src="coverPreview"
 								alt="Обложка статьи"
 								class="w-full h-48 sm:h-56 object-cover"
@@ -256,7 +256,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 					<!-- Теги / Рубрикатор (Badge Chips) -->
 					<div>
-						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
+						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
 							Теги и рубрики публикации
 						</label>
 
@@ -306,7 +306,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 
 					<!-- Краткий анонс (Лид-абзац) -->
 					<div>
-						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
+						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
 							Краткий анонс (Лид-абзац для карточки в каталоге)
 						</label>
 						<textarea
@@ -321,7 +321,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				<!-- Визуальный редактор текста статьи (Quill.js) -->
 				<div class="space-y-2">
 					<div class="flex items-center justify-between">
-						<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+						<label class="block text-xs font-semibold text-admin-content-muted">
 							Текст статьи (Визуальный редактор)
 						</label>
 						<div class="flex items-center gap-2">
@@ -361,7 +361,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 						<div>
 							<div class="flex items-center justify-between mb-2">
-								<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted">
+								<label class="block text-xs font-semibold text-admin-content-muted">
 									Дата и время публикации
 								</label>
 								<span class="text-[11px] text-admin-accent font-medium">Отложенная публикация</span>
@@ -379,7 +379,7 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 						</div>
 
 						<div>
-							<label class="block text-xs font-semibold uppercase tracking-wider text-admin-content-muted mb-2">
+							<label class="block text-xs font-semibold text-admin-content-muted mb-2">
 								Быстрый выбор времени
 							</label>
 							<div class="flex flex-wrap gap-2 pt-1">

@@ -89,7 +89,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 							x-on:touchend="isDragging = false"
 							class="relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden border border-content/10 select-none cursor-ew-resize bg-surface-muted"
 						>
-							<img
+							<img decoding="async"
 								src={ item.AfterImage }
 								alt={ item.Title + " — После" }
 								class="absolute inset-0 w-full h-full object-cover pointer-events-none"
@@ -113,7 +113,7 @@ templ BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSetting
 								class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10"
 								:style="'clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0); -webkit-clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0);'"
 							>
-								<img
+								<img decoding="async"
 									src={ item.BeforeImage }
 									alt={ item.Title + " — До" }
 									class="absolute inset-0 w-full h-full object-cover pointer-events-none"

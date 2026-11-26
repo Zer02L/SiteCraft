@@ -66,7 +66,7 @@ templ BlogPost(settings models.SiteSettings, content models.SiteContent, article
 				<!-- Обложка -->
 				if article.CoverImage != "" {
 					<div class="aspect-video w-full rounded-2xl overflow-hidden mb-8 shadow-sm bg-surface-muted">
-						<img src={ article.CoverImage } alt={ article.Title } class="w-full h-full object-cover"/>
+						<img decoding="async" fetchpriority="high" src={ article.CoverImage } alt={ article.Title } class="w-full h-full object-cover"/>
 					</div>
 				}
 

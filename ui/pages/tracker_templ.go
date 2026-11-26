@@ -436,7 +436,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div><!-- Шапка квитанции --><div class=\"flex flex-wrap items-center justify-between pb-6 border-b border-content/10 gap-4\"><div><div class=\"flex items-center gap-2\"><span class=\"px-3 py-1 bg-stone-900 text-accent font-bold text-sm tracking-wider rounded-lg uppercase\">№ ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div><!-- Шапка квитанции --><div class=\"flex flex-wrap items-center justify-between pb-6 border-b border-content/10 gap-4\"><div><div class=\"flex items-center gap-2\"><span class=\"px-3 py-1 bg-primary text-accent font-bold text-sm tracking-wider rounded-lg uppercase\">№ ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -554,7 +554,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div></div><!-- Интерактивный прогресс-бар этапов --><div class=\"py-8\"><div class=\"relative\"><!-- Соединяющая линия --><div class=\"hidden sm:block absolute top-5 left-8 right-8 h-1 bg-stone-200 -z-0\"></div><div class=\"grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10\"><!-- Этап 1: Принят --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\"><div class=\"w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "</div></div><!-- Интерактивный прогресс-бар этапов --><div class=\"py-8\"><div class=\"relative\"><!-- Соединяющая линия --><div class=\"hidden sm:block absolute top-5 left-8 right-8 h-1 bg-surface-muted -z-0\"></div><div class=\"grid grid-cols-1 sm:grid-cols-4 gap-4 relative z-10\"><!-- Этап 1: Принят --><div class=\"flex sm:flex-col items-center gap-3 text-left sm:text-center\"><div class=\"w-10 h-10 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-sm shadow\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -580,7 +580,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">2</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "<div class=\"w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm\">2</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -616,7 +616,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">3</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div class=\"w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm\">3</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -639,7 +639,7 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<div class=\"w-10 h-10 rounded-full bg-stone-200 text-content-muted font-bold flex items-center justify-center text-sm\">4</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<div class=\"w-10 h-10 rounded-full bg-surface-muted text-content-muted font-bold flex items-center justify-center text-sm\">4</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -907,9 +907,9 @@ func TrackerStatusCard(settings models.SiteSettings, order models.ServiceOrder) 
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var29 string
-			templ_7745c5c3_Var29, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("rating >= %d ? 'text-amber-400' : 'text-stone-300'", star)).Resolve(ctx)
+			templ_7745c5c3_Var29, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("rating >= %d ? 'text-amber-400' : 'text-content-muted'", star)).Resolve(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 456, Col: 88}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/tracker.templ`, Line: 456, Col: 92}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var29)
 			if templ_7745c5c3_Err != nil {

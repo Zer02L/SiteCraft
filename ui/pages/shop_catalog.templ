@@ -48,7 +48,7 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 							<div>
 								<div class="flex items-start justify-between gap-2">
 									<h3 class="font-bold text-content text-base">{ item.Title }</h3>
-									<span class="text-sm font-bold text-primary whitespace-nowrap bg-primary/10 px-2 py-0.5 rounded-lg">
+									<span class="tabular-nums text-sm font-bold text-primary whitespace-nowrap bg-primary/10 px-2 py-0.5 rounded-lg">
 										{ item.Price }
 									</span>
 								</div>
@@ -79,14 +79,14 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<div
 					x-show="cart.length > 0"
 					x-cloak
-					class="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50 bg-stone-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-stone-700 backdrop-blur-md animate-fade-in-up"
+					class="fixed bottom-4 left-4 right-4 max-w-md mx-auto z-50 bg-primary text-on-primary p-4 rounded-2xl shadow-2xl flex items-center justify-between border border-primary-light backdrop-blur-md animate-fade-in-up"
 				>
 					<div class="flex items-center gap-3">
 						<div class="w-9 h-9 rounded-xl bg-surface/10 flex items-center justify-center text-amber-400">
 							@icons.ShoppingCart(templ.Attributes{"class": "w-4 h-4"})
 						</div>
 						<div>
-							<div class="text-xs text-stone-300">В корзине: <span x-text="cart.length" class="font-bold text-accent"></span> поз.</div>
+							<div class="text-xs text-on-primary/80">В корзине: <span x-text="cart.length" class="font-bold text-accent"></span> поз.</div>
 							<div class="text-base font-bold text-white"><span x-text="totalPrice"></span> ₽</div>
 						</div>
 					</div>
@@ -104,7 +104,7 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 				<div
 					x-show="checkoutModalOpen"
 					x-cloak
-					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+					class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 animate-fade-in"
 				>
 					<div
 						@click.away="checkoutModalOpen = false"
@@ -120,7 +120,7 @@ templ ShopCatalog(settings models.SiteSettings, content models.SiteContent, serv
 						<!-- Список выбранного -->
 						<div class="my-4 space-y-2">
 							<template x-for="(item, idx) in cart" :key="idx">
-								<div class="flex items-center justify-between text-xs py-1.5 border-b border-stone-50">
+								<div class="flex items-center justify-between text-xs py-1.5 border-b border-content/10">
 									<span x-text="item.title" class="text-content font-medium truncate pr-2"></span>
 									<div class="flex items-center gap-2">
 										<span x-text="item.price" class="text-content-muted font-semibold"></span>

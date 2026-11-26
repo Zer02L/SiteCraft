@@ -95,14 +95,13 @@
 
 ---
 
-### 9. `hallmark-craft` (Адаптация 21 макроструктуры и тем Hallmark под SiteCraft)
-* **Назначение:** Архитектурная компоновка страниц на базе библиотеки Hallmark (21 макроструктура, 17 композиций, 102 темы), переведённая на стек Go + Templ + Tailwind v4 + Alpine.js + HTMX без зависимостей от Node.js и Puppeteer.
-* **Поддержка двух режимов (для тестирования банов):**
-  - `COMMERCIAL_CRO_MODE` (по умолчанию): сохраняет бейджи, стрелки, конверсионные B2B/B2C модули, вложенные карточки в корзинах и социальные доказательства.
-  - `STRICT_AESTHETIC_MODE`: экспериментальный режим для проверки гипотез ультра-чистого журнального минимализма Hallmark Floor (без бейджей, без капслока, без стрелок).
-* **Локальный скил:** `.agents/skills/hallmark-craft/SKILL.md`
-* **Каталог макроструктур:** `.agents/skills/hallmark-craft/references/macrostructures_catalog.md`
-* **Лаборатория тестов Floor:** `.agents/skills/hallmark-craft/references/floor_bans_evaluation.md`
+### 9. `ui-craft` (Единый универсальный дизайн-стандарт и Anti-Slop линтер)
+* **Назначение:** Единый дизайн-стандарт и детерминированный статический анализатор из общей библиотеки Skills Manager. Объединяет 14 макроструктур, 17 композиций и трёхуровневую систему правил (`Floor` / `REFLEX` с waivers / `FINISH`) без Node.js и Puppeteer.
+* **Три профиля:**
+  - `commercial` (по умолчанию): сохраняет рабочие CRO-паттерны (бейджи акций, стрелки CTA, статус-точки, реальную статистику из БД/брифа), блокируя настоящий AI-slop, хардкод-цвета и ошибки доступности.
+  - `editorial`: строгий минимализм без eyebrows, tracked-caps, стрелок и вложенных карточек.
+  - `app`: таблицы и рабочие экраны с 4 состояниями данных (`loading` / `empty` / `error` / `full`) и `tabular-nums`.
+* **Инструменты скилла:** `ui-lint.py` (`preflight`, `lint`, `snapshot`, `kept` — контракт сохранности ссылок/форм/HTMX при редизайне) и `ui-deal.py` (`deal`, `log` — ротация структур без 5.7 МБ статичных тем).
 
 ---
 
@@ -115,21 +114,6 @@
   - **Кукбук:** `.agents/cookbooks/stageshow_craft.md`
   - **Templ-компоненты:** `ui/components/cinematic/stageshow.templ` (`StageshowStage`, `MockWindow`, `MockPhone`, `MockTerminal`, `PlaceholderBar`, `MockRow`, `MockSatellite`, `MockCursor`)
   - **Архитектура:** 100% Zero-Node.js, Zero-Playwright, автономный Go + Templ + Tailwind v4 + Alpine.js, ГОСТ a11y & `prefers-reduced-motion` фоллбэк.
-
----
-
-### 11. `impeccable-craft` (Фронтенд-крафт, Anti-Slop линтинг и модификаторы стиля)
-* **Оригинал:** [pbakaus/impeccable](https://github.com/pbakaus/impeccable)
-* **Автор оригинала:** Paul Bakaus
-* **Назначение:** Оснащение агента точным дизайн-вокабуляром (`shape`, `critique`, `audit`, `polish`, `bolder`, `quieter`, `distill`, `typeset`) и детерминированным Anti-Slop чекером. Предотвращает появление шаблонного «AI slop» (дефолтные фиолетово-синие градиенты, случайные размытые сферы `blur-3xl`, захардкоженные HEX-цвета, тесные отступы, карточки-матрешки, абстрактный маркетинговый мусор).
-* **Адаптация в SiteCraft:**
-  - **Локальный скилл:** `.agents/skills/impeccable-craft/SKILL.md`
-  - **Кукбук:** `.agents/cookbooks/impeccable_craft.md`
-  - **Детерминированный статический чекер (0 токенов):** `.agents/skills/impeccable-craft/scripts/check_slop.py`
-  - **Справочник 60+ правил Anti-Slop:** `.agents/skills/impeccable-craft/references/slop_heuristics.md`
-  - **Плейбук команд:** `.agents/skills/impeccable-craft/references/commands_playbook.md`
-  - **Архитектура:** Строгая типизация Go Templ (`*.templ`), Tailwind CSS v4 токены (`bg-surface`, `border-content/10`), ГОСТ Р 52872-2019 a11y, Zero-Node.js.
-
 
 Если вы не используете CLI `skills`, структуру можно подключить вручную:
 

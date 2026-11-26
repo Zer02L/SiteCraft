@@ -160,7 +160,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div><!-- Таблица модерации --> <div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xs\"><div class=\"overflow-x-auto\"><table class=\"w-full text-left text-sm border-collapse\"><thead class=\"bg-admin-surface-muted/90 text-admin-content-muted uppercase tracking-wider font-semibold border-b border-admin-border font-mono text-xs\"><tr><th class=\"py-3.5 px-4 font-semibold\">Автор & Дата</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Оценка</th><th class=\"py-3.5 px-4 font-semibold\">Услуга / Заказ</th><th class=\"py-3.5 px-4 font-semibold\">Отзыв</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right whitespace-nowrap\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border text-admin-content\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div><!-- Таблица модерации --> <div class=\"bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-xs\"><div class=\"overflow-x-auto\"><table class=\"tabular-nums w-full text-left text-sm border-collapse\"><thead class=\"bg-admin-surface-muted/90 text-admin-content-muted uppercase tracking-wider font-semibold border-b border-admin-border font-mono text-xs\"><tr><th class=\"py-3.5 px-4 font-semibold\">Автор & Дата</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Оценка</th><th class=\"py-3.5 px-4 font-semibold\">Услуга / Заказ</th><th class=\"py-3.5 px-4 font-semibold\">Отзыв</th><th class=\"py-3.5 px-4 font-semibold whitespace-nowrap\">Статус</th><th class=\"py-3.5 px-4 font-semibold text-right whitespace-nowrap\">Действия</th></tr></thead> <tbody class=\"divide-y divide-admin-border text-admin-content\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -353,7 +353,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				if len(rev.Comment) > 75 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<button type=\"button\" class=\"text-xs text-admin-accent hover:underline font-medium mt-1.5 inline-flex items-center gap-1 cursor-pointer\"><span x-text=\"expanded ? 'Свернуть' : 'Читать полностью'\"></span> <svg :class=\"expanded ? 'rotate-180' : ''\" class=\"w-3 h-3 transition-transform\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<button type=\"button\" aria-label=\"Показать отзыв полностью\" class=\"text-xs text-admin-accent hover:underline font-medium mt-1.5 inline-flex items-center gap-1 cursor-pointer\"><span x-text=\"expanded ? 'Свернуть' : 'Читать полностью'\"></span> <svg :class=\"expanded ? 'rotate-180' : ''\" class=\"w-3 h-3 transition-transform\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\"></path></svg></button>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
@@ -365,7 +365,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				var templ_7745c5c3_Var20 string
 				templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression("review-status-" + rev.ID).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 236, Col: 89}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 237, Col: 89}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
 				if templ_7745c5c3_Err != nil {
@@ -398,7 +398,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					var templ_7745c5c3_Var21 string
 					templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/reviews/" + rev.ID + "/toggle").Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 257, Col: 61}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 258, Col: 61}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 					if templ_7745c5c3_Err != nil {
@@ -416,7 +416,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 					var templ_7745c5c3_Var22 string
 					templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/reviews/" + rev.ID + "/toggle").Resolve(ctx)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 271, Col: 61}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 272, Col: 61}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
 					if templ_7745c5c3_Err != nil {
@@ -434,7 +434,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				var templ_7745c5c3_Var23 string
 				templ_7745c5c3_Var23, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("replyModalOpen = true; currentReview = { id: '%s', author: '%s' }; replyText = ''", rev.ID, rev.AuthorName)).Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 287, Col: 141}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 288, Col: 141}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var23)
 				if templ_7745c5c3_Err != nil {
@@ -447,7 +447,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				var templ_7745c5c3_Var24 string
 				templ_7745c5c3_Var24, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/reviews/" + rev.ID + "/delete").Resolve(ctx)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 300, Col: 60}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_reviews.templ`, Line: 301, Col: 60}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var24)
 				if templ_7745c5c3_Err != nil {
@@ -463,7 +463,7 @@ func ClientReviewsTab(reviews []models.ReviewItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Модальное окно 'Ответить на отзыв' --><div x-show=\"replyModalOpen\" x-cloak class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity\"><div @click.away=\"replyModalOpen = false\" class=\"bg-admin-surface rounded-2xl border border-admin-border shadow-xl max-w-lg w-full p-6 text-left\"><div class=\"flex items-center justify-between pb-3 border-b border-admin-border\"><div><h3 class=\"text-base font-bold text-admin-content\">Ответ на отзыв</h3><p class=\"text-xs text-admin-content-muted mt-0.5\">Клиент: <span class=\"font-semibold text-admin-content\" x-text=\"currentReview ? currentReview.author : ''\"></span></p></div><button type=\"button\" @click=\"replyModalOpen = false\" class=\"text-admin-content-subtle hover:text-admin-content p-1 rounded-lg\" aria-label=\"Закрыть\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><form :action=\"'/admin/reviews/' + (currentReview ? currentReview.id : '') + '/reply'\" method=\"POST\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" @submit=\"replyModalOpen = false\" class=\"mt-4 space-y-4\"><div><label class=\"block text-xs font-semibold text-admin-content-muted uppercase tracking-wider mb-1.5\">Текст официального ответа</label> <textarea name=\"reply\" x-model=\"replyText\" rows=\"4\" required placeholder=\"Здравствуйте! Благодарим за ваш отзыв...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-sm text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent resize-y\"></textarea><p class=\"text-[11px] text-admin-content-subtle mt-1\">Ответ будет отображаться под отзывом клиента на сайте и в карточке заказа.</p></div><div class=\"flex items-center justify-end gap-2.5 pt-2 border-t border-admin-border\"><button type=\"button\" @click=\"replyModalOpen = false\" class=\"px-4 py-2 rounded-xl border border-admin-border text-xs font-semibold text-admin-content-muted hover:bg-admin-surface-muted transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold transition-colors shadow-2xs cursor-pointer\">Сохранить и отправить ответ</button></div></form></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "<!-- Модальное окно 'Ответить на отзыв' --><div x-show=\"replyModalOpen\" x-cloak class=\"fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity\"><div @click.away=\"replyModalOpen = false\" class=\"bg-admin-surface rounded-2xl border border-admin-border shadow-xl max-w-lg w-full p-6 text-left\"><div class=\"flex items-center justify-between pb-3 border-b border-admin-border\"><div><h3 class=\"text-base font-bold text-admin-content\">Ответ на отзыв</h3><p class=\"text-xs text-admin-content-muted mt-0.5\">Клиент: <span class=\"font-semibold text-admin-content\" x-text=\"currentReview ? currentReview.author : ''\"></span></p></div><button type=\"button\" @click=\"replyModalOpen = false\" class=\"text-admin-content-subtle hover:text-admin-content p-1 rounded-lg\" aria-label=\"Закрыть\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><form :action=\"'/admin/reviews/' + (currentReview ? currentReview.id : '') + '/reply'\" method=\"POST\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" @submit=\"replyModalOpen = false\" class=\"mt-4 space-y-4\"><div><label class=\"block text-xs font-semibold text-admin-content-muted mb-1.5\">Текст официального ответа</label> <textarea name=\"reply\" x-model=\"replyText\" rows=\"4\" required placeholder=\"Здравствуйте! Благодарим за ваш отзыв...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-sm text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus focus:border-transparent resize-y\"></textarea><p class=\"text-[11px] text-admin-content-subtle mt-1\">Ответ будет отображаться под отзывом клиента на сайте и в карточке заказа.</p></div><div class=\"flex items-center justify-end gap-2.5 pt-2 border-t border-admin-border\"><button type=\"button\" @click=\"replyModalOpen = false\" class=\"px-4 py-2 rounded-xl border border-admin-border text-xs font-semibold text-admin-content-muted hover:bg-admin-surface-muted transition-colors cursor-pointer\">Отмена</button> <button type=\"submit\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold transition-colors shadow-2xs cursor-pointer\">Сохранить и отправить ответ</button></div></form></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

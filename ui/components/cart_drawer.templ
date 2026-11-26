@@ -128,7 +128,7 @@ templ CartDrawer(settings models.SiteSettings) {
 		x-transition:leave="transition ease-in duration-200"
 		x-transition:leave-start="opacity-100"
 		x-transition:leave-end="opacity-0"
-		class="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-sm"
+		class="fixed inset-0 z-50 overflow-hidden bg-black/60"
 		data-component="CartDrawer"
 		data-source="ui/components/cart_drawer.templ"
 		role="dialog"
@@ -147,7 +147,7 @@ templ CartDrawer(settings models.SiteSettings) {
 				x-transition:leave="transform transition ease-in duration-200"
 				x-transition:leave-start="translate-x-0"
 				x-transition:leave-end="translate-x-full"
-				class="w-screen max-w-md bg-surface text-content shadow-2xl flex flex-col border-l border-content/15"
+				class="w-full max-w-md bg-surface text-content shadow-2xl flex flex-col border-l border-content/15"
 			>
 				<!-- Заголовок шторки -->
 				<div class="p-6 border-b border-content/10 flex items-center justify-between">

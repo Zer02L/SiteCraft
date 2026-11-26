@@ -9,6 +9,8 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Print-ready invoice uses a fixed slate palette independent of the storefront theme tokens)
+
 import (
 	"fmt"
 	"sitecraft/internal/models"
@@ -38,7 +40,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Счет на оплату %s — %s", invoice.InvoiceNumber, invoice.Supplier.Name))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 14, Col: 109}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 16, Col: 109}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -51,7 +53,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Счет на оплату %s", invoice.InvoiceNumber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 47, Col: 120}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 49, Col: 120}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -69,7 +71,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.URL("/track/" + invoice.OrderCode)).ResolveURL(ctx)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 54, Col: 54}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 56, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 			if templ_7745c5c3_Err != nil {
@@ -85,14 +87,14 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<button type=\"button\" onclick=\"window.print()\" class=\"px-5 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow transition flex items-center gap-1.5 cursor-pointer\"><span>🖨️</span> <span>Распечатать / В PDF</span></button></div></div><!-- Бланк счета формата А4 --><div class=\"invoice-container max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 text-[13px] leading-normal font-sans\"><!-- Предупреждение о сроке --><div class=\"text-[11px] text-slate-500 mb-4 border-b border-slate-200 pb-2\">Внимание! Оплата данного счета означает согласие с условиями выполнения работ и поставки. Уведомление об оплате обязательно.</div><!-- Банковские реквизиты поставщика (Образец платежного поручения) --><table class=\"w-full border-collapse border border-slate-800 mb-6 text-xs\"><tbody><tr><td colspan=\"2\" rowspan=\"2\" class=\"border border-slate-800 p-2 align-top w-7/12\"><div class=\"text-[10px] text-slate-500\">Банк получателя</div><div class=\"font-bold\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<button type=\"button\" onclick=\"window.print()\" class=\"px-5 py-2 rounded-lg text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 shadow transition flex items-center gap-1.5 cursor-pointer\"><span>🖨️</span> <span>Распечатать / В PDF</span></button></div></div><!-- Бланк счета формата А4 --><div class=\"invoice-container max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 text-[13px] leading-normal font-sans\"><!-- Предупреждение о сроке --><div class=\"text-[11px] text-slate-500 mb-4 border-b border-slate-200 pb-2\">Внимание! Оплата данного счета означает согласие с условиями выполнения работ и поставки. Уведомление об оплате обязательно.</div><!-- Банковские реквизиты поставщика (Образец платежного поручения) --><table class=\"tabular-nums w-full border-collapse border border-slate-800 mb-6 text-xs\"><tbody><tr><td colspan=\"2\" rowspan=\"2\" class=\"border border-slate-800 p-2 align-top w-7/12\"><div class=\"text-[10px] text-slate-500\">Банк получателя</div><div class=\"font-bold\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.BankName)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 91, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 93, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -105,7 +107,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.BankBIK)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 94, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 96, Col: 93}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -118,7 +120,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.BankCorr)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 98, Col: 94}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 100, Col: 94}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -131,7 +133,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.INN)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 102, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 104, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -144,7 +146,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.KPP)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 105, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 107, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -157,7 +159,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.BankAccount)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 108, Col: 119}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 110, Col: 119}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -170,7 +172,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 113, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 115, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -183,7 +185,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var12 string
 		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("Счет на оплату № %s от %s", invoice.InvoiceNumber, invoice.InvoiceDate))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 122, Col: 108}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 124, Col: 108}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -196,7 +198,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 131, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 133, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -209,7 +211,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.INN)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 132, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 134, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -222,7 +224,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.OGRN)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 132, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 134, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
@@ -235,7 +237,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var16 string
 		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Address)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 133, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 135, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 		if templ_7745c5c3_Err != nil {
@@ -248,7 +250,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Phone)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 133, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 135, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
@@ -261,7 +263,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Customer.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 139, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 141, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
@@ -274,7 +276,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Customer.Address)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 140, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 142, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
@@ -292,7 +294,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var20 string
 			templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Customer.Phone)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 142, Col: 43}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 144, Col: 43}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 			if templ_7745c5c3_Err != nil {
@@ -311,7 +313,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var21 string
 			templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.OrderCode)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 150, Col: 74}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 152, Col: 74}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 			if templ_7745c5c3_Err != nil {
@@ -322,7 +324,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><!-- Таблица товаров / услуг --><table class=\"w-full border-collapse border border-slate-800 mb-6 text-xs\"><thead><tr class=\"bg-slate-100 font-bold text-center\"><th class=\"border border-slate-800 p-2 w-10\">№</th><th class=\"border border-slate-800 p-2 text-left\">Товары (работы, услуги)</th><th class=\"border border-slate-800 p-2 w-16\">Кол-во</th><th class=\"border border-slate-800 p-2 w-14\">Ед.</th><th class=\"border border-slate-800 p-2 w-28 text-right\">Цена</th><th class=\"border border-slate-800 p-2 w-28 text-right\">Сумма</th></tr></thead> <tbody>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><!-- Таблица товаров / услуг --><table class=\"tabular-nums w-full border-collapse border border-slate-800 mb-6 text-xs\"><thead><tr class=\"bg-slate-100 font-bold text-center\"><th class=\"border border-slate-800 p-2 w-10\">№</th><th class=\"border border-slate-800 p-2 text-left\">Товары (работы, услуги)</th><th class=\"border border-slate-800 p-2 w-16\">Кол-во</th><th class=\"border border-slate-800 p-2 w-14\">Ед.</th><th class=\"border border-slate-800 p-2 w-28 text-right\">Цена</th><th class=\"border border-slate-800 p-2 w-28 text-right\">Сумма</th></tr></thead> <tbody>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -334,7 +336,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", item.Index))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 171, Col: 91}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 173, Col: 91}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
@@ -347,7 +349,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var23 string
 			templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(item.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 172, Col: 60}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 174, Col: 60}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 			if templ_7745c5c3_Err != nil {
@@ -360,7 +362,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var24 string
 			templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", item.Quantity))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 173, Col: 94}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 175, Col: 94}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 			if templ_7745c5c3_Err != nil {
@@ -373,7 +375,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var25 string
 			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(item.Unit)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 174, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 176, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 			if templ_7745c5c3_Err != nil {
@@ -386,7 +388,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var26 string
 			templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f", item.Price))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 175, Col: 102}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 177, Col: 102}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 			if templ_7745c5c3_Err != nil {
@@ -399,7 +401,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var27 string
 			templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f", item.Amount))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 176, Col: 113}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 178, Col: 113}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 			if templ_7745c5c3_Err != nil {
@@ -417,7 +419,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var28 string
 		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f ₽", invoice.TotalAmount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 186, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 188, Col: 86}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
@@ -430,7 +432,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var29 string
 		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.VATText)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 190, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 192, Col: 29}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
@@ -443,7 +445,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var30 string
 		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f ₽", invoice.TotalAmount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 194, Col: 90}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 196, Col: 90}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
@@ -456,7 +458,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var31 string
 		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(invoice.Items)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 199, Col: 85}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 201, Col: 85}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 		if templ_7745c5c3_Err != nil {
@@ -469,7 +471,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var32 string
 		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f ₽", invoice.TotalAmount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 199, Col: 151}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 201, Col: 151}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 		if templ_7745c5c3_Err != nil {
@@ -482,7 +484,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var33 string
 		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.TotalInWords)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 200, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 202, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 		if templ_7745c5c3_Err != nil {
@@ -495,7 +497,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var34 string
 		templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 241, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 243, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 		if templ_7745c5c3_Err != nil {
@@ -508,7 +510,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 		var templ_7745c5c3_Var35 string
 		templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Supplier.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 248, Col: 70}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 250, Col: 70}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 		if templ_7745c5c3_Err != nil {
@@ -526,7 +528,7 @@ func InvoicePage(invoice *models.InvoiceData, settings models.SiteSettings) temp
 			var templ_7745c5c3_Var36 string
 			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(invoice.Notes)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 260, Col: 21}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/invoice.templ`, Line: 262, Col: 21}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 			if templ_7745c5c3_Err != nil {

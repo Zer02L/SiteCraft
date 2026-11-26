@@ -156,6 +156,13 @@ func migrateTable(src, dst *sql.DB, tableName string) {
 		strings.Join(placeholders, ", "),
 	)
 
+	tx, err := dst.Begin()
+	if err != nil {
+		log.Printf("[Migration] Could not begin transaction for %s: %v\n", tableName, err)
+		return
+	}
+	defer tx.Rollback()
+
 	inserted := 0
 	for rows.Next() {
 		rawVals := make([]interface{}, len(cols))
@@ -172,9 +179,14 @@ func migrateTable(src, dst *sql.DB, tableName string) {
 			insertVals[i] = rawVals[idx]
 		}
 
-		if _, err := dst.Exec(insertSQL, insertVals...); err == nil {
+		if _, err := tx.Exec(insertSQL, insertVals...); err == nil {
 			inserted++
 		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		log.Printf("[Migration] Could not commit transaction for %s: %v\n", tableName, err)
+		return
 	}
 
 	log.Printf("[Migration] Table %s: migrated %d rows\n", tableName, inserted)

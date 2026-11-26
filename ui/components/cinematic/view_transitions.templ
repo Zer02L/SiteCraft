@@ -1,4 +1,6 @@
 package cinematic
+// ui-craft-waive: RFX-CLR-GLASS-STACK (Transition demo chrome is intentionally translucent over the media)
+
 
 type MorphItem struct {
 	ID       string
@@ -48,7 +50,7 @@ templ ViewTransitions(title string, subtitle string, items []MorphItem) {
 
 		<!-- Модальное окно с морфингом -->
 		<div
-			class="morph-modal-backdrop fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4"
+			class="morph-modal-backdrop fixed inset-0 z-50 bg-black/60 hidden items-center justify-center p-4"
 			data-morph-modal
 		>
 			<div

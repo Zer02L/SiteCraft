@@ -9,6 +9,9 @@ package cinematic
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+// ui-craft-waive: RFX-CLR-RAW-GRAY (Caption badge uses a fixed dark overlay palette over user imagery)
+// ui-craft-waive: RFX-CLR-GLASS-STACK (Caption badge is intentionally translucent over the revealed image)
+
 type ImageRevealProps struct {
 	BeforeImage string
 	BeforeLabel string
@@ -52,7 +55,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(props.Subtitle)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 17, Col: 106}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 20, Col: 106}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -71,7 +74,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(props.Title)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 20, Col: 89}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 23, Col: 89}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -94,7 +97,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("background-image: url('" + props.AfterImage + "');")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 32, Col: 64}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 35, Col: 64}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -112,7 +115,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(props.AfterLabel)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 36, Col: 24}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 39, Col: 24}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -130,7 +133,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues("background-image: url('" + props.BeforeImage + "'); clip-path: inset(0 50% 0 0); -webkit-clip-path: inset(0 50% 0 0);")
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 44, Col: 131}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 47, Col: 131}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -148,7 +151,7 @@ func ImageReveal(props ImageRevealProps) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(props.BeforeLabel)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 48, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/components/cinematic/image_reveal.templ`, Line: 51, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {

@@ -151,7 +151,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" class=\"space-y-6\"><!-- Контейнер слайдера с hairlines --><div x-ref=\"sliderContainer\" x-on:mousedown=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:mousemove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:mouseup=\"isDragging = false\" x-on:mouseleave=\"isDragging = false\" x-on:touchstart=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:touchmove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:touchend=\"isDragging = false\" class=\"relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden border border-content/10 select-none cursor-ew-resize bg-surface-muted\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" x-transition:enter=\"transition ease-out duration-200\" x-transition:enter-start=\"opacity-0\" x-transition:enter-end=\"opacity-100\" class=\"space-y-6\"><!-- Контейнер слайдера с hairlines --><div x-ref=\"sliderContainer\" x-on:mousedown=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:mousemove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:mouseup=\"isDragging = false\" x-on:mouseleave=\"isDragging = false\" x-on:touchstart=\"isDragging = true; setPosFromEvent($event, $el)\" x-on:touchmove=\"if (isDragging) setPosFromEvent($event, $el)\" x-on:touchend=\"isDragging = false\" class=\"relative w-full aspect-[16/10] sm:aspect-[16/9] overflow-hidden border border-content/10 select-none cursor-ew-resize bg-surface-muted\"><img decoding=\"async\" src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -197,7 +197,7 @@ func BeforeAfter(payload models.BeforeAfterPayload, settings models.SiteSettings
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></div><div class=\"absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10\" :style=\"'clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0); -webkit-clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0);'\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></div><div class=\"absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-10\" :style=\"'clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0); -webkit-clip-path: inset(0 ' + (100 - sliderPos) + '% 0 0);'\"><img decoding=\"async\" src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

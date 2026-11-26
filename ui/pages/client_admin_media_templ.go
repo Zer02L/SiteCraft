@@ -65,7 +65,7 @@ func AdminMediaTab(files []MediaFileItem) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			for _, f := range files {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div x-data=\"{ copied: false }\" class=\"group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition flex flex-col\"><div class=\"aspect-square bg-admin-bg flex items-center justify-center overflow-hidden\"><img src=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div x-data=\"{ copied: false }\" class=\"group relative rounded-xl bg-admin-surface border border-admin-border overflow-hidden hover:border-admin-border-focus transition flex flex-col\"><div class=\"aspect-square bg-admin-bg flex items-center justify-center overflow-hidden\"><img decoding=\"async\" src=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
