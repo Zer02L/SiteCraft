@@ -206,7 +206,8 @@ func (s *Server) HandleAdminExtractPalette(w http.ResponseWriter, r *http.Reques
 		// Look up in media directory or public directory
 		var f *os.File
 		if s.Media != nil {
-			localFile, err := s.Media.GetOrGenerateThumbnail("raw", filepath.Base(cleanPath))
+			var localFile string
+			localFile, err = s.Media.GetOrGenerateThumbnail("raw", filepath.Base(cleanPath))
 			if err == nil {
 				f, err = os.Open(localFile)
 			}
