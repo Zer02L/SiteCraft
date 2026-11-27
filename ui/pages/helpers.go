@@ -102,3 +102,65 @@ func getInitials(name string) string {
 	}
 	return strings.ToUpper(string(r0[:1]))
 }
+
+type adminModuleGroupDef struct {
+	Key   string
+	Label string
+}
+
+func adminModuleGroups() []adminModuleGroupDef {
+	return []adminModuleGroupDef{
+		{Key: "operations", Label: "Операции"},
+		{Key: "content", Label: "Сайт и контент"},
+		{Key: "system", Label: "Система"},
+	}
+}
+
+func adminModuleGroup(id string) string {
+	switch id {
+	case "leads", "reviews":
+		return "operations"
+	case "blocks", "editor", "services", "articles", "blog", "media", "contacts":
+		return "content"
+	default:
+		return "system"
+	}
+}
+
+func filterModulesByGroup(modules []models.AdminTabModule, group string) []models.AdminTabModule {
+	var out []models.AdminTabModule
+	for _, m := range modules {
+		if adminModuleGroup(m.ID) == group {
+			out = append(out, m)
+		}
+	}
+	return out
+}
+
+func adminModulesLookupJSON(modules []models.AdminTabModule) string {
+	m := make(map[string]string, len(modules))
+	for _, mod := range modules {
+		m[mod.ID] = mod.Title
+	}
+	b, err := json.Marshal(m)
+	if err != nil {
+		return "{}"
+	}
+	return string(b)
+}
+
+func activeModuleTitle(activeTab string, modules []models.AdminTabModule) string {
+	for _, m := range modules {
+		if m.ID == activeTab {
+			return m.Title
+		}
+	}
+	switch activeTab {
+	case "media":
+		return "Медиатека"
+	case "settings":
+		return "Настройки и SEO"
+	default:
+		return "Обзор"
+	}
+}

@@ -30,137 +30,137 @@ func ClientContactsTab(content models.SiteContent, settings models.SiteSettings)
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-4xl\"><div class=\"mb-6\"><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Контакты и реквизиты</h2><p class=\"text-xs text-admin-content-muted mt-1\">Управление телефонами, адресом и рабочим графиком на сайте</p></div><form x-data hx-post=\"/client/contacts\" hx-target=\"#contacts-save-status\" hx-swap=\"innerHTML\" class=\"bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-xs\"><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-6\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Название компании / Сайта <span class=\"text-admin-accent\">*</span></label> <input type=\"text\" name=\"site_name\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-5xl space-y-6\"><div class=\"pb-4 border-b border-admin-border\"><h2 class=\"text-lg font-semibold text-admin-content tracking-tight\">Контакты и реквизиты</h2><p class=\"text-xs text-admin-content-muted mt-0.5\">Управление телефонами, мессенджерами, адресом и рабочим графиком на сайте</p></div><form x-data=\"{ dirty: false }\" @input=\"dirty = true\" @change=\"dirty = true\" hx-post=\"/client/contacts\" hx-target=\"#contacts-save-status\" hx-swap=\"innerHTML\" @htmx:after-request=\"if ($event.detail.successful) { dirty = false; $dispatch('admin-toast', { message: 'Контакты сохранены', tone: 'success' }); }\" class=\"space-y-6\"><!-- Секция 1: Компания и каналы связи --><div class=\"bg-admin-surface border border-admin-border rounded-xl p-5 sm:p-6\"><div class=\"grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] gap-6\"><div><h3 class=\"text-sm font-semibold text-admin-content\">Компания и мессенджеры</h3><p class=\"text-xs text-admin-content-muted mt-1 leading-relaxed\">Отображается в шапке сайта, карточках контактов и кнопках быстрой связи.</p></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Название компании / Сайта <span class=\"text-admin-accent\">*</span></label> <input type=\"text\" name=\"site_name\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.SiteName).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 29, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 40, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" required minlength=\"2\" maxlength=\"100\" pattern=\".*\\S+.*\" title=\"Название сайта должно содержать от 2 до 100 символов\" placeholder=\"Моя Компания\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Обязательное поле (от 2 до 100 символов)</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Слоган / Деятельность</label> <input type=\"text\" name=\"tagline\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" required minlength=\"2\" maxlength=\"100\" pattern=\".*\\S+.*\" title=\"Название сайта должно содержать от 2 до 100 символов\" placeholder=\"Моя Компания\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Обязательное поле (от 2 до 100 символов)</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Слоган / Деятельность</label> <input type=\"text\" name=\"tagline\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.Tagline).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 46, Col: 30}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 57, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" maxlength=\"150\" placeholder=\"Например: Надежная защита ваших интересов\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Краткое описание деятельности (до 150 символов)</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Основной телефон <span class=\"text-admin-accent\">*</span></label> <input type=\"tel\" name=\"phone1\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" maxlength=\"150\" placeholder=\"Например: Надежная защита ваших интересов\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Краткое описание деятельности (до 150 символов)</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Основной телефон <span class=\"text-admin-accent\">*</span></label> <input type=\"tel\" name=\"phone1\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(formatPhoneMask(content.Phone1)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 61, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 72, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" required x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$\" title=\"Формат номера: +7 (999) 999-99-99\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Формат: +7 (XXX) XXX-XX-XX</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Дополнительный телефон</label> <input type=\"tel\" name=\"phone2\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" required x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2}$\" title=\"Формат номера: +7 (999) 999-99-99\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono tabular-nums placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Формат: +7 (XXX) XXX-XX-XX</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Дополнительный телефон</label> <input type=\"tel\" name=\"phone2\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(formatPhoneMask(content.Phone2)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 78, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 89, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^(\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2})?$\" title=\"Формат номера: +7 (999) 999-99-99 или оставьте пустым\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Необязательно. Формат: +7 (XXX) XXX-XX-XX</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">WhatsApp (номер для чата)</label> <input type=\"tel\" name=\"whatsapp_phone\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^(\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2})?$\" title=\"Формат номера: +7 (999) 999-99-99 или оставьте пустым\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono tabular-nums placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Необязательно, формат +7 (XXX) XXX-XX-XX</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">WhatsApp (номер для чата)</label> <input type=\"tel\" name=\"whatsapp_phone\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(formatPhoneMask(settings.WhatsappPhone)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 94, Col: 53}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 105, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^(\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2})?$\" title=\"Формат номера WhatsApp: +7 (999) 999-99-99 или оставьте пустым\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Для прямой ссылки wa.me</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Telegram (юзернейм или ссылка)</label> <input type=\"text\" name=\"telegram_contact\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" x-data x-mask=\"+7 (999) 999-99-99\" placeholder=\"+7 (999) 000-00-00\" pattern=\"^(\\+7 \\(\\d{3}\\) \\d{3}-\\d{2}-\\d{2})?$\" title=\"Формат номера WhatsApp: +7 (999) 999-99-99 или оставьте пустым\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm font-mono tabular-nums placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Для прямой ссылки wa.me</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Telegram (юзернейм или ссылка)</label> <input type=\"text\" name=\"telegram_contact\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.TelegramContact).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 110, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 121, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" placeholder=\"@my_channel или t.me/my_channel\" maxlength=\"60\" pattern=\"^(@[a-zA-Z0-9_]{3,32}|(https?:\\/\\/)?t\\.me\\/[a-zA-Z0-9_]{3,32}|[a-zA-Z0-9_]{3,32})?$\" title=\"Юзернейм Telegram (@username или t.me/username)\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Формат: &#64;username или t.me/username</p></div><div class=\"sm:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Адрес офиса / филиала <span class=\"text-admin-accent\">*</span></label> <input type=\"text\" name=\"address\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" placeholder=\"@my_channel или t.me/my_channel\" maxlength=\"60\" pattern=\"^(@[a-zA-Z0-9_]{3,32}|(https?:\\/\\/)?t\\.me\\/[a-zA-Z0-9_]{3,32}|[a-zA-Z0-9_]{3,32})?$\" title=\"Юзернейм Telegram (@username или t.me/username)\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Формат: &#64;username или t.me/username</p></div></div></div></div><!-- Секция 2: Адрес и режим работы --><div class=\"bg-admin-surface border border-admin-border rounded-xl p-5 sm:p-6\"><div class=\"grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] gap-6\"><div><h3 class=\"text-sm font-semibold text-admin-content\">Адрес и график работы</h3><p class=\"text-xs text-admin-content-muted mt-1 leading-relaxed\">Используется в подвале, разделе контактов и микроразметке для поисковых систем.</p></div><div class=\"grid grid-cols-1 sm:grid-cols-2 gap-4\"><div class=\"sm:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Адрес офиса / филиала <span class=\"text-admin-accent\">*</span></label> <input type=\"text\" name=\"address\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(content.Address).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 127, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 150, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" required minlength=\"5\" maxlength=\"200\" pattern=\".*\\S+.*\" title=\"Фактический адрес (от 5 до 200 символов)\" placeholder=\"г. Москва, ул. Ленина, д. 10\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Обязательное поле для отображения на сайте и картах</p></div><div class=\"sm:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Уточнение адреса (этаж, ориентир, город)</label> <input type=\"text\" name=\"address_sub\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" required minlength=\"5\" maxlength=\"200\" pattern=\".*\\S+.*\" title=\"Фактический адрес (от 5 до 200 символов)\" placeholder=\"г. Москва, ул. Ленина, д. 10\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Обязательное поле для отображения на сайте и картах</p></div><div class=\"sm:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Уточнение адреса (этаж, ориентир, город)</label> <input type=\"text\" name=\"address_sub\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(content.AddressSub).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 144, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 167, Col: 34}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" maxlength=\"100\" placeholder=\"Офис 302, 3 этаж, БЦ Плаза\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Дополнительные ориентиры для клиентов</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">График работы</label> <input type=\"text\" name=\"work_hours\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" maxlength=\"100\" placeholder=\"Офис 302, 3 этаж, БЦ Плаза\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Дополнительные ориентиры для клиентов</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">График работы</label> <input type=\"text\" name=\"work_hours\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(content.WorkHours).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 157, Col: 31}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 180, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" maxlength=\"60\" placeholder=\"Пн-Пт: 09:00 - 18:00\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Рабочие часы в будние дни</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Выходные дни</label> <input type=\"text\" name=\"days_off\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" maxlength=\"60\" placeholder=\"Пн-Пт: 09:00 - 18:00\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Рабочие часы в будние дни</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Выходные дни</label> <input type=\"text\" name=\"days_off\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(content.DaysOff).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 170, Col: 29}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 193, Col: 31}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" maxlength=\"60\" placeholder=\"Сб, Вс\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"><p class=\"text-[11px] font-mono text-admin-content-subtle mt-1\">Дни отдыха или праздники</p></div></div><div class=\"pt-4 border-t border-admin-border flex items-center justify-between\"><div id=\"contacts-save-status\"></div><button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Сохранить изменения</span></button></div></form></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" maxlength=\"60\" placeholder=\"Сб, Вс\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm placeholder:text-admin-content-subtle transition-colors\"><p class=\"text-[11px] text-admin-content-subtle mt-1\">Дни отдыха или праздники</p></div></div></div></div><!-- Sticky Save Bar --><div class=\"sticky bottom-4 z-10 flex flex-wrap items-center justify-between gap-3 px-4 py-3 rounded-xl border border-admin-border bg-admin-surface-elevated\"><div class=\"flex items-center gap-3 min-h-6\"><span x-show=\"dirty\" x-cloak class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning-border\">Есть несохранённые изменения</span><div id=\"contacts-save-status\"></div></div><button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-semibold text-xs transition active:scale-[0.99] flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Сохранить изменения</span></button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -185,19 +185,19 @@ func ClientSecurityTab(msg string, errMsg string) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"max-w-2xl\"><div class=\"mb-6\"><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Безопасность и доступ</h2><p class=\"text-xs text-admin-content-muted mt-1\">Управление паролем доступа к клиентской панели управления</p></div><div class=\"bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 shadow-xs\"><div id=\"security-feedback\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"max-w-2xl space-y-6\"><div class=\"pb-4 border-b border-admin-border\"><h2 class=\"text-lg font-semibold text-admin-content tracking-tight\">Безопасность и доступ</h2><p class=\"text-xs text-admin-content-muted mt-0.5\">Управление паролем доступа к панели управления сайтом</p></div><div class=\"bg-admin-surface border border-admin-border rounded-xl p-5 sm:p-6\"><div id=\"security-feedback\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if msg != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"mb-6 p-3.5 rounded-xl bg-admin-success-muted border border-admin-success/20 text-admin-success text-xs flex items-center gap-2.5\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<div class=\"mb-5 p-3 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var13 string
 			templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 209, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 240, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 			if templ_7745c5c3_Err != nil {
@@ -209,14 +209,14 @@ func ClientSecurityTab(msg string, errMsg string) templ.Component {
 			}
 		}
 		if errMsg != "" {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"mb-6 p-3.5 rounded-xl bg-admin-danger-muted border border-admin-danger/20 text-admin-danger text-xs flex items-center gap-2.5\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<div class=\"mb-5 p-3 rounded-lg bg-admin-danger-muted border border-admin-danger-border text-admin-danger text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var14 string
 			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(errMsg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 217, Col: 20}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_contacts.templ`, Line: 248, Col: 20}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 			if templ_7745c5c3_Err != nil {
@@ -227,7 +227,7 @@ func ClientSecurityTab(msg string, errMsg string) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><form hx-post=\"/client/security/password\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"space-y-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Текущий пароль</label> <input type=\"password\" name=\"current_password\" required placeholder=\"Введите текущий пароль...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm\"></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Новый пароль</label> <input type=\"password\" name=\"new_password\" required minlength=\"8\" placeholder=\"Минимум 8 символов...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm\"><p class=\"mt-1 text-[11px] font-mono text-admin-content-subtle\">Пароль должен содержать не менее 8 знаков</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Подтверждение нового пароля</label> <input type=\"password\" name=\"confirm_password\" required minlength=\"8\" placeholder=\"Повторите новый пароль...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors text-sm\"></div><div class=\"pt-2\"><button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Обновить пароль</span></button></div></form></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div><form hx-post=\"/client/security/password\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"space-y-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Текущий пароль</label> <input type=\"password\" name=\"current_password\" required placeholder=\"Введите текущий пароль...\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle transition-colors text-sm\"></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Новый пароль</label> <input type=\"password\" name=\"new_password\" required minlength=\"8\" placeholder=\"Минимум 8 символов...\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle transition-colors text-sm\"><p class=\"mt-1 text-[11px] text-admin-content-subtle\">Пароль должен содержать не менее 8 знаков</p></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Подтверждение нового пароля</label> <input type=\"password\" name=\"confirm_password\" required minlength=\"8\" placeholder=\"Повторите новый пароль...\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle transition-colors text-sm\"></div><div class=\"pt-2\"><button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-semibold text-xs transition active:scale-[0.99] flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>Обновить пароль</span></button></div></form></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -7,29 +7,34 @@
 /* Регистрируем цветовые токены как <color>: только зарегистрированные
    custom properties интерполируются. Это позволяет анимировать тему
    ОДНИМ переходом на :root вместо transition у каждого элемента. */
-@property --admin-bg { syntax: "<color>"; inherits: true; initial-value: #f8fafc; }
+@property --admin-bg { syntax: "<color>"; inherits: true; initial-value: #f6f7f9; }
 @property --admin-surface { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
-@property --admin-surface-muted { syntax: "<color>"; inherits: true; initial-value: #f1f5f9; }
-@property --admin-surface-hover { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
-@property --admin-surface-active { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
-@property --admin-header { syntax: "<color>"; inherits: true; initial-value: rgba(255, 255, 255, 0.92); }
-@property --admin-sidebar { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
-@property --admin-border { syntax: "<color>"; inherits: true; initial-value: #e2e8f0; }
-@property --admin-border-subtle { syntax: "<color>"; inherits: true; initial-value: #f1f5f9; }
-@property --admin-border-focus { syntax: "<color>"; inherits: true; initial-value: #2563eb; }
-@property --admin-content { syntax: "<color>"; inherits: true; initial-value: #0f172a; }
-@property --admin-content-muted { syntax: "<color>"; inherits: true; initial-value: #475569; }
-@property --admin-content-subtle { syntax: "<color>"; inherits: true; initial-value: #64748b; }
-@property --admin-accent { syntax: "<color>"; inherits: true; initial-value: #2563eb; }
-@property --admin-accent-hover { syntax: "<color>"; inherits: true; initial-value: #2157cf; }
-@property --admin-accent-muted { syntax: "<color>"; inherits: true; initial-value: #e9effd; }
-@property --admin-accent-border { syntax: "<color>"; inherits: true; initial-value: #c9d8fa; }
-@property --admin-danger { syntax: "<color>"; inherits: true; initial-value: #dc2626; }
-@property --admin-danger-muted { syntax: "<color>"; inherits: true; initial-value: #fef2f2; }
-@property --admin-success { syntax: "<color>"; inherits: true; initial-value: #059669; }
-@property --admin-success-muted { syntax: "<color>"; inherits: true; initial-value: #ecfdf5; }
-@property --admin-warning { syntax: "<color>"; inherits: true; initial-value: #d97706; }
-@property --admin-warning-muted { syntax: "<color>"; inherits: true; initial-value: #fffbeb; }
+@property --admin-surface-elevated { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --admin-surface-muted { syntax: "<color>"; inherits: true; initial-value: #f0f2f5; }
+@property --admin-surface-hover { syntax: "<color>"; inherits: true; initial-value: #e6e9ef; }
+@property --admin-surface-active { syntax: "<color>"; inherits: true; initial-value: #ebeef3; }
+@property --admin-header { syntax: "<color>"; inherits: true; initial-value: rgba(255, 255, 255, 0.88); }
+@property --admin-sidebar { syntax: "<color>"; inherits: true; initial-value: #fafafb; }
+@property --admin-border { syntax: "<color>"; inherits: true; initial-value: #e4e6eb; }
+@property --admin-border-subtle { syntax: "<color>"; inherits: true; initial-value: #eff1f5; }
+@property --admin-border-focus { syntax: "<color>"; inherits: true; initial-value: #1f5eff; }
+@property --admin-content { syntax: "<color>"; inherits: true; initial-value: #111318; }
+@property --admin-content-muted { syntax: "<color>"; inherits: true; initial-value: #525866; }
+@property --admin-content-subtle { syntax: "<color>"; inherits: true; initial-value: #868c98; }
+@property --admin-accent { syntax: "<color>"; inherits: true; initial-value: #1f5eff; }
+@property --admin-on-accent { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --admin-accent-hover { syntax: "<color>"; inherits: true; initial-value: #174de0; }
+@property --admin-accent-muted { syntax: "<color>"; inherits: true; initial-value: #ebf0ff; }
+@property --admin-accent-border { syntax: "<color>"; inherits: true; initial-value: #c7d7fe; }
+@property --admin-danger { syntax: "<color>"; inherits: true; initial-value: #d92d20; }
+@property --admin-danger-muted { syntax: "<color>"; inherits: true; initial-value: #fef3f2; }
+@property --admin-danger-border { syntax: "<color>"; inherits: true; initial-value: #fecdca; }
+@property --admin-success { syntax: "<color>"; inherits: true; initial-value: #067647; }
+@property --admin-success-muted { syntax: "<color>"; inherits: true; initial-value: #ecfdf3; }
+@property --admin-success-border { syntax: "<color>"; inherits: true; initial-value: #abefc6; }
+@property --admin-warning { syntax: "<color>"; inherits: true; initial-value: #b54708; }
+@property --admin-warning-muted { syntax: "<color>"; inherits: true; initial-value: #fffaeb; }
+@property --admin-warning-border { syntax: "<color>"; inherits: true; initial-value: #fedf89; }
 
 :root,
 html[data-theme="default"],
@@ -93,66 +98,74 @@ html[data-theme="main-day"] {
 
   /* =========================================
      CLIENT ADMIN WORKBENCH DESIGN TOKENS (LIGHT)
-     Выделенные токены клиентской панели управления
-     Светлый гармоничный workbench (WCAG AA >= 4.5:1)
+     Drafting Paper: нейтральный архитектурный светлый workbench (WCAG AA >= 4.5:1)
      ========================================= */
-  --admin-bg: #f8fafc;
+  --admin-bg: #f6f7f9;
   --admin-surface: #ffffff;
-  --admin-surface-muted: #f1f5f9;
-  --admin-surface-hover: #e2e8f0;
-  --admin-surface-active: #e2e8f0;
-  --admin-header: rgba(255, 255, 255, 0.92);
-  --admin-sidebar: #ffffff;
-  --admin-border: #e2e8f0;
-  --admin-border-subtle: #f1f5f9;
-  --admin-border-focus: #2563eb;
-  --admin-content: #0f172a;
-  --admin-content-muted: #475569;
-  --admin-content-subtle: #64748b;
+  --admin-surface-elevated: #ffffff;
+  --admin-surface-muted: #f0f2f5;
+  --admin-surface-hover: #e6e9ef;
+  --admin-surface-active: #ebeef3;
+  --admin-header: rgba(255, 255, 255, 0.88);
+  --admin-sidebar: #fafafb;
+  --admin-border: #e4e6eb;
+  --admin-border-subtle: #eff1f5;
+  --admin-border-focus: #1f5eff;
+  --admin-content: #111318;
+  --admin-content-muted: #525866;
+  --admin-content-subtle: #868c98;
   /* Акцент админки фиксирован: тема редактируемого сайта не красит chrome панели */
-  --admin-accent: #2563eb;
-  --admin-accent-hover: color-mix(in srgb, var(--admin-accent), black 12%);
-  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 10%, white);
-  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 25%, white);
-  --admin-danger: #dc2626;
-  --admin-danger-muted: #fef2f2;
-  --admin-success: #059669;
-  --admin-success-muted: #ecfdf5;
-  --admin-warning: #d97706;
-  --admin-warning-muted: #fffbeb;
+  --admin-accent: #1f5eff;
+  --admin-on-accent: #ffffff;
+  --admin-accent-hover: #174de0;
+  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 9%, white);
+  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 24%, white);
+  --admin-danger: #d92d20;
+  --admin-danger-muted: #fef3f2;
+  --admin-danger-border: #fecdca;
+  --admin-success: #067647;
+  --admin-success-muted: #ecfdf3;
+  --admin-success-border: #abefc6;
+  --admin-warning: #b54708;
+  --admin-warning-muted: #fffaeb;
+  --admin-warning-border: #fedf89;
 }
 
 /* =========================================
    CLIENT ADMIN WORKBENCH - DARK THEME
-   Выделенная темная тема панели управления (WCAG AAA/AA >= 7:1 / 4.5:1)
-   Стиль: Linear / Raycast / Supabase Dark
+   Deep Graphite: контрастная темная тема панели управления (WCAG AAA/AA)
    ========================================= */
 html[data-admin-theme="dark"],
 [data-admin-theme="dark"] {
   color-scheme: dark;
-  --admin-bg: #0b0f19;
-  --admin-surface: #111827;
-  --admin-surface-muted: #1e293b;
-  --admin-surface-hover: #26334d;
-  --admin-surface-active: #243048;
-  --admin-header: rgba(11, 15, 25, 0.88);
-  --admin-sidebar: #0f172a;
-  --admin-border: #1e293b;
-  --admin-border-subtle: #172033;
-  --admin-border-focus: #3b82f6;
-  --admin-content: #f8fafc;
-  --admin-content-muted: #94a3b8;
-  --admin-content-subtle: #64748b;
-  --admin-accent: #3b82f6;
-  --admin-accent-hover: color-mix(in srgb, var(--admin-accent), white 15%);
-  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 22%, #0b0f19);
-  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 45%, transparent);
-  --admin-danger: #f87171;
-  --admin-danger-muted: rgba(239, 68, 68, 0.15);
-  --admin-success: #34d399;
-  --admin-success-muted: rgba(16, 185, 129, 0.15);
-  --admin-warning: #fbbf24;
-  --admin-warning-muted: rgba(245, 158, 11, 0.15);
+  --admin-bg: #0c0e12;
+  --admin-surface: #141820;
+  --admin-surface-elevated: #1b202b;
+  --admin-surface-muted: #1c212c;
+  --admin-surface-hover: #252c3b;
+  --admin-surface-active: #232a38;
+  --admin-header: rgba(12, 14, 18, 0.86);
+  --admin-sidebar: #101318;
+  --admin-border: rgba(255, 255, 255, 0.09);
+  --admin-border-subtle: rgba(255, 255, 255, 0.05);
+  --admin-border-focus: #4b83ff;
+  --admin-content: #f3f5f8;
+  --admin-content-muted: #98a2b3;
+  --admin-content-subtle: #667085;
+  --admin-accent: #4b83ff;
+  --admin-on-accent: #ffffff;
+  --admin-accent-hover: #6998ff;
+  --admin-accent-muted: rgba(75, 131, 255, 0.16);
+  --admin-accent-border: rgba(75, 131, 255, 0.36);
+  --admin-danger: #f97066;
+  --admin-danger-muted: rgba(249, 112, 102, 0.14);
+  --admin-danger-border: rgba(249, 112, 102, 0.32);
+  --admin-success: #47cd89;
+  --admin-success-muted: rgba(71, 205, 137, 0.14);
+  --admin-success-border: rgba(71, 205, 137, 0.32);
+  --admin-warning: #fdb022;
+  --admin-warning-muted: rgba(253, 176, 34, 0.14);
+  --admin-warning-border: rgba(253, 176, 34, 0.32);
 }
 
 html[data-admin-theme="dark"] body {
@@ -165,30 +178,35 @@ html[data-admin-theme="dark"] body {
    ========================================= */
 html[data-admin-theme="light"] {
   color-scheme: light;
-  --admin-bg: #f8fafc;
+  --admin-bg: #f6f7f9;
   --admin-surface: #ffffff;
-  --admin-surface-muted: #f1f5f9;
-  --admin-surface-hover: #e2e8f0;
-  --admin-surface-active: #e2e8f0;
-  --admin-header: rgba(255, 255, 255, 0.92);
-  --admin-sidebar: #ffffff;
-  --admin-border: #e2e8f0;
-  --admin-border-subtle: #f1f5f9;
-  --admin-border-focus: #2563eb;
-  --admin-content: #0f172a;
-  --admin-content-muted: #475569;
-  --admin-content-subtle: #64748b;
+  --admin-surface-elevated: #ffffff;
+  --admin-surface-muted: #f0f2f5;
+  --admin-surface-hover: #e6e9ef;
+  --admin-surface-active: #ebeef3;
+  --admin-header: rgba(255, 255, 255, 0.88);
+  --admin-sidebar: #fafafb;
+  --admin-border: #e4e6eb;
+  --admin-border-subtle: #eff1f5;
+  --admin-border-focus: #1f5eff;
+  --admin-content: #111318;
+  --admin-content-muted: #525866;
+  --admin-content-subtle: #868c98;
   /* Акцент админки фиксирован: тема редактируемого сайта не красит chrome панели */
-  --admin-accent: #2563eb;
-  --admin-accent-hover: color-mix(in srgb, var(--admin-accent), black 12%);
-  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 10%, white);
-  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 25%, white);
-  --admin-danger: #dc2626;
-  --admin-danger-muted: #fef2f2;
-  --admin-success: #059669;
-  --admin-success-muted: #ecfdf5;
-  --admin-warning: #d97706;
-  --admin-warning-muted: #fffbeb;
+  --admin-accent: #1f5eff;
+  --admin-on-accent: #ffffff;
+  --admin-accent-hover: #174de0;
+  --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 9%, white);
+  --admin-accent-border: color-mix(in srgb, var(--admin-accent) 24%, white);
+  --admin-danger: #d92d20;
+  --admin-danger-muted: #fef3f2;
+  --admin-danger-border: #fecdca;
+  --admin-success: #067647;
+  --admin-success-muted: #ecfdf3;
+  --admin-success-border: #abefc6;
+  --admin-warning: #b54708;
+  --admin-warning-muted: #fffaeb;
+  --admin-warning-border: #fedf89;
 }
 
 html[data-admin-theme="light"] body {
@@ -206,6 +224,7 @@ html {
   transition:
     --admin-bg 320ms ease,
     --admin-surface 320ms ease,
+    --admin-surface-elevated 320ms ease,
     --admin-surface-muted 320ms ease,
     --admin-surface-hover 320ms ease,
     --admin-surface-active 320ms ease,
@@ -218,15 +237,19 @@ html {
     --admin-content-muted 320ms ease,
     --admin-content-subtle 320ms ease,
     --admin-accent 320ms ease,
+    --admin-on-accent 320ms ease,
     --admin-accent-hover 320ms ease,
     --admin-accent-muted 320ms ease,
     --admin-accent-border 320ms ease,
     --admin-danger 320ms ease,
     --admin-danger-muted 320ms ease,
+    --admin-danger-border 320ms ease,
     --admin-success 320ms ease,
     --admin-success-muted 320ms ease,
+    --admin-success-border 320ms ease,
     --admin-warning 320ms ease,
-    --admin-warning-muted 320ms ease;
+    --admin-warning-muted 320ms ease,
+    --admin-warning-border 320ms ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -240,29 +263,34 @@ html {
 @media (prefers-color-scheme: dark) {
   html:not([data-admin-theme="light"]) {
     color-scheme: dark;
-    --admin-bg: #0b0f19;
-    --admin-surface: #111827;
-    --admin-surface-muted: #1e293b;
-    --admin-surface-hover: #26334d;
-    --admin-surface-active: #243048;
-    --admin-header: rgba(11, 15, 25, 0.88);
-    --admin-sidebar: #0f172a;
-    --admin-border: #1e293b;
-    --admin-border-subtle: #172033;
-    --admin-border-focus: #3b82f6;
-    --admin-content: #f8fafc;
-    --admin-content-muted: #94a3b8;
-    --admin-content-subtle: #64748b;
-    --admin-accent: #3b82f6;
-    --admin-accent-hover: color-mix(in srgb, var(--admin-accent), white 15%);
-    --admin-accent-muted: color-mix(in srgb, var(--admin-accent) 22%, #0b0f19);
-    --admin-accent-border: color-mix(in srgb, var(--admin-accent) 45%, transparent);
-    --admin-danger: #f87171;
-    --admin-danger-muted: rgba(239, 68, 68, 0.15);
-    --admin-success: #34d399;
-    --admin-success-muted: rgba(16, 185, 129, 0.15);
-    --admin-warning: #fbbf24;
-    --admin-warning-muted: rgba(245, 158, 11, 0.15);
+    --admin-bg: #0c0e12;
+    --admin-surface: #141820;
+    --admin-surface-elevated: #1b202b;
+    --admin-surface-muted: #1c212c;
+    --admin-surface-hover: #252c3b;
+    --admin-surface-active: #232a38;
+    --admin-header: rgba(12, 14, 18, 0.86);
+    --admin-sidebar: #101318;
+    --admin-border: rgba(255, 255, 255, 0.09);
+    --admin-border-subtle: rgba(255, 255, 255, 0.05);
+    --admin-border-focus: #4b83ff;
+    --admin-content: #f3f5f8;
+    --admin-content-muted: #98a2b3;
+    --admin-content-subtle: #667085;
+    --admin-accent: #4b83ff;
+    --admin-on-accent: #ffffff;
+    --admin-accent-hover: #6998ff;
+    --admin-accent-muted: rgba(75, 131, 255, 0.16);
+    --admin-accent-border: rgba(75, 131, 255, 0.36);
+    --admin-danger: #f97066;
+    --admin-danger-muted: rgba(249, 112, 102, 0.14);
+    --admin-danger-border: rgba(249, 112, 102, 0.32);
+    --admin-success: #47cd89;
+    --admin-success-muted: rgba(71, 205, 137, 0.14);
+    --admin-success-border: rgba(71, 205, 137, 0.32);
+    --admin-warning: #fdb022;
+    --admin-warning-muted: rgba(253, 176, 34, 0.14);
+    --admin-warning-border: rgba(253, 176, 34, 0.32);
   }
   html:not([data-admin-theme="light"]) body {
     background-color: var(--admin-bg);

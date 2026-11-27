@@ -3,119 +3,158 @@ package admin_blocks
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"strings"
 )
 
+templ BlockTypeIcon(bType string) {
+	switch strings.ToLower(strings.TrimSpace(bType)) {
+		case "hero":
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 14h8m-8 4h5"></path>
+			</svg>
+		case "services":
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+			</svg>
+		case "booking":
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+			</svg>
+		case "reviews":
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+			</svg>
+		case "map", "contacts", "branches":
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+			</svg>
+		default:
+			<svg class="w-3.5 h-3.5 shrink-0 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h10"></path>
+			</svg>
+	}
+}
+
 templ BlocksList(blocks []models.PageBlock) {
-	<!-- Кнопка быстрого добавления всегда на виду -->
-	<button
-		type="button"
-		onclick="document.getElementById('new-block-dialog').showModal()"
-		class="w-full py-2.5 px-3 rounded-xl border border-dashed border-admin-border hover:border-admin-border-focus bg-admin-surface hover:bg-admin-surface-muted text-admin-content text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer shadow-2xs"
+	<!-- Состояние ошибки синхронизации -->
+	<div
+		x-show="saveStatus && saveStatus.includes('Ошибка')"
+		x-cloak
+		class="p-2.5 rounded-lg bg-admin-danger-muted border border-admin-danger-border text-admin-danger text-xs flex items-center justify-between gap-2"
+		role="alert"
 	>
-		<span class="w-4 h-4 rounded-full bg-admin-accent text-white flex items-center justify-center text-[10px] leading-none">+</span>
-		<span>Добавить новую секцию в лендинг</span>
-	</button>
+		<span x-text="saveStatus"></span>
+		<button
+			type="button"
+			@click="refreshCanvas()"
+			class="px-2 py-0.5 rounded bg-admin-surface border border-admin-danger-border font-medium cursor-pointer"
+		>
+			Повторить
+		</button>
+	</div>
+
+	<!-- Индикатор загрузки HTMX -->
+	<div id="blocks-loading-state" class="htmx-indicator p-3 rounded-lg border border-admin-border bg-admin-surface-muted/50 text-xs text-admin-content-muted text-center">
+		Обновление списка секций...
+	</div>
 
 	if len(blocks) == 0 {
-		<div class="p-8 text-center bg-admin-surface rounded-2xl border border-admin-border">
+		<div class="p-8 text-center bg-admin-surface-muted/30 rounded-xl border border-dashed border-admin-border space-y-3">
 			<p class="text-admin-content-muted text-xs">Секции лендинга пока не добавлены.</p>
-		</div>
-	}
-
-	<div class="space-y-2.5 max-h-[calc(100vh-260px)] overflow-y-auto pr-1">
-		for idx, b := range blocks {
-			{{
-				typeName, typeIcon := HumanBlockType(b.Type)
-				variantStr := ""
-				if v, ok := b.Payload["variant"].(string); ok {
-					variantStr = v
-				}
-			}}
-			<!-- Двухстрочная просторная карточка секции -->
-			<div
-				id={ "block-card-" + b.ID }
-				@click={ fmt.Sprintf("selectBlock('%s', '%s')", b.ID, b.Type) }
-				:class={ fmt.Sprintf("selectedBlockId === '%s' ? 'ring-2 ring-admin-border-focus border-admin-border-focus bg-admin-accent-muted/20' : ''", b.ID) }
-				class={ "p-3.5 rounded-2xl border transition cursor-pointer relative group",
-					templ.KV("bg-admin-surface border-admin-border hover:border-admin-border-focus shadow-2xs", b.Active),
-					templ.KV("opacity-55 bg-admin-surface-muted border-dashed border-admin-border", !b.Active) }
+			<button
+				type="button"
+				onclick="document.getElementById('new-block-dialog').showModal()"
+				class="px-3.5 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold transition-colors cursor-pointer"
 			>
-				<div class="flex items-start justify-between gap-3">
-					<!-- Левая группа: Ручка перетаскивания + Номер + Заголовок и тип -->
-					<div class="flex items-start gap-2.5 min-w-0 flex-1">
-						<!-- Ручка перетаскивания drag-and-drop -->
-						<div class="pt-0.5 text-admin-content-subtle group-hover:text-admin-content-muted cursor-grab shrink-0 select-none" title="Перетащить блок">
-							<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h.01M8 15h.01M16 9h.01M16 15h.01"></path>
-							</svg>
-						</div>
+				Добавить первую секцию
+			</button>
+		</div>
+	} else {
+		<div class="space-y-2">
+			for idx, b := range blocks {
+				{{
+					typeName, _ := HumanBlockType(b.Type)
+					variantStr := ""
+					if v, ok := b.Payload["variant"].(string); ok {
+						variantStr = v
+					}
+					popoverID := "block-menu-" + b.ID
+					anchorName := "--blk-" + b.ID
+				}}
+				<div
+					id={ "block-card-" + b.ID }
+					@click={ fmt.Sprintf("selectBlock('%s', '%s')", b.ID, b.Type) }
+					:class={ fmt.Sprintf("selectedBlockId === '%s' ? 'ring-1 ring-admin-border-focus border-admin-border-focus bg-admin-accent-muted/25' : ''", b.ID) }
+					class={ "p-3 rounded-xl border transition-colors cursor-pointer relative group",
+						templ.KV("bg-admin-surface border-admin-border hover:border-admin-border-focus", b.Active),
+						templ.KV("opacity-60 bg-admin-surface-muted/50 border-dashed border-admin-border", !b.Active) }
+				>
+					<div class="flex items-start justify-between gap-2.5">
+						<!-- Левая группа: Ручка, Номер, Заголовок и тип -->
+						<div class="flex items-start gap-2 min-w-0 flex-1">
+							<div class="pt-0.5 text-admin-content-subtle group-hover:text-admin-content-muted cursor-grab shrink-0 select-none" title="Порядок секции">
+								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h.01M8 15h.01M16 9h.01M16 15h.01"></path>
+								</svg>
+							</div>
 
-						<!-- Порядковый номер -->
-						<div class="w-6 h-6 shrink-0 rounded-lg bg-admin-surface-muted text-admin-content text-xs font-mono font-bold flex items-center justify-center select-none border border-admin-border">
-							{ fmt.Sprintf("%d", idx+1) }
-						</div>
+							<div class="w-5 h-5 shrink-0 rounded-md bg-admin-surface-muted text-admin-content-muted text-[11px] font-mono tabular-nums font-semibold flex items-center justify-center select-none border border-admin-border">
+								{ fmt.Sprintf("%d", idx+1) }
+							</div>
 
-						<!-- Текстовое описание блока (полная ширина, без обрезания) -->
-						<div class="min-w-0 flex-1">
-							<!-- Заголовок секции: переносится до 2 строк, не режется -->
-							<h4 class="font-bold text-admin-content text-sm leading-snug break-words">
-								{ b.Title }
-							</h4>
+							<div class="min-w-0 flex-1">
+								<h4 class="font-medium text-admin-content text-xs leading-snug break-words">
+									{ b.Title }
+								</h4>
 
-							<!-- Вторая строка: Понятное человеческое имя типа + вариант -->
-							<div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
-								<span
-									class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border font-sans"
-									title={ "Технический код: " + b.Type }
-								>
-									<span>{ typeIcon }</span>
-									<span>{ typeName }</span>
-								</span>
-
-								if variantStr != "" {
-									<span class="px-2 py-0.5 rounded-md text-[11px] font-mono text-admin-content-subtle bg-admin-surface-muted border border-admin-border">
-										{ variantStr }
+								<div class="flex items-center gap-1.5 mt-1 flex-wrap">
+									<span
+										class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[11px] text-admin-content-muted bg-admin-surface-muted border border-admin-border"
+										title={ "Код блока: " + b.Type }
+									>
+										@BlockTypeIcon(b.Type)
+										<span>{ typeName }</span>
 									</span>
-								}
+
+									if variantStr != "" {
+										<span class="px-1.5 py-0.5 rounded-md text-[10px] font-mono text-admin-content-subtle bg-admin-surface-muted border border-admin-border">
+											{ variantStr }
+										</span>
+									}
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<!-- Правая группа: Заметный бейдж-переключатель видимости + Меню действий (...) -->
-					<div class="flex items-center gap-2 shrink-0 pt-0.5" @click.stop>
-						<!-- Заметная контрастная кнопка переключения видимости -->
-						<button
-							type="button"
-							hx-post={ fmt.Sprintf("/admin/blocks/%s/toggle", b.ID) }
-							hx-target="#admin-tab-content"
-							hx-swap="innerHTML"
-							class={ "cursor-pointer focus:outline-none select-none inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-xs border",
-								templ.KV("bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700 ring-2 ring-emerald-500/20", b.Active),
-								templ.KV("bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content-muted border-admin-border", !b.Active) }
-							title={ fmt.Sprintf("%s", func() string { if b.Active { return "Секция видна на сайте (кликните, чтобы скрыть)" } else { return "Секция скрыта (кликните, чтобы включить)" } }()) }
-						>
-							if b.Active {
-								<span class="w-2.5 h-2.5 rounded-full bg-emerald-200 shadow-xs animate-pulse"></span>
-								<svg class="w-4 h-4 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-								</svg>
-								<span>Видна</span>
-							} else {
-								<span class="w-2.5 h-2.5 rounded-full bg-admin-content-subtle"></span>
-								<svg class="w-4 h-4 text-admin-content-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18"></path>
-								</svg>
-								<span>Скрыта</span>
-							}
-						</button>
-
-						<!-- Кнопка действий '⋯' -->
-						<div x-data="{ menuOpen: false }" class="relative">
+						<!-- Правая группа: Спокойный переключатель видимости + Нативное меню действий -->
+						<div class="flex items-center gap-1.5 shrink-0 pt-0.5" @click.stop>
 							<button
 								type="button"
-								@click.stop="menuOpen = !menuOpen"
-								class="p-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content shadow-2xs transition-colors cursor-pointer"
+								role="switch"
+								aria-checked={ fmt.Sprintf("%t", b.Active) }
+								hx-post={ fmt.Sprintf("/admin/blocks/%s/toggle", b.ID) }
+								hx-target="#admin-tab-content"
+								hx-swap="innerHTML"
+								hx-indicator="#blocks-loading-state"
+								class={ "relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus",
+									templ.KV("bg-admin-success border-admin-success", b.Active),
+									templ.KV("bg-admin-surface-hover border-admin-border", !b.Active) }
+								title={ func() string { if b.Active { return "Скрыть секцию на сайте" } else { return "Показать секцию на сайте" } }() }
+								aria-label={ func() string { if b.Active { return "Секция видна — скрыть" } else { return "Секция скрыта — показать" } }() }
+							>
+								<span
+									class={ "pointer-events-none inline-block h-3.5 w-3.5 rounded-full bg-white shadow-2xs transition-transform",
+										templ.KV("translate-x-4", b.Active),
+										templ.KV("translate-x-0.5", !b.Active) }
+								></span>
+							</button>
+
+							<!-- Нативное меню действий (Popover API + CSS Anchor) -->
+							<button
+								type="button"
+								popovertarget={ popoverID }
+								style={ fmt.Sprintf("anchor-name: %s;", anchorName) }
+								class="p-1 rounded-md border border-transparent hover:border-admin-border hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 								title="Действия над секцией"
 								aria-label="Действия над секцией"
 							>
@@ -125,14 +164,14 @@ templ BlocksList(blocks []models.PageBlock) {
 							</button>
 
 							<div
-								x-show="menuOpen"
-								x-cloak
-								@click.away="menuOpen = false"
-								class="absolute right-0 top-full mt-1 w-44 rounded-xl bg-admin-surface border border-admin-border shadow-lg py-1 z-30 text-xs text-admin-content font-medium"
+								id={ popoverID }
+								popover="auto"
+								style={ fmt.Sprintf("position-anchor: %s;", anchorName) }
+								class="admin-popover w-44 rounded-xl bg-admin-surface-elevated border border-admin-border shadow-lg py-1 text-xs text-admin-content font-medium"
 							>
 								<button
 									type="button"
-									@click={ fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); menuOpen = false;", b.ID, b.Title, b.Content, b.Type, variantStr) }
+									@click={ fmt.Sprintf("openEdit('%s', '%s', '%s', '%s', '%s'); document.getElementById('%s')?.hidePopover();", b.ID, b.Title, b.Content, b.Type, variantStr, popoverID) }
 									class="w-full px-3 py-2 text-left hover:bg-admin-surface-muted flex items-center gap-2 cursor-pointer"
 								>
 									<svg class="w-3.5 h-3.5 text-admin-content-subtle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +229,7 @@ templ BlocksList(blocks []models.PageBlock) {
 						</div>
 					</div>
 				</div>
-			</div>
-		}
-	</div>
+			}
+		</div>
+	}
 }

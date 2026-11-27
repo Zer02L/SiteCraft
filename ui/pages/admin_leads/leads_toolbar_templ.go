@@ -31,163 +31,69 @@ func LeadsToolbar(leads []models.Lead, newCount int, inProgressCount int, doneCo
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- 1. Верхняя панель заголовка и действий --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><div class=\"flex items-center gap-3 flex-wrap\"><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Входящие заявки</h2>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<!-- 1. Верхняя панель заголовка и действий --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><h2 class=\"text-xl font-bold text-admin-content tracking-tight\">Входящие заявки</h2><p class=\"text-xs text-admin-content-muted mt-0.5\">Клиентские обращения с форм захвата, онлайн-записи и витрины услуг</p></div><div class=\"flex items-center gap-2 shrink-0\"><button type=\"button\" hx-get=\"/client/tab/leads\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" hx-indicator=\"#admin-htmx-indicator\" class=\"px-3 py-2 rounded-lg bg-admin-surface hover:bg-admin-surface-muted text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 border border-admin-border cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\" title=\"Обновить таблицу\"><svg class=\"w-3.5 h-3.5 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg> <span>Обновить</span></button> <a href=\"/client/export/leads.csv\" class=\"px-3.5 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-xs font-semibold text-admin-on-accent transition-colors flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg> <span>Экспорт CSV</span></a></div></div><!-- 2. Интерактивные KPI-вкладки (фильтрация по статусам в 1 клик) --><div class=\"grid grid-cols-2 @lg:grid-cols-4 gap-3\"><button type=\"button\" @click=\"filterStatus = 'all'\" :class=\"filterStatus === 'all' ? 'border-admin-accent bg-admin-surface ring-1 ring-admin-accent-border' : 'border-admin-border bg-admin-surface hover:bg-admin-surface-muted/60'\" class=\"text-left rounded-xl border p-3.5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><div class=\"text-xs font-medium text-admin-content-muted\">Всего заявок</div><div class=\"text-2xl font-mono tabular-nums font-semibold text-admin-content mt-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var2 string
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(leads)))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 51, Col: 117}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div><div class=\"text-[11px] text-admin-content-subtle mt-0.5\">Показать все</div></button> <button type=\"button\" @click=\"filterStatus = 'новая'\" :class=\"filterStatus === 'новая' ? 'border-admin-accent bg-admin-accent-muted/30 ring-1 ring-admin-accent-border' : 'border-admin-border bg-admin-surface hover:bg-admin-surface-muted/60'\" class=\"text-left rounded-xl border p-3.5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><div class=\"flex items-center justify-between gap-2\"><span class=\"text-xs font-medium text-admin-accent\">Новые</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if newCount > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-admin-accent-muted text-admin-accent border border-admin-accent-border\"><span class=\"w-1.5 h-1.5 rounded-full bg-admin-accent animate-pulse\"></span> <span>Новых: ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", newCount))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 17, Col: 53}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</span></span> ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<span class=\"w-2 h-2 rounded-full bg-admin-accent\"></span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		if inProgressCount > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<span class=\"inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold bg-admin-warning-muted text-admin-warning border border-admin-warning/25\"><span class=\"w-1.5 h-1.5 rounded-full bg-admin-warning\"></span> <span>В обработке: ")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", inProgressCount))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 23, Col: 71}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span></span>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div class=\"text-2xl font-mono tabular-nums font-semibold text-admin-accent mt-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><p class=\"text-xs text-admin-content-muted mt-1\">Клиентские обращения с форм захвата, онлайн-записи и витрины услуг</p></div><div class=\"flex items-center gap-2.5 flex-wrap\"><button type=\"button\" hx-get=\"/client/tab/leads\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-3 py-2 rounded-xl bg-admin-surface hover:bg-admin-surface-muted text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 border border-admin-border shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\" title=\"Обновить таблицу\"><svg class=\"w-3.5 h-3.5 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg> <span>Обновить</span></button> <a href=\"/client/export/leads.csv\" class=\"px-3.5 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-xs font-semibold text-white transition-colors flex items-center gap-2 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-4 h-4 text-emerald-400\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z\"></path></svg> <span>Экспорт CSV</span></a></div></div><!-- 2. Сводные метрики (KPI карточки Workbench) --><div class=\"grid grid-cols-2 lg:grid-cols-4 gap-3.5\"><div class=\"bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs\"><div class=\"text-[10px] font-mono uppercase tracking-wider text-admin-content-muted\">Всего заявок</div><div class=\"text-2xl lg:text-3xl font-mono font-semibold text-admin-content mt-1.5\">")
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", newCount))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 67, Col: 114}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div class=\"text-[11px] text-admin-content-subtle mt-0.5\">Требуют ответа</div></button> <button type=\"button\" @click=\"filterStatus = 'в обработке'\" :class=\"filterStatus === 'в обработке' ? 'border-admin-warning bg-admin-warning-muted/40 ring-1 ring-admin-warning-border' : 'border-admin-border bg-admin-surface hover:bg-admin-surface-muted/60'\" class=\"text-left rounded-xl border p-3.5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><div class=\"text-xs font-medium text-admin-warning\">В обработке</div><div class=\"text-2xl font-mono tabular-nums font-semibold text-admin-warning mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(leads)))
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", inProgressCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 59, Col: 118}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 78, Col: 122}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"text-[11px] text-admin-content-subtle mt-1\">за все время</div></div><div class=\"bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs\"><div class=\"flex items-center justify-between\"><span class=\"text-[10px] font-mono uppercase tracking-wider text-admin-accent\">Новые</span> ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if newCount > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<span class=\"w-2 h-2 rounded-full bg-admin-accent animate-ping\"></span>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"text-2xl lg:text-3xl font-mono font-semibold text-admin-accent mt-1.5\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div class=\"text-[11px] text-admin-content-subtle mt-0.5\">В работе у менеджера</div></button> <button type=\"button\" @click=\"filterStatus = 'выполнена'\" :class=\"filterStatus === 'выполнена' ? 'border-admin-success bg-admin-success-muted/40 ring-1 ring-admin-success-border' : 'border-admin-border bg-admin-surface hover:bg-admin-surface-muted/60'\" class=\"text-left rounded-xl border p-3.5 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><div class=\"text-xs font-medium text-admin-success\">Выполнены</div><div class=\"text-2xl font-mono tabular-nums font-semibold text-admin-success mt-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", newCount))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", doneCount))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 69, Col: 115}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 89, Col: 116}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</div><div class=\"text-[11px] text-admin-content-subtle mt-1\">требуют ответа</div></div><div class=\"bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs\"><div class=\"text-[10px] font-mono uppercase tracking-wider text-admin-warning\">В обработке</div><div class=\"text-2xl lg:text-3xl font-mono font-semibold text-admin-warning mt-1.5\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", inProgressCount))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 74, Col: 123}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"text-[11px] text-admin-content-subtle mt-1\">в работе у менеджера</div></div><div class=\"bg-admin-surface border border-admin-border rounded-2xl p-4 shadow-2xs\"><div class=\"text-[10px] font-mono uppercase tracking-wider text-admin-success\">Выполнено</div><div class=\"text-2xl lg:text-3xl font-mono font-semibold text-admin-success mt-1.5\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", doneCount))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 79, Col: 117}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><div class=\"text-[11px] text-admin-content-subtle mt-1\">успешно закрыты</div></div></div><!-- 3. Панель быстрого поиска и фильтров по статусам --><div class=\"flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-admin-surface border border-admin-border rounded-xl p-2.5 shadow-2xs\"><div class=\"relative flex-1 max-w-md\"><div class=\"pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-admin-content-muted\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"></path></svg></div><input type=\"text\" x-model=\"search\" placeholder=\"Поиск по имени, номеру телефона, деталям...\" class=\"w-full bg-admin-surface-muted border border-admin-border text-xs text-admin-content placeholder:text-admin-content-subtle rounded-xl pl-9 pr-8 py-2 focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus transition-colors\"> <button type=\"button\" x-show=\"search.length > 0\" @click=\"search = ''\" class=\"absolute inset-y-0 right-0 flex items-center pr-2.5 text-admin-content-muted hover:text-admin-content\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><!-- Табы статусов --><div class=\"flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs\"><button type=\"button\" @click=\"filterStatus = 'all'\" :class=\"filterStatus === 'all' ? 'bg-admin-surface-active text-admin-content font-semibold border-admin-border shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'\" class=\"px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]\">Все (")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(leads)))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 118, Col: 43}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, ")</button> <button type=\"button\" @click=\"filterStatus = 'новая'\" :class=\"filterStatus === 'новая' ? 'bg-admin-accent-muted text-admin-accent font-semibold border-admin-accent-border shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'\" class=\"px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]\">Новые (")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", newCount))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 126, Col: 45}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, ")</button> <button type=\"button\" @click=\"filterStatus = 'в обработке'\" :class=\"filterStatus === 'в обработке' ? 'bg-admin-warning-muted text-admin-warning font-semibold border-admin-warning/30 shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'\" class=\"px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]\">В обработке (")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", inProgressCount))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 134, Col: 63}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, ")</button> <button type=\"button\" @click=\"filterStatus = 'выполнена'\" :class=\"filterStatus === 'выполнена' ? 'bg-admin-success-muted text-admin-success font-semibold border-admin-success/30 shadow-2xs' : 'bg-admin-surface text-admin-content-muted hover:text-admin-content border-admin-border/50'\" class=\"px-2.5 py-1.5 rounded-xl border transition-colors cursor-pointer whitespace-nowrap font-mono text-[11px]\">Выполнены (")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", doneCount))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/admin_leads/leads_toolbar.templ`, Line: 142, Col: 54}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, ")</button></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"text-[11px] text-admin-content-subtle mt-0.5\">Успешно закрыты</div></button></div><!-- 3. Панель поиска и сброса активного фильтра --><div class=\"flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3\"><div class=\"relative flex-1 max-w-md\"><div class=\"pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-admin-content-subtle\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"></path></svg></div><input type=\"text\" x-model=\"search\" placeholder=\"Поиск по имени, телефону, комментарию...\" aria-label=\"Поиск по заявкам\" class=\"admin-input w-full bg-admin-surface border border-admin-border text-xs text-admin-content placeholder:text-admin-content-subtle rounded-lg pl-9 pr-8 py-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"> <button type=\"button\" x-show=\"search.length > 0\" x-cloak @click=\"search = ''\" aria-label=\"Очистить поиск\" class=\"absolute inset-y-0 right-0 flex items-center pr-2.5 text-admin-content-muted hover:text-admin-content cursor-pointer\"><svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\"></path></svg></button></div><div x-show=\"search.length > 0 || filterStatus !== 'all'\" x-cloak class=\"flex items-center gap-2 text-xs\"><span class=\"text-admin-content-muted\" x-text=\"filterStatus !== 'all' ? ('Фильтр: ' + filterStatus) : 'Поиск активен'\"></span> <button type=\"button\" @click=\"search = ''; filterStatus = 'all'\" class=\"px-2.5 py-1 rounded-md border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-admin-content font-medium transition-colors cursor-pointer\">Сбросить</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

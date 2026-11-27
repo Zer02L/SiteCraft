@@ -12,6 +12,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"sitecraft/internal/models"
+	"strings"
 )
 
 func ClientImporterTab(redirects []models.RedirectRule, activeJobID string) templ.Component {
@@ -31,20 +32,20 @@ func ClientImporterTab(redirects []models.RedirectRule, activeJobID string) temp
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tsearchQuery: '',\n\t\t\tshowAddForm: false,\n\t\t\tisUploading: false\n\t\t}\" class=\"space-y-6\"><!-- Заголовок страницы --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><h2 class=\"text-xl sm:text-2xl font-bold text-admin-content tracking-tight\">WordPress Миграция & 301-Редиректы</h2><p class=\"text-xs sm:text-sm text-admin-content-muted mt-1\">Потоковый импорт данных из WordPress WXR XML и сохранение ссылочной массы без потери SEO-позиций</p></div></div><!-- Верхняя сводка KPI --><div class=\"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4\"><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Всего редиректов</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div x-data=\"{\n\t\t\tsearchQuery: '',\n\t\t\tshowAddForm: false,\n\t\t\tisUploading: false\n\t\t}\" class=\"max-w-5xl space-y-6\"><!-- Заголовок страницы --><div class=\"pb-4 border-b border-admin-border\"><h2 class=\"text-lg font-semibold text-admin-content tracking-tight\">WordPress Миграция &amp; 301-Редиректы</h2><p class=\"text-xs text-admin-content-muted mt-0.5\">Потоковый импорт данных из WordPress WXR XML и сохранение ссылочной массы без потери SEO-позиций</p></div><!-- Компактная живая строка статуса --><div class=\"flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-2.5 rounded-xl bg-admin-surface border border-admin-border text-xs\"><div class=\"text-admin-content-muted\">Всего 301-редиректов: <span class=\"font-semibold text-admin-content tabular-nums\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(redirects)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 36, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 31, Col: 136}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>SEO Сохранение</span></div><div class=\"text-2xl sm:text-3xl font-bold text-admin-content mt-1 font-mono\">100%</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Скорость проверки</div><div class=\"text-2xl sm:text-3xl font-bold text-admin-accent mt-1 font-mono\">&lt; 0.1 мс</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Формат импорта</div><div class=\"text-lg sm:text-xl font-bold text-admin-content mt-1\">WXR XML 1.2</div></div></div><!-- Карточка 1: Потоковый импорт из WordPress WXR --><div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl shadow-sm space-y-6\"><div class=\"flex items-center justify-between border-b border-admin-border pb-4\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-500 flex items-center justify-center font-bold\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-base\">Импорт контента из WordPress (WXR XML)</h3><p class=\"text-xs text-admin-content-muted\">Загрузите файл экспорта (.xml), полученный в консоли WordPress (Инструменты → Экспорт)</p></div></div></div><form hx-post=\"/admin/importer/upload\" hx-target=\"#importer-progress-area\" hx-swap=\"innerHTML\" hx-encoding=\"multipart/form-data\" @submit=\"isUploading = true\" class=\"space-y-5\"><div><label class=\"block text-xs font-medium text-admin-content mb-2\">Файл WordPress WXR (.xml)</label><div class=\"relative border-2 border-dashed border-admin-border hover:border-admin-accent rounded-xl p-6 text-center cursor-pointer transition-colors bg-admin-surface-muted/30\"><input type=\"file\" name=\"xml_file\" accept=\".xml,text/xml\" required class=\"absolute inset-0 w-full h-full opacity-0 cursor-pointer\"><div class=\"flex flex-col items-center justify-center space-y-2 pointer-events-none\"><svg class=\"w-8 h-8 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12\"></path></svg><div class=\"text-xs text-admin-content font-medium\">Нажмите для выбора файла или перетащите его сюда</div><div class=\"text-[11px] text-admin-content-muted\">Поддерживаются файлы export.xml любого размера (потоковый парсер)</div></div></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-2\"><label class=\"flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition\"><input type=\"checkbox\" name=\"create_redirects\" value=\"1\" checked class=\"w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">301-редиректы</span> <span class=\"text-admin-content-muted text-[11px]\">Автоматически сохранить старые ссылки</span></div></label> <label class=\"flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition\"><input type=\"checkbox\" name=\"import_posts\" value=\"1\" checked class=\"w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Статьи блога</span> <span class=\"text-admin-content-muted text-[11px]\">Импортировать записи в раздел Блог</span></div></label> <label class=\"flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition\"><input type=\"checkbox\" name=\"import_pages\" value=\"1\" checked class=\"w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Страницы</span> <span class=\"text-admin-content-muted text-[11px]\">Импортировать статичные страницы</span></div></label> <label class=\"flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition\"><input type=\"checkbox\" name=\"clean_shortcodes\" value=\"1\" checked class=\"w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Очистка шорткодов</span> <span class=\"text-admin-content-muted text-[11px]\">Удалить [gallery], конвертировать [caption]</span></div></label> <label class=\"flex items-center gap-2.5 p-3 rounded-xl border border-admin-border bg-admin-surface-muted/20 cursor-pointer hover:bg-admin-surface-muted/40 transition\"><input type=\"checkbox\" name=\"sanitize_html\" value=\"1\" checked class=\"w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Санитизация верстки</span> <span class=\"text-admin-content-muted text-[11px]\">Очистка мусорных тегов bluemonday</span></div></label></div><div class=\"flex items-center justify-end gap-3 pt-2\"><button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-sm active:scale-[0.99] flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg> <span>Начать импорт</span></button></div></form><!-- Контейнер для SSE прогресса --><div id=\"importer-progress-area\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</span></div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"text-admin-content-muted\">Формат: <span class=\"font-medium text-admin-content\">WXR XML 1.2</span></div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"text-admin-content-muted\">Проверка маршрута: <span class=\"font-mono font-medium text-admin-accent tabular-nums\">&lt; 0.1 мс</span></div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"flex items-center gap-1.5 text-admin-content-muted\"><span class=\"w-1.5 h-1.5 rounded-full bg-admin-success\"></span> <span>SEO-сохранение: <span class=\"font-medium text-admin-content\">100%</span></span></div></div><!-- Карточка 1: Потоковый импорт из WordPress WXR --><div class=\"p-5 sm:p-6 bg-admin-surface border border-admin-border rounded-xl space-y-5\"><div class=\"flex items-center gap-3 border-b border-admin-border pb-4\"><div class=\"w-9 h-9 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center shrink-0\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-sm\">Импорт контента из WordPress (WXR XML)</h3><p class=\"text-xs text-admin-content-muted\">Загрузите файл экспорта (.xml), полученный в консоли WordPress (Инструменты → Экспорт)</p></div></div><form hx-post=\"/admin/importer/upload\" hx-target=\"#importer-progress-area\" hx-swap=\"innerHTML\" hx-encoding=\"multipart/form-data\" @submit=\"isUploading = true\" class=\"space-y-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Файл WordPress WXR (.xml)</label><div class=\"relative border border-dashed border-admin-border hover:border-admin-accent rounded-xl p-6 text-center cursor-pointer transition-colors bg-admin-surface-muted\"><input type=\"file\" name=\"xml_file\" accept=\".xml,text/xml\" required class=\"absolute inset-0 w-full h-full opacity-0 cursor-pointer\"><div class=\"flex flex-col items-center justify-center space-y-2 pointer-events-none\"><svg class=\"w-7 h-7 text-admin-content-muted\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12\"></path></svg><div class=\"text-xs text-admin-content font-medium\">Нажмите для выбора файла или перетащите его сюда</div><div class=\"text-[11px] text-admin-content-muted\">Поддерживаются файлы export.xml любого размера (потоковый парсер)</div></div></div></div><div class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pt-1\"><label class=\"flex items-start gap-2.5 p-3 rounded-lg border border-admin-border bg-admin-surface-muted cursor-pointer hover:bg-admin-surface-hover transition\"><input type=\"checkbox\" name=\"create_redirects\" value=\"1\" checked class=\"mt-0.5 w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">301-редиректы</span> <span class=\"text-admin-content-muted text-[11px]\">Автоматически сохранить старые ссылки</span></div></label> <label class=\"flex items-start gap-2.5 p-3 rounded-lg border border-admin-border bg-admin-surface-muted cursor-pointer hover:bg-admin-surface-hover transition\"><input type=\"checkbox\" name=\"import_posts\" value=\"1\" checked class=\"mt-0.5 w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Статьи блога</span> <span class=\"text-admin-content-muted text-[11px]\">Импортировать записи в раздел Блог</span></div></label> <label class=\"flex items-start gap-2.5 p-3 rounded-lg border border-admin-border bg-admin-surface-muted cursor-pointer hover:bg-admin-surface-hover transition\"><input type=\"checkbox\" name=\"import_pages\" value=\"1\" checked class=\"mt-0.5 w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Страницы</span> <span class=\"text-admin-content-muted text-[11px]\">Импортировать статичные страницы</span></div></label> <label class=\"flex items-start gap-2.5 p-3 rounded-lg border border-admin-border bg-admin-surface-muted cursor-pointer hover:bg-admin-surface-hover transition\"><input type=\"checkbox\" name=\"clean_shortcodes\" value=\"1\" checked class=\"mt-0.5 w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Очистка шорткодов</span> <span class=\"text-admin-content-muted text-[11px]\">Удалить [gallery], конвертировать [caption]</span></div></label> <label class=\"flex items-start gap-2.5 p-3 rounded-lg border border-admin-border bg-admin-surface-muted cursor-pointer hover:bg-admin-surface-hover transition\"><input type=\"checkbox\" name=\"sanitize_html\" value=\"1\" checked class=\"mt-0.5 w-4 h-4 rounded text-admin-accent focus-visible:ring-admin-border-focus\"><div class=\"text-xs text-admin-content\"><span class=\"font-semibold block\">Санитизация верстки</span> <span class=\"text-admin-content-muted text-[11px]\">Очистка мусорных тегов bluemonday</span></div></label></div><div class=\"flex items-center justify-end gap-3 pt-1\"><button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-semibold text-xs transition active:scale-[0.99] flex items-center gap-2 cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15\"></path></svg> <span>Начать импорт</span></button></div></form><!-- Контейнер для SSE прогресса --><div id=\"importer-progress-area\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,12 +55,12 @@ func ClientImporterTab(redirects []models.RedirectRule, activeJobID string) temp
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><!-- Карточка 2: Таблица постоянных 301-редиректов --><div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl shadow-sm space-y-6\"><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-admin-border pb-4\"><div><h3 class=\"font-semibold text-admin-content text-base\">Таблица постоянных 301-редиректов</h3><p class=\"text-xs text-admin-content-muted\">Мгновенное перенаправление старых URL на новые страницы без потери SEO-трафика</p></div><div class=\"flex items-center gap-2.5\"><button type=\"button\" @click=\"showAddForm = !showAddForm\" class=\"px-3.5 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs font-semibold text-admin-content transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs\"><svg class=\"w-3.5 h-3.5 text-admin-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить редирект</span></button></div></div><!-- Форма ручного добавления редиректа --><div x-show=\"showAddForm\" x-cloak class=\"p-4 rounded-xl border border-admin-accent/30 bg-admin-accent-muted/10 space-y-4\"><h4 class=\"text-xs font-bold text-admin-content uppercase tracking-wider font-mono\">Новое правило перенаправления</h4><form hx-post=\"/admin/redirects/new\" hx-target=\"#redirects-table-container\" hx-swap=\"innerHTML\" @submit=\"showAddForm = false\" class=\"grid grid-cols-1 sm:grid-cols-12 gap-3 items-end\"><div class=\"sm:col-span-5\"><label class=\"block text-[11px] font-medium text-admin-content-muted mb-1\">Исходный путь (Source URL)</label> <input type=\"text\" name=\"source_path\" required placeholder=\"/2021/05/old-article/\" class=\"w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"></div><div class=\"sm:col-span-4\"><label class=\"block text-[11px] font-medium text-admin-content-muted mb-1\">Целевой путь (Target URL)</label> <input type=\"text\" name=\"target_path\" required placeholder=\"/blog/new-article\" class=\"w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"></div><div class=\"sm:col-span-2\"><label class=\"block text-[11px] font-medium text-admin-content-muted mb-1\">HTTP Код</label> <select name=\"status_code\" class=\"w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><option value=\"301\" selected>301 (Permanent)</option> <option value=\"302\">302 (Temporary)</option></select></div><div class=\"sm:col-span-1\"><button type=\"submit\" class=\"w-full py-2 px-3 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold cursor-pointer shadow-xs transition\">ОК</button></div></form></div><!-- Поиск по редиректам -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div></div><!-- Карточка 2: Таблица постоянных 301-редиректов --><div class=\"p-5 sm:p-6 bg-admin-surface border border-admin-border rounded-xl space-y-5\"><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-admin-border pb-4\"><div><h3 class=\"font-semibold text-admin-content text-sm\">Таблица постоянных 301-редиректов</h3><p class=\"text-xs text-admin-content-muted\">Мгновенное перенаправление старых URL на новые страницы без потери SEO-трафика</p></div><div class=\"flex items-center gap-2.5\"><button type=\"button\" @click=\"showAddForm = !showAddForm\" class=\"px-3.5 py-2 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-hover text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 cursor-pointer\"><svg class=\"w-3.5 h-3.5 text-admin-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Добавить редирект</span></button></div></div><!-- Форма ручного добавления редиректа --><div x-show=\"showAddForm\" x-cloak class=\"p-4 rounded-xl border border-admin-accent-border bg-admin-accent-muted space-y-3\"><h4 class=\"text-xs font-semibold text-admin-content\">Новое правило перенаправления</h4><form hx-post=\"/admin/redirects/new\" hx-target=\"#redirects-table-container\" hx-swap=\"innerHTML\" @submit=\"showAddForm = false\" class=\"grid grid-cols-1 sm:grid-cols-12 gap-3 items-end\"><div class=\"sm:col-span-5\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1\">Исходный путь (Source URL)</label> <input type=\"text\" name=\"source_path\" required placeholder=\"/2021/05/old-article/\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono\"></div><div class=\"sm:col-span-4\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1\">Целевой путь (Target URL)</label> <input type=\"text\" name=\"target_path\" required placeholder=\"/blog/new-article\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono\"></div><div class=\"sm:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1\">HTTP Код</label> <select name=\"status_code\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface border border-admin-border text-admin-content text-xs font-mono\"><option value=\"301\" selected>301 (Permanent)</option> <option value=\"302\">302 (Temporary)</option></select></div><div class=\"sm:col-span-1\"><button type=\"submit\" class=\"w-full py-2 px-3 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold cursor-pointer transition\">ОК</button></div></form></div><!-- Поиск по редиректам -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(redirects) > 5 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"max-w-xs\"><input type=\"search\" x-model=\"searchQuery\" placeholder=\"Поиск по URL...\" class=\"w-full px-3 py-1.5 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"max-w-xs\"><input type=\"search\" x-model=\"searchQuery\" placeholder=\"Поиск по URL...\" class=\"admin-input w-full px-3 py-1.5 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs placeholder:text-admin-content-subtle\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -104,13 +105,13 @@ func ImporterSSEContainer(jobID string) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/importer/sse/" + jobID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 290, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 267, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" sse-swap=\"progress\" class=\"p-5 rounded-xl border border-admin-border bg-admin-surface-muted/40 space-y-4\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-2\"><div class=\"w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse\"></div><span class=\"text-xs font-semibold text-admin-content\">Идет обработка импорта...</span></div><span class=\"text-xs font-mono font-bold text-admin-accent\">0%</span></div><div class=\"w-full bg-admin-border h-2 rounded-full overflow-hidden\"><div class=\"bg-admin-accent h-full w-0 transition duration-300\"></div></div><p class=\"text-xs text-admin-content-muted font-mono truncate\">Подключение к потоку...</p></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" sse-swap=\"progress\" class=\"p-4 rounded-xl border border-admin-border bg-admin-surface-muted space-y-3\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-2\"><div class=\"w-2.5 h-2.5 rounded-full bg-admin-accent animate-pulse\"></div><span class=\"text-xs font-semibold text-admin-content\">Идет обработка импорта...</span></div><span class=\"text-xs font-mono font-semibold text-admin-accent tabular-nums\">0%</span></div><div class=\"w-full bg-admin-border h-2 rounded-full overflow-hidden\"><div class=\"bg-admin-accent h-full w-0 transition duration-300\"></div></div><p class=\"text-xs text-admin-content-muted font-mono truncate\">Подключение к потоку...</p></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -135,81 +136,81 @@ func ImporterProgressFragment(p models.RedirectRule, currentItem string, percent
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"p-5 rounded-xl border border-admin-border bg-admin-surface-muted/40 space-y-4\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"p-4 rounded-xl border border-admin-border bg-admin-surface-muted space-y-3\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if isComplete {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<span class=\"w-2.5 h-2.5 rounded-full bg-emerald-500\"></span> <span class=\"text-xs font-semibold text-emerald-600 dark:text-emerald-400\">Импорт успешно завершен!</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<span class=\"w-2.5 h-2.5 rounded-full bg-admin-success\"></span> <span class=\"text-xs font-semibold text-admin-success\">Импорт успешно завершен</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse\"></div><span class=\"text-xs font-semibold text-admin-content\">Идет обработка контента...</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"w-2.5 h-2.5 rounded-full bg-admin-accent animate-pulse\"></div><span class=\"text-xs font-semibold text-admin-content\">Идет обработка контента...</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><span class=\"text-xs font-mono font-bold text-admin-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div><span class=\"text-xs font-mono font-semibold text-admin-accent tabular-nums\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d%%", percent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 320, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 297, Col: 110}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span></div><div class=\"w-full bg-admin-border h-2.5 rounded-full overflow-hidden\"><div class=\"bg-admin-accent h-full transition duration-200\" style=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span></div><div class=\"w-full bg-admin-border h-2 rounded-full overflow-hidden\"><div class=\"bg-admin-accent h-full transition duration-200\" style=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues(fmt.Sprintf("width: %d%%;", percent))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 326, Col: 48}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 303, Col: 48}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"></div></div><div class=\"grid grid-cols-3 gap-2 pt-1 text-center font-mono text-xs\"><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[10px] text-admin-content-subtle uppercase\">Статей</div><div class=\"font-bold text-admin-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\"></div></div><div class=\"grid grid-cols-3 gap-2 pt-1 text-center font-mono text-xs tabular-nums\"><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[11px] text-admin-content-subtle\">Статей</div><div class=\"font-semibold text-admin-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", posts))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 333, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 310, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[10px] text-admin-content-subtle uppercase\">Страниц</div><div class=\"font-bold text-admin-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[11px] text-admin-content-subtle\">Страниц</div><div class=\"font-semibold text-admin-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", pages))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 337, Col: 72}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 314, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[10px] text-admin-content-subtle uppercase\">301-Редиректов</div><div class=\"font-bold text-admin-accent\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</div></div><div class=\"p-2 rounded-lg bg-admin-surface border border-admin-border\"><div class=\"text-[11px] text-admin-content-subtle\">301-Редиректов</div><div class=\"font-semibold text-admin-accent\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", redirects))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 341, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 318, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -227,7 +228,7 @@ func ImporterProgressFragment(p models.RedirectRule, currentItem string, percent
 			var templ_7745c5c3_Var11 string
 			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(currentItem)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 347, Col: 17}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 324, Col: 17}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
@@ -239,7 +240,7 @@ func ImporterProgressFragment(p models.RedirectRule, currentItem string, percent
 			}
 		}
 		if len(errors) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-3 rounded-lg bg-admin-danger-muted border border-admin-danger/20 text-admin-danger text-xs space-y-1\"><div class=\"font-semibold\">Предупреждения:</div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-3 rounded-lg bg-admin-danger-muted border border-admin-danger-border text-admin-danger text-xs space-y-1\"><div class=\"font-semibold\">Предупреждения:</div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -251,7 +252,7 @@ func ImporterProgressFragment(p models.RedirectRule, currentItem string, percent
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(errStr)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 355, Col: 48}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 332, Col: 48}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -268,7 +269,7 @@ func ImporterProgressFragment(p models.RedirectRule, currentItem string, percent
 			}
 		}
 		if isComplete {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"pt-2 flex justify-end\"><button type=\"button\" hx-get=\"/admin/tab/importer\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold cursor-pointer shadow-xs transition\">Обновить список редиректов</button></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"pt-1 flex justify-end\"><button type=\"button\" hx-get=\"/admin/tab/importer\" hx-target=\"#admin-tab-content\" hx-swap=\"innerHTML\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold cursor-pointer transition\">Обновить список редиректов</button></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -299,12 +300,12 @@ func RedirectsTable(redirects []models.RedirectRule) templ.Component {
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
 		if len(redirects) == 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"p-8 text-center border border-dashed border-admin-border rounded-xl text-admin-content-muted space-y-2\"><svg class=\"w-8 h-8 mx-auto text-admin-content-muted/60\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1\"></path></svg><p class=\"text-xs font-medium\">Редиректы еще не настроены</p><p class=\"text-[11px] text-admin-content-subtle max-w-sm mx-auto\">Правила создаются автоматически при загрузке WXR XML из WordPress или через кнопку \"Добавить редирект\".</p></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"p-8 text-center border border-dashed border-admin-border rounded-xl text-admin-content-muted space-y-2\"><svg class=\"w-8 h-8 mx-auto text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\" d=\"M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1\"></path></svg><p class=\"text-xs font-medium text-admin-content\">Список редиректов пока пустой</p><p class=\"text-xs text-admin-content-muted max-w-sm mx-auto\">Правила создаются автоматически при загрузке WXR XML из WordPress или через кнопку «Добавить редирект».</p></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div class=\"overflow-x-auto border border-admin-border rounded-xl\"><table class=\"tabular-nums w-full text-left text-xs text-admin-content divide-y divide-admin-border\"><thead class=\"bg-admin-surface-muted/50 text-[11px] font-mono uppercase text-admin-content-subtle\"><tr><th class=\"px-4 py-3\">Исходный URL (Старый)</th><th class=\"px-4 py-3\">Куда перенаправлять (Новый)</th><th class=\"px-4 py-3\">Код</th><th class=\"px-4 py-3 text-right\">Действие</th></tr></thead> <tbody class=\"divide-y divide-admin-border\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "<div x-data=\"{\n\t\t\t\tnoMatches() {\n\t\t\t\t\tif (!searchQuery || !searchQuery.trim()) return false;\n\t\t\t\t\tconst q = searchQuery.trim().toLowerCase();\n\t\t\t\t\treturn !Array.from(this.$el.querySelectorAll('tr[data-search]')).some(tr => (tr.dataset.search || '').includes(q));\n\t\t\t\t}\n\t\t\t}\"><div x-show=\"!noMatches()\" class=\"overflow-x-auto border border-admin-border rounded-xl\"><table class=\"tabular-nums w-full text-left text-xs text-admin-content divide-y divide-admin-border\"><thead class=\"bg-admin-surface-muted text-xs font-medium text-admin-content-subtle\"><tr><th class=\"px-4 py-2.5\">Исходный URL (Старый)</th><th class=\"px-4 py-2.5\">Куда перенаправлять (Новый)</th><th class=\"px-4 py-2.5\">Код</th><th class=\"px-4 py-2.5 text-right\">Действие</th></tr></thead> <tbody class=\"divide-y divide-admin-border\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -314,7 +315,7 @@ func RedirectsTable(redirects []models.RedirectRule) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</tbody></table></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</tbody></table></div><div x-show=\"noMatches()\" x-cloak class=\"p-8 text-center border border-dashed border-admin-border rounded-xl space-y-2\"><p class=\"text-xs font-medium text-admin-content\">По вашему запросу редиректы не найдены</p><button type=\"button\" @click=\"searchQuery = ''\" class=\"px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-hover text-xs font-medium text-admin-accent cursor-pointer\">Сбросить поиск</button></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -347,91 +348,104 @@ func RedirectRow(rule models.RedirectRule) templ.Component {
 		var templ_7745c5c3_Var15 string
 		templ_7745c5c3_Var15, templ_7745c5c3_Err = templruntime.NewAttributeExpression("redirect-row-" + rule.ID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 410, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 408, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var15)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" x-show=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" data-search=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var16 string
-		templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("!searchQuery || '%s'.includes(searchQuery.toLowerCase()) || '%s'.includes(searchQuery.toLowerCase())", rule.SourcePath, rule.TargetPath)).Resolve(ctx)
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templruntime.NewAttributeExpression(strings.ToLower(rule.SourcePath + " " + rule.TargetPath)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 411, Col: 160}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 409, Col: 72}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var16)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" class=\"hover:bg-admin-surface-muted/30 transition-colors\"><td class=\"px-4 py-3 font-mono text-admin-content font-medium break-all\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" x-show=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(rule.SourcePath)
+		templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(fmt.Sprintf("!searchQuery || '%s'.includes(searchQuery.toLowerCase()) || '%s'.includes(searchQuery.toLowerCase())", strings.ToLower(rule.SourcePath), strings.ToLower(rule.TargetPath))).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 415, Col: 20}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 410, Col: 194}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</td><td class=\"px-4 py-3 font-mono text-admin-accent break-all flex items-center gap-1.5\"><span>→</span> <span>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" class=\"hover:bg-admin-surface-hover/50 transition-colors\"><td class=\"px-4 py-3 font-mono text-admin-content font-medium break-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
-		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(rule.TargetPath)
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(rule.SourcePath)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 419, Col: 26}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 414, Col: 20}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</span></td><td class=\"px-4 py-3 whitespace-nowrap\"><span class=\"px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold border bg-emerald-500/10 text-emerald-500 border-emerald-500/25\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</td><td class=\"px-4 py-3 font-mono text-admin-accent break-all\"><span class=\"inline-flex items-center gap-1.5\"><svg class=\"w-3.5 h-3.5 shrink-0 text-admin-content-subtle\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M14 5l7 7m0 0l-7 7m7-7H3\"></path></svg> <span>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
-		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", rule.StatusCode))
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(rule.TargetPath)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 423, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 421, Col: 27}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span></td><td class=\"px-4 py-3 whitespace-nowrap text-right\"><button type=\"button\" hx-post=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span></span></td><td class=\"px-4 py-3 whitespace-nowrap\"><span class=\"px-2 py-0.5 rounded-full text-[11px] font-mono font-medium border bg-admin-success-muted text-admin-success border-admin-success-border\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/redirects/" + rule.ID + "/delete").Resolve(ctx)
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", rule.StatusCode))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 429, Col: 55}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 426, Col: 40}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var20)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "\" hx-target=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</span></td><td class=\"px-4 py-3 whitespace-nowrap text-right\"><button type=\"button\" hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#redirect-row-" + rule.ID).Resolve(ctx)
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templruntime.NewAttributeExpression("/admin/redirects/" + rule.ID + "/delete").Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 430, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 432, Col: 55}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var21)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" hx-swap=\"outerHTML swap:300ms\" hx-confirm=\"Удалить это правило редиректа?\" title=\"Удалить редирект\" aria-label=\"Удалить редирект\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></td></tr>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templruntime.NewAttributeExpression("#redirect-row-" + rule.ID).Resolve(ctx)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_importer.templ`, Line: 433, Col: 42}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var22)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\" hx-swap=\"outerHTML swap:300ms\" hx-confirm=\"Удалить это правило редиректа?\" title=\"Удалить редирект\" aria-label=\"Удалить редирект\" class=\"p-1.5 rounded-lg text-admin-content-muted hover:text-admin-danger hover:bg-admin-danger-muted transition-colors cursor-pointer\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16\"></path></svg></button></td></tr>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -9,8 +9,6 @@ package pages
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-// ui-craft-waive: RFX-CLR-RAW-GRAY (Small status chip uses the fixed neutral admin accent palette)
-
 import (
 	"fmt"
 	"sitecraft/internal/ai"
@@ -41,7 +39,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIProvider).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 29, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 27, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 		if templ_7745c5c3_Err != nil {
@@ -54,7 +52,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIBaseURL).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 30, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 28, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 		if templ_7745c5c3_Err != nil {
@@ -67,7 +65,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIModelName).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 31, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 29, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
@@ -80,7 +78,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIFolderID).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 32, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 30, Col: 46}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
@@ -93,13 +91,13 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.JSONString(presets)).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 33, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 31, Col: 42}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"space-y-6\"><!-- Заголовок страницы --><div class=\"flex flex-col sm:flex-row sm:items-center justify-between gap-4\"><div><h2 class=\"text-xl sm:text-2xl font-bold text-admin-content tracking-tight flex items-center gap-2.5\"><span>AI Engine & Universal MCP Server</span> <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20\">152-ФЗ & Draft-First</span></h2><p class=\"text-xs sm:text-sm text-admin-content-muted mt-1\">Универсальный ИИ-шлюз (Claude, OpenAI, Gemini, DeepSeek, Яндекс GPT, GigaChat) и открытый протокол MCP для подключения агентов</p></div></div><!-- Верхняя сводка KPI --><div class=\"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4\"><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Текущий провайдер</div><div class=\"text-lg sm:text-xl font-bold text-admin-content mt-1 truncate\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"max-w-5xl space-y-6\"><!-- Заголовок страницы --><div class=\"pb-4 border-b border-admin-border\"><h2 class=\"text-lg font-semibold text-admin-content tracking-tight flex flex-wrap items-center gap-2.5\"><span>AI Engine &amp; Universal MCP Server</span> <span class=\"inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-admin-success-muted text-admin-success border border-admin-success-border\">152-ФЗ &amp; Draft-First</span></h2><p class=\"text-xs text-admin-content-muted mt-1\">Универсальный ИИ-шлюз (Claude, OpenAI, Gemini, DeepSeek, Яндекс GPT, GigaChat) и открытый протокол MCP для подключения агентов</p></div><!-- Компактная живая строка статуса AI & MCP --><div class=\"flex flex-wrap items-center gap-x-5 gap-y-2 px-4 py-2.5 rounded-xl bg-admin-surface border border-admin-border text-xs\"><div class=\"flex items-center gap-1.5 text-admin-content-muted\"><span>Провайдер:</span> <span class=\"font-semibold text-admin-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -107,7 +105,7 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(settings.AIProvider)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 59, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 53, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -119,53 +117,91 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"flex items-center gap-1.5 text-[11px] font-mono font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400\"><span class=\"w-2 h-2 rounded-full bg-emerald-500 animate-pulse\"></span> <span>MCP Сервер</span></div><div class=\"text-lg sm:text-xl font-bold text-admin-content mt-1 font-mono\">SSE / HTTP 2.0</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Безопасность контента</div><div class=\"text-lg sm:text-xl font-bold text-blue-500 mt-1 font-mono\">Draft-First (Черновики)</div></div><div class=\"p-4 rounded-2xl bg-admin-surface border border-admin-border shadow-2xs\"><div class=\"text-[11px] font-mono font-semibold uppercase tracking-wider text-admin-content-subtle\">Защита данных</div><div class=\"text-lg sm:text-xl font-bold text-admin-content mt-1\">152-ФЗ Маскирование</div></div></div><!-- Карточка 1: Настройки AI-провайдера и ключей --><div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl shadow-sm space-y-6\"><div class=\"flex items-center justify-between border-b border-admin-border pb-4\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center font-bold\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 10V3L4 14h7v7l9-11h-7z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-base\">Конфигурация Direct LLM Backend</h3><p class=\"text-xs text-admin-content-muted\">Выберите пресет сервиса или настройте кастомный OpenAI-совместимый эндпоинт</p></div></div></div><form hx-post=\"/admin/ai/settings\" hx-target=\"#ai-settings-feedback\" hx-swap=\"innerHTML\" class=\"space-y-5\"><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Провайдер / Пресет сервиса</label> <select name=\"ai_provider\" x-model=\"currentProvider\" @change=\"onProviderChange($event.target.value)\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-medium cursor-pointer\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, p := range presets {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<option value=\"")
+		if settings.AIModelName != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<span class=\"font-mono text-[11px] text-admin-content-subtle\">(")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var8 string
-			templ_7745c5c3_Var8, templ_7745c5c3_Err = templruntime.NewAttributeExpression(p.ID).Resolve(ctx)
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(settings.AIModelName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 127, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 59, Col: 90}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			if p.ID == settings.AIProvider {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " selected")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, ">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(p.Name)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 128, Col: 17}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</option>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, ")</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</select></div><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Идентификатор модели</label> <input type=\"text\" name=\"ai_model_name\" x-model=\"modelName\" placeholder=\"gpt-4o-mini / claude-3-5-sonnet-latest / yandexgpt-lite\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-mono\"></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Базовый URL (API Base URL)</label> <input type=\"url\" name=\"ai_base_url\" x-model=\"baseUrl\" placeholder=\"https://api.openai.com/v1\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-mono\"></div><div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"flex items-center gap-1.5\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if settings.AIAPIKeyEncrypted != "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<span class=\"w-1.5 h-1.5 rounded-full bg-admin-success\"></span> <span class=\"text-admin-content-muted\">Ключ: <span class=\"text-admin-success font-medium\">настроен (AES-256)</span></span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "<span class=\"w-1.5 h-1.5 rounded-full bg-admin-warning\"></span> <span class=\"text-admin-content-muted\">Ключ: <span class=\"text-admin-warning font-medium\">не задан</span></span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"flex items-center gap-1.5 text-admin-content-muted\"><span class=\"w-1.5 h-1.5 rounded-full bg-admin-success\"></span> <span>MCP:</span> <span class=\"font-mono text-[11px] text-admin-content\">/api/v1/mcp</span></div><span class=\"text-admin-border hidden sm:inline\">|</span><div class=\"text-admin-content-muted\">Режим: <span class=\"font-medium text-admin-content\">Draft-First · 152-ФЗ</span></div></div><!-- Карточка 1: Настройки AI-провайдера и ключей --><div class=\"p-5 sm:p-6 bg-admin-surface border border-admin-border rounded-xl space-y-5\"><div class=\"flex items-center gap-3 border-b border-admin-border pb-4\"><div class=\"w-9 h-9 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center shrink-0\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M13 10V3L4 14h7v7l9-11h-7z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-sm\">Конфигурация Direct LLM Backend</h3><p class=\"text-xs text-admin-content-muted\">Выберите пресет сервиса или настройте кастомный OpenAI-совместимый эндпоинт</p></div></div><form hx-post=\"/admin/ai/settings\" hx-target=\"#ai-settings-feedback\" hx-swap=\"innerHTML\" class=\"space-y-4\"><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Провайдер / Пресет сервиса</label> <select name=\"ai_provider\" x-model=\"currentProvider\" @change=\"onProviderChange($event.target.value)\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm transition-colors font-medium cursor-pointer\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, p := range presets {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<option value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var9 string
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templruntime.NewAttributeExpression(p.ID).Resolve(ctx)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 114, Col: 28}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if p.ID == settings.AIProvider {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, " selected")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, ">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(p.Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 115, Col: 17}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</option>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</select></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Идентификатор модели</label> <input type=\"text\" name=\"ai_model_name\" x-model=\"modelName\" placeholder=\"gpt-4o-mini / claude-3-5-sonnet-latest / yandexgpt-lite\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors font-mono\"></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Базовый URL (API Base URL)</label> <input type=\"url\" name=\"ai_base_url\" x-model=\"baseUrl\" placeholder=\"https://api.openai.com/v1\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors font-mono\"></div><div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -173,33 +209,33 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 		if settings.AIAPIKeyEncrypted != "" {
 			keyPlaceholder = "•••••••• (Ключ сохранен, оставьте пустым чтобы не менять)"
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "<label class=\"block text-xs font-medium text-admin-content mb-1.5\"><span>API Ключ (Хранится в зашифрованном виде AES-256)</span></label><div class=\"relative\"><input :type=\"showKey ? 'text' : 'password'\" name=\"ai_api_key\" placeholder=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templruntime.NewAttributeExpression(keyPlaceholder).Resolve(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 172, Col: 36}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var10)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" class=\"w-full px-3.5 py-2.5 pr-10 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-mono\"> <button type=\"button\" @click=\"showKey = !showKey\" class=\"absolute inset-y-0 right-0 px-3 flex items-center text-admin-content-muted hover:text-admin-content\" aria-label=\"Показать или скрыть API-ключ\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg></button></div></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">HTTP/SOCKS5 Прокси (Опционально для РФ)</label> <input type=\"text\" name=\"ai_proxy_url\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "<label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\"><span>API Ключ (шифруется AES-256)</span></label><div class=\"relative\"><input :type=\"showKey ? 'text' : 'password'\" name=\"ai_api_key\" placeholder=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIProxyURL).Resolve(ctx)
+		templ_7745c5c3_Var11, templ_7745c5c3_Err = templruntime.NewAttributeExpression(keyPlaceholder).Resolve(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 196, Col: 34}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 159, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var11)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" placeholder=\"http://user:password@proxy.ip:port\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-mono\"></div><div x-show=\"currentProvider === 'yandex'\"><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Yandex Cloud Folder ID</label> <input type=\"text\" name=\"ai_folder_id\" x-model=\"folderId\" placeholder=\"b1g...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors font-mono\"></div></div><div class=\"flex items-center justify-between pt-2\"><div id=\"ai-settings-feedback\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" class=\"admin-input w-full px-3 py-2 pr-10 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors font-mono\"> <button type=\"button\" @click=\"showKey = !showKey\" class=\"absolute inset-y-0 right-0 px-3 flex items-center text-admin-content-muted hover:text-admin-content cursor-pointer\" aria-label=\"Показать или скрыть API-ключ\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 12a3 3 0 11-6 0 3 3 0 016 0z\"></path> <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z\"></path></svg></button></div></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">HTTP/SOCKS5 Прокси (опционально)</label> <input type=\"text\" name=\"ai_proxy_url\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var12 string
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templruntime.NewAttributeExpression(settings.AIProxyURL).Resolve(ctx)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 183, Col: 34}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var12)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" placeholder=\"http://user:password@proxy.ip:port\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors font-mono\"></div><div x-show=\"currentProvider === 'yandex'\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Yandex Cloud Folder ID</label> <input type=\"text\" name=\"ai_folder_id\" x-model=\"folderId\" placeholder=\"b1g...\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors font-mono\"></div></div><div class=\"flex flex-wrap items-center justify-between gap-3 pt-2\"><div id=\"ai-settings-feedback\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -209,12 +245,12 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div><div class=\"flex items-center gap-2\"><button type=\"button\" hx-post=\"/admin/ai/test\" hx-target=\"#ai-settings-feedback\" hx-include=\"closest form\" class=\"px-4 py-2 rounded-xl border border-admin-border hover:bg-admin-surface-muted text-admin-content text-xs font-semibold transition-colors cursor-pointer\">Проверить связь</button> <button type=\"submit\" class=\"px-5 py-2 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold shadow-sm transition cursor-pointer\">Сохранить настройки</button></div></div></form></div><!-- Карточка 2: Интерактивный AI Копирайтер & SEO Копилот --><div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl shadow-sm space-y-6\"><div class=\"flex items-center justify-between border-b border-admin-border pb-4\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-500 flex items-center justify-center font-bold\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-base\">Интерактивный AI Copilot</h3><p class=\"text-xs text-admin-content-muted\">Генерация черновиков статей в 1 клик и автоматическое составление SEO-тегов</p></div></div><div class=\"flex items-center gap-1.5 p-1 bg-admin-surface-muted border border-admin-border rounded-xl\"><button type=\"button\" @click=\"copilotTab = 'generator'\" :class=\"copilotTab === 'generator' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3 py-1.5 rounded-lg text-xs transition-colors cursor-pointer\">Генератор статей</button> <button type=\"button\" @click=\"copilotTab = 'seo'\" :class=\"copilotTab === 'seo' ? 'bg-admin-surface text-admin-content font-semibold shadow-xs' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3 py-1.5 rounded-lg text-xs transition-colors cursor-pointer\">SEO Метатеги</button></div></div><!-- Подраздел: Генератор черновиков статей --><div x-show=\"copilotTab === 'generator'\" class=\"space-y-4\"><form hx-post=\"/admin/ai/generate-article\" hx-target=\"#copilot-result\" hx-swap=\"innerHTML\" hx-indicator=\"#ai-spinner\" class=\"space-y-4\"><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\"><div class=\"md:col-span-2\"><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Тема или заголовок статьи</label> <input type=\"text\" name=\"topic\" required placeholder=\"Например: Как подготовить автомобиль к зиме — чек-лист из 10 шагов\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"></div><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Стиль изложения (Тон)</label> <select name=\"tone\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors cursor-pointer\"><option value=\"expert\">Экспертный & Практичный</option> <option value=\"sales\">Продающий & Убедительный</option> <option value=\"friendly\">Дружелюбный & Простой</option> <option value=\"corporate\">Строгий деловой</option></select></div></div><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Ключевые фразы через запятую (для SEO)</label> <input type=\"text\" name=\"keywords\" placeholder=\"замена масла, зимняя резина, тормозная жидкость, Москва\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"></div><div class=\"flex items-center justify-between pt-2\"><div class=\"text-[11px] text-admin-content-muted flex items-center gap-1.5\"><svg class=\"w-4 h-4 text-emerald-500 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\"></path></svg> <span>Статья будет сохранена строго как <strong>Черновик</strong> (Draft-First) без немедленной публикации</span></div><button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold shadow-sm transition flex items-center gap-2 cursor-pointer\"><span>Сгенерировать черновик</span> <svg id=\"ai-spinner\" class=\"w-4 h-4 animate-spin htmx-indicator\" fill=\"none\" viewBox=\"0 0 24 24\"><circle class=\"opacity-25\" cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" stroke-width=\"4\"></circle> <path class=\"opacity-75\" fill=\"currentColor\" d=\"M4 12a8 8 0 018-8v8H4z\"></path></svg></button></div></form></div><!-- Подраздел: Генератор SEO-метатегов --><div x-show=\"copilotTab === 'seo'\" class=\"space-y-4\"><form hx-post=\"/admin/ai/generate-seo\" hx-target=\"#copilot-result\" hx-swap=\"innerHTML\" class=\"space-y-4\"><div><label class=\"block text-xs font-medium text-admin-content mb-1.5\">Текст статьи или описание услуги</label> <textarea name=\"text\" rows=\"4\" required placeholder=\"Вставьте фрагмент текста для автоматического извлечения Title, Description и Keywords...\" class=\"w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors\"></textarea></div><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-5 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white text-xs font-semibold shadow-sm transition cursor-pointer\">Извлечь SEO-метатеги</button></div></form></div><!-- Результат работы копилота --><div id=\"copilot-result\" class=\"empty:hidden\"></div></div><!-- Карточка 3: Universal MCP Server & Custom GPTs Интеграция --><div class=\"p-6 bg-admin-surface border border-admin-border rounded-2xl shadow-sm space-y-6\"><div class=\"flex items-center justify-between border-b border-admin-border pb-4\"><div class=\"flex items-center gap-3\"><div class=\"w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold\"><svg class=\"w-5 h-5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-base\">Подключение внешних ИИ-агентов (MCP & OpenAPI)</h3><p class=\"text-xs text-admin-content-muted\">Подключайте Claude Desktop, Cursor, Zed или OpenAI Custom GPTs напрямую к сайту</p></div></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><!-- MCP Server Endpoint --><div class=\"p-4 rounded-xl bg-admin-surface-muted/50 border border-admin-border space-y-2\"><div class=\"flex items-center justify-between\"><span class=\"text-xs font-semibold text-admin-content\">Model Context Protocol (SSE)</span> <span class=\"px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400\">Claude / Cursor / Zed</span></div><div class=\"flex items-center gap-2\"><input type=\"text\" readonly value=\"/api/v1/mcp\" class=\"w-full px-3 py-1.5 rounded-lg bg-admin-surface border border-admin-border text-xs font-mono text-admin-content select-all\"></div><p class=\"text-[11px] text-admin-content-muted leading-relaxed\">Эндпоинт для прямого управления сайтом через MCP-клиенты. Поддерживает инструменты: создание черновиков статей, чтение каталога, генерация SEO.</p></div><!-- OpenAPI 3.1 Endpoint --><div class=\"p-4 rounded-xl bg-admin-surface-muted/50 border border-admin-border space-y-2\"><div class=\"flex items-center justify-between\"><span class=\"text-xs font-semibold text-admin-content\">OpenAPI 3.1 Schema</span> <span class=\"px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400\">Custom GPTs / Gemini</span></div><div class=\"flex items-center gap-2\"><input type=\"text\" readonly value=\"/api/v1/agent/openapi.json\" class=\"w-full px-3 py-1.5 rounded-lg bg-admin-surface border border-admin-border text-xs font-mono text-admin-content select-all\"></div><p class=\"text-[11px] text-admin-content-muted leading-relaxed\">Вставьте эту ссылку в настройки Actions в OpenAI GPTs Builder или Google Gemini Extensions для создания корпоративного чат-бота.</p></div></div><!-- Конфиг для Claude Desktop --><div class=\"space-y-2\"><div class=\"text-xs font-medium text-admin-content\">Конфигурация для Claude Desktop (`claude_desktop_config.json`):</div><pre class=\"p-3.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-xs font-mono overflow-x-auto leading-relaxed\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</div><div class=\"flex items-center gap-2 ml-auto\"><button type=\"button\" hx-post=\"/admin/ai/test\" hx-target=\"#ai-settings-feedback\" hx-include=\"closest form\" class=\"px-3.5 py-2 rounded-lg border border-admin-border hover:bg-admin-surface-hover text-admin-content text-xs font-medium transition-colors cursor-pointer\">Проверить связь</button> <button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold transition cursor-pointer\">Сохранить настройки</button></div></div></form></div><!-- Карточка 2: Интерактивный AI Копирайтер & SEO Копилот --><div class=\"p-5 sm:p-6 bg-admin-surface border border-admin-border rounded-xl space-y-5\"><div class=\"flex flex-wrap items-center justify-between gap-3 border-b border-admin-border pb-4\"><div class=\"flex items-center gap-3\"><div class=\"w-9 h-9 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center shrink-0\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-sm\">Интерактивный AI Copilot</h3><p class=\"text-xs text-admin-content-muted\">Генерация черновиков статей в 1 клик и автоматическое составление SEO-тегов</p></div></div><div class=\"inline-flex items-center gap-1 p-1 bg-admin-surface-muted border border-admin-border rounded-lg\"><button type=\"button\" @click=\"copilotTab = 'generator'\" :class=\"copilotTab === 'generator' ? 'bg-admin-surface text-admin-content font-semibold' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3 py-1.5 rounded-md text-xs transition-colors cursor-pointer\">Генератор статей</button> <button type=\"button\" @click=\"copilotTab = 'seo'\" :class=\"copilotTab === 'seo' ? 'bg-admin-surface text-admin-content font-semibold' : 'text-admin-content-muted hover:text-admin-content'\" class=\"px-3 py-1.5 rounded-md text-xs transition-colors cursor-pointer\">SEO Метатеги</button></div></div><!-- Подраздел: Генератор черновиков статей --><div x-show=\"copilotTab === 'generator'\" class=\"space-y-4\"><form hx-post=\"/admin/ai/generate-article\" hx-target=\"#copilot-result\" hx-swap=\"innerHTML\" hx-indicator=\"#ai-spinner\" class=\"space-y-4\"><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\"><div class=\"md:col-span-2\"><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Тема или заголовок статьи</label> <input type=\"text\" name=\"topic\" required placeholder=\"Например: Как подготовить автомобиль к зиме — чек-лист из 10 шагов\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors\"></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Стиль изложения (Тон)</label> <select name=\"tone\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-sm transition-colors cursor-pointer\"><option value=\"expert\">Экспертный &amp; Практичный</option> <option value=\"sales\">Продающий &amp; Убедительный</option> <option value=\"friendly\">Дружелюбный &amp; Простой</option> <option value=\"corporate\">Строгий деловой</option></select></div></div><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Ключевые фразы через запятую (для SEO)</label> <input type=\"text\" name=\"keywords\" placeholder=\"замена масла, зимняя резина, тормозная жидкость, Москва\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors\"></div><div class=\"flex flex-wrap items-center justify-between gap-3 pt-1\"><div class=\"text-xs text-admin-content-muted flex items-center gap-1.5\"><svg class=\"w-4 h-4 text-admin-success shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z\"></path></svg> <span>Статья сохраняется как <strong>Черновик</strong> (Draft-First) без публикации</span></div><button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold transition flex items-center gap-2 cursor-pointer\"><span>Сгенерировать черновик</span> <svg id=\"ai-spinner\" class=\"w-4 h-4 animate-spin htmx-indicator\" fill=\"none\" viewBox=\"0 0 24 24\"><circle class=\"opacity-25\" cx=\"12\" cy=\"12\" r=\"10\" stroke=\"currentColor\" stroke-width=\"4\"></circle> <path class=\"opacity-75\" fill=\"currentColor\" d=\"M4 12a8 8 0 018-8v8H4z\"></path></svg></button></div></form></div><!-- Подраздел: Генератор SEO-метатегов --><div x-show=\"copilotTab === 'seo'\" class=\"space-y-4\"><form hx-post=\"/admin/ai/generate-seo\" hx-target=\"#copilot-result\" hx-swap=\"innerHTML\" class=\"space-y-4\"><div><label class=\"block text-xs font-medium text-admin-content-muted mb-1.5\">Текст статьи или описание услуги</label> <textarea name=\"text\" rows=\"4\" required placeholder=\"Вставьте фрагмент текста для автоматического извлечения Title, Description и Keywords...\" class=\"admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content placeholder:text-admin-content-subtle text-sm transition-colors\"></textarea></div><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-4 py-2 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent text-xs font-semibold transition cursor-pointer\">Извлечь SEO-метатеги</button></div></form></div><!-- Результат работы копилота --><div id=\"copilot-result\" class=\"empty:hidden\"></div></div><!-- Карточка 3: Universal MCP Server & Custom GPTs Интеграция --><div class=\"p-5 sm:p-6 bg-admin-surface border border-admin-border rounded-xl space-y-5\"><div class=\"flex items-center gap-3 border-b border-admin-border pb-4\"><div class=\"w-9 h-9 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success flex items-center justify-center shrink-0\"><svg class=\"w-4 h-4\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"></path></svg></div><div><h3 class=\"font-semibold text-admin-content text-sm\">Подключение внешних ИИ-агентов (MCP &amp; OpenAPI)</h3><p class=\"text-xs text-admin-content-muted\">Подключайте Claude Desktop, Cursor, Zed или OpenAI Custom GPTs напрямую к сайту</p></div></div><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\"><!-- MCP Server Endpoint --><div class=\"p-4 rounded-xl bg-admin-surface-muted border border-admin-border space-y-2\"><div class=\"flex items-center justify-between gap-2\"><span class=\"text-xs font-semibold text-admin-content\">Model Context Protocol (SSE)</span> <span class=\"px-2 py-0.5 rounded-full text-[11px] font-mono bg-admin-success-muted text-admin-success border border-admin-success-border\">Claude / Cursor / Zed</span></div><input type=\"text\" readonly value=\"/api/v1/mcp\" class=\"admin-input w-full px-3 py-1.5 rounded-lg bg-admin-surface border border-admin-border text-xs font-mono text-admin-content select-all\"><p class=\"text-xs text-admin-content-muted leading-relaxed\">Эндпоинт для прямого управления сайтом через MCP-клиенты: создание черновиков статей, чтение каталога, генерация SEO.</p></div><!-- OpenAPI 3.1 Endpoint --><div class=\"p-4 rounded-xl bg-admin-surface-muted border border-admin-border space-y-2\"><div class=\"flex items-center justify-between gap-2\"><span class=\"text-xs font-semibold text-admin-content\">OpenAPI 3.1 Schema</span> <span class=\"px-2 py-0.5 rounded-full text-[11px] font-mono bg-admin-accent-muted text-admin-accent border border-admin-accent-border\">Custom GPTs / Gemini</span></div><input type=\"text\" readonly value=\"/api/v1/agent/openapi.json\" class=\"admin-input w-full px-3 py-1.5 rounded-lg bg-admin-surface border border-admin-border text-xs font-mono text-admin-content select-all\"><p class=\"text-xs text-admin-content-muted leading-relaxed\">Укажите эту ссылку в настройках Actions в OpenAI GPTs Builder или Google Gemini Extensions.</p></div></div><!-- Конфиг для Claude Desktop --><div x-data=\"{\n\t\t\t\t\tcopied: false,\n\t\t\t\t\tcopyMcpConfig() {\n\t\t\t\t\t\tconst cfg = JSON.stringify({ mcpServers: { sitecraft: { url: window.location.origin + '/api/v1/mcp' } } }, null, 2);\n\t\t\t\t\t\tnavigator.clipboard.writeText(cfg);\n\t\t\t\t\t\tthis.copied = true;\n\t\t\t\t\t\t$dispatch('admin-toast', { message: 'Конфиг MCP скопирован', tone: 'success' });\n\t\t\t\t\t\tsetTimeout(() => this.copied = false, 2000);\n\t\t\t\t\t}\n\t\t\t\t}\" class=\"space-y-2\"><div class=\"flex items-center justify-between gap-2\"><span class=\"text-xs font-medium text-admin-content\">Конфигурация для Claude Desktop (<code class=\"font-mono text-admin-content-muted\">claude_desktop_config.json</code>)</span> <button type=\"button\" @click=\"copyMcpConfig()\" class=\"px-2.5 py-1 rounded-md border border-admin-border bg-admin-surface hover:bg-admin-surface-hover text-xs font-medium text-admin-content-muted hover:text-admin-content transition-colors cursor-pointer\"><span x-text=\"copied ? 'Скопировано' : 'Копировать JSON'\">Копировать JSON</span></button></div><pre class=\"p-3.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-xs font-mono overflow-x-auto leading-relaxed\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(`{
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(`{
   "mcpServers": {
     "sitecraft": {
       "url": "https://your-domain.ru/api/v1/mcp"
@@ -222,13 +258,13 @@ func ClientAITab(settings models.SiteSettings, presets []ai.ProviderPreset, test
   }
 }`)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 443, Col: 2}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 445, Col: 2}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</pre></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "</pre></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -254,38 +290,38 @@ func AIAlert(msg string, success bool) templ.Component {
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
 		if success {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-emerald-500 text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var14 string
-			templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 455, Col: 14}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</span></div>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "<div class=\"p-3 rounded-xl bg-admin-danger-muted border border-admin-danger/25 text-admin-danger text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "<div class=\"p-3 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5 13l4 4L19 7\"></path></svg> <span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var15 string
 			templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 462, Col: 14}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 457, Col: 14}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</span></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</span></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "<div class=\"p-3 rounded-lg bg-admin-danger-muted border border-admin-danger-border text-admin-danger text-xs flex items-center gap-2\"><svg class=\"w-4 h-4 shrink-0\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z\"></path></svg> <span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var16 string
+			templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(msg)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 464, Col: 14}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</span></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -311,59 +347,46 @@ func AICopilotArticleResult(title string, slug string, preview string) templ.Com
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "<div class=\"p-4 rounded-xl bg-admin-surface-muted/60 border border-admin-border space-y-3\"><div class=\"flex items-center justify-between\"><div class=\"flex items-center gap-2\"><span class=\"w-2 h-2 rounded-full bg-blue-500\"></span> <span class=\"text-xs font-semibold text-admin-content\">Черновик успешно создан</span> <span class=\"px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400\">Draft-First</span></div><a href=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(fmt.Sprintf("/client?tab=articles"))).ResolveURL(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 476, Col: 61}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var17)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" class=\"text-xs text-admin-accent hover:underline font-medium inline-flex items-center gap-1\"><span>Открыть в блоге</span> <svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"></path></svg></a></div><div class=\"text-sm font-semibold text-admin-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "<div class=\"p-4 rounded-xl bg-admin-surface-muted border border-admin-border space-y-2.5\"><div class=\"flex flex-wrap items-center justify-between gap-2\"><div class=\"flex items-center gap-2\"><span class=\"w-2 h-2 rounded-full bg-admin-accent\"></span> <span class=\"text-xs font-semibold text-admin-content\">Черновик успешно создан</span> <span class=\"px-2 py-0.5 rounded-full text-[11px] font-mono bg-admin-accent-muted text-admin-accent border border-admin-accent-border\">Draft-First</span></div><a href=\"/client?tab=articles\" class=\"text-xs text-admin-accent hover:underline font-medium inline-flex items-center gap-1\"><span>Открыть в блоге</span> <svg class=\"w-3.5 h-3.5\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\"></path></svg></a></div><div class=\"text-sm font-semibold text-admin-content\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 486, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 488, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</div><div class=\"text-xs text-admin-content-muted leading-relaxed line-clamp-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div><div class=\"text-xs text-admin-content-muted leading-relaxed line-clamp-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var19 string
 		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(preview)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 488, Col: 12}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 490, Col: 12}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "</div><div class=\"text-[11px] font-mono text-admin-content-subtle\">URL slug: /blog/")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</div><div class=\"text-[11px] font-mono text-admin-content-subtle\">URL slug: /blog/")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
 		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(slug)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 491, Col: 25}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 493, Col: 25}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, " (Статус: Не опубликована)</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, " (Статус: Не опубликована)</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -388,92 +411,92 @@ func AICopilotSEOResult(meta ai.SEOMeta) templ.Component {
 		}
 		ctx = templ.InitializeContext(ctx)
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "<div class=\"p-4 rounded-xl bg-admin-surface-muted/60 border border-admin-border space-y-3\"><div class=\"text-xs font-semibold text-admin-content flex items-center justify-between\"><span>Сгенерированные метатеги</span> <span class=\"text-[10px] font-mono text-admin-content-muted\">Готово к использованию</span></div><div class=\"space-y-2\"><div><div class=\"text-[11px] font-medium text-admin-content-subtle flex justify-between\"><span>Title:</span> <span class=\"font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div class=\"p-4 rounded-xl bg-admin-surface-muted border border-admin-border space-y-3\"><div class=\"text-xs font-semibold text-admin-content flex items-center justify-between\"><span>Сгенерированные метатеги</span> <span class=\"text-[11px] text-admin-content-muted\">Готово к использованию</span></div><div class=\"space-y-2.5\"><div><div class=\"text-[11px] font-medium text-admin-content-subtle flex justify-between mb-1\"><span>Title:</span> <span class=\"font-mono tabular-nums\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var22 string
 		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d симв.", len([]rune(meta.Title))))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 507, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 509, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div><div class=\"p-2 rounded bg-admin-surface border border-admin-border text-xs text-admin-content font-mono select-all\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</span></div><div class=\"p-2.5 rounded-lg bg-admin-surface border border-admin-border text-xs text-admin-content font-mono select-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var23 string
 		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(meta.Title)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 510, Col: 17}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 512, Col: 17}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</div></div><div><div class=\"text-[11px] font-medium text-admin-content-subtle flex justify-between\"><span>Description:</span> <span class=\"font-mono\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</div></div><div><div class=\"text-[11px] font-medium text-admin-content-subtle flex justify-between mb-1\"><span>Description:</span> <span class=\"font-mono tabular-nums\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
 		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d симв.", len([]rune(meta.Description))))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 517, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 519, Col: 102}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span></div><div class=\"p-2 rounded bg-admin-surface border border-admin-border text-xs text-admin-content font-mono select-all\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</span></div><div class=\"p-2.5 rounded-lg bg-admin-surface border border-admin-border text-xs text-admin-content font-mono select-all\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
 		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(meta.Description)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 520, Col: 23}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 522, Col: 23}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if len(meta.Keywords) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "<div><div class=\"text-[11px] font-medium text-admin-content-subtle mb-1\">Keywords:</div><div class=\"flex flex-wrap gap-1.5\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "<div><div class=\"text-[11px] font-medium text-admin-content-subtle mb-1\">Keywords:</div><div class=\"flex flex-wrap gap-1.5\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			for _, kw := range meta.Keywords {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<span class=\"px-2 py-0.5 rounded-full text-[11px] bg-admin-surface border border-admin-border text-admin-content font-mono\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<span class=\"px-2 py-0.5 rounded-full text-[11px] bg-admin-surface border border-admin-border text-admin-content font-mono\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var26 string
 				templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(kw)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 530, Col: 12}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_ai.templ`, Line: 532, Col: 12}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "</span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

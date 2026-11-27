@@ -242,12 +242,12 @@ templ TokenTuner() {
 					</div>
 				</div>
 
-				<!-- Сообщения статуса и ошибки -->
-				<div x-show="imageExtractor.statusMsg" class="p-2 rounded-lg bg-admin-success-muted border border-admin-success text-admin-success text-[11px] font-medium animate-fade-in flex items-center gap-1.5">
-					<span class="w-1.5 h-1.5 rounded-full bg-admin-success animate-pulse"></span>
+			<!-- Сообщения статуса и ошибки -->
+				<div x-show="imageExtractor.statusMsg" class="p-2 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success text-[11px] font-medium flex items-center gap-1.5">
+					<span class="w-1.5 h-1.5 rounded-full bg-admin-success"></span>
 					<span x-text="imageExtractor.statusMsg"></span>
 				</div>
-				<div x-show="imageExtractor.errorMsg" class="p-2 rounded-lg bg-admin-danger-muted border border-admin-danger text-admin-danger text-[11px] font-medium animate-fade-in flex items-center gap-1.5">
+				<div x-show="imageExtractor.errorMsg" class="p-2 rounded-lg bg-admin-danger-muted border border-admin-danger-border text-admin-danger text-[11px] font-medium flex items-center gap-1.5">
 					<span class="w-1.5 h-1.5 rounded-full bg-admin-danger"></span>
 					<span x-text="imageExtractor.errorMsg"></span>
 				</div>
@@ -1041,7 +1041,10 @@ templ TokenTuner() {
 				class="w-full flex items-center justify-between py-1.5 px-2.5 rounded-xl bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content text-xs font-medium transition-colors cursor-pointer select-none"
 			>
 				<span class="flex items-center gap-1.5">
-					<span>🎨 Шкала оттенков 50–900 (OKLCH Scale)</span>
+					<svg class="w-3.5 h-3.5 text-admin-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path>
+					</svg>
+					<span>Шкала оттенков 50–900 (OKLCH)</span>
 					<span class="text-[10px] font-mono text-admin-content-subtle font-normal">без opacity</span>
 				</span>
 				<svg class="w-3.5 h-3.5 transform transition-transform" :class="showProTools ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1077,7 +1080,7 @@ templ TokenTuner() {
 		<button
 			type="button"
 			@click="saveThemeTokens()"
-			class="w-full py-2 px-3 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-white font-semibold text-xs transition shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+			class="w-full py-2 px-3 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-semibold text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 		>
 			<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

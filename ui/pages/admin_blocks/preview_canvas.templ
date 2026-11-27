@@ -3,28 +3,29 @@ package admin_blocks
 
 
 templ PreviewCanvas() {
-	<!-- Правая колонка: Прикрепленный масштабированный холст Live Preview -->
+	<!-- Правая колонка: Холст Live Preview -->
 	<div
 		x-show="responsiveView === 'both' || responsiveView === 'preview'"
 		x-ref="canvasContainer"
-		class="flex-1 w-full min-w-0 md:sticky md:top-20 flex flex-col items-center justify-start"
+		class="flex-1 w-full min-w-0 md:h-full overflow-y-auto p-4 sm:p-6 flex flex-col items-center justify-start bg-admin-bg"
 	>
 		<!-- Заголовочная панель холста предпросмотра -->
-		<div class="w-full flex items-center justify-between pb-2 mb-2 px-1 border-b border-slate-200">
+		<div class="w-full max-w-[1280px] flex items-center justify-between pb-2.5 mb-3 px-1 border-b border-admin-border">
 			<div class="flex items-center gap-2">
-				<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-					<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
-					<span>Холст Live Preview</span>
+				<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-success-muted text-admin-success border border-admin-success-border">
+					<span class="w-1.5 h-1.5 rounded-full bg-admin-success"></span>
+					<span>Холст предпросмотра</span>
 				</span>
-				<span class="text-xs text-slate-500 hidden sm:inline">• Клик по секции в окне выбирает её в списке</span>
+				<span class="text-xs text-admin-content-muted hidden sm:inline">Клик по секции выбирает её в списке</span>
 			</div>
-			<div class="flex items-center gap-2 text-xs text-slate-500 font-mono">
-				<span x-text="canvasDevice === 'desktop' ? '1280px (Масштаб: ' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')"></span>
+			<div class="flex items-center gap-2 text-xs text-admin-content-muted font-mono tabular-nums">
+				<span x-text="canvasDevice === 'desktop' ? '1280px (' + Math.round(scaleFactor * 100) + '%)' : (canvasDevice === 'tablet' ? '768px' : '390px')"></span>
 				<a
 					href="/?preview=true"
 					target="_blank"
-					class="text-blue-600 hover:text-blue-800 flex items-center gap-0.5 ml-1 cursor-pointer"
+					class="text-admin-accent hover:text-admin-accent-hover flex items-center gap-0.5 ml-1 cursor-pointer"
 					title="Открыть в новой вкладке"
+					aria-label="Открыть предпросмотр в новой вкладке"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
@@ -34,14 +35,14 @@ templ PreviewCanvas() {
 		</div>
 
 		<!-- Контейнер масштабирования -->
-		<div class="w-full flex justify-center transition duration-300 overflow-hidden">
+		<div class="w-full flex justify-center overflow-hidden">
 			<div
 				:class="{
-					'w-full rounded-2xl border border-slate-300 shadow-sm bg-white': canvasDevice === 'desktop',
-					'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'tablet',
-					'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-2xl bg-slate-900': canvasDevice === 'mobile'
+					'w-full rounded-xl border border-admin-border shadow-xs bg-admin-surface': canvasDevice === 'desktop',
+					'w-[768px] max-w-full rounded-[28px] border-8 border-slate-800 shadow-lg bg-slate-900': canvasDevice === 'tablet',
+					'w-[390px] max-w-full rounded-[44px] border-8 border-slate-800 shadow-lg bg-slate-900': canvasDevice === 'mobile'
 				}"
-				class="overflow-hidden transition duration-300 relative flex justify-center"
+				class="overflow-hidden relative flex justify-center"
 				:style="canvasDevice === 'desktop' ? ('height: ' + Math.round(760 * scaleFactor) + 'px;') : 'height: 760px;'"
 			>
 				<!-- Верхняя полоска мобильного острова/камеры -->
@@ -62,11 +63,6 @@ templ PreviewCanvas() {
 					></iframe>
 				</div>
 			</div>
-		</div>
-
-		<div class="mt-2 text-center text-xs text-slate-500 flex items-center gap-2">
-			<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-			<span>Живой холст предпросмотра: клик по секции в окне превью выбирает её в списке</span>
 		</div>
 	</div>
 }

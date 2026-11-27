@@ -67,7 +67,7 @@ func (s *Server) HandleAdminSaveThemeTokens(w http.ResponseWriter, r *http.Reque
 	s.publishSiteMutated(ctx, "theme")
 	w.Header().Set("HX-Trigger", "refreshChecklist")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold animate-fade-in"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>Тема и токены сохранены в БД!</span>`))
+	_, _ = w.Write([]byte(`<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success text-xs font-semibold">Тема и токены сохранены в БД</span>`))
 }
 
 // HandleAdminApplyThemePreset applies a theme preset in 1 click, saves previous scheme to session for rollback, and updates site_settings atomically.
@@ -114,10 +114,10 @@ func (s *Server) HandleAdminApplyThemePreset(w http.ResponseWriter, r *http.Requ
 	w.Header().Set("HX-Trigger", "refreshChecklist")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	// Return status badge with rollback button
-	resp := fmt.Sprintf(`<div id="theme-preset-status" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs font-medium animate-fade-in">
-		<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
-		<span>Стиль <strong>«%s»</strong> успешно применен!</span>
-		<button type="button" hx-post="/admin/api/theme/rollback" hx-target="#theme-preset-status" hx-swap="outerHTML" class="ml-auto underline hover:text-emerald-950 font-bold cursor-pointer">Откатить назад</button>
+	resp := fmt.Sprintf(`<div id="theme-preset-status" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-admin-success-muted border border-admin-success-border text-admin-success text-xs font-medium">
+		<span class="w-2 h-2 rounded-full bg-admin-success shrink-0"></span>
+		<span>Стиль <strong>«%s»</strong> успешно применен</span>
+		<button type="button" hx-post="/admin/api/theme/rollback" hx-target="#theme-preset-status" hx-swap="outerHTML" class="ml-auto underline hover:opacity-80 font-semibold cursor-pointer">Откатить назад</button>
 	</div>`, p.Name)
 	_, _ = w.Write([]byte(resp))
 }
@@ -128,7 +128,7 @@ func (s *Server) HandleAdminRollbackThemePreset(w http.ResponseWriter, r *http.R
 
 	if s.SessionMgr == nil || !s.SessionMgr.Exists(ctx, SessionKeyPrevTheme) {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
-		_, _ = w.Write([]byte(`<div class="text-xs text-slate-500 italic">Нет сохраненной темы для отката</div>`))
+		_, _ = w.Write([]byte(`<div class="text-xs text-admin-content-muted">Нет сохраненной темы для отката</div>`))
 		return
 	}
 
@@ -160,8 +160,8 @@ func (s *Server) HandleAdminRollbackThemePreset(w http.ResponseWriter, r *http.R
 	s.publishSiteMutated(ctx, "theme")
 	w.Header().Set("HX-Trigger", "refreshChecklist")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<div id="theme-preset-status" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 border border-blue-300 text-blue-900 text-xs font-medium animate-fade-in">
-		<span class="w-2 h-2 rounded-full bg-blue-500 shrink-0"></span>
+	_, _ = w.Write([]byte(`<div id="theme-preset-status" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-admin-accent-muted border border-admin-accent-border text-admin-accent text-xs font-medium">
+		<span class="w-2 h-2 rounded-full bg-admin-accent shrink-0"></span>
 		<span>Предыдущая тема успешно восстановлена!</span>
 	</div>`))
 }

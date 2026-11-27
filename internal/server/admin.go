@@ -62,14 +62,14 @@ func (s *Server) publishSiteMutated(ctx context.Context, scope string) {
 	}
 }
 
-// HandleAdminTabFleet renders the fleet management tab placeholder.
+// HandleAdminTabFleet renders the fleet management tab.
 func (s *Server) HandleAdminTabFleet(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl text-slate-300"><h3 class="font-bold text-white mb-2">Fleet Management</h3><p class="text-xs">Управление кластером микросайтов активно в фоновом режиме.</p></div>`))
+	_ = pages.ClientFleetTab().Render(r.Context(), w)
 }
 
 // HandleAdminTabSecurity renders the security settings tab.
 func (s *Server) HandleAdminTabSecurity(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<div class="p-6 bg-slate-900 border border-slate-800 rounded-2xl text-slate-300"><h3 class="font-bold text-white mb-2">Безопасность кабинета</h3><form hx-post="/admin/security/password" class="space-y-4 max-w-sm"><input type="password" name="new_password" placeholder="Новый пароль..." required minlength="8" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm"/><button type="submit" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold rounded-xl text-xs">Обновить пароль</button></form></div>`))
+	_ = pages.ClientSecurityTab("", "").Render(r.Context(), w)
 }

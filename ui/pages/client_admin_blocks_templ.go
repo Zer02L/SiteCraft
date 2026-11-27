@@ -73,7 +73,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"space-y-5\"><!-- Standalone Admin Blocks Editor script (Zero CDN) --><script src=\"/assets/js/admin-blocks-editor.js\"></script><!-- 1. Компактная шапка конструктора с переключателями устройств и видов -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" class=\"flex flex-col md:h-[calc(100dvh-52px)] md:overflow-hidden bg-admin-bg\"><!-- Standalone Admin Blocks Editor script (Zero CDN) --><script src=\"/assets/js/admin-blocks-editor.js\"></script><!-- 1. Компактная шапка конструктора с переключателями устройств и видов -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -81,20 +81,20 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- 2. Основная рабочая область: Список секций / Дизайн-система + Холст Live Preview --><div class=\"flex flex-col md:flex-row gap-6 items-start w-full\"><!-- Левая колонка: Вкладки + Список секций / Тюнер дизайн-системы --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto' : 'w-full md:w-[360px] lg:w-[400px] shrink-0'\" class=\"space-y-4\"><!-- Табы переключения: Секции / Дизайн-система --><div class=\"flex items-center gap-6 border-b border-admin-border px-1\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5\"><span>Секции лендинга</span> <span class=\"px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-admin-surface-muted text-admin-content-muted border border-admin-border\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- 2. IDE Split-Studio: Инспектор слева + Живой холст справа --><div class=\"flex-1 min-h-0 flex flex-col md:flex-row md:overflow-hidden w-full\"><!-- Левая колонка: Вкладки + Список секций / Тюнер дизайн-системы --><div x-show=\"responsiveView === 'both' || responsiveView === 'blocks'\" :class=\"responsiveView === 'blocks' ? 'w-full max-w-4xl mx-auto my-5 rounded-xl border border-admin-border bg-admin-surface flex flex-col max-h-full overflow-hidden' : 'w-full md:w-[360px] lg:w-[390px] shrink-0 md:h-full border-b md:border-b-0 md:border-r border-admin-border bg-admin-surface flex flex-col min-h-0'\"><!-- Вкладки инспектора и действие добавления --><div class=\"flex items-center justify-between gap-2 px-3.5 pt-2.5 border-b border-admin-border shrink-0\"><div class=\"flex items-center gap-5\"><button type=\"button\" @click=\"activeSubTab = 'blocks'\" :class=\"activeSubTab === 'blocks' ? 'text-admin-content font-semibold border-admin-accent' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><span>Секции</span> <span class=\"px-1.5 py-0.5 rounded-md text-[10px] font-mono tabular-nums bg-admin-surface-muted text-admin-content-muted border border-admin-border\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", len(blocks)))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 66, Col: 39}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `ui/pages/client_admin_blocks.templ`, Line: 66, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-admin-content font-bold border-admin-content' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition cursor-pointer flex items-center gap-1.5\"><span>Дизайн-система</span></button></div><!-- Вкладка 1: Список секций лендинга --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</span></button> <button type=\"button\" @click=\"activeSubTab = 'theme'\" :class=\"activeSubTab === 'theme' ? 'text-admin-content font-semibold border-admin-accent' : 'text-admin-content-muted hover:text-admin-content border-transparent'\" class=\"pb-2.5 text-xs font-medium border-b-2 -mb-px transition-colors cursor-pointer flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><span>Дизайн-система</span></button></div><button type=\"button\" onclick=\"document.getElementById('new-block-dialog').showModal()\" x-show=\"activeSubTab === 'blocks'\" class=\"mb-2 px-2.5 py-1 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover border border-admin-border text-xs font-medium text-admin-content transition-colors inline-flex items-center gap-1 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus\"><svg class=\"w-3.5 h-3.5 text-admin-accent\" fill=\"none\" stroke=\"currentColor\" viewBox=\"0 0 24 24\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\"></path></svg> <span>Секция</span></button></div><!-- Скроллируемое содержимое инспектора --><div class=\"flex-1 min-h-0 overflow-y-auto p-3.5\"><!-- Вкладка 1: Список секций лендинга --><div x-show=\"activeSubTab === 'blocks'\" class=\"space-y-2.5\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -102,7 +102,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><!-- Вкладка 2: Дизайн-система (OKLCH Тюнер токенов и пресетов) --><div x-show=\"activeSubTab === 'theme'\" class=\"space-y-4 p-4 rounded-2xl bg-admin-surface border border-admin-border text-xs\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><!-- Вкладка 2: Дизайн-система (OKLCH Тюнер токенов и пресетов) --><div x-show=\"activeSubTab === 'theme'\" x-cloak class=\"space-y-4 text-xs\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -110,7 +110,7 @@ func AdminBlocksTab(blocks []models.PageBlock, settings models.SiteSettings) tem
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></div><!-- Правая колонка: Прикрепленный масштабированный холст Live Preview -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div></div></div><!-- Правая колонка: Холст Live Preview -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

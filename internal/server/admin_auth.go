@@ -58,21 +58,54 @@ func (s *Server) HandleAdminLogout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
 }
 
-// HandleAdminChangePassword updates the administrator password.
+// HandleAdminChangePassword updates the administrator password and returns ClientSecurityTab.
 func (s *Server) HandleAdminChangePassword(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	_ = r.ParseForm()
+	currentPass := strings.TrimSpace(r.FormValue("current_password"))
 	newPass := strings.TrimSpace(r.FormValue("new_password"))
+	confirmPass := strings.TrimSpace(r.FormValue("confirm_password"))
 
-	if len(newPass) >= 8 {
-		hash, err := auth.HashPassword(newPass)
-		if err == nil {
-			settings, _ := s.Repo.GetSiteSettings(ctx)
-			settings.ClientAdminPasswordHash = hash
-			settings.ClientAdminPassword = ""
-			_ = s.Repo.UpsertSiteSettings(ctx, settings)
+	settings, _ := s.Repo.GetSiteSettings(ctx)
+
+	var msg, errMsg string
+	if currentPass != "" {
+		validCurrent := false
+		if settings.ClientAdminPasswordHash != "" {
+			validCurrent = auth.CheckPassword(currentPass, settings.ClientAdminPasswordHash)
+		} else if settings.ClientAdminPassword != "" {
+			validCurrent = (currentPass == settings.ClientAdminPassword)
+		} else {
+			validCurrent = (currentPass == "admin" || currentPass == "sitecraft" || currentPass == "admin123")
+		}
+		if !validCurrent {
+			errMsg = "Текущий пароль указан неверно."
 		}
 	}
+
+	if errMsg == "" && len(newPass) < 8 {
+		errMsg = "Новый пароль должен содержать не менее 8 символов."
+	}
+	if errMsg == "" && confirmPass != "" && confirmPass != newPass {
+		errMsg = "Новые пароли не совпадают."
+	}
+
+	if errMsg == "" {
+		hash, err := auth.HashPassword(newPass)
+		if err != nil {
+			errMsg = "Не удалось зашифровать пароль."
+		} else {
+			settings.ClientAdminPasswordHash = hash
+			settings.ClientAdminPassword = ""
+			if err := s.Repo.UpsertSiteSettings(ctx, settings); err != nil {
+				errMsg = "Ошибка сохранения пароля."
+			} else {
+				msg = "Пароль доступа успешно обновлён."
+				w.Header().Set("HX-Trigger-After-Settle", `{"adminToast":{"message":"Пароль обновлён","tone":"success"}}`)
+			}
+		}
+	}
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_, _ = w.Write([]byte(`<div class="p-4 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs font-bold">Пароль успешно обновлен!</div>`))
+	_ = pages.ClientSecurityTab(msg, errMsg).Render(ctx, w)
 }

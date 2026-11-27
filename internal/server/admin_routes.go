@@ -116,10 +116,12 @@ func (s *Server) setupAdminRoutes() {
 		// Media Library upload (Phase 5.4)
 		if s.Media != nil {
 			admin.Post("/admin/media/upload", s.HandleAdminUploadMedia)
+			admin.Post("/client/media/upload", s.HandleAdminUploadMedia)
 		}
 
 		// Settings & Theme actions (Phase 1: Quick Wins - Theme Presets Switcher)
 		admin.Post("/admin/settings", s.HandleAdminSaveSettings)
+		admin.Post("/client/settings", s.HandleAdminSaveSettings)
 		admin.Post("/admin/theme/tokens", s.HandleAdminSaveThemeTokens)
 		admin.Post("/client/theme/tokens", s.HandleAdminSaveThemeTokens)
 		admin.Post("/admin/api/theme/apply", s.HandleAdminApplyThemePreset)
@@ -129,7 +131,9 @@ func (s *Server) setupAdminRoutes() {
 		admin.Post("/admin/api/theme/extract-palette", s.HandleAdminExtractPalette)
 		admin.Post("/client/api/theme/extract-palette", s.HandleAdminExtractPalette)
 		admin.Post("/admin/contacts", s.HandleAdminSaveContacts)
+		admin.Post("/client/contacts", s.HandleAdminSaveContacts)
 		admin.Post("/admin/security/password", s.HandleAdminChangePassword)
+		admin.Post("/client/security/password", s.HandleAdminChangePassword)
 
 		// Service management (protected by RequireModuleGroup)
 		admin.Group(func(srv chi.Router) {

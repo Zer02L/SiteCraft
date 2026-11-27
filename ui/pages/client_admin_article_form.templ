@@ -13,28 +13,27 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 	<!-- Article Editor Controller (Transliteration, DnD, Quill Init) -->
 	<script src="/assets/js/admin-article-editor.js"></script>
 
-	<div class="max-w-4xl">
-		<div class="flex items-center justify-between mb-6 pb-4 border-b border-admin-border">
+	<div class="w-full" :class="focusMode ? 'max-w-3xl mx-auto' : ''">
+		<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-4 border-b border-admin-border">
 			<div>
 				if isNew {
 					<h2 class="text-xl font-bold text-admin-content tracking-tight">Новая статья</h2>
 				} else {
 					<h2 class="text-xl font-bold text-admin-content tracking-tight">Редактирование статьи</h2>
 				}
-				<p class="text-xs text-admin-content-muted mt-1">Визуальный редактор публикаций с автогенерацией URL и тегами</p>
+				<p class="text-xs text-admin-content-muted mt-0.5">Редактор публикаций с автогенерацией URL, обложкой и тегами</p>
 			</div>
-			<div class="flex items-center gap-2.5">
-				<!-- SEO Snippet Preview Trigger -->
+			<div class="flex items-center gap-2 shrink-0 flex-wrap">
 				<button
 					type="button"
 					onclick="document.getElementById('article-seo-preview-dialog').showModal()"
 					title="Предпросмотр сниппета в Google и соцсетях"
-					class="px-3 py-1.5 rounded-xl border border-admin-border bg-admin-surface-muted hover:bg-admin-surface-hover text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 cursor-pointer shadow-2xs"
+					class="px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs font-medium text-admin-content transition-colors flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				>
 					<svg class="w-3.5 h-3.5 text-admin-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
 					</svg>
-					<span class="hidden sm:inline">SEO Превью</span>
+					<span>SEO Превью</span>
 				</button>
 
 				<!-- Focus Mode Toggle (Фича 5: UX-фокус UltimaPress) -->
@@ -42,8 +41,8 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 					type="button"
 					@click="$dispatch('toggle-focus-mode')"
 					title="Переключить режим Focus Mode (Esc для выхода)"
-					class="px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-2xs"
-					:class="focusMode ? 'bg-admin-accent text-white border-admin-accent shadow-xs' : 'bg-admin-surface-muted hover:bg-admin-surface-hover border-admin-border text-admin-content'"
+					class="px-3 py-1.5 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+					:class="focusMode ? 'bg-admin-accent text-admin-on-accent border-admin-accent' : 'bg-admin-surface hover:bg-admin-surface-muted border-admin-border text-admin-content'"
 				>
 					<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" x-show="!focusMode">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
@@ -55,11 +54,12 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				</button>
 
 				<button
+					type="button"
 					hx-get="/client/tab/articles"
 					hx-target="#admin-tab-content"
 					hx-swap="innerHTML"
 					@click="$dispatch('exit-focus-mode')"
-					class="px-3.5 py-1.5 rounded-xl bg-admin-surface-muted hover:bg-admin-surface-hover border border-admin-border text-xs text-admin-content transition-colors cursor-pointer"
+					class="px-3 py-1.5 rounded-lg bg-admin-surface hover:bg-admin-surface-muted border border-admin-border text-xs font-medium text-admin-content-muted hover:text-admin-content transition-colors cursor-pointer"
 				>
 					Назад к списку
 				</button>
@@ -81,38 +81,41 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 				isNew,
 			) }
 			x-init="init()"
-			class="bg-admin-surface border border-admin-border rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm transition duration-200"
+			class="grid gap-6 items-start"
+			:class="focusMode ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px]'"
 		>
 			<input type="hidden" name="id" value={ article.ID }/>
 			<input type="hidden" name="tags" :value="tags.join(',')"/>
 			<input type="hidden" name="remove_cover" :value="removeCover ? 'true' : 'false'"/>
 
-			<div class="space-y-6">
+			<!-- Левая колонка: Полотно редактора -->
+			<div class="bg-admin-surface border border-admin-border rounded-xl p-5 sm:p-6 space-y-5">
 				<!-- Заголовок статьи с транслитерацией -->
 				<div>
-					<div class="flex items-center justify-between mb-2">
-						<label class="block text-xs font-semibold text-admin-content-muted">
+					<div class="flex items-center justify-between mb-1.5">
+						<label for="article-title-input" class="block text-xs font-medium text-admin-content-muted">
 							Заголовок статьи <span class="text-admin-accent">*</span>
 						</label>
-						<span class="text-[11px] text-admin-content-subtle">Автоматически формирует понятный адрес ссылки</span>
+						<span class="text-[11px] text-admin-content-subtle">Автоматически формирует URL</span>
 					</div>
 					<input
+						id="article-title-input"
 						type="text"
 						name="title"
 						x-model="title"
 						x-on:input="onTitleInput()"
 						required
-						placeholder="Например: Как подготовить документы для сделки в 2026 году..."
-						class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
+						placeholder="Например: Как подготовить документы для сделки..."
+						class="admin-input w-full px-3.5 py-2.5 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-base font-semibold placeholder:font-normal placeholder:text-admin-content-subtle focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 					/>
 				</div>
 
-				<!-- В режиме Focus Mode: быстрый аккордеон метаданных публикации -->
-				<div x-show="focusMode" x-cloak class="pt-1">
+				<!-- В режиме Focus Mode: аккордеон параметров публикации -->
+				<div x-show="focusMode" x-cloak>
 					<button
 						type="button"
 						@click="showExtraSettings = !showExtraSettings"
-						class="w-full py-2 px-3.5 rounded-xl bg-admin-surface-muted/60 hover:bg-admin-surface-muted text-xs text-admin-content-muted flex items-center justify-between transition-colors border border-admin-border/50 cursor-pointer"
+						class="w-full py-2 px-3 rounded-lg bg-admin-surface-muted/60 hover:bg-admin-surface-muted text-xs text-admin-content-muted flex items-center justify-between transition-colors border border-admin-border cursor-pointer"
 					>
 						<span class="flex items-center gap-2 font-medium text-admin-content">
 							<svg class="w-3.5 h-3.5 text-admin-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,412 +124,361 @@ templ ClientArticleForm(article models.ArticleItem, isNew bool) {
 							</svg>
 							<span>Параметры публикации (обложка, теги, URL, дата)</span>
 						</span>
-						<div class="flex items-center gap-1 text-[11px] text-admin-accent font-medium">
-							<span x-text="showExtraSettings ? 'Свернуть' : 'Настроить'"></span>
-							<svg class="w-3.5 h-3.5 transform transition-transform" :class="{ 'rotate-180': showExtraSettings }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-							</svg>
-						</div>
+						<span class="text-xs text-admin-accent font-medium" x-text="showExtraSettings ? 'Свернуть' : 'Настроить'"></span>
 					</button>
 				</div>
 
-				<!-- Блок метаданных: в обычном режиме виден всегда, в Focus Mode - по клику на аккордеон -->
-				<div x-show="!focusMode || showExtraSettings" class="space-y-6">
-					<!-- URL-адрес (Slug) + Автор -->
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div>
-							<div class="flex items-center justify-between mb-2">
-								<label class="block text-xs font-semibold text-admin-content-muted">
-									URL-адрес (Slug) <span class="text-admin-accent">*</span>
-								</label>
-								<button
-									type="button"
-									x-on:click="regenerateSlug()"
-									title="Обновить ссылку по текущему названию статьи"
-									class="text-[11px] text-admin-accent hover:underline flex items-center gap-1 cursor-pointer"
-								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-									</svg>
-									<span>Сгенерировать</span>
-								</button>
-							</div>
-							<div class="relative">
-								<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-admin-content-subtle font-mono select-none">
-									/blog/
-								</span>
-								<input
-									type="text"
-									name="slug"
-									x-model="slug"
-									x-on:input="onSlugInput()"
-									required
-									placeholder="kak-podgotovit-dokumenty"
-									class="w-full pl-16 pr-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-accent font-mono text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
-								/>
-							</div>
-							<p class="text-[11px] text-admin-content-subtle mt-1 truncate">
-								Адрес на сайте: /blog/<span class="text-admin-content font-mono" x-text="slug || 'vasha-statya'"></span>
-							</p>
-						</div>
-
-						<div>
-							<label class="block text-xs font-semibold text-admin-content-muted mb-2">
-								Автор публикации
-							</label>
-							<input
-								type="text"
-								name="author_name"
-								value={ article.AuthorName }
-								placeholder="Владислав Захаров"
-								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
-							/>
-						</div>
-					</div>
-
-					<!-- Обложка статьи (Drag & Drop + Preview) -->
-					<div>
-						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
-							Обложка статьи
-						</label>
-
-						<input
-							type="file"
-							name="cover_image"
-							x-ref="coverFileInput"
-							accept="image/png,image/jpeg,image/webp,image/gif"
-							class="hidden"
-							x-on:change="handleFileSelect($event)"
-						/>
-
-						<!-- Если обложка выбрана / существует -->
-						<div x-show="coverPreview" class="relative group rounded-2xl overflow-hidden border border-admin-border bg-admin-bg max-w-lg shadow-sm">
-							<img decoding="async" loading="lazy"
-								:src="coverPreview"
-								alt="Обложка статьи"
-								class="w-full h-48 sm:h-56 object-cover"
-							/>
-							<div class="absolute inset-0 bg-admin-bg/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3 backdrop-blur-xs">
-								<button
-									type="button"
-									x-on:click="$refs.coverFileInput.click()"
-									class="px-3 py-1.5 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-semibold text-xs shadow-sm cursor-pointer transition-colors flex items-center gap-1.5"
-								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-									</svg>
-									<span>Заменить</span>
-								</button>
-								<button
-									type="button"
-									x-on:click="clearCover()"
-									class="px-3 py-1.5 rounded-lg bg-admin-danger-muted hover:bg-admin-danger/30 text-admin-danger border border-admin-danger/30 font-semibold text-xs cursor-pointer transition-colors flex items-center gap-1.5"
-								>
-									<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-									</svg>
-									<span>Удалить</span>
-								</button>
-							</div>
-						</div>
-
-						<!-- Зона Drag & Drop (если обложки нет) -->
-						<div
-							x-show="!coverPreview"
-							x-on:click="$refs.coverFileInput.click()"
-							x-on:dragover.prevent="isDragging = true"
-							x-on:dragleave.prevent="isDragging = false"
-							x-on:drop.prevent="handleDrop($event)"
-							:class="isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus bg-admin-surface-muted/40'"
-							class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition max-w-lg"
-						>
-							<div class="w-12 h-12 mx-auto rounded-xl bg-admin-accent-muted border border-admin-accent-border text-admin-accent flex items-center justify-center mb-3">
-								<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-								</svg>
-							</div>
-							<p class="text-xs font-semibold text-admin-content mb-1">
-								Нажмите для выбора или перетащите фото сюда
-							</p>
-							<p class="text-[11px] text-admin-content-muted">
-								Поддерживаются WebP, PNG, JPG до 5 МБ (16:9 рекомендуется)
-							</p>
-						</div>
-					</div>
-
-					<!-- Теги / Рубрикатор (Badge Chips) -->
-					<div>
-						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
-							Теги и рубрики публикации
-						</label>
-
-						<!-- Контейнер чипсов -->
-						<div class="p-3 rounded-xl bg-admin-surface-muted border border-admin-border min-h-[46px] flex flex-wrap items-center gap-2">
-							<template x-for="(tag, idx) in tags" :key="idx">
-								<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border shadow-xs">
-									<span x-text="'#' + tag"></span>
-									<button
-										type="button"
-										x-on:click="removeTag(idx)"
-										title="Удалить тег"
-										aria-label="Удалить тег"
-										class="hover:text-admin-danger text-admin-accent/80 transition-colors cursor-pointer"
-									>
-										<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-										</svg>
-									</button>
-								</span>
-							</template>
-
-							<input
-								type="text"
-								x-model="newTag"
-								x-on:keydown.enter.prevent="addTag()"
-								x-on:keydown.comma.prevent="addTag()"
-								placeholder="+ Напишите тег и нажмите Enter..."
-								class="flex-1 min-w-[200px] bg-transparent text-admin-content text-xs placeholder-admin-content-subtle focus:outline-none py-1 focus-visible:ring-2 focus-visible:ring-blue-500"
-							/>
-						</div>
-
-						<!-- Готовые подсказки тегов -->
-						<div class="flex items-center gap-1.5 flex-wrap mt-2">
-							<span class="text-[11px] text-admin-content-subtle mr-1">Быстрый выбор:</span>
-							for _, suggested := range []string{"Полезное", "Инструкция", "Советы", "Законодательство", "Кейс", "Новости"} {
-								<button
-									type="button"
-									x-on:click={ fmt.Sprintf("suggestTag('%s')", suggested) }
-									class="px-2 py-0.5 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content-muted hover:text-admin-accent text-[11px] transition-colors cursor-pointer border border-admin-border"
-								>
-									{ "+" + suggested }
-								</button>
-							}
-						</div>
-					</div>
-
-					<!-- Краткий анонс (Лид-абзац) -->
-					<div>
-						<label class="block text-xs font-semibold text-admin-content-muted mb-2">
-							Краткий анонс (Лид-абзац для карточки в каталоге)
-						</label>
-						<textarea
-							name="excerpt"
-							rows="2"
-							placeholder="Краткое описание сути статьи в 1-2 предложениях..."
-							class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus"
-						>{ article.Excerpt }</textarea>
-					</div>
-				</div>
-
 				<!-- Визуальный редактор текста статьи (Quill.js) -->
-				<div class="space-y-2">
+				<div class="space-y-1.5">
 					<div class="flex items-center justify-between">
-						<label class="block text-xs font-semibold text-admin-content-muted">
-							Текст статьи (Визуальный редактор)
-						</label>
-						<div class="flex items-center gap-2">
-							<span class="text-[11px] text-admin-accent font-medium flex items-center gap-1">
-								<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-								</svg>
-								<span>WYSIWYG: форматирование как в Word</span>
-							</span>
-							<span x-show="focusMode" x-cloak class="text-[11px] font-mono text-admin-content-subtle hidden sm:inline">• Режим полного фокуса</span>
-						</div>
+						<span class="block text-xs font-medium text-admin-content-muted">Текст статьи</span>
+						<span x-show="focusMode" x-cloak class="text-[11px] font-mono text-admin-content-subtle">Режим фокуса</span>
 					</div>
 
-					<!-- Скрытое поле для отправки чистого HTML на бэкенд -->
 					<textarea
 						name="content"
 						x-ref="contentInput"
 						class="hidden"
 					>{ article.Content }</textarea>
 
-					<!-- Контейнер Quill.js со стилизацией под Client Admin -->
 					<div
-						class="quill-dark-wrapper rounded-xl overflow-hidden border border-admin-border bg-admin-surface shadow-inner transition duration-200"
-						:class="{ 'ring-2 ring-admin-accent/30 shadow-lg': focusMode }"
+						class="quill-dark-wrapper rounded-lg overflow-hidden border border-admin-border bg-admin-surface"
+						:class="{ 'ring-2 ring-admin-accent/30': focusMode }"
 					>
 						<div
 							x-ref="quillEditor"
-							class="text-admin-content transition duration-200"
-							:class="focusMode ? 'min-h-[520px] text-base leading-relaxed' : 'min-h-[340px]'"
+							class="text-admin-content"
+							:class="focusMode ? 'min-h-[520px] text-base leading-relaxed' : 'min-h-[420px]'"
 						></div>
 					</div>
 				</div>
 
-				<!-- Дата и статус публикации (в Focus Mode сворачивается под аккордеон) -->
-				<div x-show="!focusMode || showExtraSettings" class="space-y-4 pt-2">
-					<!-- Дата и время публикации (Отложенный постинг) -->
-					<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-						<div>
-							<div class="flex items-center justify-between mb-2">
-								<label class="block text-xs font-semibold text-admin-content-muted">
-									Дата и время публикации
-								</label>
-								<span class="text-[11px] text-admin-accent font-medium">Отложенная публикация</span>
-							</div>
-							<input
-								type="datetime-local"
-								name="published_at"
-								id="published_at_input"
-								value={ article.PublishedAtInput() }
-								class="w-full px-3.5 py-2.5 rounded-xl bg-admin-surface-muted border border-admin-border text-admin-content text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-admin-border-focus focus:border-admin-border-focus font-mono"
-							/>
-							<p class="text-[11px] text-admin-content-subtle mt-1">
-								Если указать дату и время в будущем — материал станет запланированным и появится на сайте автоматически.
-							</p>
-						</div>
+				<!-- Сохранение (внизу левой колонки для быстрого доступа в Focus Mode и на мобильных) -->
+				<div class="pt-4 border-t border-admin-border flex items-center justify-end gap-3">
+					<button
+						type="submit"
+						class="px-5 py-2.5 rounded-lg bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-semibold text-xs transition-colors flex items-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+					>
+						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+						</svg>
+						<span>Сохранить публикацию</span>
+					</button>
+				</div>
+			</div>
 
-						<div>
-							<label class="block text-xs font-semibold text-admin-content-muted mb-2">
-								Быстрый выбор времени
-							</label>
-							<div class="flex flex-wrap gap-2 pt-1">
-								<button
-									type="button"
-									onclick="const now = new Date(); const offset = now.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(now - offset).toISOString().slice(0, 16);"
-									class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-content border border-admin-border transition-colors cursor-pointer"
-								>
-									Сейчас
-								</button>
-								<button
-									type="button"
-									onclick="const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-									class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
-								>
-									Завтра в 09:00
-								</button>
-								<button
-									type="button"
-									onclick="const d = new Date(); d.setDate(d.getDate() + 3); d.setHours(10, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-									class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
-								>
-									Через 3 дня
-								</button>
-								<button
-									type="button"
-									onclick="const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(12, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
-									class="px-2.5 py-1 rounded-lg bg-admin-surface-muted hover:bg-admin-surface-hover text-xs text-admin-accent border border-admin-border transition-colors cursor-pointer"
-								>
-									Через неделю
-								</button>
-							</div>
-						</div>
-					</div>
+			<!-- Правая sticky-колонка метаданных и публикации -->
+			<div x-show="!focusMode || showExtraSettings" class="space-y-4 lg:sticky lg:top-18">
+				<!-- Блок 1: Публикация и расписание -->
+				<div class="bg-admin-surface border border-admin-border rounded-xl p-4 space-y-4">
+					<div class="text-xs font-semibold text-admin-content">Публикация</div>
 
-					<!-- Статус публикации -->
-					<div class="flex items-center gap-3 pt-2">
+					<label class="flex items-start gap-2.5 cursor-pointer">
 						<input
 							type="checkbox"
 							id="is_published"
 							name="is_published"
 							value="true"
 							checked?={ article.IsPublished }
-							class="w-4 h-4 rounded text-admin-accent bg-admin-surface-muted border-admin-border focus-visible:ring-admin-accent cursor-pointer"
+							class="mt-0.5 w-4 h-4 rounded text-admin-accent bg-admin-surface-muted border-admin-border focus-visible:ring-admin-border-focus cursor-pointer"
 						/>
-						<label for="is_published" class="text-sm font-medium text-admin-content-muted cursor-pointer">
-							Опубликовать статью на сайте (если указано будущее время — будет запланирована)
+						<span class="text-xs text-admin-content leading-snug">
+							Опубликовать на сайте
+							<span class="block text-[11px] text-admin-content-muted mt-0.5">При дате в будущем запланирует выход</span>
+						</span>
+					</label>
+
+					<div>
+						<label for="published_at_input" class="block text-xs font-medium text-admin-content-muted mb-1.5">
+							Дата и время
 						</label>
+						<input
+							type="datetime-local"
+							name="published_at"
+							id="published_at_input"
+							value={ article.PublishedAtInput() }
+							class="admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs font-mono focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						/>
+						<div class="flex flex-wrap gap-1.5 mt-2">
+							<button
+								type="button"
+								onclick="const now = new Date(); const offset = now.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(now - offset).toISOString().slice(0, 16);"
+								class="px-2 py-1 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-[11px] text-admin-content border border-admin-border transition-colors cursor-pointer"
+							>
+								Сейчас
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 1); d.setHours(9, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2 py-1 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-[11px] text-admin-accent border border-admin-border transition-colors cursor-pointer"
+							>
+								Завтра 09:00
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 3); d.setHours(10, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2 py-1 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-[11px] text-admin-accent border border-admin-border transition-colors cursor-pointer"
+							>
+								+3 дня
+							</button>
+							<button
+								type="button"
+								onclick="const d = new Date(); d.setDate(d.getDate() + 7); d.setHours(12, 0, 0, 0); const offset = d.getTimezoneOffset() * 60000; document.getElementById('published_at_input').value = new Date(d - offset).toISOString().slice(0, 16);"
+								class="px-2 py-1 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-[11px] text-admin-accent border border-admin-border transition-colors cursor-pointer"
+							>
+								+7 дней
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<!-- Блок 2: URL и Автор -->
+				<div class="bg-admin-surface border border-admin-border rounded-xl p-4 space-y-3.5">
+					<div>
+						<div class="flex items-center justify-between mb-1.5">
+							<label for="article-slug-input" class="block text-xs font-medium text-admin-content-muted">
+								URL-адрес (Slug) <span class="text-admin-accent">*</span>
+							</label>
+							<button
+								type="button"
+								x-on:click="regenerateSlug()"
+								title="Обновить ссылку по названию"
+								class="text-[11px] text-admin-accent hover:underline flex items-center gap-1 cursor-pointer"
+							>
+								<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+								</svg>
+								<span>Обновить</span>
+							</button>
+						</div>
+						<div class="relative">
+							<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-xs text-admin-content-subtle font-mono select-none">
+								/blog/
+							</span>
+							<input
+								id="article-slug-input"
+								type="text"
+								name="slug"
+								x-model="slug"
+								x-on:input="onSlugInput()"
+								required
+								placeholder="kak-podgotovit-dokumenty"
+								class="admin-input w-full pl-14 pr-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-accent font-mono text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+							/>
+						</div>
+					</div>
+
+					<div>
+						<label for="article-author-input" class="block text-xs font-medium text-admin-content-muted mb-1.5">
+							Автор публикации
+						</label>
+						<input
+							id="article-author-input"
+							type="text"
+							name="author_name"
+							value={ article.AuthorName }
+							placeholder="Имя автора"
+							class="admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						/>
+					</div>
+
+					<div>
+						<label for="article-excerpt-input" class="block text-xs font-medium text-admin-content-muted mb-1.5">
+							Краткий анонс
+						</label>
+						<textarea
+							id="article-excerpt-input"
+							name="excerpt"
+							rows="2"
+							placeholder="Описание для карточки в каталоге..."
+							class="admin-input w-full px-3 py-2 rounded-lg bg-admin-surface-muted border border-admin-border text-admin-content text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
+						>{ article.Excerpt }</textarea>
+					</div>
+				</div>
+
+				<!-- Блок 3: Обложка -->
+				<div class="bg-admin-surface border border-admin-border rounded-xl p-4 space-y-2.5">
+					<span class="block text-xs font-semibold text-admin-content">Обложка статьи</span>
+
+					<input
+						type="file"
+						name="cover_image"
+						x-ref="coverFileInput"
+						accept="image/png,image/jpeg,image/webp,image/gif"
+						class="hidden"
+						x-on:change="handleFileSelect($event)"
+					/>
+
+					<div x-show="coverPreview" class="relative group rounded-lg overflow-hidden border border-admin-border bg-admin-bg">
+						<img decoding="async" loading="lazy"
+							:src="coverPreview"
+							alt="Обложка статьи"
+							class="w-full h-40 object-cover"
+						/>
+						<div class="absolute inset-0 bg-admin-bg/75 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+							<button
+								type="button"
+								x-on:click="$refs.coverFileInput.click()"
+								class="px-2.5 py-1.5 rounded-md bg-admin-accent hover:bg-admin-accent-hover text-admin-on-accent font-medium text-xs cursor-pointer transition-colors"
+							>
+								Заменить
+							</button>
+							<button
+								type="button"
+								x-on:click="clearCover()"
+								class="px-2.5 py-1.5 rounded-md bg-admin-danger-muted hover:bg-admin-danger/25 text-admin-danger border border-admin-danger-border font-medium text-xs cursor-pointer transition-colors"
+							>
+								Удалить
+							</button>
+						</div>
+					</div>
+
+					<div
+						x-show="!coverPreview"
+						x-on:click="$refs.coverFileInput.click()"
+						x-on:dragover.prevent="isDragging = true"
+						x-on:dragleave.prevent="isDragging = false"
+						x-on:drop.prevent="handleDrop($event)"
+						:class="isDragging ? 'border-admin-accent bg-admin-accent-muted' : 'border-admin-border hover:border-admin-border-focus bg-admin-surface-muted/40'"
+						class="border border-dashed rounded-lg p-5 text-center cursor-pointer transition-colors"
+					>
+						<svg class="w-6 h-6 mx-auto text-admin-content-muted mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+						</svg>
+						<p class="text-xs font-medium text-admin-content">Выбрать или перетащить фото</p>
+						<p class="text-[11px] text-admin-content-subtle mt-0.5">WebP, PNG, JPG до 5 МБ (16:9)</p>
+					</div>
+				</div>
+
+				<!-- Блок 4: Теги -->
+				<div class="bg-admin-surface border border-admin-border rounded-xl p-4 space-y-2.5">
+					<span class="block text-xs font-semibold text-admin-content">Теги и рубрики</span>
+
+					<div class="p-2 rounded-lg bg-admin-surface-muted border border-admin-border min-h-[42px] flex flex-wrap items-center gap-1.5">
+						<template x-for="(tag, idx) in tags" :key="idx">
+							<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border">
+								<span x-text="'#' + tag"></span>
+								<button
+									type="button"
+									x-on:click="removeTag(idx)"
+									title="Удалить тег"
+									aria-label="Удалить тег"
+									class="hover:text-admin-danger text-admin-accent/80 transition-colors cursor-pointer"
+								>
+									<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								</button>
+							</span>
+						</template>
+
+						<input
+							type="text"
+							x-model="newTag"
+							x-on:keydown.enter.prevent="addTag()"
+							x-on:keydown.comma.prevent="addTag()"
+							placeholder="+ Тег и Enter..."
+							aria-label="Добавить тег"
+							class="flex-1 min-w-[110px] bg-transparent text-admin-content text-xs placeholder-admin-content-subtle focus:outline-none py-0.5 focus-visible:ring-2 focus-visible:ring-admin-border-focus rounded"
+						/>
+					</div>
+
+					<div class="flex items-center gap-1.5 flex-wrap">
+						for _, suggested := range []string{"Полезное", "Инструкция", "Советы", "Законодательство", "Кейс", "Новости"} {
+							<button
+								type="button"
+								x-on:click={ fmt.Sprintf("suggestTag('%s')", suggested) }
+								class="px-2 py-0.5 rounded-md bg-admin-surface-muted hover:bg-admin-surface-hover text-admin-content-muted hover:text-admin-accent text-[11px] transition-colors cursor-pointer border border-admin-border"
+							>
+								{ "+" + suggested }
+							</button>
+						}
 					</div>
 				</div>
 			</div>
-
-			<div class="pt-4 border-t border-admin-border flex items-center justify-end gap-3">
-				<button
-					type="submit"
-					class="px-6 py-2.5 rounded-xl bg-admin-accent hover:bg-admin-accent-hover text-admin-bg font-bold text-sm transition shadow-md active:scale-[0.99] flex items-center gap-2 cursor-pointer"
-				>
-					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-					</svg>
-					<span>Сохранить публикацию</span>
-				</button>
-			</div>
 		</form>
 
-		<!-- Стили Dark Theme для Quill Editor -->
+		<!-- Стили темы Workbench для Quill Editor -->
 		<style>
 			.quill-dark-wrapper .ql-toolbar.ql-snow {
-				background-color: var(--admin-surface-muted, #0f172a);
-				border-color: var(--admin-border, #334155);
-				border-top-left-radius: 0.75rem;
-				border-top-right-radius: 0.75rem;
-				border-bottom: 1px solid var(--admin-border, #334155);
-				padding: 0.75rem;
+				background-color: var(--admin-surface-muted);
+				border-color: var(--admin-border);
+				border-top-left-radius: 0.5rem;
+				border-top-right-radius: 0.5rem;
+				border-bottom: 1px solid var(--admin-border);
+				padding: 0.625rem 0.75rem;
 			}
 			.quill-dark-wrapper .ql-container.ql-snow {
-				background-color: var(--admin-surface, #0f172a);
-				border-color: var(--admin-border, #334155);
-				border-bottom-left-radius: 0.75rem;
-				border-bottom-right-radius: 0.75rem;
+				background-color: var(--admin-surface);
+				border-color: var(--admin-border);
+				border-bottom-left-radius: 0.5rem;
+				border-bottom-right-radius: 0.5rem;
 				font-size: 0.95rem;
 				font-family: inherit;
-				color: var(--admin-content, #f1f5f9);
+				color: var(--admin-content);
 			}
 			.quill-dark-wrapper .ql-editor {
-				min-height: 320px;
+				min-height: 360px;
 				line-height: 1.7;
 				padding: 1rem 1.25rem;
 			}
 			.quill-dark-wrapper .ql-editor.ql-blank::before {
-				color: var(--admin-content-subtle, #64748b);
+				color: var(--admin-content-subtle);
 				font-style: normal;
 			}
 			.quill-dark-wrapper .ql-snow .ql-stroke {
-				stroke: var(--admin-content-muted, #94a3b8);
+				stroke: var(--admin-content-muted);
 			}
 			.quill-dark-wrapper .ql-snow .ql-fill {
-				fill: var(--admin-content-muted, #94a3b8);
+				fill: var(--admin-content-muted);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker {
-				color: var(--admin-content-muted, #94a3b8);
+				color: var(--admin-content-muted);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-options {
-				background-color: var(--admin-surface, #1e293b);
-				border: 1px solid var(--admin-border, #334155);
+				background-color: var(--admin-surface-elevated);
+				border: 1px solid var(--admin-border);
 				border-radius: 0.5rem;
-				box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-item:hover,
 			.quill-dark-wrapper .ql-snow .ql-picker-item.ql-selected {
-				color: var(--admin-accent, #f59e0b);
+				color: var(--admin-accent);
 			}
 			.quill-dark-wrapper .ql-snow button:hover .ql-stroke,
 			.quill-dark-wrapper .ql-snow button.ql-active .ql-stroke,
 			.quill-dark-wrapper .ql-snow .ql-picker-label:hover .ql-stroke {
-				stroke: var(--admin-accent, #f59e0b) !important;
+				stroke: var(--admin-accent) !important;
 			}
 			.quill-dark-wrapper .ql-snow button:hover .ql-fill,
 			.quill-dark-wrapper .ql-snow button.ql-active .ql-fill {
-				fill: var(--admin-accent, #f59e0b) !important;
+				fill: var(--admin-accent) !important;
 			}
 			.quill-dark-wrapper .ql-snow .ql-picker-label:hover {
-				color: var(--admin-accent, #f59e0b) !important;
+				color: var(--admin-accent) !important;
 			}
 			.quill-dark-wrapper .ql-editor h2 {
-				font-size: 1.4rem;
+				font-size: 1.35rem;
 				font-weight: 700;
-				color: var(--admin-content, #ffffff);
+				color: var(--admin-content);
 				margin-top: 1rem;
 				margin-bottom: 0.5rem;
 			}
 			.quill-dark-wrapper .ql-editor h3 {
-				font-size: 1.2rem;
+				font-size: 1.15rem;
 				font-weight: 600;
-				color: var(--admin-content, #ffffff);
+				color: var(--admin-content);
 				margin-top: 0.75rem;
 				margin-bottom: 0.5rem;
 			}
 			.quill-dark-wrapper .ql-editor blockquote {
-				border-left: 3px solid var(--admin-accent, #f59e0b);
+				border-left: 3px solid var(--admin-accent);
 				padding-left: 0.85rem;
-				color: var(--admin-content-muted, #94a3b8);
+				color: var(--admin-content-muted);
 				font-style: italic;
 				margin: 0.75rem 0;
 			}
 			.quill-dark-wrapper .ql-editor a {
-				color: var(--admin-accent, #f59e0b);
+				color: var(--admin-accent);
 				text-decoration: underline;
 			}
 			.quill-dark-wrapper .ql-editor img {

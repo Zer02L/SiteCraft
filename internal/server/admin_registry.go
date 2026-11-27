@@ -117,13 +117,7 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			newCount := 0
-			for _, l := range leads {
-				if l.Status == "новая" || l.Status == "" {
-					newCount++
-				}
-			}
-			return len(leads), "bg-amber-500/10 text-amber-400 border-amber-500/30"
+			return len(leads), "bg-admin-warning-muted text-admin-warning border-admin-warning-border"
 		},
 		TabHandler: s.HandleAdminTabLeads,
 	})
@@ -140,11 +134,11 @@ func (s *Server) initAdminModules() {
 	s.AdminModules.Register(AdminModule{
 		ID:         "contacts",
 		Title:      "Контакты и реквизиты",
-		Order:      20,
+		Order:      45,
 		TabHandler: s.HandleAdminTabContacts,
 	})
 
-	// 3. Services
+	// 4. Services
 	s.AdminModules.Register(AdminModule{
 		ID:    "services",
 		Title: "Услуги и цены",
@@ -154,12 +148,12 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			return len(services), "bg-slate-100 text-slate-700 border-slate-200"
+			return len(services), "bg-admin-surface-muted text-admin-content-muted border-admin-border"
 		},
 		TabHandler: s.HandleAdminTabServices,
 	})
 
-	// 4. Articles / Blog
+	// 5. Articles / Blog
 	s.AdminModules.Register(AdminModule{
 		ID:    "articles",
 		Title: "Блог и статьи",
@@ -172,73 +166,89 @@ func (s *Server) initAdminModules() {
 			if err != nil {
 				return 0, ""
 			}
-			return len(articles), "bg-slate-100 text-slate-700 border-slate-200"
+			return len(articles), "bg-admin-surface-muted text-admin-content-muted border-admin-border"
 		},
 		TabHandler: s.HandleAdminTabArticles,
 	})
 
-	// 5. Reviews
+	// 6. Media Library
+	s.AdminModules.Register(AdminModule{
+		ID:         "media",
+		Title:      "Медиатека",
+		Order:      42,
+		TabHandler: s.HandleAdminTabMedia,
+	})
+
+	// 7. Reviews
 	s.AdminModules.Register(AdminModule{
 		ID:    "reviews",
 		Title: "Отзывы клиентов",
-		Order: 50,
+		Order: 12,
 		Badge: func(ctx context.Context, s *Server) (int, string) {
 			reviews, err := s.Repo.GetReviews(ctx)
 			if err != nil {
 				return 0, ""
 			}
-			return len(reviews), "bg-slate-100 text-slate-700 border-slate-200"
+			return len(reviews), "bg-admin-surface-muted text-admin-content-muted border-admin-border"
 		},
 		TabHandler: s.HandleAdminTabReviews,
 	})
 
-	// 6. Security
-	s.AdminModules.Register(AdminModule{
-		ID:         "security",
-		Title:      "Безопасность",
-		Order:      60,
-		TabHandler: s.HandleAdminTabSecurity,
-	})
-
-	// 7. Fleet / Cluster Integrations
-	s.AdminModules.Register(AdminModule{
-		ID:    "fleet",
-		Title: "Интеграции и Fleet",
-		Order: 70,
-		IsEnabled: func(st models.SiteSettings) bool {
-			return st.EnableFleet
-		},
-		TabHandler: s.HandleAdminTabFleet,
-	})
-
-	// 8. WordPress Importer & 301 Redirects (Feature 3)
-	s.AdminModules.Register(AdminModule{
-		ID:    "importer",
-		Title: "Миграция & Редиректы",
-		Order: 65,
-		Badge: func(ctx context.Context, s *Server) (int, string) {
-			count, err := s.Repo.CountRedirects(ctx)
-			if err != nil || count == 0 {
-				return 0, ""
-			}
-			return int(count), "bg-blue-500/10 text-blue-400 border-blue-500/30"
-		},
-		TabHandler: s.HandleAdminTabImporter,
-	})
-
-	// 9. AI Engine & Universal MCP (Feature 4)
+	// 8. AI Engine & Universal MCP (Feature 4)
 	s.AdminModules.Register(AdminModule{
 		ID:    "ai",
 		Title: "ИИ Ассистент & MCP",
-		Order: 45,
+		Order: 50,
 		Badge: func(ctx context.Context, s *Server) (int, string) {
 			settings, err := s.Repo.GetSiteSettings(ctx)
 			if err != nil || settings.AIProvider == "" {
 				return 0, ""
 			}
-			return 1, "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+			return 1, "bg-admin-success-muted text-admin-success border-admin-success-border"
 		},
 		TabHandler: s.HandleAdminTabAI,
+	})
+
+	// 9. WordPress Importer & 301 Redirects (Feature 3)
+	s.AdminModules.Register(AdminModule{
+		ID:    "importer",
+		Title: "Миграция & Редиректы",
+		Order: 60,
+		Badge: func(ctx context.Context, s *Server) (int, string) {
+			count, err := s.Repo.CountRedirects(ctx)
+			if err != nil || count == 0 {
+				return 0, ""
+			}
+			return int(count), "bg-admin-accent-muted text-admin-accent border-admin-accent-border"
+		},
+		TabHandler: s.HandleAdminTabImporter,
+	})
+
+	// 10. Site Settings & SEO
+	s.AdminModules.Register(AdminModule{
+		ID:         "settings",
+		Title:      "Настройки и SEO",
+		Order:      65,
+		TabHandler: s.HandleAdminTabSettings,
+	})
+
+	// 11. Security
+	s.AdminModules.Register(AdminModule{
+		ID:         "security",
+		Title:      "Безопасность",
+		Order:      70,
+		TabHandler: s.HandleAdminTabSecurity,
+	})
+
+	// 12. Fleet / Cluster Integrations
+	s.AdminModules.Register(AdminModule{
+		ID:    "fleet",
+		Title: "Интеграции и Fleet",
+		Order: 75,
+		IsEnabled: func(st models.SiteSettings) bool {
+			return st.EnableFleet
+		},
+		TabHandler: s.HandleAdminTabFleet,
 	})
 }
 

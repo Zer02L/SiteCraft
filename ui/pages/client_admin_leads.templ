@@ -12,28 +12,56 @@ templ ClientLeadsTab(leads []models.Lead) {
 		x-data="{
 			search: '',
 			filterStatus: 'all',
-			activeLeadID: null,
+			activeLead: null,
 			copiedPhone: null,
+			openLead(btn) {
+				try {
+					this.activeLead = JSON.parse(btn.dataset.lead || 'null');
+					const dlg = document.getElementById('lead-detail-dialog');
+					if (dlg && this.activeLead) dlg.showModal();
+				} catch (e) {}
+			},
+			closeLead() {
+				const dlg = document.getElementById('lead-detail-dialog');
+				if (dlg && dlg.open) dlg.close();
+			},
 			copyText(text, id) {
-				navigator.clipboard.writeText(text);
+				if (navigator && navigator.clipboard) {
+					navigator.clipboard.writeText(text);
+				}
 				this.copiedPhone = id;
+				this.$dispatch('admin-toast', { message: 'Телефон скопирован', tone: 'success' });
 				setTimeout(() => { if (this.copiedPhone === id) this.copiedPhone = null; }, 2000);
 			},
 			matchesLead(name, phone, comment, status) {
 				const s = this.search.toLowerCase().trim();
 				const matchesSearch = !s ||
-					name.toLowerCase().includes(s) ||
-					phone.toLowerCase().includes(s) ||
-					comment.toLowerCase().includes(s);
-				const normalizedStatus = (status === '' || status === 'новая') ? 'новая' : status;
-				const matchesStatus = this.filterStatus === 'all' ||
-					(this.filterStatus === normalizedStatus);
+					(name || '').toLowerCase().includes(s) ||
+					(phone || '').toLowerCase().includes(s) ||
+					(comment || '').toLowerCase().includes(s);
+				const normalizedStatus = (!status || status === 'новая') ? 'новая' : status;
+				const matchesStatus = this.filterStatus === 'all' || (this.filterStatus === normalizedStatus);
 				return matchesSearch && matchesStatus;
+			},
+			hasMatchingLead() {
+				const body = this.$el.querySelector('#leads-table-body');
+				if (!body) return true;
+				const rows = body.querySelectorAll('tr[data-lead-row]');
+				if (!rows.length) return true;
+				for (const r of rows) {
+					if (this.matchesLead(r.dataset.name, r.dataset.phone, r.dataset.comment, r.dataset.status)) {
+						return true;
+					}
+				}
+				return false;
 			}
 		}"
-		class="space-y-6"
+		class="space-y-5"
 	>
-		@LeadsTabContent(leads)
+		<div id="leads-tab-body" class="space-y-5">
+			@LeadsTabContent(leads)
+		</div>
+		@admin_leads.LeadDetailDialog()
 	</div>
 }
 
@@ -47,73 +75,79 @@ templ LeadsTabContent(leads []models.Lead) {
 			}
 		}
 	}}
-	<!-- 1. Верхняя панель заголовка, KPI метрики, поиск и фильтры по статусам -->
+	<!-- 1. Верхняя панель заголовка, интерактивных KPI и поиска -->
 	@admin_leads.LeadsToolbar(leads, newCount, inProgressCount, doneCount)
 
 	if len(leads) == 0 {
-		<div class="bg-admin-surface border border-admin-border rounded-2xl p-12 text-center shadow-xs">
-			<div class="w-12 h-12 rounded-2xl bg-admin-surface-muted flex items-center justify-center mx-auto mb-4 text-admin-content-muted">
-				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+		<div class="bg-admin-surface border border-admin-border rounded-xl p-10 text-center">
+			<div class="w-11 h-11 rounded-xl bg-admin-surface-muted border border-admin-border flex items-center justify-center mx-auto mb-3 text-admin-content-muted">
+				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
 				</svg>
 			</div>
-			<h3 class="text-base font-semibold text-admin-content mb-1">Заявок пока нет</h3>
-			<p class="text-xs text-admin-content-muted max-w-sm mx-auto">Новые заявки с форм на сайте будут мгновенно отображаться здесь в реальном времени.</p>
+			<h3 class="text-sm font-semibold text-admin-content mb-1">Список заявок пока пустой</h3>
+			<p class="text-xs text-admin-content-muted max-w-sm mx-auto">Новые обращения с форм сайта будут автоматически появляться здесь.</p>
 		</div>
 	} else {
 		<!-- 2. Таблица заявок -->
-		<div class="bg-admin-surface border border-admin-border rounded-2xl overflow-hidden shadow-2xs">
+		<div class="bg-admin-surface border border-admin-border rounded-xl overflow-hidden">
 			<div class="overflow-x-auto">
 				<table class="tabular-nums w-full text-left text-xs sm:text-sm">
-					<thead class="bg-admin-surface-muted/50 border-b border-admin-border text-admin-content-muted text-[10px] font-mono uppercase tracking-wider">
+					<thead class="bg-admin-surface-muted/60 border-b border-admin-border text-admin-content-muted text-xs font-medium">
 						<tr>
-							<th class="py-3 px-4 font-semibold">Клиент</th>
-							<th class="py-3 px-4 font-semibold">Контакты</th>
-							<th class="py-3 px-4 font-semibold">Дата и время</th>
-							<th class="py-3 px-4 font-semibold">Детали обращения</th>
-							<th class="py-3 px-4 font-semibold">Статус</th>
-							<th class="py-3 px-4 font-semibold text-right">Действия</th>
+							<th class="py-2.5 px-4 font-medium">Клиент</th>
+							<th class="py-2.5 px-4 font-medium">Контакты</th>
+							<th class="py-2.5 px-4 font-medium">Дата и время</th>
+							<th class="py-2.5 px-4 font-medium">Детали обращения</th>
+							<th class="py-2.5 px-4 font-medium">Статус</th>
+							<th class="py-2.5 px-4 font-medium text-right">Действия</th>
 						</tr>
 					</thead>
-					<tbody class="divide-y divide-admin-border text-admin-content">
+					<tbody id="leads-table-body" class="divide-y divide-admin-border text-admin-content">
 						for _, lead := range leads {
 							@LeadRowSingle(lead)
 						}
 					</tbody>
 				</table>
 			</div>
+			<div x-show="!hasMatchingLead()" x-cloak class="p-10 text-center border-t border-admin-border">
+				<p class="text-sm font-medium text-admin-content mb-1">По вашему запросу заявки не найдены</p>
+				<p class="text-xs text-admin-content-muted mb-3">Попробуйте изменить строку поиска или сбросить фильтр по статусу.</p>
+				<button
+					type="button"
+					@click="search = ''; filterStatus = 'all'"
+					class="px-3 py-1.5 rounded-lg border border-admin-border bg-admin-surface hover:bg-admin-surface-muted text-xs font-medium text-admin-content transition-colors cursor-pointer"
+				>
+					Сбросить фильтры
+				</button>
+			</div>
 		</div>
-
-		<!-- 3. Выдвижные шторки (Detail Drawers) для детального просмотра заявок -->
-		for _, lead := range leads {
-			@admin_leads.LeadDetailDrawer(lead)
-		}
 	}
 }
 
 templ LeadStatusBadge(status string) {
 	if status == "новая" || status == "" {
-		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border">
+		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-accent-muted text-admin-accent border border-admin-accent-border">
 			<span class="w-1.5 h-1.5 rounded-full bg-admin-accent"></span>
 			<span>Новая</span>
 		</span>
 	} else if status == "в обработке" {
-		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning/25">
+		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-warning-muted text-admin-warning border border-admin-warning-border">
 			<span class="w-1.5 h-1.5 rounded-full bg-admin-warning"></span>
 			<span>В обработке</span>
 		</span>
 	} else if status == "выполнена" || status == "обработана" {
-		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-medium bg-admin-success-muted text-admin-success border border-admin-success/25">
+		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-success-muted text-admin-success border border-admin-success-border">
 			<span class="w-1.5 h-1.5 rounded-full bg-admin-success"></span>
 			<span>Выполнена</span>
 		</span>
 	} else if status == "отменена" {
-		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border">
+		<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border">
 			<span class="w-1.5 h-1.5 rounded-full bg-admin-content-muted"></span>
 			<span>Отменена</span>
 		</span>
 	} else {
-		<span class="inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium bg-admin-surface-muted text-admin-content-muted">
+		<span class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border">
 			{ status }
 		</span>
 	}
@@ -127,23 +161,30 @@ templ LeadRowSingle(lead models.Lead) {
 				comment = c
 			}
 		}
+		leadJSON := admin_leads.BuildLeadDetailJSON(lead)
 	}}
 	<tr
 		id={ "lead-row-" + lead.ID }
-		x-show={ fmt.Sprintf("matchesLead('%s', '%s', '%s', '%s')", lead.Name, lead.Phone, comment, lead.Status) }
+		data-lead-row="1"
+		data-name={ lead.Name }
+		data-phone={ lead.Phone }
+		data-comment={ comment }
+		data-status={ lead.Status }
+		x-show="matchesLead($el.dataset.name, $el.dataset.phone, $el.dataset.comment, $el.dataset.status)"
 		class="hover:bg-admin-surface-muted/50 transition-colors group"
 	>
 		<!-- Клиент -->
-		<td class="py-3.5 px-4 whitespace-nowrap">
-			<div class="flex items-center gap-3">
+		<td class="py-3 px-4 whitespace-nowrap">
+			<div class="flex items-center gap-2.5">
 				<div class="w-8 h-8 rounded-lg bg-admin-surface-muted text-admin-content-muted font-mono font-semibold flex items-center justify-center text-xs shrink-0 border border-admin-border">
 					{ getInitials(lead.Name) }
 				</div>
 				<div>
 					<button
 						type="button"
-						@click={ fmt.Sprintf("activeLeadID = '%s'", lead.ID) }
-						class="font-semibold text-admin-content hover:text-admin-accent transition-colors text-left cursor-pointer"
+						data-lead={ leadJSON }
+						@click="openLead($el)"
+						class="font-medium text-admin-content hover:text-admin-accent transition-colors text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus rounded"
 					>
 						{ lead.Name }
 					</button>
@@ -157,8 +198,8 @@ templ LeadRowSingle(lead models.Lead) {
 		</td>
 
 		<!-- Контакты с быстрым копированием и WhatsApp -->
-		<td class="py-3.5 px-4 whitespace-nowrap">
-			<div class="flex items-center gap-2">
+		<td class="py-3 px-4 whitespace-nowrap">
+			<div class="flex items-center gap-1.5">
 				<a
 					href={ templ.SafeURL("tel:" + lead.Phone) }
 					class="text-admin-content hover:text-admin-accent font-mono text-xs font-medium transition-colors"
@@ -166,12 +207,13 @@ templ LeadRowSingle(lead models.Lead) {
 				>
 					{ formatPhoneMask(lead.Phone) }
 				</a>
-				<div class="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity">
+				<div class="flex items-center gap-0.5 opacity-70 group-hover:opacity-100 transition-opacity">
 					<button
 						type="button"
 						@click.stop={ fmt.Sprintf("copyText('%s', '%s')", lead.Phone, lead.ID) }
-						class="p-1 rounded-md text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer"
+						class="p-1 rounded-md text-admin-content-muted hover:text-admin-content hover:bg-admin-surface-muted transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 						title="Скопировать телефон"
+						aria-label="Скопировать телефон"
 					>
 						<template x-if={ fmt.Sprintf("copiedPhone === '%s'", lead.ID) }>
 							<svg class="w-3.5 h-3.5 text-admin-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -192,6 +234,7 @@ templ LeadRowSingle(lead models.Lead) {
 							rel="noopener noreferrer"
 							class="p-1 rounded-md text-admin-content-muted hover:text-admin-success hover:bg-admin-surface-muted transition-colors"
 							title="Написать в WhatsApp"
+							aria-label="Написать в WhatsApp"
 						>
 							<svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
 								<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"></path>
@@ -203,10 +246,10 @@ templ LeadRowSingle(lead models.Lead) {
 		</td>
 
 		<!-- Дата и время -->
-		<td class="py-3.5 px-4 whitespace-nowrap text-admin-content-muted">
+		<td class="py-3 px-4 whitespace-nowrap text-admin-content-muted">
 			if lead.BookingDate != "" {
-				<div class="flex items-center gap-1.5 text-admin-content font-medium">
-					<svg class="w-3.5 h-3.5 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+				<div class="flex items-center gap-1.5 text-admin-content font-medium text-xs">
+					<svg class="w-3.5 h-3.5 text-admin-content-muted shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
 					</svg>
 					<span>{ lead.BookingDate }</span>
@@ -217,27 +260,28 @@ templ LeadRowSingle(lead models.Lead) {
 			} else if lead.Created != "" {
 				<div class="text-xs text-admin-content-muted font-mono">{ lead.Created }</div>
 			} else {
-				<span class="text-admin-content-muted text-xs">—</span>
+				<span class="text-admin-content-subtle text-xs">—</span>
 			}
 		</td>
 
 		<!-- Детали обращения -->
-		<td class="py-3.5 px-4">
+		<td class="py-3 px-4">
 			@LeadDetailsCell(lead)
 		</td>
 
 		<!-- Статус заявки -->
-		<td class="py-3.5 px-4 whitespace-nowrap">
+		<td class="py-3 px-4 whitespace-nowrap">
 			<div class="relative inline-block">
 				<select
 					name="status"
 					hx-post={ "/client/leads/" + lead.ID + "/status" }
-					hx-target="#leads-tab-root"
+					hx-target="#leads-tab-body"
 					hx-swap="innerHTML"
-					class={ "px-3 py-1.5 rounded-xl text-xs font-medium border appearance-none pr-7 cursor-pointer focus:outline-none transition-colors",
+					aria-label="Статус заявки"
+					class={ "px-2.5 py-1 rounded-lg text-xs font-medium border appearance-none pr-7 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus transition-colors",
 						templ.KV("bg-admin-accent-muted text-admin-accent border-admin-accent-border hover:border-admin-accent", lead.Status == "новая" || lead.Status == ""),
-						templ.KV("bg-admin-warning-muted text-admin-warning border-admin-warning/25 hover:border-admin-warning/50", lead.Status == "в обработке"),
-						templ.KV("bg-admin-success-muted text-admin-success border-admin-success/25 hover:border-admin-success/50", lead.Status == "выполнена" || lead.Status == "обработана"),
+						templ.KV("bg-admin-warning-muted text-admin-warning border-admin-warning-border hover:border-admin-warning", lead.Status == "в обработке"),
+						templ.KV("bg-admin-success-muted text-admin-success border-admin-success-border hover:border-admin-success", lead.Status == "выполнена" || lead.Status == "обработана"),
 						templ.KV("bg-admin-surface-muted text-admin-content-muted border-admin-border hover:border-admin-border-focus", lead.Status == "отменена") }
 				>
 					<option value="новая" selected?={ lead.Status == "новая" || lead.Status == "" } class="bg-admin-surface text-admin-content">Новая</option>
@@ -254,11 +298,12 @@ templ LeadRowSingle(lead models.Lead) {
 		</td>
 
 		<!-- Действия -->
-		<td class="py-3.5 px-4 text-right whitespace-nowrap">
+		<td class="py-3 px-4 text-right whitespace-nowrap">
 			<button
 				type="button"
-				@click={ fmt.Sprintf("activeLeadID = '%s'", lead.ID) }
-				class="px-2.5 py-1.5 rounded-xl bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content border border-admin-border text-xs font-medium transition-colors inline-flex items-center gap-1.5 cursor-pointer shadow-2xs"
+				data-lead={ leadJSON }
+				@click="openLead($el)"
+				class="px-2.5 py-1 rounded-lg bg-admin-surface hover:bg-admin-surface-muted text-admin-content-muted hover:text-admin-content border border-admin-border text-xs font-medium transition-colors inline-flex items-center gap-1.5 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-admin-border-focus"
 				title="Открыть карточку заявки"
 			>
 				<svg class="w-3.5 h-3.5 text-admin-content-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,7 +332,7 @@ templ LeadDetailsCell(lead models.Lead) {
 		}
 	}}
 	if !hasDetails {
-		<span class="text-admin-content-muted text-xs italic">Без комментария</span>
+		<span class="text-admin-content-subtle text-xs">—</span>
 	} else {
 		<div class="flex flex-col gap-1 max-w-xs">
 			<div class="flex items-center gap-1.5 flex-wrap">
@@ -303,7 +348,7 @@ templ LeadDetailsCell(lead models.Lead) {
 						</span>
 					}
 					if utmCampaign, ok := lead.Payload["utm_campaign"].(string); ok && utmCampaign != "" {
-						<span class="inline-block px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400 text-[10px] font-mono border border-purple-500/20" title="UTM Campaign">
+						<span class="inline-block px-1.5 py-0.5 rounded bg-admin-surface-muted text-admin-content-muted text-[10px] font-mono border border-admin-border" title="UTM Campaign">
 							cmp: { utmCampaign }
 						</span>
 					}
@@ -312,11 +357,11 @@ templ LeadDetailsCell(lead models.Lead) {
 			if lead.Payload != nil {
 				if qMap, ok := lead.Payload["quiz_summary"].(map[string]interface{}); ok {
 					<div class="text-[11px] text-admin-warning font-medium font-mono">
-						🎯 Квиз-смета: { fmt.Sprintf("%v", qMap["estimated_price"]) } руб.
+						Квиз-смета: { fmt.Sprintf("%v", qMap["estimated_price"]) } руб.
 					</div>
 				}
 				if comment, ok := lead.Payload["comment"].(string); ok && comment != "" {
-					<div class="text-xs text-admin-content-muted italic break-words line-clamp-2">
+					<div class="text-xs text-admin-content-muted break-words line-clamp-2">
 						«{ comment }»
 					</div>
 				}
@@ -325,24 +370,19 @@ templ LeadDetailsCell(lead models.Lead) {
 	}
 }
 
-templ LeadDetailDrawer(lead models.Lead) {
-	@admin_leads.LeadDetailDrawer(lead)
-}
-
 templ LeadsBadges(newCount int, inProgressCount int, totalCount int) {
-	<span id="leads-count-badges" class="inline-flex items-center gap-1.5 ml-1 shrink-0 font-mono">
+	<span id="leads-count-badges" class="inline-flex items-center gap-1 ml-1 shrink-0 font-mono tabular-nums">
 		if newCount > 0 {
 			<span
-				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-red-50 text-red-700 border border-red-200"
+				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-admin-danger-muted text-admin-danger border border-admin-danger-border"
 				title={ fmt.Sprintf("Новые заявки: %d", newCount) }
 			>
-				<span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
 				<span>{ fmt.Sprintf("%d", newCount) }</span>
 			</span>
 		}
 		if inProgressCount > 0 {
 			<span
-				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-admin-surface-muted text-admin-content-muted border border-admin-border"
+				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border"
 				title={ fmt.Sprintf("Заявки в обработке: %d", inProgressCount) }
 			>
 				<span>{ fmt.Sprintf("%d", inProgressCount) }</span>
@@ -353,19 +393,18 @@ templ LeadsBadges(newCount int, inProgressCount int, totalCount int) {
 
 templ LeadRowWithOOBBadges(lead models.Lead, newCount int, inProgressCount int, totalCount int) {
 	@LeadRowSingle(lead)
-	<span id="leads-count-badges" hx-swap-oob="true" class="inline-flex items-center gap-1.5 ml-1 shrink-0 font-mono">
+	<span id="leads-count-badges" hx-swap-oob="true" class="inline-flex items-center gap-1 ml-1 shrink-0 font-mono tabular-nums">
 		if newCount > 0 {
 			<span
-				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-red-50 text-red-700 border border-red-200"
+				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-admin-danger-muted text-admin-danger border border-admin-danger-border"
 				title={ fmt.Sprintf("Новые заявки: %d", newCount) }
 			>
-				<span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse"></span>
 				<span>{ fmt.Sprintf("%d", newCount) }</span>
 			</span>
 		}
 		if inProgressCount > 0 {
 			<span
-				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-admin-surface-muted text-admin-content-muted border border-admin-border"
+				class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-mono font-medium bg-admin-surface-muted text-admin-content-muted border border-admin-border"
 				title={ fmt.Sprintf("Заявки в обработке: %d", inProgressCount) }
 			>
 				<span>{ fmt.Sprintf("%d", inProgressCount) }</span>

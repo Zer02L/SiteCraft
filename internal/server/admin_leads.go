@@ -29,6 +29,7 @@ func (s *Server) HandleAdminUpdateLeadStatus(w http.ResponseWriter, r *http.Requ
 	// Refresh only the tab content. Replacing the root x-data element would make
 	// Alpine evaluate the rows' x-show before their parent scope is available.
 	leads, _ := s.Repo.GetLeads(ctx)
+	w.Header().Set("HX-Trigger-After-Settle", `{"admin-toast":{"message":"Статус заявки обновлён","tone":"success"}}`)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = pages.LeadsTabContent(leads).Render(ctx, w)
 }
